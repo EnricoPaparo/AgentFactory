@@ -16,13 +16,35 @@ Strumento esterno che l'agente può usare, per esempio file system, GitHub, term
 
 Output verificabile prodotto da un agente: documento, issue, pull request, report, test plan, codice o checklist.
 
+## Automazione
+
+Meccanismo che esegue azioni secondo regole predeterminate, trigger e condizioni note.
+
+È adatta a task ripetitivi, prevedibili e deterministici.
+
+## Workflow
+
+Processo composto da step, stati, responsabilità, regole di avanzamento, output intermedi e possibili gate di approvazione.
+
+Può essere manuale, automatico, semi-automatico o agentico.
+
+## Agentic Workflow
+
+Workflow in cui alcuni step sono eseguiti da AI Agent.
+
+Combina processo, agenti, automazioni, tool, output verificabili e Human in the Loop.
+
 ## Pipeline multi-agent
 
 Sequenza coordinata di agenti specializzati che collaborano su un progetto.
 
+Ogni agente deve avere ruolo, input, output, regole e criteri di qualità chiari.
+
 ## Agent Factory
 
 Sistema capace di creare, configurare, orchestrare e migliorare agenti specializzati in funzione di progetti reali.
+
+Una Agent Factory non esegue solo una pipeline: decide quali agenti servono, quale contesto fornire, quali template usare e quale conoscenza assorbire.
 
 ## Human in the Loop
 
