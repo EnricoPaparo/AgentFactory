@@ -68,3 +68,40 @@ Dopo ogni progetto o lezione, il sistema deve chiedersi:
 - quale template va migliorato?
 - quale regola va aggiornata?
 - quale agente va modificato?
+
+## 9. Prima classificare il processo, poi scegliere la soluzione
+
+Quando arriva un task, non bisogna partire chiedendo quale agente usare.
+
+Bisogna prima classificare la natura del task:
+
+- automazione deterministica;
+- workflow;
+- AI Agent;
+- agentic workflow;
+- pipeline multi-agent;
+- Agent Factory.
+
+Questa regola evita over-engineering e impedisce di usare agenti AI dove basterebbe una soluzione più semplice, affidabile e controllabile.
+
+Formula operativa:
+
+```text
+Classificazione del task -> scelta architetturale -> agenti/tool/gate necessari
+```
+
+## 10. Automazioni e agenti devono collaborare
+
+Una Agent Factory professionale non è composta solo da agenti.
+
+È un sistema ibrido in cui:
+
+- le automazioni gestiscono azioni prevedibili e ripetitive;
+- i workflow coordinano stati, step e responsabilità;
+- gli agenti gestiscono interpretazione, ragionamento e produzione di artefatti;
+- gli Human Gate controllano decisioni critiche;
+- la knowledge base conserva solo conoscenza validata.
+
+Regola:
+
+> Gli agenti non sostituiscono tutta l'automazione. Gli agenti entrano dove serve intelligenza contestuale.
