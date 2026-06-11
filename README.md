@@ -52,10 +52,13 @@ AgentFactory/
 
 - [x] Repository inizializzato
 - [x] Lezione 1: Fondamenti degli AI Agent
+- [x] Lezione 2: Requirement Analyst Agent
+- [x] Lezione 4: Anatomia di un AI Agent Professionale
 - [x] Roadmap iniziale
 - [x] Template base agenti
 - [x] Governance minima
-- [ ] Lezione 2: Requirement Analyst Agent
+- [ ] Lezione 3: Differenza tra agente, workflow e automazione
+- [ ] Lezione 5: Context Engineering
 - [ ] Prima pipeline didattica
 - [ ] Primo progetto esempio
 
