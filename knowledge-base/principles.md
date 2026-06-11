@@ -43,7 +43,23 @@ Ogni agente deve produrre output controllabili:
 
 Le decisioni critiche devono rimanere sotto controllo umano.
 
-## 7. Miglioramento continuo
+## 7. Aggiornamento repo solo dopo conferma
+
+Alla fine di ogni lezione l'assistente deve chiedere esplicitamente:
+
+> Aggiorno il repo e aggiungo la lezione al repo git?
+
+Solo se l'utente conferma, l'assistente deve:
+
+1. controllare lo stato del repository;
+2. verificare se vanno modificati file già esistenti;
+3. aggiungere o aggiornare la lezione nel manuale;
+4. aggiornare eventuali file collegati, per esempio `MANUAL.md`, `ROADMAP.md`, `CHANGELOG.md`, `GLOSSARY.md`, `templates/`, `agents/`, `knowledge-base/` o `governance/`;
+5. mantenere il repository coerente con la roadmap e con l'obiettivo finale della Agent Factory.
+
+Questa regola impedisce aggiornamenti automatici non validati e trasforma GitHub in memoria consolidata del percorso.
+
+## 8. Miglioramento continuo
 
 Dopo ogni progetto o lezione, il sistema deve chiedersi:
 
