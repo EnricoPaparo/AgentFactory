@@ -25,3 +25,9 @@ Tutte le modifiche principali al manuale AgentFactory verranno tracciate qui.
 
 - Aggiornato README con stato lezioni più coerente.
 - Aggiornato MANUAL con indice lezioni e nuovi principi su contesto e memoria.
+- Aggiornato `lessons/README.md` con indice lezioni e stato di consolidamento.
+- Aggiornata ROADMAP per allineare Lezione 2, Lezione 4, Lezione 5 e i temi emersi su Dockerfile, CI/CD, retrieval e contesto operativo.
+
+### Da consolidare
+
+- Lezione 3: Differenza tra agente, workflow e automazione. Il concetto è stato discusso nel percorso, ma manca ancora un file dedicato nel repository.
