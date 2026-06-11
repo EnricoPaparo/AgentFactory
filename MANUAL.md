@@ -22,7 +22,9 @@ Una Agent Factory è un sistema capace di:
 ## Indice lezioni
 
 - [Lezione 1 - Fondamenti degli AI Agent](lessons/01-fondamenti-ai-agent.md)
-- Lezione 2 - Requirement Analyst Agent *(in preparazione)*
+- [Lezione 2 - Requirement Analyst Agent](lessons/02-requirement-analyst-agent.md)
+- Lezione 3 - Differenza tra agente, workflow e automazione *(da consolidare nel repository)*
+- [Lezione 4 - Anatomia di un AI Agent Professionale](lessons/04-anatomia-ai-agent-professionale.md)
 
 ## Principi fondamentali
 
@@ -64,6 +66,20 @@ La conoscenza validata, invece, deve rimanere nel sistema.
 La supervisione umana resta centrale.
 
 L'autonomia senza controllo non è professionalità: è rischio operativo.
+
+### 6. Il contesto viene costruito, non accumulato
+
+Un agente non deve ricevere tutta la conoscenza disponibile.
+
+Deve ricevere il contesto giusto per il task corrente.
+
+La memoria permanente alimenta il contesto tramite recupero selettivo, template e regole operative.
+
+### 7. I file sono contenitori, non automaticamente memoria
+
+File Markdown, database, documenti e repository sono storage.
+
+Diventano memoria permanente solo quando contengono conoscenza validata, organizzata e recuperabile dai futuri agenti.
 
 ## Stato del manuale
 
