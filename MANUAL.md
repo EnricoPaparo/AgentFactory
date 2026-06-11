@@ -23,7 +23,7 @@ Una Agent Factory è un sistema capace di:
 
 - [Lezione 1 - Fondamenti degli AI Agent](lessons/01-fondamenti-ai-agent.md)
 - [Lezione 2 - Requirement Analyst Agent](lessons/02-requirement-analyst-agent.md)
-- Lezione 3 - Differenza tra agente, workflow e automazione *(da consolidare nel repository)*
+- [Lezione 3 - Differenza tra agente, workflow e automazione](lessons/03-differenza-agente-workflow-automazione.md)
 - [Lezione 4 - Anatomia di un AI Agent Professionale](lessons/04-anatomia-ai-agent-professionale.md)
 
 ## Principi fondamentali
@@ -80,6 +80,20 @@ La memoria permanente alimenta il contesto tramite recupero selettivo, template 
 File Markdown, database, documenti e repository sono storage.
 
 Diventano memoria permanente solo quando contengono conoscenza validata, organizzata e recuperabile dai futuri agenti.
+
+### 8. Prima classificare il processo, poi scegliere l'agente
+
+Non ogni task richiede un agente AI.
+
+Prima bisogna capire se il problema è:
+
+- una automazione deterministica;
+- un workflow;
+- un task agentico;
+- una pipeline multi-agent;
+- un caso da Agent Factory.
+
+Questa distinzione protegge il sistema da complessità inutile e rende la progettazione più professionale.
 
 ## Stato del manuale
 
