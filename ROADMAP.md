@@ -10,7 +10,7 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 
 - [x] Lezione 1 - Che cos'è un AI Agent
 - [x] Lezione 2 - Requirement Analyst Agent
-- [ ] Lezione 3 - Differenza tra agente, workflow e automazione *(da consolidare nel repository)*
+- [x] Lezione 3 - Differenza tra agente, workflow e automazione
 - [x] Lezione 4 - Anatomia di un AI Agent Professionale
 - [ ] Lezione 5 - Context Engineering
 
@@ -63,6 +63,6 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 |---|---|---|
 | 1 - Che cos'è un AI Agent | Consolidata | `lessons/01-fondamenti-ai-agent.md` |
 | 2 - Requirement Analyst Agent | Consolidata | `lessons/02-requirement-analyst-agent.md` |
-| 3 - Differenza tra agente, workflow e automazione | Da consolidare | File dedicato non ancora presente |
+| 3 - Differenza tra agente, workflow e automazione | Consolidata | `lessons/03-differenza-agente-workflow-automazione.md` |
 | 4 - Anatomia di un AI Agent Professionale | Consolidata | `lessons/04-anatomia-ai-agent-professionale.md` |
 | 5 - Context Engineering | Pianificata | File non ancora presente |
