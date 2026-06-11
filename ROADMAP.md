@@ -9,9 +9,10 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 ## Fase 1 - Fondamenti
 
 - [x] Lezione 1 - Che cos'è un AI Agent
-- [ ] Lezione 2 - Requirement Analyst Agent
-- [ ] Lezione 3 - Differenza tra agente, workflow e automazione
-- [ ] Lezione 4 - Contesto, memoria e conoscenza
+- [x] Lezione 2 - Requirement Analyst Agent
+- [ ] Lezione 3 - Differenza tra agente, workflow e automazione *(da consolidare nel repository)*
+- [x] Lezione 4 - Anatomia di un AI Agent Professionale
+- [ ] Lezione 5 - Context Engineering
 
 ## Fase 2 - Progettazione agenti
 
@@ -19,11 +20,14 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 - [ ] Ruoli, responsabilità e confini
 - [ ] Input, output e artefatti
 - [ ] Regole operative e criteri di qualità
+- [ ] Repository Analyst Agent
 
 ## Fase 3 - Tool e ambiente operativo
 
 - [ ] Git e repository come memoria di lavoro
 - [ ] Tool use
+- [ ] Dockerfile come fonte di contesto operativo
+- [ ] CI/CD come meccanismo di feedback per gli agenti
 - [ ] MCP e integrazione strumenti
 - [ ] Accesso controllato a file, issue, PR e documentazione
 
@@ -43,6 +47,7 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 - [ ] Knowledge Compiler
 - [ ] Lessons learned
 - [ ] Evoluzione delle regole e dei prompt
+- [ ] Distinzione tra storage, memoria permanente, retrieval e contesto operativo
 
 ## Fase 6 - Agent Factory
 
@@ -51,3 +56,13 @@ Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline 
 - [ ] Orchestrazione progetto-specifica
 - [ ] Riassorbimento conoscenza validata
 - [ ] Manuale replicabile per studenti e aziende
+
+## Stato di consolidamento lezioni
+
+| Lezione | Stato | File |
+|---|---|---|
+| 1 - Che cos'è un AI Agent | Consolidata | `lessons/01-fondamenti-ai-agent.md` |
+| 2 - Requirement Analyst Agent | Consolidata | `lessons/02-requirement-analyst-agent.md` |
+| 3 - Differenza tra agente, workflow e automazione | Da consolidare | File dedicato non ancora presente |
+| 4 - Anatomia di un AI Agent Professionale | Consolidata | `lessons/04-anatomia-ai-agent-professionale.md` |
+| 5 - Context Engineering | Pianificata | File non ancora presente |
