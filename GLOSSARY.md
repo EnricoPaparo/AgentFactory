@@ -39,3 +39,43 @@ Ruolo o agente incaricato di organizzare e mantenere la conoscenza permanente.
 ## Knowledge Compiler
 
 Ruolo o agente incaricato di trasformare conoscenza grezza in conoscenza riutilizzabile dagli altri agenti.
+
+## Context
+
+Insieme delle informazioni effettivamente disponibili all'agente durante un task specifico.
+
+Il contesto non coincide con tutta la conoscenza permanente: è una selezione operativa costruita per il compito corrente.
+
+## Context Builder
+
+Componente o agente incaricato di costruire il contesto operativo selezionando istruzioni, file, regole, memoria rilevante e output dei tool.
+
+## Retrieval
+
+Processo con cui il sistema recupera dalla memoria permanente solo la conoscenza utile al task corrente.
+
+## Memoria permanente
+
+Conoscenza validata, organizzata e riutilizzabile che sopravvive ai singoli task e ai singoli agenti.
+
+Può essere salvata in file Markdown, database, vector store, graph database o altri supporti.
+
+## Storage
+
+Supporto fisico o logico in cui vengono conservati dati o file.
+
+Uno storage non è automaticamente memoria intelligente: diventa memoria utile solo se viene organizzato, mantenuto e recuperato dal sistema.
+
+## Dockerfile
+
+File che descrive la ricetta per costruire un container Docker, specificando ambiente, dipendenze, file da copiare e comando di avvio.
+
+Per un agente che analizza un repository, il Dockerfile è una fonte importante per capire come il progetto viene eseguito.
+
+## CI/CD
+
+Pipeline automatica di Continuous Integration e Continuous Delivery/Deployment.
+
+Serve a compilare, testare, verificare e talvolta rilasciare software in modo automatico dopo modifiche al codice.
+
+Per gli AI Agent può diventare un meccanismo di feedback e validazione esterna.
