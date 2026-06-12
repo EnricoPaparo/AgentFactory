@@ -557,29 +557,6 @@ select {
   text-transform: uppercase;
 }
 
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 27px;
-  padding: 0 9px;
-  border: 1px solid rgba(44, 248, 255, 0.24);
-  background: rgba(44, 248, 255, 0.05);
-  color: var(--cyan);
-  font-size: 0.68rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.status-pill::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  margin-right: 7px;
-  border-radius: 50%;
-  background: var(--lime);
-  box-shadow: 0 0 12px rgba(198, 255, 74, 0.74);
-}
-
 .doc-page > h1 {
   margin: 0;
   font-size: clamp(2.35rem, 5vw, 4.6rem);

@@ -363,7 +363,7 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
 
 function siteFooter() {
   return `<footer class="site-footer">
-    <span>Sito statico prodotto da ${escapeHtml(siteAuthor)}</span>
+    <span>Prodotto da ${escapeHtml(siteAuthor)}</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>`;
 }
@@ -372,8 +372,6 @@ function pageBody(source, rendered) {
   return `<article class="doc-page">
   <div class="page-meta">
     <span class="page-kicker">${escapeHtml(source.group)}</span>
-    <span class="status-pill">ONLINE</span>
-    <span class="status-pill">STATIC</span>
   </div>
   <h1>${escapeHtml(source.title)}</h1>
   <p class="lead">${escapeHtml(source.summary)}</p>
@@ -416,7 +414,7 @@ function indexBody() {
         <a class="primary-action" href="pages/manuale.html">Apri il manuale</a>
         <a class="secondary-action" href="pages/lezione-00.html">Inizia dalla lezione 00</a>
       </div>
-      <p class="hero-credit">Sito statico prodotto da ${escapeHtml(siteAuthor)}</p>
+      <p class="hero-credit">Prodotto da ${escapeHtml(siteAuthor)}</p>
     </div>
     <div class="hero-panel" aria-label="Pipeline AgentFactory">
       <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>
