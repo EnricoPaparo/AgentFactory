@@ -65,6 +65,7 @@ Il percorso parte dalle fondamenta:
 - [x] Primo template di output del Requirement Analyst Agent
 - [x] Primo Requirement Analysis Document manuale
 - [x] Prima review manuale di un output agentico
+- [x] Sito pronto per pubblicazione GitHub Pages
 - [ ] Primo agente reale
 
 ## Sito statico
@@ -82,3 +83,24 @@ Il file principale e':
 ```text
 docs/index.html
 ```
+
+## Pubblicazione GitHub Pages
+
+Il repository e' gia' pronto per essere pubblicato con GitHub Pages dalla cartella `docs/`.
+
+Configurazione consigliata su GitHub:
+
+1. aprire `Settings`;
+2. entrare in `Pages`;
+3. in `Build and deployment`, scegliere `Deploy from a branch`;
+4. selezionare branch `main`;
+5. selezionare cartella `/docs`;
+6. salvare.
+
+Una volta attivo, il sito sara' disponibile qui:
+
+```text
+https://enricopaparo.github.io/AgentFactory/
+```
+
+Il file `docs/.nojekyll` evita che GitHub Pages interpreti il sito come progetto Jekyll.

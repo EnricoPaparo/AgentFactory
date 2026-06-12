@@ -53,3 +53,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornato il sito statico con dettagli futuristici: cornici HUD, micro-animazioni, badge di stato, sidebar neon e header per blocchi codice/diagrammi.
 - Aggiornata la roadmap con la prima review manuale di un output agentico.
 - Aggiunta attribuzione elegante del sito a Enrico Paparo.
+- Preparato il sito in `docs/` per la pubblicazione con GitHub Pages.
