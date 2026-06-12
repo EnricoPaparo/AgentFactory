@@ -24,6 +24,8 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Lezione 05: prima Agent Card concreta, Requirement Analyst Agent.
 - Lezione 06: mappa degli strumenti reali, inclusi n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw.
 - Agent Card `agents/requirement-analyst-agent.md`.
+- Sito statico iniziale in `docs/`, generato dai Markdown del manuale.
+- Script `tools/build-site.js` per rigenerare le pagine HTML.
 
 ### Aggiornato
 
@@ -37,3 +39,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornato il glossario con requisiti, scope e Requirement Analyst Agent.
 - Aggiornata la roadmap con gli strumenti reali da studiare nel percorso.
 - Aggiornato il glossario con n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw.
+- Aggiornato il README con le istruzioni minime del sito statico.

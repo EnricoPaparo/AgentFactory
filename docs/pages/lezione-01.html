@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>01 - Fondamenta operative | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark">AF</span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <div class="nav-group"><p>Fondazione</p><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></div><div class="nav-group"><p>Lezioni</p><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a aria-current="page" href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a></div><div class="nav-group"><p>Agenti</p><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></div>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-kicker">Lezioni</div>
+  <h1>01 - Fondamenta operative</h1>
+  <p class="lead">Markdown, template, Agent Card e basi operative.</p>
+  <div class="source-chip">lessons/01-fondamenta-operative.md</div>
+  <section class="markdown-body">
+    <h1 id="01-fondamenta-operative">01 - Fondamenta operative</h1>
+<h2 id="obiettivo">Obiettivo</h2>
+<p>Capire i primi mattoni del percorso:</p>
+<ul><li>Markdown;</li><li>artefatto;</li><li>template;</li><li>Agent Card;</li><li>repository come memoria versionata.</li></ul>
+<p>Senza questi concetti, progettare agenti diventa confuso.</p>
+<h2 id="mappa-dei-mattoni-iniziali">Mappa dei mattoni iniziali</h2>
+<div class="diagram"><div class="mermaid">flowchart LR
+  A[Markdown] --&gt; B[Lezioni]
+  A --&gt; C[Template]
+  A --&gt; D[Agent Card]
+  B --&gt; E[Manuale]
+  C --&gt; F[Metodo riutilizzabile]
+  D --&gt; G[Progettazione agenti]
+  E --&gt; H[AgentFactory]
+  F --&gt; H
+  G --&gt; H</div></div>
+<p>Questa mappa chiarisce perche' partiamo da strumenti apparentemente semplici: Markdown, template e Agent Card sono i materiali di base con cui costruiremo il sistema.</p>
+<h2 id="markdown">Markdown</h2>
+<p>Markdown e' un formato per scrivere documenti testuali semplici.</p>
+<p>Un file Markdown ha estensione <code>.md</code>.</p>
+<p>Esempio:</p>
+<pre><code># Titolo
+
+## Sezione
+
+- punto 1
+- punto 2</code></pre>
+<p>Markdown e' utile per AgentFactory perche':</p>
+<ul><li>e' leggibile;</li><li>e' facile da modificare;</li><li>funziona bene con Git;</li><li>puo' diventare manuale, template, scheda agente o report.</li></ul>
+<h2 id="artefatto">Artefatto</h2>
+<p>Un artefatto e' un risultato concreto del lavoro.</p>
+<p>Esempi:</p>
+<ul><li>una lezione;</li><li>una Agent Card;</li><li>un report;</li><li>una checklist;</li><li>un documento requisiti;</li><li>un prompt operativo;</li><li>un test plan.</li></ul>
+<p>Regola:</p>
+<pre><code>Se non posso verificarlo, non e' ancora un buon artefatto.</code></pre>
+<h2 id="template">Template</h2>
+<p>Un template e' un modello riutilizzabile.</p>
+<p>Serve a non ripartire ogni volta da zero.</p>
+<p>Esempio: un template di lezione stabilisce sempre le stesse sezioni minime.</p>
+<h2 id="agent-card">Agent Card</h2>
+<p>Una Agent Card e' la scheda tecnica di un agente.</p>
+<p>Risponde a domande come:</p>
+<ul><li>qual e' la missione dell'agente?</li><li>cosa riceve in input?</li><li>cosa deve produrre?</li><li>quali tool puo' usare?</li><li>quali limiti ha?</li><li>quando deve chiedere conferma?</li><li>come si valuta il suo output?</li></ul>
+<h2 id="repository-come-memoria-versionata">Repository come memoria versionata</h2>
+<p>GitHub non e' automaticamente memoria intelligente.</p>
+<p>Pero' e' un ottimo posto per salvare:</p>
+<ul><li>lezioni;</li><li>template;</li><li>agenti;</li><li>esperimenti;</li><li>regole;</li><li>conoscenza validata.</li></ul>
+<p>La memoria nasce quando i file sono organizzati, mantenuti e riutilizzati.</p>
+<h2 id="repository-come-base-della-factory">Repository come base della factory</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+  R[Repository] --&gt; L[lessons]
+  R --&gt; T[templates]
+  R --&gt; A[agents]
+  R --&gt; E[experiments]
+  R --&gt; K[knowledge-base]
+  R --&gt; G[governance]
+  L --&gt; M[Manuale]
+  T --&gt; F[Strumenti riutilizzabili]
+  A --&gt; C[Schede agenti]
+  E --&gt; P[Prove reali]
+  K --&gt; V[Conoscenza validata]
+  G --&gt; O[Regole e controlli]</div></div>
+<p>Il repository non contiene solo pagine da leggere. Contiene anche gli elementi che diventeranno la base operativa della futura Agent Factory.</p>
+<h2 id="artefatto-prodotto">Artefatto prodotto</h2>
+<p>Primo glossario operativo minimo:</p>
+<ul><li>Markdown;</li><li>artefatto;</li><li>template;</li><li>Agent Card;</li><li>repository come memoria versionata.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Capire che cos'e' davvero un AI Agent e perche' non coincide con un semplice prompt.</p>
+  </section>
+</article>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js"></script>
+</body>
+</html>

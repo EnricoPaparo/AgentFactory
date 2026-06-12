@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossario | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark">AF</span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <div class="nav-group"><p>Fondazione</p><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a aria-current="page" href="glossario.html"><span>Glossario</span></a></div><div class="nav-group"><p>Lezioni</p><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a></div><div class="nav-group"><p>Agenti</p><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></div>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-kicker">Fondazione</div>
+  <h1>Glossario</h1>
+  <p class="lead">Termini essenziali del percorso.</p>
+  <div class="source-chip">GLOSSARY.md</div>
+  <section class="markdown-body">
+    <h1 id="glossario-agentfactory">Glossario AgentFactory</h1>
+<p>Glossario minimo. Va esteso solo quando un termine serve davvero al percorso.</p>
+<h2 id="markdown">Markdown</h2>
+<p>Formato di testo semplice usato per scrivere documenti leggibili e versionabili. I file Markdown usano estensione <code>.md</code>.</p>
+<h2 id="artefatto">Artefatto</h2>
+<p>Output concreto e verificabile prodotto durante il lavoro. Esempi: lezione, report, Agent Card, checklist, documento requisiti, test plan, prompt operativo.</p>
+<h2 id="template">Template</h2>
+<p>Modello riutilizzabile per produrre sempre lo stesso tipo di artefatto con una struttura coerente.</p>
+<h2 id="agent-card">Agent Card</h2>
+<p>Scheda tecnica di un agente. Descrive missione, input, output, tool, regole, limiti, criteri di qualita' e punti in cui deve chiedere conferma.</p>
+<h2 id="privilegio">Privilegio</h2>
+<p>Permesso operativo concesso a un agente, per esempio leggere file, scrivere file, eseguire comandi, accedere a servizi esterni o modificare memoria.</p>
+<h2 id="minimo-privilegio-necessario">Minimo privilegio necessario</h2>
+<p>Principio secondo cui un agente deve ricevere solo i permessi indispensabili per svolgere il proprio compito.</p>
+<h2 id="criterio-di-qualita">Criterio di qualita'</h2>
+<p>Regola o condizione usata per valutare se un output o un agente ha lavorato bene.</p>
+<h2 id="ai-agent">AI Agent</h2>
+<p>Sistema basato su modello AI capace di perseguire un obiettivo usando contesto, strumenti, regole e verifiche.</p>
+<h2 id="prompt">Prompt</h2>
+<p>Richiesta data a un modello AI. Un prompt puo' essere semplice o complesso, ma non e' automaticamente un agente.</p>
+<h2 id="automazione">Automazione</h2>
+<p>Processo o azione eseguita secondo regole predefinite, senza bisogno di interpretazione o giudizio.</p>
+<h2 id="workflow">Workflow</h2>
+<p>Sequenza strutturata di passaggi, stati o approvazioni. Puo' essere tradizionale o includere parti agentiche.</p>
+<h2 id="workflow-agentico">Workflow agentico</h2>
+<p>Sequenza di passaggi in cui uno o piu' agenti lavorano per produrre un risultato.</p>
+<h2 id="pipeline-multi-agent">Pipeline multi-agent</h2>
+<p>Workflow composto da piu' agenti specializzati, ognuno con responsabilita', input e output distinti.</p>
+<h2 id="tool">Tool</h2>
+<p>Strumento che un agente puo' usare: file system, terminale, GitHub, browser, database, API, test runner.</p>
+<h2 id="handoff">Handoff</h2>
+<p>Passaggio strutturato di output da un agente a un altro. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.</p>
+<h2 id="context">Context</h2>
+<p>Informazioni effettivamente disponibili a un agente durante un task specifico.</p>
+<p>Il contesto puo' includere Agent Card, richiesta utente, file, template, regole di governance, output di altri agenti e conoscenza recuperata dalla knowledge base. Non coincide con la sola Agent Card.</p>
+<h2 id="memoria-permanente">Memoria permanente</h2>
+<p>Conoscenza validata, organizzata e riutilizzabile che sopravvive ai singoli task e ai singoli agenti.</p>
+<h2 id="knowledge-base">Knowledge Base</h2>
+<p>Archivio di conoscenza validata e riutilizzabile: principi, regole, lezioni apprese, template, decisioni.</p>
+<h2 id="knowledge-compiler">Knowledge Compiler</h2>
+<p>Ruolo o agente che trasforma esperienza grezza in conoscenza pulita, sintetica e riutilizzabile.</p>
+<h2 id="human-gate">Human Gate</h2>
+<p>Punto del workflow in cui una persona deve validare, approvare o bloccare il lavoro prima di procedere.</p>
+<h2 id="agent-factory">Agent Factory</h2>
+<p>Sistema capace di creare, configurare, orchestrare e migliorare agenti specializzati in base ai progetti.</p>
+<h2 id="requirement-analyst-agent">Requirement Analyst Agent</h2>
+<p>Agente incaricato di trasformare input progettuali grezzi in requisiti chiari, verificabili e pronti per gli agenti successivi.</p>
+<h2 id="requisito-funzionale">Requisito funzionale</h2>
+<p>Descrive cosa il sistema deve fare.</p>
+<h2 id="requisito-non-funzionale">Requisito non funzionale</h2>
+<p>Descrive come il sistema deve comportarsi, per esempio sicurezza, performance, tracciabilita', usabilita' o affidabilita'.</p>
+<h2 id="scope">Scope</h2>
+<p>Perimetro di cio' che il progetto include.</p>
+<h2 id="out-of-scope">Out of scope</h2>
+<p>Perimetro di cio' che il progetto non include nella fase corrente.</p>
+<h2 id="n8n">n8n</h2>
+<p>Piattaforma di workflow automation visuale. Permette di collegare trigger, nodi, API, integrazioni, condizioni e azioni. In AgentFactory e' utile come workflow automation layer, non come agente in se'.</p>
+<h2 id="openai-agents-sdk">OpenAI Agents SDK</h2>
+<p>SDK Python per costruire agenti con istruzioni, tool, handoff, guardrail, sessioni, human-in-the-loop e tracing.</p>
+<h2 id="crewai">CrewAI</h2>
+<p>Framework per costruire agenti, crew, task e flows. Utile per ragionare in termini di ruoli e collaborazione tra agenti.</p>
+<h2 id="langgraph">LangGraph</h2>
+<p>Framework/runtime per orchestrare workflow e agenti stateful a grafo, con persistenza, memoria, human-in-the-loop e gestione di flussi complessi.</p>
+<h2 id="openclaw">OpenClaw</h2>
+<p>Runtime open source per assistenti agentici autonomi e persistenti. Utile come caso studio su memoria, skill, autonomia, permessi e rischi di sicurezza.</p>
+  </section>
+</article>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js"></script>
+</body>
+</html>

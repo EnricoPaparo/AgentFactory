@@ -60,5 +60,22 @@ Il percorso parte dalle fondamenta:
 - [x] Roadmap ricostruita come percorso personale da zero a livello avanzato
 - [x] Template minimi iniziali
 - [x] Prime lezioni operative
+- [x] Primo sito statico consultabile in `docs/`
 - [ ] Prima Agent Card
 - [ ] Primo agente reale
+
+## Sito statico
+
+Il manuale e' consultabile anche come sito HTML/CSS statico nella cartella `docs/`.
+
+Per rigenerarlo dai file Markdown:
+
+```text
+node tools/build-site.js
+```
+
+Il file principale e':
+
+```text
+docs/index.html
+```
