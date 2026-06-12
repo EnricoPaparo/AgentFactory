@@ -62,3 +62,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiunta la Lezione 12 su handoff e contratti tra agenti con template e primo handoff verso Architect Agent.
 - Aggiunta la Lezione 13 su Architect Agent e ADR con Agent Card, template e prima decisione architetturale.
 - Aggiunta la Lezione 14 sulla review degli ADR con checklist e prima review dell'output Architect Agent.
+- Aggiunta la Lezione 15 su Developer Agent e Implementation Plan con Agent Card, template e primo piano operativo.

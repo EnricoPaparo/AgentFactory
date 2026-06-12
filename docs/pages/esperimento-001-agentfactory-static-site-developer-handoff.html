@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>001 - Developer Handoff Static Site | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group"><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a><a href="lezione-14.html"><span>14 - Valutare ADR e Architect output</span></a><a href="lezione-15.html"><span>15 - Developer Agent e Implementation Plan</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="architect-agent.html"><span>Architect Agent</span></a><a href="developer-agent.html"><span>Developer Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a><a href="template-architecture-decision-review-checklist.html"><span>Architecture Decision Review Checklist</span></a><a href="template-implementation-plan.html"><span>Implementation Plan Template</span></a></details><details class="nav-group" open><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-architecture-review.html"><span>001 - Review Static Site Architecture ADR</span></a><a aria-current="page" href="esperimento-001-agentfactory-static-site-developer-handoff.html"><span>001 - Developer Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-implementation-plan.html"><span>001 - Static Site Implementation Plan</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Esperimenti</span>
+  </div>
+  <h1>001 - Developer Handoff Static Site</h1>
+  <p class="lead">Primo handoff operativo verso Developer Agent.</p>
+  <div class="source-chip">experiments/001-agentfactory-static-site-developer-handoff.md</div>
+  <section class="markdown-body">
+    <h1 id="developer-handoff-agentfactory-static-site">Developer Handoff - AgentFactory Static Site</h1>
+<h2 id="metadati">Metadati</h2>
+<pre><code>Progetto: AgentFactory Static Site
+Versione handoff: v0.1
+Data: 2026-06-12
+Stato: Validabile</code></pre>
+<h2 id="mittente">Mittente</h2>
+<pre><code>Agente mittente: Architect Agent / Reviewer Agent simulati manualmente
+Responsabilita' del mittente: trasformare ADR e review in un passaggio operativo controllato verso Developer Agent.
+Artefatti prodotti dal mittente:
+- experiments/001-agentfactory-static-site-architecture.md
+- experiments/001-agentfactory-static-site-architecture-review.md</code></pre>
+<h2 id="ricevente">Ricevente</h2>
+<pre><code>Agente ricevente: Developer Agent
+Responsabilita' del ricevente: preparare e poi applicare modifiche controllate al sito statico, rispettando ADR, handoff e privilegi.
+Output atteso dal ricevente: Implementation Plan prima di qualunque modifica operativa.</code></pre>
+<h2 id="artefatti-sorgente">Artefatti sorgente</h2>
+<pre><code>- experiments/001-agentfactory-static-site-requirements.md
+- experiments/001-agentfactory-static-site-architecture.md
+- experiments/001-agentfactory-static-site-architecture-review.md
+- templates/implementation-plan-template.md
+- agents/developer-agent.md</code></pre>
+<h2 id="obiettivo-del-passaggio">Obiettivo del passaggio</h2>
+<pre><code>Preparare il Developer Agent a lavorare sul sito statico AgentFactory senza introdurre framework, dipendenze o modifiche fuori scope.</code></pre>
+<h2 id="contesto-essenziale">Contesto essenziale</h2>
+<pre><code>- Il sito e' statico e generato da Markdown.
+- Il generatore principale e' `tools/build-site.js`.
+- L'output pubblicabile e' in `docs/`.
+- GitHub Pages usa il contenuto statico.
+- L'ADR ha deciso di mantenere il generatore custom nella fase corrente.
+- La review ADR consente di procedere con riserve non bloccanti.</code></pre>
+<h2 id="scope-del-developer-agent">Scope del Developer Agent</h2>
+<pre><code>- Preparare Implementation Plan.
+- Aggiornare sorgenti Markdown quando autorizzato.
+- Aggiornare `tools/build-site.js` quando si aggiungono pagine pubbliche.
+- Rigenerare `docs/` con il comando autorizzato.
+- Verificare home, sidebar e pagine generate.</code></pre>
+<h2 id="out-of-scope">Out of scope</h2>
+<pre><code>- Non introdurre framework.
+- Non installare dipendenze.
+- Non cambiare architettura.
+- Non modificare deploy GitHub Pages.
+- Non cancellare contenuti.
+- Non modificare knowledge base permanente salvo task specifico.
+- Non fare refactor ampi del generatore.</code></pre>
+<h2 id="file-autorizzati-in-lettura">File autorizzati in lettura</h2>
+<pre><code>- MANUAL.md
+- ROADMAP.md
+- GLOSSARY.md
+- agents/
+- lessons/
+- templates/
+- experiments/
+- knowledge-base/
+- tools/build-site.js
+- docs/</code></pre>
+<h2 id="file-autorizzati-in-scrittura-nella-fase-corrente">File autorizzati in scrittura nella fase corrente</h2>
+<pre><code>- agents/developer-agent.md
+- templates/implementation-plan-template.md
+- experiments/001-agentfactory-static-site-implementation-plan.md
+- MANUAL.md
+- ROADMAP.md
+- GLOSSARY.md
+- CHANGELOG.md
+- tools/build-site.js
+- docs/</code></pre>
+<h2 id="privilegi-consentiti">Privilegi consentiti</h2>
+<pre><code>Lettura: repo e artefatti rilevanti.
+Scrittura: solo file autorizzati dal piano.
+Esecuzione comandi: `node tools/build-site.js`, `git diff --check`, controlli di lettura/diff.
+Accesso esterno: no.
+Installazione dipendenze: no.
+Deploy: no.</code></pre>
+<h2 id="condizioni-di-stop">Condizioni di stop</h2>
+<pre><code>- Serve installare una dipendenza.
+- Serve cambiare framework o architettura.
+- Serve modificare configurazione GitHub Pages.
+- Serve cancellare file.
+- Il build statico fallisce.
+- Il task richiede file non autorizzati.
+- Emergono conflitti con modifiche non previste.</code></pre>
+<h2 id="output-atteso">Output atteso</h2>
+<pre><code>Formato: Markdown
+Percorso output: experiments/001-agentfactory-static-site-implementation-plan.md
+Sezioni obbligatorie:
+- obiettivo;
+- scope;
+- file autorizzati;
+- piano step-by-step;
+- comandi consentiti;
+- verifiche;
+- rischi;
+- condizioni di stop;
+- handoff successivo.</code></pre>
+<h2 id="handoff-successivo-previsto">Handoff successivo previsto</h2>
+<pre><code>Prossimo agente: Tester Agent / Reviewer Agent
+Output da passare: Implementation Plan e, quando ci saranno modifiche operative, diff + report verifiche.
+Condizioni per procedere: piano coerente con ADR e nessun gate bloccante.</code></pre>
+<h2 id="note-candidate-per-knowledge-compiler">Note candidate per Knowledge Compiler</h2>
+<pre><code>- Un Developer Agent deve ricevere file autorizzati in lettura e scrittura.
+- L'Implementation Plan deve precedere modifiche operative.
+- Il Developer Agent non deve cambiare architettura implicitamente.
+- Installazioni, deploy e cancellazioni sono human gate.</code></pre>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

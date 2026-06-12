@@ -35,6 +35,7 @@ Una Agent Factory e' un sistema capace di:
 - [12 - Handoff e contratti tra agenti](lessons/12-handoff-e-contratti-tra-agenti.md)
 - [13 - Architect Agent e Architecture Decision Record](lessons/13-architect-agent-e-architecture-decision-record.md)
 - [14 - Valutare un ADR e l'output dell'Architect Agent](lessons/14-valutare-adr-e-output-architect-agent.md)
+- [15 - Developer Agent e Implementation Plan](lessons/15-developer-agent-e-implementation-plan.md)
 
 ## Regola di ogni lezione
 

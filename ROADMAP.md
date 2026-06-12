@@ -94,11 +94,11 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 ## Livello 5 - Responsabilita', privilegi e governance
 
-- [ ] Separare responsabilita' tra agenti
-- [ ] Separare privilegi tra agenti
-- [ ] Tool consentiti e tool vietati
-- [ ] Lettura, scrittura, esecuzione, deploy
-- [ ] Gate umani
+- [x] Separare responsabilita' tra agenti
+- [x] Separare privilegi tra agenti
+- [x] Tool consentiti e tool vietati
+- [x] Lettura, scrittura, esecuzione, deploy
+- [x] Gate umani
 - [ ] Audit trail
 - [ ] Errori, rollback e recovery
 
@@ -128,7 +128,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Requirement Analyst Agent
 - [ ] Context Builder Agent
 - [x] Architect Agent
-- [ ] Developer Agent
+- [x] Developer Agent
 - [ ] Tester Agent
 - [ ] Reviewer Agent
 - [ ] Documentation Agent

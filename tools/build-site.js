@@ -140,6 +140,13 @@ const sources = [
     summary: "Come valutare un ADR e decidere se abilita il prossimo agente.",
   },
   {
+    title: "15 - Developer Agent e Implementation Plan",
+    file: "lessons/15-developer-agent-e-implementation-plan.md",
+    slug: "lezione-15",
+    group: "Lezioni",
+    summary: "Come governare il primo agente che potra' modificare file e codice.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -152,6 +159,13 @@ const sources = [
     slug: "architect-agent",
     group: "Agenti",
     summary: "Agent Card del ruolo che trasforma requisiti e handoff in decisioni architetturali.",
+  },
+  {
+    title: "Developer Agent",
+    file: "agents/developer-agent.md",
+    slug: "developer-agent",
+    group: "Agenti",
+    summary: "Agent Card del ruolo che implementa modifiche controllate da un piano approvato.",
   },
   {
     title: "Requirement Analysis Output Template",
@@ -196,6 +210,13 @@ const sources = [
     summary: "Checklist per valutare ADR prodotti manualmente o da Architect Agent.",
   },
   {
+    title: "Implementation Plan Template",
+    file: "templates/implementation-plan-template.md",
+    slug: "template-implementation-plan",
+    group: "Template",
+    summary: "Template per pianificare modifiche tecniche prima dell'implementazione.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -236,6 +257,20 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-architecture-review",
     group: "Esperimenti",
     summary: "Prima review strutturata di un ADR prodotto da Architect Agent.",
+  },
+  {
+    title: "001 - Developer Handoff Static Site",
+    file: "experiments/001-agentfactory-static-site-developer-handoff.md",
+    slug: "esperimento-001-agentfactory-static-site-developer-handoff",
+    group: "Esperimenti",
+    summary: "Primo handoff operativo verso Developer Agent.",
+  },
+  {
+    title: "001 - Static Site Implementation Plan",
+    file: "experiments/001-agentfactory-static-site-implementation-plan.md",
+    slug: "esperimento-001-agentfactory-static-site-implementation-plan",
+    group: "Esperimenti",
+    summary: "Primo piano operativo per modifiche controllate al sito statico.",
   },
   {
     title: "Requirement Analysis Rules",

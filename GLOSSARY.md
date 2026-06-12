@@ -128,6 +128,10 @@ Agente incaricato di trasformare input progettuali grezzi in requisiti chiari, v
 
 Agente incaricato di trasformare requisiti, vincoli e handoff in decisioni architetturali motivate, senza scrivere codice nella fase di progettazione.
 
+## Developer Agent
+
+Agente incaricato di trasformare un piano approvato in modifiche tecniche controllate, rispettando file autorizzati, comandi consentiti, condizioni di stop e verifiche.
+
 ## Requirement Analysis Document
 
 Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e handoff per gli agenti successivi.
@@ -139,6 +143,10 @@ Documento che registra una decisione architetturale: contesto, problema, decisio
 ## Architecture Review
 
 Valutazione strutturata di un Architecture Decision Record. Controlla template, fonti, handoff, decisione, motivazione, alternative, trade-off, rischi, condizioni di revisione e utilita' per gli agenti successivi.
+
+## Implementation Plan
+
+Piano operativo che traduce requisiti, ADR e handoff in passi tecnici verificabili: file autorizzati, modifiche previste, comandi consentiti, rischi, condizioni di stop e verifiche.
 
 ## Trade-off
 
