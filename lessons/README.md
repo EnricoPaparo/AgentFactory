@@ -11,6 +11,7 @@ Questa cartella contiene il percorso progressivo del manuale.
 - [04 - Progettare un agente con una Agent Card](04-progettare-un-agente-con-agent-card.md)
 - [05 - Prima Agent Card: Requirement Analyst Agent](05-prima-agent-card-requirement-analyst.md)
 - [06 - Strumenti reali: n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw](06-strumenti-reali-agentici-automazione.md)
+- [07 - Template di output: Requirement Analysis Document](07-template-output-requirement-analysis.md)
 
 ## Regola
 

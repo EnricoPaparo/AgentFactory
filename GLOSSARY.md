@@ -14,6 +14,10 @@ Output concreto e verificabile prodotto durante il lavoro. Esempi: lezione, repo
 
 Modello riutilizzabile per produrre sempre lo stesso tipo di artefatto con una struttura coerente.
 
+## Output contract
+
+Accordo sulla forma dell'output prodotto da un agente. Definisce sezioni, ordine, contenuto atteso e criteri minimi, cosi' gli agenti successivi possono usare l'artefatto senza reinterpretarlo da zero.
+
 ## Agent Card
 
 Scheda tecnica di un agente. Descrive missione, input, output, tool, regole, limiti, criteri di qualita' e punti in cui deve chiedere conferma.
@@ -91,6 +95,14 @@ Sistema capace di creare, configurare, orchestrare e migliorare agenti specializ
 ## Requirement Analyst Agent
 
 Agente incaricato di trasformare input progettuali grezzi in requisiti chiari, verificabili e pronti per gli agenti successivi.
+
+## Requirement Analysis Document
+
+Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e handoff per gli agenti successivi.
+
+## Criterio di accettazione
+
+Condizione verificabile che permette di stabilire se un requisito e' stato soddisfatto.
 
 ## Requisito funzionale
 

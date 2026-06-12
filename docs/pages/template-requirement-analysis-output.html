@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Requirement Analysis Output Template | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark">AF</span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group"><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group" open><summary>Template</summary><a aria-current="page" href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-kicker">Template</div>
+  <h1>Requirement Analysis Output Template</h1>
+  <p class="lead">Template ufficiale dell'artefatto prodotto dal Requirement Analyst Agent.</p>
+  <div class="source-chip">templates/requirement-analysis-output-template.md</div>
+  <section class="markdown-body">
+    <h1 id="requirement-analysis-document-template">Requirement Analysis Document Template</h1>
+<p>Usare questo template per trasformare un brief grezzo in un documento requisiti chiaro, verificabile e pronto per gli agenti successivi.</p>
+<h2 id="metadati">Metadati</h2>
+<pre><code>Progetto: [Nome progetto]
+Versione documento: v0.1
+Data: [YYYY-MM-DD]
+Autore/Agente: Requirement Analyst Agent
+Stato: [Bozza / Da validare / Validato / Da rivedere]
+Fonte input: [Brief / email / meeting notes / issue / altro]</code></pre>
+<h2 id="sintesi-progetto">Sintesi progetto</h2>
+<pre><code>[Descrivere in 3-6 righe cosa si vuole costruire o risolvere.]</code></pre>
+<h2 id="obiettivo-di-business">Obiettivo di business</h2>
+<pre><code>[Descrivere perche' il progetto esiste e quale risultato concreto deve abilitare.]</code></pre>
+<h2 id="fatti-certi">Fatti certi</h2>
+<pre><code>- [Informazione dichiarata esplicitamente nell'input]
+- [Informazione dichiarata esplicitamente nell'input]</code></pre>
+<h2 id="ipotesi">Ipotesi</h2>
+<pre><code>- [Deduzione ragionevole ma non confermata]
+- [Deduzione ragionevole ma non confermata]</code></pre>
+<h2 id="domande-aperte">Domande aperte</h2>
+<pre><code>- [Domanda che richiede chiarimento umano]
+- [Domanda che richiede chiarimento umano]</code></pre>
+<h2 id="attori-e-stakeholder">Attori e stakeholder</h2>
+<pre><code>- [Attore/stakeholder]: [ruolo, bisogno, responsabilita']</code></pre>
+<h2 id="scope">Scope</h2>
+<pre><code>- [Cosa rientra nella fase corrente]
+- [Cosa rientra nella fase corrente]</code></pre>
+<h2 id="out-of-scope">Out of scope</h2>
+<pre><code>- [Cosa non rientra nella fase corrente]
+- [Cosa non rientra nella fase corrente]</code></pre>
+<h2 id="requisiti-funzionali">Requisiti funzionali</h2>
+<pre><code>RF-001 - [Il sistema deve...]
+Motivazione: [Perche' serve]
+Criterio di accettazione: [Come verificare che sia soddisfatto]
+
+RF-002 - [Il sistema deve...]
+Motivazione: [Perche' serve]
+Criterio di accettazione: [Come verificare che sia soddisfatto]</code></pre>
+<h2 id="requisiti-non-funzionali">Requisiti non funzionali</h2>
+<pre><code>RNF-001 - [Performance / sicurezza / usabilita' / tracciabilita' / accessibilita' / manutenibilita']
+Motivazione: [Perche' serve]
+Criterio di accettazione: [Come verificare che sia soddisfatto]
+
+RNF-002 - [Performance / sicurezza / usabilita' / tracciabilita' / accessibilita' / manutenibilita']
+Motivazione: [Perche' serve]
+Criterio di accettazione: [Come verificare che sia soddisfatto]</code></pre>
+<h2 id="vincoli">Vincoli</h2>
+<pre><code>- [Vincolo tecnico]
+- [Vincolo economico]
+- [Vincolo temporale]
+- [Vincolo legale/compliance]
+- [Vincolo organizzativo]</code></pre>
+<h2 id="rischi">Rischi</h2>
+<pre><code>- Rischio: [Descrizione]
+  Impatto: [Basso / Medio / Alto]
+  Probabilita': [Bassa / Media / Alta]
+  Mitigazione: [Azione o controllo]</code></pre>
+<h2 id="criteri-di-accettazione-generali">Criteri di accettazione generali</h2>
+<pre><code>- [Condizione generale per considerare l'output/progetto accettabile]
+- [Condizione generale per considerare l'output/progetto accettabile]</code></pre>
+<h2 id="punti-di-validazione-umana">Punti di validazione umana</h2>
+<pre><code>- [Decisione o chiarimento che richiede approvazione umana]
+- [Decisione o chiarimento che richiede approvazione umana]</code></pre>
+<h2 id="handoff-per-architect-agent">Handoff per Architect Agent</h2>
+<pre><code>- [Informazione utile per progettare architettura]
+- [Vincolo da rispettare]
+- [Decisione ancora aperta]</code></pre>
+<h2 id="handoff-per-developer-agent">Handoff per Developer Agent</h2>
+<pre><code>- [Funzionalita' da implementare]
+- [Vincolo pratico]
+- [Output atteso]</code></pre>
+<h2 id="handoff-per-tester-agent">Handoff per Tester Agent</h2>
+<pre><code>- [Criterio da testare]
+- [Scenario da verificare]
+- [Rischio da coprire]</code></pre>
+<h2 id="handoff-per-reviewer-agent">Handoff per Reviewer Agent</h2>
+<pre><code>- [Aspetto da controllare]
+- [Ambiguita' da verificare]
+- [Rischio di qualita']</code></pre>
+<h2 id="note-candidate-per-knowledge-compiler">Note candidate per Knowledge Compiler</h2>
+<pre><code>- [Lezione appresa potenzialmente riutilizzabile]
+- [Regola o pattern da valutare]
+- [Errore ricorrente da evitare]</code></pre>
+<h2 id="stato-finale-dell-analisi">Stato finale dell'analisi</h2>
+<pre><code>[Pronto per validazione umana / Bloccato da domande aperte / Pronto per Architect Agent / Da rivedere]</code></pre>
+  </section>
+</article>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js"></script>
+</body>
+</html>

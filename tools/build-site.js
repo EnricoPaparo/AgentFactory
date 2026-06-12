@@ -80,11 +80,25 @@ const sources = [
     summary: "n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw nel percorso.",
   },
   {
+    title: "07 - Template di output: Requirement Analysis Document",
+    file: "lessons/07-template-output-requirement-analysis.md",
+    slug: "lezione-07",
+    group: "Lezioni",
+    summary: "Output contract, requisiti verificabili, criteri di accettazione e handoff.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
     group: "Agenti",
     summary: "Prima Agent Card reale tracciata nel repository.",
+  },
+  {
+    title: "Requirement Analysis Output Template",
+    file: "templates/requirement-analysis-output-template.md",
+    slug: "template-requirement-analysis-output",
+    group: "Template",
+    summary: "Template ufficiale dell'artefatto prodotto dal Requirement Analyst Agent.",
   },
 ];
 

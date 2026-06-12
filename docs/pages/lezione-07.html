@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 - Template di output: Requirement Analysis Document | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark">AF</span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a aria-current="page" href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-kicker">Lezioni</div>
+  <h1>07 - Template di output: Requirement Analysis Document</h1>
+  <p class="lead">Output contract, requisiti verificabili, criteri di accettazione e handoff.</p>
+  <div class="source-chip">lessons/07-template-output-requirement-analysis.md</div>
+  <section class="markdown-body">
+    <h1 id="07-template-di-output-requirement-analysis-document">07 - Template di output: Requirement Analysis Document</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a costruire il primo template di output reale del percorso AgentFactory.</p>
+<p>Il template si chiama:</p>
+<pre><code>Requirement Analysis Document</code></pre>
+<p>Serve al Requirement Analyst Agent per trasformare un brief grezzo in un documento requisiti ordinato, verificabile e pronto per gli agenti successivi.</p>
+<p>Fino ad ora ho creato:</p>
+<ul><li>una roadmap;</li><li>una definizione di agente;</li><li>una distinzione tra automazione, workflow e agente;</li><li>una Agent Card;</li><li>una mappa degli strumenti reali.</li></ul>
+<p>Ora devo fare un passo molto importante:</p>
+<pre><code>passare dalla progettazione dell'agente alla progettazione del suo output.</code></pre>
+<p>Un agente senza output ben strutturato e' difficile da valutare.</p>
+<p>Un agente difficile da valutare e' difficile da migliorare.</p>
+<p>Un agente difficile da migliorare non puo' diventare parte seria di una Agent Factory.</p>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Quando si lavora con AI Agent, il rischio non e' solo ottenere una risposta sbagliata.</p>
+<p>Il rischio piu' sottile e' ottenere una risposta che sembra buona, ma che non e' controllabile.</p>
+<p>Esempio:</p>
+<pre><code>Ho capito il progetto. Bisogna creare una piattaforma moderna, scalabile, intuitiva e sicura.</code></pre>
+<p>Questa frase suona bene.</p>
+<p>Ma non basta.</p>
+<p>Non dice:</p>
+<ul><li>quali fatti sono certi;</li><li>quali parti sono ipotesi;</li><li>quali informazioni mancano;</li><li>quali requisiti sono funzionali;</li><li>quali requisiti sono non funzionali;</li><li>cosa e' dentro lo scope;</li><li>cosa e' fuori dallo scope;</li><li>quali criteri permettono di dire che il lavoro e' fatto bene;</li><li>cosa deve ricevere l'agente successivo.</li></ul>
+<p>Un output professionale deve essere leggibile da una persona, ma anche utilizzabile da una pipeline.</p>
+<p>Questa e' una differenza enorme.</p>
+<p>Un documento scritto per &quot;fare bella figura&quot; puo' essere discorsivo.</p>
+<p>Un artefatto scritto per una Agent Factory deve essere:</p>
+<ul><li>strutturato;</li><li>verificabile;</li><li>versionabile;</li><li>riutilizzabile;</li><li>adatto al passaggio tra agenti.</li></ul>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere chiari:</p>
+<ul><li>che cos'e' un artefatto;</li><li>che cos'e' un template;</li><li>cosa fa il Requirement Analyst Agent;</li><li>differenza tra fatti, ipotesi e domande aperte;</li><li>differenza tra requisiti funzionali e non funzionali;</li><li>concetto di handoff;</li><li>concetto di human gate.</li></ul>
+<h2 id="il-problema-output-libero-contro-output-contrattualizzato">Il problema: output libero contro output contrattualizzato</h2>
+<p>Un modello AI e' molto bravo a generare testo libero.</p>
+<p>Ma il testo libero e' fragile quando deve entrare in una pipeline.</p>
+<p>Perche'?</p>
+<p>Perche' ogni volta potrebbe cambiare forma.</p>
+<p>Oggi l'agente scrive:</p>
+<pre><code>Requisiti principali</code></pre>
+<p>Domani scrive:</p>
+<pre><code>Funzionalita' richieste</code></pre>
+<p>Un altro giorno scrive:</p>
+<pre><code>Cosa deve fare il sistema</code></pre>
+<p>Per una persona sono tre frasi simili.</p>
+<p>Per una pipeline sono tre strutture diverse.</p>
+<p>Questo crea problemi.</p>
+<p>Un agente successivo, per esempio l'Architect Agent, deve sapere dove trovare:</p>
+<ul><li>obiettivo di business;</li><li>vincoli;</li><li>requisiti;</li><li>rischi;</li><li>domande aperte;</li><li>decisioni in attesa.</li></ul>
+<p>Se ogni output cambia forma, ogni agente successivo deve reinterpretare tutto da capo.</p>
+<p>Questo aumenta:</p>
+<ul><li>rumore;</li><li>ambiguita';</li><li>errori;</li><li>costo in token;</li><li>rischio di perdere informazioni importanti.</li></ul>
+<h2 id="che-cos-e-un-output-contract">Che cos'e' un output contract</h2>
+<p>Un output contract e' un accordo sulla forma dell'output.</p>
+<p>Non dice solo:</p>
+<pre><code>scrivi un buon documento requisiti.</code></pre>
+<p>Dice:</p>
+<pre><code>il documento deve avere queste sezioni, in questo ordine, con questo tipo di contenuto.</code></pre>
+<p>Un output contract rende l'agente piu' controllabile.</p>
+<p>Esempio:</p>
+<pre><code>Il Requirement Analyst Agent deve sempre produrre:
+
+1. metadati;
+2. sintesi progetto;
+3. obiettivo di business;
+4. fatti certi;
+5. ipotesi;
+6. domande aperte;
+7. attori e stakeholder;
+8. scope;
+9. out of scope;
+10. requisiti funzionali;
+11. requisiti non funzionali;
+12. vincoli;
+13. rischi;
+14. criteri di accettazione;
+15. punti di validazione umana;
+16. handoff per agenti successivi;
+17. note per Knowledge Compiler.</code></pre>
+<p>Questa lista non e' burocrazia.</p>
+<p>E' architettura.</p>
+<p>Sto creando una forma stabile che altri agenti potranno leggere.</p>
+<h2 id="differenza-tra-template-e-output-finale">Differenza tra template e output finale</h2>
+<p>Il template e' lo stampo.</p>
+<p>L'output finale e' il documento compilato.</p>
+<p>Esempio:</p>
+<pre><code>Template:
+## Obiettivo di business
+[Descrivere perche' il progetto esiste]
+
+Output:
+## Obiettivo di business
+Ridurre il tempo di gestione delle richieste clienti da email non strutturate a ticket ordinati.</code></pre>
+<p>Il template non deve essere perfetto per sempre.</p>
+<p>Deve essere abbastanza buono per iniziare, essere usato, essere valutato e poi migliorato.</p>
+<p>Questa e' una regola fondamentale di AgentFactory:</p>
+<pre><code>prima creo un artefatto semplice e tracciabile;
+poi lo uso;
+poi misuro dove fallisce;
+poi lo miglioro.</code></pre>
+<h2 id="perche-il-requirement-analyst-agent-viene-prima-degli-altri">Perche' il Requirement Analyst Agent viene prima degli altri</h2>
+<p>In una pipeline multi-agent, l'analisi requisiti e' il primo filtro serio.</p>
+<p>Se questa fase e' debole, tutto il resto diventa fragile.</p>
+<p>Un Developer Agent puo' scrivere codice.</p>
+<p>Ma se i requisiti sono ambigui, scrivera' codice coerente con una interpretazione sbagliata.</p>
+<p>Un Tester Agent puo' scrivere test.</p>
+<p>Ma se non ci sono criteri di accettazione, testera' cio' che immagina, non cio' che e' stato richiesto.</p>
+<p>Un Architect Agent puo' proporre architettura.</p>
+<p>Ma se i vincoli non sono chiari, rischia di scegliere soluzioni premature.</p>
+<p>Quindi il Requirement Analyst Agent serve a proteggere tutta la pipeline.</p>
+<h2 id="mappa-del-flusso">Mappa del flusso</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+  B[Brief grezzo] --&gt; RA[Requirement Analyst Agent]
+  T[Template output] --&gt; RA
+  AC[Agent Card] --&gt; RA
+  RA --&gt; D[Requirement Analysis Document]
+  D --&gt; H{Human Gate}
+  H --&gt;|Validato| A[Architect Agent]
+  H --&gt;|Da chiarire| Q[Domande al committente]
+  D --&gt; KC[Knowledge Compiler: note candidate]</div></div>
+<p>In questo schema ci sono tre elementi importanti:</p>
+<ul><li>l'Agent Card dice chi e' l'agente e cosa puo' fare;</li><li>il template dice come deve essere fatto l'output;</li><li>il documento finale diventa input per altri agenti.</li></ul>
+<h2 id="anatomia-del-requirement-analysis-document">Anatomia del Requirement Analysis Document</h2>
+<p>Il template creato in questa lezione vive qui:</p>
+<pre><code>templates/requirement-analysis-output-template.md</code></pre>
+<p>Le sezioni principali sono:</p>
+<div class="table-wrap"><table><thead><tr><th>Sezione</th><th>A cosa serve</th><th>Perche' e' importante</th></tr></thead><tbody><tr><td>Metadati</td><td>Identificare progetto, versione, autore e stato</td><td>Rende il documento tracciabile</td></tr><tr><td>Sintesi progetto</td><td>Spiegare il progetto in poche righe</td><td>Aiuta lettura rapida e handoff</td></tr><tr><td>Obiettivo di business</td><td>Chiarire il perche' del progetto</td><td>Evita soluzioni tecniche senza scopo</td></tr><tr><td>Fatti certi</td><td>Separare cio' che e' dichiarato</td><td>Riduce invenzioni dell'agente</td></tr><tr><td>Ipotesi</td><td>Dichiarare deduzioni non confermate</td><td>Evita di trattare ipotesi come verita'</td></tr><tr><td>Domande aperte</td><td>Evidenziare cosa manca</td><td>Prepara human gate e chiarimenti</td></tr><tr><td>Attori e stakeholder</td><td>Capire chi usa o influenza il sistema</td><td>Migliora requisiti e priorita'</td></tr><tr><td>Scope</td><td>Definire cosa entra nella fase corrente</td><td>Riduce espansione incontrollata</td></tr><tr><td>Out of scope</td><td>Definire cosa resta fuori</td><td>Protegge tempi, costi e focus</td></tr><tr><td>Requisiti funzionali</td><td>Descrivere cosa deve fare il sistema</td><td>Base per sviluppo e test</td></tr><tr><td>Requisiti non funzionali</td><td>Descrivere qualita' e vincoli di comportamento</td><td>Base per architettura e governance</td></tr><tr><td>Vincoli</td><td>Esplicitare limiti tecnici, legali o organizzativi</td><td>Evita decisioni incompatibili</td></tr><tr><td>Rischi</td><td>Anticipare problemi</td><td>Aiuta priorita' e controllo</td></tr><tr><td>Criteri di accettazione</td><td>Dire come verificare il risultato</td><td>Collega requisiti e test</td></tr><tr><td>Human gate</td><td>Stabilire cosa deve approvare una persona</td><td>Evita automazione cieca</td></tr><tr><td>Handoff</td><td>Preparare input per agenti successivi</td><td>Riduce perdita di contesto</td></tr><tr><td>Note Knowledge Compiler</td><td>Proporre conoscenza da assorbire</td><td>Alimenta miglioramento nel tempo</td></tr></tbody></table></div>
+<h2 id="fatti-ipotesi-e-domande-aperte">Fatti, ipotesi e domande aperte</h2>
+<p>Queste tre sezioni sono fondamentali.</p>
+<p>Molti errori nei sistemi agentici nascono da qui.</p>
+<h3 id="fatti-certi">Fatti certi</h3>
+<p>Un fatto certo e' qualcosa che compare chiaramente nell'input.</p>
+<p>Esempio:</p>
+<pre><code>Il cliente vuole un sito statico consultabile.</code></pre>
+<p>Se questa informazione e' nel brief, posso trattarla come fatto.</p>
+<h3 id="ipotesi">Ipotesi</h3>
+<p>Un'ipotesi e' una deduzione ragionevole ma non confermata.</p>
+<p>Esempio:</p>
+<pre><code>Poiche' il sito deve essere proiettabile, si ipotizza che la leggibilita' su schermo grande sia prioritaria.</code></pre>
+<p>Questa e' utile.</p>
+<p>Ma non devo trattarla come certezza.</p>
+<h3 id="domande-aperte">Domande aperte</h3>
+<p>Una domanda aperta e' un punto che blocca o limita la qualita' del lavoro.</p>
+<p>Esempio:</p>
+<pre><code>Il sito deve essere pubblicato su GitHub Pages, Netlify, Vercel o solo consultato localmente?</code></pre>
+<p>Le domande aperte non sono un fallimento.</p>
+<p>Sono un segnale di professionalita'.</p>
+<p>Un agente bravo non finge certezza quando il brief e' incompleto.</p>
+<h2 id="requisiti-verificabili">Requisiti verificabili</h2>
+<p>Un requisito deve poter essere verificato.</p>
+<p>Requisito debole:</p>
+<pre><code>Il sito deve essere bello.</code></pre>
+<p>Problema:</p>
+<pre><code>&quot;Bello&quot; non e' verificabile.</code></pre>
+<p>Requisito migliore:</p>
+<pre><code>Il sito deve usare una palette dark/cyberpunk, avere navigazione laterale, cards per le lezioni e layout responsive desktop/mobile.</code></pre>
+<p>Questo e' piu' verificabile.</p>
+<p>Non e' ancora perfetto, ma posso controllarlo.</p>
+<h2 id="criteri-di-accettazione">Criteri di accettazione</h2>
+<p>I criteri di accettazione rispondono a questa domanda:</p>
+<pre><code>come capisco che il requisito e' soddisfatto?</code></pre>
+<p>Esempio:</p>
+<pre><code>Requisito:
+La sidebar deve avere sezioni espandibili e richiudibili.
+
+Criterio di accettazione:
+L'utente puo' aprire e chiudere le sezioni Fondazione, Lezioni e Agenti senza ricaricare la pagina.</code></pre>
+<p>Questa struttura aiuta il Tester Agent.</p>
+<p>Infatti il Tester Agent non deve indovinare cosa verificare.</p>
+<p>Riceve criteri gia' collegati ai requisiti.</p>
+<h2 id="handoff-verso-gli-agenti-successivi">Handoff verso gli agenti successivi</h2>
+<p>Il Requirement Analysis Document non e' solo un documento per l'umano.</p>
+<p>E' anche un ponte.</p>
+<p>Deve preparare input per:</p>
+<ul><li>Architect Agent;</li><li>Developer Agent;</li><li>Tester Agent;</li><li>Reviewer Agent;</li><li>Knowledge Compiler.</li></ul>
+<p>Esempio:</p>
+<pre><code>Handoff per Architect Agent:
+- valutare se sito statico semplice basta o se serve framework;
+- considerare GitHub Pages come target naturale;
+- mantenere Markdown come fonte principale.
+
+Handoff per Tester Agent:
+- verificare desktop e mobile;
+- verificare link lezioni;
+- verificare leggibilita' dei diagrammi.</code></pre>
+<p>Questo evita che ogni agente riparta da zero.</p>
+<h2 id="human-gate">Human gate</h2>
+<p>Il Requirement Analyst Agent non deve decidere tutto da solo.</p>
+<p>Deve indicare quali punti richiedono validazione umana.</p>
+<p>Esempio:</p>
+<pre><code>- Confermare target di pubblicazione del sito.
+- Confermare se il manuale deve essere pubblico o privato.
+- Confermare se gli studenti avranno solo lettura o anche accesso al repo.</code></pre>
+<p>In AgentFactory, il human gate non e' un ostacolo.</p>
+<p>E' un dispositivo di sicurezza e qualita'.</p>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Brief grezzo:</p>
+<pre><code>Voglio un sito dark cyberpunk per consultare le lezioni del manuale AgentFactory.</code></pre>
+<p>Output atteso, in forma sintetica:</p>
+<pre><code>Fatto certo:
+- Il sito deve consultare le lezioni AgentFactory.
+- Il design richiesto e' dark/cyberpunk.
+
+Ipotesi:
+- Il sito deve essere statico e semplice da pubblicare.
+
+Domande aperte:
+- Dove verra' pubblicato?
+- Deve avere ricerca?
+- Deve supportare contenuti lunghi e diagrammi?
+
+Requisiti funzionali:
+- Mostrare elenco lezioni.
+- Aprire ogni lezione in pagina dedicata.
+- Avere navigazione laterale.
+
+Requisiti non funzionali:
+- Responsive.
+- Leggibile in proiezione.
+- Design coerente e moderno.</code></pre>
+<p>Questo non e' ancora un documento completo.</p>
+<p>Ma e' gia' molto piu' utile di una risposta libera.</p>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>Brief:</p>
+<pre><code>Un'azienda vuole automatizzare la ricezione di brief cliente, trasformarli in requisiti e generare una prima proposta tecnica con agenti AI.</code></pre>
+<p>Un Requirement Analyst Agent professionale deve produrre almeno:</p>
+<ul><li>obiettivo di business;</li><li>attori coinvolti;</li><li>canali di input;</li><li>requisiti funzionali;</li><li>requisiti non funzionali;</li><li>vincoli su privacy e dati;</li><li>domande aperte su autorizzazioni e fonti;</li><li>rischi legati ad automazione e allucinazione;</li><li>criteri di accettazione;</li><li>handoff verso Architect Agent e Governance Agent.</li></ul>
+<p>Output debole:</p>
+<pre><code>Serve una pipeline AI che riceve brief, capisce requisiti e produce proposta tecnica.</code></pre>
+<p>Output forte:</p>
+<pre><code>Il sistema deve ricevere brief da canali autorizzati, salvarli come artefatti versionati, produrre un documento requisiti con fatti/ipotesi/domande, richiedere validazione umana prima della proposta tecnica e tracciare ogni decisione rilevante.</code></pre>
+<p>La differenza e' enorme.</p>
+<p>Nel secondo caso posso progettare, testare e governare.</p>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-scrivere-documenti-belli-ma-inutilizzabili">Errore 1 - Scrivere documenti belli ma inutilizzabili</h3>
+<p>Errore:</p>
+<pre><code>Produrre una lunga analisi discorsiva senza sezioni stabili.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Gli agenti successivi non sanno dove trovare le informazioni.</code></pre>
+<p>Correzione:</p>
+<pre><code>Usare sempre il template.</code></pre>
+<h3 id="errore-2-mescolare-fatti-e-ipotesi">Errore 2 - Mescolare fatti e ipotesi</h3>
+<p>Errore:</p>
+<pre><code>Il cliente vuole GitHub Pages.</code></pre>
+<p>Quando in realta' il brief dice solo:</p>
+<pre><code>Voglio un sito statico.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>L'agente trasforma una deduzione in una certezza.</code></pre>
+<p>Correzione:</p>
+<pre><code>Scrivere GitHub Pages tra le ipotesi o tra le opzioni, non tra i fatti.</code></pre>
+<h3 id="errore-3-saltare-i-criteri-di-accettazione">Errore 3 - Saltare i criteri di accettazione</h3>
+<p>Errore:</p>
+<pre><code>Elencare requisiti senza spiegare come verificarli.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Il Tester Agent non ha una base chiara.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni requisito importante deve avere almeno un criterio di accettazione.</code></pre>
+<h3 id="errore-4-non-preparare-handoff">Errore 4 - Non preparare handoff</h3>
+<p>Errore:</p>
+<pre><code>Concludere il documento senza indicare cosa devono fare gli agenti successivi.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>La pipeline perde continuita'.</code></pre>
+<p>Correzione:</p>
+<pre><code>Aggiungere sempre handoff specifici.</code></pre>
+<h3 id="errore-5-usare-il-template-come-gabbia">Errore 5 - Usare il template come gabbia</h3>
+<p>Errore:</p>
+<pre><code>Compilare tutte le sezioni anche quando non ci sono informazioni utili.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Il documento si riempie di testo finto.</code></pre>
+<p>Correzione:</p>
+<pre><code>Se una sezione non ha dati, scrivere &quot;Non disponibile nell'input&quot; o &quot;Da chiarire&quot;.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione crea un pezzo reale della futura Agent Factory.</p>
+<p>Il template di output e' un contratto tra:</p>
+<ul><li>utente;</li><li>Requirement Analyst Agent;</li><li>agenti successivi;</li><li>sistema di verifica;</li><li>knowledge base.</li></ul>
+<div class="diagram"><div class="mermaid">flowchart LR
+  U[Utente] --&gt; B[Brief]
+  B --&gt; RA[Requirement Analyst Agent]
+  RA --&gt; R[Requirement Analysis Document]
+  R --&gt; A[Architect Agent]
+  R --&gt; T[Tester Agent]
+  R --&gt; G[Governance]
+  R --&gt; K[Knowledge Compiler]</div></div>
+<p>Questa e' la base per arrivare a pipeline multi-agent reali.</p>
+<p>Non sto solo imparando un concetto.</p>
+<p>Sto costruendo un componente.</p>
+<h2 id="artefatto-prodotto">Artefatto prodotto</h2>
+<p>Questa lezione produce il template:</p>
+<pre><code>templates/requirement-analysis-output-template.md</code></pre>
+<p>Questo template sara' usato nei prossimi esperimenti per far produrre al Requirement Analyst Agent un documento requisiti coerente.</p>
+<h2 id="aggiornamento-della-agent-card">Aggiornamento della Agent Card</h2>
+<p>La Agent Card del Requirement Analyst Agent viene aggiornata concettualmente:</p>
+<pre><code>Output principale:
+Requirement Analysis Document compilato secondo template ufficiale.</code></pre>
+<p>Questo significa che l'agente non deve piu' produrre un generico documento requisiti.</p>
+<p>Deve produrre quel documento, con quella struttura.</p>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Perche' un output libero e' fragile in una pipeline multi-agent?
+2. Che differenza c'e' tra template e output finale?
+3. Che cos'e' un output contract?
+4. Perche' devo separare fatti, ipotesi e domande aperte?
+5. Perche' i criteri di accettazione aiutano il Tester Agent?
+6. Perche' l'handoff e' parte dell'output?
+7. Quando una sezione vuota deve diventare &quot;Da chiarire&quot; invece di essere inventata?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Usare il template con un brief semplice e produrre il primo Requirement Analysis Document manuale.</p>
+<p>Solo dopo avra' senso iniziare ad automatizzare questo passaggio con Python o con un SDK agentico.</p>
+  </section>
+</article>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js"></script>
+</body>
+</html>

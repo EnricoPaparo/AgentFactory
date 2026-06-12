@@ -75,6 +75,9 @@ Documento requisiti in Markdown con sezioni minime:
 - punti di validazione umana;
 - handoff per agenti successivi;
 - note per Knowledge Compiler.
+
+Template ufficiale:
+- `templates/requirement-analysis-output-template.md`
 ```
 
 ## Tool consentiti
@@ -163,7 +166,6 @@ v0.1
 ## Note di miglioramento futuro
 
 ```text
-- aggiungere template output dedicato;
 - aggiungere checklist di validazione;
 - aggiungere esempi di output buono e output debole;
 - collegare l'agente a un primo esperimento API;

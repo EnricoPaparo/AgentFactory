@@ -61,7 +61,8 @@ Il percorso parte dalle fondamenta:
 - [x] Template minimi iniziali
 - [x] Prime lezioni operative
 - [x] Primo sito statico consultabile in `docs/`
-- [ ] Prima Agent Card
+- [x] Prima Agent Card
+- [x] Primo template di output del Requirement Analyst Agent
 - [ ] Primo agente reale
 
 ## Sito statico

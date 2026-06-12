@@ -53,6 +53,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Anatomia di un agente professionale
 - [ ] Artefatti verificabili
 - [ ] Human in the loop
+- [x] Output contract per il primo agente
 
 ## Livello 2 - Progettazione agenti senza codice
 
@@ -62,6 +63,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Criteri di qualita'
 - [x] Quando un agente deve fermarsi
 - [x] Primo Requirement Analyst Agent in Markdown
+- [x] Template di output per Requirement Analysis Document
 
 ## Livello 3 - Context Engineering e memoria
 
@@ -111,7 +113,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [ ] Chiamare un modello via API
 - [ ] Usare un prompt operativo
-- [ ] Usare un template di output
+- [x] Usare un template di output
 - [ ] Salvare un artefatto
 - [ ] Validare l'output
 - [ ] Versionare il risultato
