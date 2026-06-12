@@ -108,6 +108,18 @@ Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotes
 
 Condizione verificabile che permette di stabilire se un requisito e' stato soddisfatto.
 
+## Review
+
+Valutazione strutturata di un artefatto. Deve indicare punti forti, problemi, evidenze, score e azioni correttive.
+
+## Score
+
+Punteggio usato per rendere confrontabile una valutazione. In AgentFactory uno score non basta da solo: deve essere accompagnato da motivazione, evidenza e azione correttiva.
+
+## Finding
+
+Osservazione emersa durante una review. Un finding utile descrive un problema o rischio concreto, ne spiega l'impatto e suggerisce una correzione.
+
 ## Requisito funzionale
 
 Descrive cosa il sistema deve fare.

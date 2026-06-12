@@ -13,6 +13,7 @@ Questa cartella contiene il percorso progressivo del manuale.
 - [06 - Strumenti reali: n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw](06-strumenti-reali-agentici-automazione.md)
 - [07 - Template di output: Requirement Analysis Document](07-template-output-requirement-analysis.md)
 - [08 - Primo Requirement Analysis Document manuale](08-primo-requirement-analysis-manuale.md)
+- [09 - Valutare l'output del Requirement Analyst Agent](09-valutare-output-requirement-analyst.md)
 
 ## Regola
 

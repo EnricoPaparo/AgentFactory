@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 - Valutare l'output del Requirement Analyst Agent | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark">AF</span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a aria-current="page" href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+    <span class="status-pill">ONLINE</span>
+    <span class="status-pill">STATIC</span>
+  </div>
+  <h1>09 - Valutare l'output del Requirement Analyst Agent</h1>
+  <p class="lead">Checklist, score, finding e azioni correttive per valutare un artefatto agentico.</p>
+  <div class="source-chip">lessons/09-valutare-output-requirement-analyst.md</div>
+  <section class="markdown-body">
+    <h1 id="09-valutare-l-output-del-requirement-analyst-agent">09 - Valutare l'output del Requirement Analyst Agent</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a imparare come valutare un Requirement Analysis Document.</p>
+<p>Nella lezione 08 ho prodotto il primo documento requisiti manuale:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements.md</code></pre>
+<p>Ora devo rispondere a una domanda fondamentale:</p>
+<pre><code>come capisco se questo output e' buono?</code></pre>
+<p>Questa domanda e' centrale per tutta AgentFactory.</p>
+<p>Se non so valutare l'output di un agente, non posso:</p>
+<ul><li>migliorare l'agente;</li><li>confrontare due versioni dello stesso agente;</li><li>capire se un template funziona;</li><li>sapere se un modello piu' costoso produce valore reale;</li><li>decidere se l'output puo' passare all'agente successivo;</li><li>assorbire conoscenza utile nella knowledge base.</li></ul>
+<p>Quindi questa lezione introduce una checklist di valutazione.</p>
+<p>La checklist vive qui:</p>
+<pre><code>templates/requirement-analysis-review-checklist.md</code></pre>
+<p>E la prima review reale vive qui:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements-review.md</code></pre>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Un agente AI puo' produrre un output convincente.</p>
+<p>Ma &quot;convincente&quot; non significa &quot;buono&quot;.</p>
+<p>Un documento puo' sembrare professionale perche':</p>
+<ul><li>e' lungo;</li><li>usa parole tecniche;</li><li>ha tante sezioni;</li><li>suona ordinato;</li><li>sembra sicuro.</li></ul>
+<p>Ma puo' comunque essere debole.</p>
+<p>Esempio:</p>
+<pre><code>Il sistema deve essere scalabile, sicuro, moderno e performante.</code></pre>
+<p>Questa frase sembra professionale.</p>
+<p>Ma non dice:</p>
+<ul><li>scalabile quanto?</li><li>sicuro rispetto a quali rischi?</li><li>moderno secondo quali criteri?</li><li>performante con quali soglie?</li><li>chi verifica queste qualita'?</li></ul>
+<p>La valutazione serve a togliere l'illusione.</p>
+<p>Serve a trasformare:</p>
+<pre><code>mi sembra buono</code></pre>
+<p>in:</p>
+<pre><code>e' buono per questi motivi, debole in questi punti, e migliorabile in queste azioni.</code></pre>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere chiari:</p>
+<ul><li>che cos'e' un Requirement Analysis Document;</li><li>che cos'e' un template di output;</li><li>differenza tra fatti, ipotesi e domande aperte;</li><li>requisiti funzionali e non funzionali;</li><li>criteri di accettazione;</li><li>handoff tra agenti;</li><li>human gate;</li><li>concetto di artefatto verificabile.</li></ul>
+<h2 id="la-differenza-tra-leggere-e-valutare">La differenza tra leggere e valutare</h2>
+<p>Leggere un documento significa capirne il contenuto.</p>
+<p>Valutare un documento significa giudicare se puo' svolgere bene il suo ruolo.</p>
+<p>Un Requirement Analysis Document deve servire a:</p>
+<ul><li>chiarire il brief;</li><li>ridurre ambiguita';</li><li>separare fatti e ipotesi;</li><li>rendere i requisiti verificabili;</li><li>preparare sviluppo, test e review;</li><li>evidenziare rischi;</li><li>indicare cosa richiede validazione umana;</li><li>passare contesto utile agli agenti successivi.</li></ul>
+<p>Quindi la domanda non e':</p>
+<pre><code>mi piace questo documento?</code></pre>
+<p>La domanda e':</p>
+<pre><code>questo documento permette alla pipeline di lavorare meglio?</code></pre>
+<h2 id="mappa-della-valutazione">Mappa della valutazione</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+  D[Requirement Analysis Document] --&gt; C[Checklist di valutazione]
+  C --&gt; S[Score]
+  C --&gt; F[Finding]
+  F --&gt; A[Azioni correttive]
+  A --&gt; T[Template migliorato]
+  A --&gt; RA[Agent Card migliorata]
+  A --&gt; K[Knowledge da assorbire]</div></div>
+<p>La valutazione non deve finire in un giudizio generico.</p>
+<p>Deve produrre:</p>
+<ul><li>score;</li><li>punti forti;</li><li>problemi;</li><li>rischi;</li><li>azioni correttive;</li><li>conoscenza riutilizzabile.</li></ul>
+<h2 id="che-cosa-valuta-la-checklist">Che cosa valuta la checklist</h2>
+<p>La checklist valuta dieci aree.</p>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Domanda principale</th><th>Perche' conta</th></tr></thead><tbody><tr><td>Struttura</td><td>Il documento segue il template?</td><td>Riduce variabilita'</td></tr><tr><td>Tracciabilita'</td><td>Si capisce da dove arriva l'input?</td><td>Serve audit e memoria</td></tr><tr><td>Separazione</td><td>Fatti, ipotesi e domande sono distinti?</td><td>Riduce allucinazioni</td></tr><tr><td>Completezza</td><td>Le sezioni essenziali sono presenti?</td><td>Evita buchi nella pipeline</td></tr><tr><td>Verificabilita'</td><td>I requisiti sono testabili?</td><td>Aiuta Tester Agent</td></tr><tr><td>Handoff</td><td>Gli agenti successivi ricevono contesto utile?</td><td>Evita re-interpretazione</td></tr><tr><td>Human gate</td><td>Le decisioni umane sono esplicite?</td><td>Evita autonomia cieca</td></tr><tr><td>Rischi</td><td>I rischi sono concreti e mitigati?</td><td>Aumenta governance</td></tr><tr><td>Sintesi</td><td>Il documento e' leggibile e non ridondante?</td><td>Riduce rumore</td></tr><tr><td>Azionabilita'</td><td>Il documento abilita il prossimo passo?</td><td>Misura utilita' reale</td></tr></tbody></table></div>
+<h2 id="la-scala-di-valutazione">La scala di valutazione</h2>
+<p>Uso una scala semplice da 0 a 3.</p>
+<pre><code>0 = assente o inutilizzabile
+1 = presente ma debole
+2 = buono ma migliorabile
+3 = forte e operativo</code></pre>
+<p>Questa scala e' volutamente semplice.</p>
+<p>Non voglio introdurre metriche finte troppo precise.</p>
+<p>In questa fase mi serve una valutazione leggibile, ripetibile e utile.</p>
+<h2 id="esempio-di-valutazione">Esempio di valutazione</h2>
+<p>Supponiamo che una sezione &quot;Requisiti funzionali&quot; contenga:</p>
+<pre><code>Il sito deve essere bello e facile da usare.</code></pre>
+<p>Valutazione:</p>
+<pre><code>Score verificabilita': 1
+Motivo: il requisito esiste ma non e' abbastanza testabile.
+Azione correttiva: tradurre &quot;bello&quot; e &quot;facile&quot; in criteri osservabili.</code></pre>
+<p>Versione migliorata:</p>
+<pre><code>RF-001 - Il sito deve mostrare le lezioni come cards con titolo, numero e sintesi.
+Criterio di accettazione: la home mostra una card per ogni lezione registrata nel generatore.</code></pre>
+<p>Qui il requisito diventa verificabile.</p>
+<h2 id="perche-lo-score-non-basta">Perche' lo score non basta</h2>
+<p>Lo score e' utile.</p>
+<p>Ma da solo non basta.</p>
+<p>Se scrivo:</p>
+<pre><code>Verificabilita': 2/3</code></pre>
+<p>so che c'e' qualcosa da migliorare.</p>
+<p>Ma non so cosa.</p>
+<p>Quindi ogni valutazione deve includere:</p>
+<ul><li>punteggio;</li><li>motivo;</li><li>evidenza;</li><li>azione correttiva.</li></ul>
+<p>Esempio:</p>
+<pre><code>Area: Human gate
+Score: 2/3
+Motivo: sono presenti punti di validazione, ma non sono classificati per priorita'.
+Evidenza: pubblicazione, ricerca interna e formato futuro sono tutti allo stesso livello.
+Azione: distinguere decisioni bloccanti da decisioni rimandabili.</code></pre>
+<p>Questo e' utile.</p>
+<p>Un agente puo' migliorare da qui.</p>
+<h2 id="valutare-senza-distruggere">Valutare senza distruggere</h2>
+<p>La review non serve a demolire l'output.</p>
+<p>Serve a renderlo migliore.</p>
+<p>Un buon Reviewer Agent non deve essere solo critico.</p>
+<p>Deve essere:</p>
+<ul><li>preciso;</li><li>giusto;</li><li>utile;</li><li>proporzionato;</li><li>orientato al prossimo passo.</li></ul>
+<p>Errore:</p>
+<pre><code>Il documento non e' abbastanza dettagliato.</code></pre>
+<p>Questa critica e' vaga.</p>
+<p>Critica migliore:</p>
+<pre><code>La sezione rischi indica il rischio di pubblicazione futura, ma non chiarisce quali decisioni bloccano il deploy. Aggiungere una distinzione tra rischi immediati e rischi futuri.</code></pre>
+<p>Questa critica aiuta.</p>
+<h2 id="applicazione-al-primo-esperimento">Applicazione al primo esperimento</h2>
+<p>In questa lezione applico la checklist al documento:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements.md</code></pre>
+<p>Il risultato della review e':</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements-review.md</code></pre>
+<p>Questa review e' il primo esempio concreto di valutazione di un artefatto.</p>
+<p>Non e' ancora fatta da un Reviewer Agent automatico.</p>
+<p>E' una review manuale.</p>
+<p>Ma serve a costruire il criterio che poi vorro' automatizzare.</p>
+<h2 id="che-cosa-rende-buona-una-review">Che cosa rende buona una review</h2>
+<p>Una review e' buona se:</p>
+<ul><li>non si limita a dire &quot;bene&quot; o &quot;male&quot;;</li><li>trova problemi reali;</li><li>non inventa problemi inutili;</li><li>distingue errori gravi da miglioramenti futuri;</li><li>propone azioni concrete;</li><li>lascia conoscenza assorbibile;</li><li>aiuta a decidere se procedere o iterare.</li></ul>
+<p>La review e' un artefatto, non un commento volante.</p>
+<p>Questo significa che deve essere versionata.</p>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-valutare-a-sensazione">Errore 1 - Valutare a sensazione</h3>
+<p>Errore:</p>
+<pre><code>Mi sembra fatto bene.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>La sensazione non e' ripetibile e non migliora l'agente.</code></pre>
+<p>Correzione:</p>
+<pre><code>Usare una checklist con aree, punteggi, evidenze e azioni.</code></pre>
+<h3 id="errore-2-dare-solo-un-voto">Errore 2 - Dare solo un voto</h3>
+<p>Errore:</p>
+<pre><code>8/10.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Il voto non spiega cosa migliorare.</code></pre>
+<p>Correzione:</p>
+<pre><code>Aggiungere motivazione, evidenza e azione correttiva.</code></pre>
+<h3 id="errore-3-cercare-perfezione-troppo-presto">Errore 3 - Cercare perfezione troppo presto</h3>
+<p>Errore:</p>
+<pre><code>Il documento non e' perfetto, quindi non va bene.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Nelle prime fasi serve capire se l'output abilita il passo successivo, non se e' definitivo.</code></pre>
+<p>Correzione:</p>
+<pre><code>Distinguere blocchi, miglioramenti necessari e miglioramenti futuri.</code></pre>
+<h3 id="errore-4-ignorare-il-ruolo-dell-artefatto">Errore 4 - Ignorare il ruolo dell'artefatto</h3>
+<p>Errore:</p>
+<pre><code>Valutare il documento come se fosse una presentazione finale.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Un Requirement Analysis Document deve aiutare la pipeline, non fare marketing.</code></pre>
+<p>Correzione:</p>
+<pre><code>Valutare soprattutto utilita', verificabilita' e handoff.</code></pre>
+<h3 id="errore-5-non-trasformare-la-review-in-conoscenza">Errore 5 - Non trasformare la review in conoscenza</h3>
+<p>Errore:</p>
+<pre><code>Correggere il documento e basta.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>La prossima volta l'agente ripetera' lo stesso errore.</code></pre>
+<p>Correzione:</p>
+<pre><code>Estrarre lesson learned, regole e possibili aggiornamenti a template o Agent Card.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione introduce il ciclo minimo di miglioramento:</p>
+<pre><code>output -&gt; review -&gt; azioni -&gt; conoscenza -&gt; agente migliore</code></pre>
+<div class="diagram"><div class="mermaid">flowchart LR
+  O[Output agente] --&gt; R[Review]
+  R --&gt; A[Azioni correttive]
+  A --&gt; T[Template]
+  A --&gt; C[Agent Card]
+  A --&gt; K[Knowledge Base]
+  T --&gt; O2[Output migliore]
+  C --&gt; O2
+  K --&gt; O2</div></div>
+<p>Senza review, AgentFactory resta una catena di generazione testo.</p>
+<p>Con review, diventa un sistema che impara.</p>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>templates/requirement-analysis-review-checklist.md
+experiments/001-agentfactory-static-site-requirements-review.md</code></pre>
+<p>Il primo file e' un template riutilizzabile.</p>
+<p>Il secondo e' la review concreta del primo esperimento.</p>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Perche' non basta leggere un output per valutarlo?
+2. Quali aree valuta la checklist?
+3. Perche' lo score da solo non basta?
+4. Che differenza c'e' tra critica vaga e finding utile?
+5. Quando un documento e' abbastanza buono per passare all'agente successivo?
+6. Perche' la review deve produrre azioni correttive?
+7. Come una review alimenta il miglioramento di AgentFactory?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>La qualita' di un agente si misura dagli artefatti che produce.</li><li>Un output convincente non e' automaticamente un output buono.</li><li>Ogni review deve contenere score, motivazione, evidenza e azione.</li><li>La review deve essere proporzionata al ruolo dell'artefatto.</li><li>Lo scopo non e' perfezione immediata, ma miglioramento tracciabile.</li><li>Le review sono uno dei meccanismi principali con cui una Agent Factory impara.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Usare la review per capire se aggiornare:</p>
+<ul><li>il template di Requirement Analysis Document;</li><li>la Agent Card del Requirement Analyst Agent;</li><li>la roadmap;</li><li>la knowledge base.</li></ul>
+<p>La prossima lezione dovra' introdurre il concetto di knowledge absorption: come trasformare una review in conoscenza permanente.</p>
+  </section>
+</article>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js"></script>
+</body>
+</html>

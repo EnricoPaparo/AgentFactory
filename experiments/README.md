@@ -16,9 +16,10 @@ I primi esperimenti previsti:
 3. [ ] chiamare un modello via API;
 4. [ ] creare il primo agente singolo;
 5. [ ] salvare l'output come artefatto;
-6. [ ] valutare l'output;
+6. [x] valutare l'output;
 7. [ ] assorbire una lesson learned.
 
 ## Esperimenti creati
 
 - [001 - AgentFactory Static Site Requirements](001-agentfactory-static-site-requirements.md)
+- [001 - Review AgentFactory Static Site Requirements](001-agentfactory-static-site-requirements-review.md)

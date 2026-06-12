@@ -55,6 +55,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Human in the loop
 - [x] Output contract per il primo agente
 - [x] Primo Requirement Analysis Document manuale
+- [x] Checklist di valutazione del primo output
 
 ## Livello 2 - Progettazione agenti senza codice
 
@@ -116,7 +117,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Usare un prompt operativo
 - [x] Usare un template di output
 - [x] Salvare un artefatto
-- [ ] Validare l'output
+- [x] Validare l'output
 - [ ] Versionare il risultato
 - [ ] Valutare OpenAI Agents SDK per eseguire il primo agente
 

@@ -64,6 +64,7 @@ Il percorso parte dalle fondamenta:
 - [x] Prima Agent Card
 - [x] Primo template di output del Requirement Analyst Agent
 - [x] Primo Requirement Analysis Document manuale
+- [x] Prima review manuale di un output agentico
 - [ ] Primo agente reale
 
 ## Sito statico

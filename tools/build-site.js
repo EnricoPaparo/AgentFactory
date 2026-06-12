@@ -94,6 +94,13 @@ const sources = [
     summary: "Simulazione manuale del Requirement Analyst Agent su un brief reale.",
   },
   {
+    title: "09 - Valutare l'output del Requirement Analyst Agent",
+    file: "lessons/09-valutare-output-requirement-analyst.md",
+    slug: "lezione-09",
+    group: "Lezioni",
+    summary: "Checklist, score, finding e azioni correttive per valutare un artefatto agentico.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -108,11 +115,25 @@ const sources = [
     summary: "Template ufficiale dell'artefatto prodotto dal Requirement Analyst Agent.",
   },
   {
+    title: "Requirement Analysis Review Checklist",
+    file: "templates/requirement-analysis-review-checklist.md",
+    slug: "template-requirement-analysis-review-checklist",
+    group: "Template",
+    summary: "Checklist per valutare un Requirement Analysis Document.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
     group: "Esperimenti",
     summary: "Primo Requirement Analysis Document compilato manualmente.",
+  },
+  {
+    title: "001 - Review AgentFactory Static Site Requirements",
+    file: "experiments/001-agentfactory-static-site-requirements-review.md",
+    slug: "esperimento-001-agentfactory-static-site-requirements-review",
+    group: "Esperimenti",
+    summary: "Prima review manuale di un Requirement Analysis Document.",
   },
 ];
 

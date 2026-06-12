@@ -29,6 +29,7 @@ Una Agent Factory e' un sistema capace di:
 - [06 - Strumenti reali: n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw](lessons/06-strumenti-reali-agentici-automazione.md)
 - [07 - Template di output: Requirement Analysis Document](lessons/07-template-output-requirement-analysis.md)
 - [08 - Primo Requirement Analysis Document manuale](lessons/08-primo-requirement-analysis-manuale.md)
+- [09 - Valutare l'output del Requirement Analyst Agent](lessons/09-valutare-output-requirement-analyst.md)
 
 ## Regola di ogni lezione
 
