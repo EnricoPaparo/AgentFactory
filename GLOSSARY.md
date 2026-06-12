@@ -42,6 +42,10 @@ Sistema basato su modello AI capace di perseguire un obiettivo usando contesto, 
 
 Richiesta data a un modello AI. Un prompt puo' essere semplice o complesso, ma non e' automaticamente un agente.
 
+## Brief
+
+Input iniziale, spesso incompleto o ambiguo, che descrive cosa si vuole ottenere. Un Requirement Analyst Agent lo trasforma in requisiti, domande aperte e handoff.
+
 ## Automazione
 
 Processo o azione eseguita secondo regole predefinite, senza bisogno di interpretazione o giudizio.

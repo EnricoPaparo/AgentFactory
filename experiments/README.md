@@ -11,9 +11,14 @@ Poi si costruisce il prototipo.
 
 I primi esperimenti previsti:
 
-1. generare un file Markdown da uno script;
-2. chiamare un modello via API;
-3. creare il primo agente singolo;
-4. salvare l'output come artefatto;
-5. valutare l'output;
-6. assorbire una lesson learned.
+1. [x] produrre manualmente il primo Requirement Analysis Document;
+2. [ ] generare un file Markdown da uno script;
+3. [ ] chiamare un modello via API;
+4. [ ] creare il primo agente singolo;
+5. [ ] salvare l'output come artefatto;
+6. [ ] valutare l'output;
+7. [ ] assorbire una lesson learned.
+
+## Esperimenti creati
+
+- [001 - AgentFactory Static Site Requirements](001-agentfactory-static-site-requirements.md)

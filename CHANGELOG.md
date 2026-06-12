@@ -24,8 +24,10 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Lezione 05: prima Agent Card concreta, Requirement Analyst Agent.
 - Lezione 06: mappa degli strumenti reali, inclusi n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw.
 - Lezione 07: template di output del Requirement Analyst Agent.
+- Lezione 08: primo Requirement Analysis Document manuale.
 - Agent Card `agents/requirement-analyst-agent.md`.
 - Template `templates/requirement-analysis-output-template.md`.
+- Esperimento `experiments/001-agentfactory-static-site-requirements.md`.
 - Sito statico iniziale in `docs/`, generato dai Markdown del manuale.
 - Script `tools/build-site.js` per rigenerare le pagine HTML.
 
@@ -44,3 +46,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornato il README con le istruzioni minime del sito statico.
 - Aggiornata la Agent Card del Requirement Analyst Agent con il template ufficiale di output.
 - Aggiornata la roadmap con output contract e Requirement Analysis Document.
+- Aggiornata la roadmap con il primo artefatto requisiti salvato manualmente.

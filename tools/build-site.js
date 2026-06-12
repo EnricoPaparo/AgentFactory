@@ -87,6 +87,13 @@ const sources = [
     summary: "Output contract, requisiti verificabili, criteri di accettazione e handoff.",
   },
   {
+    title: "08 - Primo Requirement Analysis Document manuale",
+    file: "lessons/08-primo-requirement-analysis-manuale.md",
+    slug: "lezione-08",
+    group: "Lezioni",
+    summary: "Simulazione manuale del Requirement Analyst Agent su un brief reale.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -99,6 +106,13 @@ const sources = [
     slug: "template-requirement-analysis-output",
     group: "Template",
     summary: "Template ufficiale dell'artefatto prodotto dal Requirement Analyst Agent.",
+  },
+  {
+    title: "001 - AgentFactory Static Site Requirements",
+    file: "experiments/001-agentfactory-static-site-requirements.md",
+    slug: "esperimento-001-agentfactory-static-site-requirements",
+    group: "Esperimenti",
+    summary: "Primo Requirement Analysis Document compilato manualmente.",
   },
 ];
 

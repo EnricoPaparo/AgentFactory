@@ -54,6 +54,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Artefatti verificabili
 - [ ] Human in the loop
 - [x] Output contract per il primo agente
+- [x] Primo Requirement Analysis Document manuale
 
 ## Livello 2 - Progettazione agenti senza codice
 
@@ -114,7 +115,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Chiamare un modello via API
 - [ ] Usare un prompt operativo
 - [x] Usare un template di output
-- [ ] Salvare un artefatto
+- [x] Salvare un artefatto
 - [ ] Validare l'output
 - [ ] Versionare il risultato
 - [ ] Valutare OpenAI Agents SDK per eseguire il primo agente

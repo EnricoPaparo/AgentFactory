@@ -63,6 +63,7 @@ Il percorso parte dalle fondamenta:
 - [x] Primo sito statico consultabile in `docs/`
 - [x] Prima Agent Card
 - [x] Primo template di output del Requirement Analyst Agent
+- [x] Primo Requirement Analysis Document manuale
 - [ ] Primo agente reale
 
 ## Sito statico
