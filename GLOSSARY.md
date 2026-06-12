@@ -107,3 +107,23 @@ Perimetro di cio' che il progetto include.
 ## Out of scope
 
 Perimetro di cio' che il progetto non include nella fase corrente.
+
+## n8n
+
+Piattaforma di workflow automation visuale. Permette di collegare trigger, nodi, API, integrazioni, condizioni e azioni. In AgentFactory e' utile come workflow automation layer, non come agente in se'.
+
+## OpenAI Agents SDK
+
+SDK Python per costruire agenti con istruzioni, tool, handoff, guardrail, sessioni, human-in-the-loop e tracing.
+
+## CrewAI
+
+Framework per costruire agenti, crew, task e flows. Utile per ragionare in termini di ruoli e collaborazione tra agenti.
+
+## LangGraph
+
+Framework/runtime per orchestrare workflow e agenti stateful a grafo, con persistenza, memoria, human-in-the-loop e gestione di flussi complessi.
+
+## OpenClaw
+
+Runtime open source per assistenti agentici autonomi e persistenti. Utile come caso studio su memoria, skill, autonomia, permessi e rischi di sicurezza.

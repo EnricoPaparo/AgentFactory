@@ -28,6 +28,15 @@ Non si passa al livello successivo finche' non e' chiaro:
 - quale template o regola e' stato aggiunto;
 - quale conoscenza merita di diventare permanente.
 
+## Strumenti reali da studiare
+
+- [x] Mappa iniziale: n8n, OpenAI Agents SDK, CrewAI, LangGraph, OpenClaw
+- [ ] n8n come workflow automation layer
+- [ ] OpenAI Agents SDK per il primo agente reale
+- [ ] CrewAI per crew role/task based
+- [ ] LangGraph per orchestrazione stateful a grafo
+- [ ] OpenClaw come caso studio su autonomia, memoria e governance
+
 ## Livello 0 - Alfabetizzazione operativa
 
 - [ ] Che cos'e' un file Markdown
@@ -75,6 +84,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Planner-executor pattern
 - [ ] Reviewer/Critic pattern
 - [ ] Pipeline multi-agent simulata in Markdown
+- [ ] n8n come esempio di workflow automation visuale
 
 ## Livello 5 - Responsabilita', privilegi e governance
 
@@ -105,6 +115,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Salvare un artefatto
 - [ ] Validare l'output
 - [ ] Versionare il risultato
+- [ ] Valutare OpenAI Agents SDK per eseguire il primo agente
 
 ## Livello 8 - Pipeline multi-agent reale
 
@@ -116,6 +127,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Reviewer Agent
 - [ ] Documentation Agent
 - [ ] Supervisor Agent
+- [ ] Confrontare CrewAI e LangGraph per orchestrazione multi-agent
 
 ## Livello 9 - Agenti che migliorano nel tempo
 

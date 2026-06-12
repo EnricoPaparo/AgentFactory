@@ -22,6 +22,7 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Lezione 03: scelta tra automazione, workflow, agente, pipeline multi-agent e Agent Factory.
 - Lezione 04: progettazione di un agente tramite Agent Card.
 - Lezione 05: prima Agent Card concreta, Requirement Analyst Agent.
+- Lezione 06: mappa degli strumenti reali, inclusi n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw.
 - Agent Card `agents/requirement-analyst-agent.md`.
 
 ### Aggiornato
@@ -34,3 +35,5 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornato il glossario con privilegi, minimo privilegio e criteri di qualita'.
 - Aggiunti diagrammi Mermaid alle prime lezioni per migliorare consultazione web e spiegazione visuale.
 - Aggiornato il glossario con requisiti, scope e Requirement Analyst Agent.
+- Aggiornata la roadmap con gli strumenti reali da studiare nel percorso.
+- Aggiornato il glossario con n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw.

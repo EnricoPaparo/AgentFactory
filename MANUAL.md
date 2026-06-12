@@ -26,6 +26,7 @@ Una Agent Factory e' un sistema capace di:
 - [03 - Quando usare automazione, workflow, agente o Agent Factory](lessons/03-quando-usare-automazione-workflow-agenti.md)
 - [04 - Progettare un agente con una Agent Card](lessons/04-progettare-un-agente-con-agent-card.md)
 - [05 - Prima Agent Card: Requirement Analyst Agent](lessons/05-prima-agent-card-requirement-analyst.md)
+- [06 - Strumenti reali: n8n, OpenAI Agents SDK, CrewAI, LangGraph e OpenClaw](lessons/06-strumenti-reali-agentici-automazione.md)
 
 ## Regola di ogni lezione
 
