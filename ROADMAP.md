@@ -1,68 +1,160 @@
 # Roadmap AgentFactory
 
-Questa roadmap guida il percorso formativo dalla comprensione degli AI Agent fino alla costruzione di una Agent Factory.
+Questa roadmap guida il percorso personale da fondamenta operative a progettazione avanzata di sistemi multi-agent.
 
-## Regola fondamentale
+## Obiettivo finale
 
-Ogni lezione deve essere collegata all'obiettivo finale: costruire una pipeline di agenti AI professionale, governata, replicabile e migliorabile.
+Diventare capace di progettare, costruire e governare una Agent Factory professionale:
 
-## Fase 1 - Fondamenti
+```text
+progetto grezzo
+  -> analisi
+  -> scelta/generazione agenti
+  -> assegnazione contesto
+  -> privilegi e tool
+  -> orchestrazione
+  -> artefatti verificabili
+  -> valutazione
+  -> conoscenza riassorbita
+  -> agenti e template migliorati
+```
 
-- [x] Lezione 1 - Che cos'è un AI Agent
-- [x] Lezione 2 - Requirement Analyst Agent
-- [x] Lezione 3 - Differenza tra agente, workflow e automazione
-- [x] Lezione 4 - Anatomia di un AI Agent Professionale
-- [ ] Lezione 5 - Context Engineering
+## Principio di progressione
 
-## Fase 2 - Progettazione agenti
+Non si passa al livello successivo finche' non e' chiaro:
 
-- [ ] Agent Card
-- [ ] Ruoli, responsabilità e confini
-- [ ] Input, output e artefatti
-- [ ] Regole operative e criteri di qualità
-- [ ] Repository Analyst Agent
+- quale concetto e' stato imparato;
+- quale artefatto e' stato prodotto;
+- quale template o regola e' stato aggiunto;
+- quale conoscenza merita di diventare permanente.
 
-## Fase 3 - Tool e ambiente operativo
+## Livello 0 - Alfabetizzazione operativa
 
-- [ ] Git e repository come memoria di lavoro
-- [ ] Tool use
-- [ ] Dockerfile come fonte di contesto operativo
-- [ ] CI/CD come meccanismo di feedback per gli agenti
-- [ ] MCP e integrazione strumenti
-- [ ] Accesso controllato a file, issue, PR e documentazione
+- [ ] Che cos'e' un file Markdown
+- [ ] Come si struttura una lezione
+- [ ] Che cos'e' un artefatto
+- [ ] Che cos'e' un template
+- [ ] Che cos'e' una Agent Card
+- [ ] Come GitHub diventa memoria versionata
 
-## Fase 4 - Pipeline multi-agent
+## Livello 1 - Fondamenti AI Agent
 
-- [ ] Analista requisiti
-- [ ] Architetto software
-- [ ] Developer agent
-- [ ] Tester agent
-- [ ] Reviewer agent
-- [ ] Documentation agent
-- [ ] Supervisor agent
+- [x] Prompt, assistente e agente
+- [x] Automazione, workflow, agentic workflow e pipeline multi-agent
+- [ ] Anatomia di un agente professionale
+- [ ] Artefatti verificabili
+- [ ] Human in the loop
 
-## Fase 5 - Knowledge Base permanente
+## Livello 2 - Progettazione agenti senza codice
 
-- [ ] Knowledge Librarian
+- [x] Come progettare un agente
+- [x] Agent Card in dettaglio
+- [x] Missione, input, output, tool, regole e limiti
+- [x] Criteri di qualita'
+- [x] Quando un agente deve fermarsi
+- [x] Primo Requirement Analyst Agent in Markdown
+
+## Livello 3 - Context Engineering e memoria
+
+- [ ] Contesto operativo
+- [ ] Storage vs memoria permanente
+- [ ] Working memory
+- [ ] Episodic memory
+- [ ] Semantic memory
+- [ ] Retrieval
+- [ ] Context Builder
+- [ ] Knowledge Base
 - [ ] Knowledge Compiler
-- [ ] Lessons learned
-- [ ] Evoluzione delle regole e dei prompt
-- [ ] Distinzione tra storage, memoria permanente, retrieval e contesto operativo
 
-## Fase 6 - Agent Factory
+## Livello 4 - Workflow e pipeline manuale
 
-- [ ] Generazione agenti temporanei da template
-- [ ] Creazione di contesti ottimizzati per task
-- [ ] Orchestrazione progetto-specifica
-- [ ] Riassorbimento conoscenza validata
-- [ ] Manuale replicabile per studenti e aziende
+- [ ] Handoff tra agenti
+- [ ] Contratti tra agenti
+- [ ] Pipeline sequenziale
+- [ ] Supervisor-worker pattern
+- [ ] Planner-executor pattern
+- [ ] Reviewer/Critic pattern
+- [ ] Pipeline multi-agent simulata in Markdown
 
-## Stato di consolidamento lezioni
+## Livello 5 - Responsabilita', privilegi e governance
 
-| Lezione | Stato | File |
-|---|---|---|
-| 1 - Che cos'è un AI Agent | Consolidata | `lessons/01-fondamenti-ai-agent.md` |
-| 2 - Requirement Analyst Agent | Consolidata | `lessons/02-requirement-analyst-agent.md` |
-| 3 - Differenza tra agente, workflow e automazione | Consolidata | `lessons/03-differenza-agente-workflow-automazione.md` |
-| 4 - Anatomia di un AI Agent Professionale | Consolidata | `lessons/04-anatomia-ai-agent-professionale.md` |
-| 5 - Context Engineering | Pianificata | File non ancora presente |
+- [ ] Separare responsabilita' tra agenti
+- [ ] Separare privilegi tra agenti
+- [ ] Tool consentiti e tool vietati
+- [ ] Lettura, scrittura, esecuzione, deploy
+- [ ] Gate umani
+- [ ] Audit trail
+- [ ] Errori, rollback e recovery
+
+## Livello 6 - Ambiente operativo e Python minimo
+
+- [ ] Terminale essenziale
+- [ ] Git e GitHub
+- [ ] File e cartelle
+- [ ] JSON/YAML
+- [ ] Funzioni Python
+- [ ] Script CLI
+- [ ] Lettura di un repository
+- [ ] Generazione di file Markdown
+
+## Livello 7 - Primo agente reale
+
+- [ ] Chiamare un modello via API
+- [ ] Usare un prompt operativo
+- [ ] Usare un template di output
+- [ ] Salvare un artefatto
+- [ ] Validare l'output
+- [ ] Versionare il risultato
+
+## Livello 8 - Pipeline multi-agent reale
+
+- [ ] Requirement Analyst Agent
+- [ ] Context Builder Agent
+- [ ] Architect Agent
+- [ ] Developer Agent
+- [ ] Tester Agent
+- [ ] Reviewer Agent
+- [ ] Documentation Agent
+- [ ] Supervisor Agent
+
+## Livello 9 - Agenti che migliorano nel tempo
+
+- [ ] Tracce di esecuzione
+- [ ] Valutazione output
+- [ ] Failure analysis
+- [ ] Lesson learned
+- [ ] Knowledge extraction
+- [ ] Knowledge validation
+- [ ] Knowledge absorption
+- [ ] Versioning di Agent Card, prompt e template
+
+## Livello 10 - Agent Factory
+
+- [ ] Generare agenti temporanei da template
+- [ ] Selezionare agenti in base al progetto
+- [ ] Costruire contesti ottimizzati
+- [ ] Orchestrare workflow progetto-specifici
+- [ ] Valutare qualita', costi e rischio
+- [ ] Riassorbire conoscenza validata
+- [ ] Migliorare la factory dopo ogni progetto
+
+## Livello 11 - Professionalizzazione
+
+- [ ] Evals
+- [ ] Metriche di qualita'
+- [ ] Cost engineering
+- [ ] Sicurezza
+- [ ] Permessi
+- [ ] Compliance minima
+- [ ] Portfolio di casi studio
+
+## Livello 12 - Master Project
+
+- [ ] Prendere un progetto reale grezzo
+- [ ] Classificarlo
+- [ ] Generare la pipeline agentica
+- [ ] Eseguire la pipeline
+- [ ] Produrre artefatti
+- [ ] Validare risultati
+- [ ] Riassorbire conoscenza
+- [ ] Aggiornare la Agent Factory

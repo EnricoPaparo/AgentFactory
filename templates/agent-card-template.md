@@ -1,61 +1,91 @@
 # Agent Card Template
 
-Usare questo template per progettare ogni agente della pipeline.
+Usare questo template per progettare un agente prima di scrivere codice.
 
 ## Nome agente
 
-`Nome dell'agente`
+```text
+[Nome]
+```
 
 ## Missione
 
-Descrivere in modo chiaro lo scopo dell'agente.
+```text
+[Scopo dell'agente in una frase chiara]
+```
 
-## Problema che risolve
+## Responsabilita'
 
-Spiegare perché questo agente esiste e quale parte del processo migliora.
+```text
+- [Responsabilita' 1]
+- [Responsabilita' 2]
+- [Responsabilita' 3]
+```
+
+## Cosa non deve fare
+
+```text
+- [Limite 1]
+- [Limite 2]
+```
 
 ## Input
 
-Elencare ciò che l'agente riceve.
+```text
+- [Input 1]
+- [Input 2]
+```
 
-- Brief
-- File
-- Issue
-- Documenti
-- Repository
-- Output di altri agenti
+## Output
 
-## Tool disponibili
+```text
+- [Artefatto prodotto]
+```
 
-Elencare gli strumenti autorizzati.
+## Tool consentiti
 
-- Lettura file
-- Scrittura file
-- Ricerca repository
-- Creazione issue
-- Creazione PR
-- Esecuzione test
+```text
+- [Tool 1]
+- [Tool 2]
+```
 
-## Output atteso
+## Privilegi
 
-Elencare gli artefatti che deve produrre.
+```text
+Lettura: [si/no/dettaglio]
+Scrittura: [si/no/dettaglio]
+Esecuzione comandi: [si/no/dettaglio]
+Accesso esterno: [si/no/dettaglio]
+```
 
 ## Regole operative
 
-Indicare limiti, vincoli e comportamenti obbligatori.
+```text
+1. [Regola]
+2. [Regola]
+3. [Regola]
+```
 
-## Criteri di qualità
+## Quando deve fermarsi
 
-Definire come valutare se l'agente ha lavorato bene.
+```text
+- [Caso in cui serve conferma umana]
+```
 
-## Quando deve chiedere conferma
+## Criteri di qualita'
 
-Specificare i casi in cui l'agente non deve procedere autonomamente.
+```text
+- [Criterio]
+```
 
 ## Rischi
 
-Elencare i rischi principali.
+```text
+- [Rischio]
+```
 
-## Metriche utili
+## Versione
 
-Elencare eventuali metriche o indicatori.
+```text
+v0.1
+```

@@ -1,39 +1,36 @@
 # Changelog
 
-Tutte le modifiche principali al manuale AgentFactory verranno tracciate qui.
+Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 
-## 2026-06-11
+## 2026-06-12
+
+### Cambiato
+
+- Ripulita la struttura del repository.
+- Rimossa la prima versione troppo avanzata e poco graduale delle lezioni.
+- Ricostruita la roadmap come percorso personale da fondamenta operative a Agent Factory.
+- Ridotto il glossario ai concetti minimi necessari per iniziare.
+- Ridotto il manuale a indice e metodo di lavoro.
 
 ### Aggiunto
 
-- Inizializzazione repository AgentFactory.
-- Creazione README principale.
-- Creazione ROADMAP.
-- Creazione MANUAL.
-- Aggiunta Lezione 1: Fondamenti degli AI Agent.
-- Aggiunta Lezione 2: Requirement Analyst Agent.
-- Aggiunta Lezione 3: Differenza tra agente, workflow e automazione.
-- Aggiunta Lezione 4: Anatomia di un AI Agent Professionale.
-- Aggiunti approfondimenti su contesto, memoria permanente e file `.md`.
-- Aggiunti approfondimenti su Dockerfile e CI/CD come fonti operative per agenti che analizzano repository.
-- Aggiunto template Agent Card.
-- Aggiunto template di classificazione processo: `templates/process-classification-template.md`.
-- Aggiunti principi permanenti della knowledge base.
-- Aggiunti principi permanenti su classificazione del task, uso corretto di automazioni, workflow e agenti.
-- Aggiunta governance Human in the Loop.
-- Aggiunto glossario iniziale.
-- Aggiornato glossario con Context, Context Builder, Retrieval, Memoria permanente, Storage, Dockerfile e CI/CD.
-- Aggiornato glossario con Automazione, Workflow e Agentic Workflow.
+- Template minimo per lezioni.
+- Template minimo per artefatti.
+- Template minimo per assorbimento conoscenza.
+- Cartella `experiments/` per le prove reali.
+- Lezione 02: definizione operativa di AI Agent.
+- Lezione 03: scelta tra automazione, workflow, agente, pipeline multi-agent e Agent Factory.
+- Lezione 04: progettazione di un agente tramite Agent Card.
+- Lezione 05: prima Agent Card concreta, Requirement Analyst Agent.
+- Agent Card `agents/requirement-analyst-agent.md`.
 
 ### Aggiornato
 
-- Aggiornato README con stato lezioni più coerente.
-- Aggiornato MANUAL con indice lezioni e nuovi principi su contesto, memoria, classificazione del processo e uso corretto degli agenti.
-- Aggiornato `lessons/README.md` con indice lezioni e stato di consolidamento.
-- Aggiornata ROADMAP per allineare Lezione 2, Lezione 3, Lezione 4, Lezione 5 e i temi emersi su Dockerfile, CI/CD, retrieval, contesto operativo, automazioni e workflow agentici.
-- Aggiornata `knowledge-base/principles.md` con i principi emersi dalla Lezione 3.
-
-### Consolidato
-
-- Lezione 3: Differenza tra agente, workflow e automazione.
-- Regola operativa: prima classificare la natura del task, poi scegliere se usare automazione, workflow, AI Agent, agentic workflow, pipeline multi-agent o Agent Factory.
+- Reso il template lezione piu' dettagliato e adatto a capitoli approfonditi.
+- Ampliata la Lezione 02 con spiegazioni, esempi professionali, anti-pattern e checklist.
+- Integrati nella Lezione 02 i dubbi su fragilita' di un agente singolo nei progetti complessi e sul valore di review/test separati.
+- Integrato nella Lezione 04 il chiarimento su Agent Card, contesto operativo e memoria permanente.
+- Aggiornato il glossario con automazione e workflow.
+- Aggiornato il glossario con privilegi, minimo privilegio e criteri di qualita'.
+- Aggiunti diagrammi Mermaid alle prime lezioni per migliorare consultazione web e spiegazione visuale.
+- Aggiornato il glossario con requisiti, scope e Requirement Analyst Agent.

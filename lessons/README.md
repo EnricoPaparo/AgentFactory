@@ -1,42 +1,23 @@
 # Lezioni
 
-Questa cartella contiene le lezioni progressive del percorso AgentFactory.
+Questa cartella contiene il percorso progressivo del manuale.
 
-Ogni lezione deve avere:
+## Lezioni iniziali
 
-- obiettivo didattico;
-- concetti fondamentali;
-- spiegazione professionale;
-- esempi pratici;
-- collegamento all'obiettivo finale;
-- esercizio operativo;
-- lezioni apprese da assorbire nella knowledge base.
+- [00 - Come usare questo manuale](00-come-usare-questo-manuale.md)
+- [01 - Fondamenta operative](01-fondamenta-operative.md)
+- [02 - Che cos'e' davvero un AI Agent](02-che-cose-un-ai-agent.md)
+- [03 - Quando usare automazione, workflow, agente o Agent Factory](03-quando-usare-automazione-workflow-agenti.md)
+- [04 - Progettare un agente con una Agent Card](04-progettare-un-agente-con-agent-card.md)
+- [05 - Prima Agent Card: Requirement Analyst Agent](05-prima-agent-card-requirement-analyst.md)
 
-## Lezioni disponibili
+## Regola
 
-- [01 - Fondamenti degli AI Agent](01-fondamenti-ai-agent.md)
-- [02 - Requirement Analyst Agent](02-requirement-analyst-agent.md)
-- [03 - Differenza tra agente, workflow e automazione](03-differenza-agente-workflow-automazione.md)
-- [04 - Anatomia di un AI Agent Professionale](04-anatomia-ai-agent-professionale.md)
+Ogni lezione deve produrre qualcosa di utile:
 
-## Nota metodologica
-
-Le lezioni non sono semplici appunti: ogni file deve contribuire alla costruzione progressiva della Agent Factory.
-
-Per questo ogni lezione deve produrre almeno uno dei seguenti elementi:
-
-- un principio operativo;
+- un concetto chiarito;
+- un artefatto;
 - un template;
-- una regola di governance;
-- una distinzione architetturale;
-- una lesson learned da assorbire nella knowledge base permanente;
-- un esercizio pratico utile alla costruzione della pipeline finale.
-
-## Stato consolidamento
-
-| Lezione | Stato | Note |
-|---|---|---|
-| 01 - Fondamenti degli AI Agent | Consolidata | Introduce definizione operativa, livelli di maturità e pipeline mentale iniziale. |
-| 02 - Requirement Analyst Agent | Consolidata | Primo agente operativo della pipeline; produce artefatti di analisi requisiti. |
-| 03 - Differenza tra agente, workflow e automazione | Consolidata | Introduce il criterio decisionale per scegliere tra automazione, workflow, agente, agentic workflow, pipeline multi-agent e Agent Factory. |
-| 04 - Anatomia di un AI Agent Professionale | Consolidata | Introduce goal, context, reasoning, tool, memory, feedback, action, governance e riassorbimento conoscenza. |
+- una regola;
+- una domanda migliore;
+- una conoscenza da assorbire.

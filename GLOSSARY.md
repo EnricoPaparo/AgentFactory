@@ -1,103 +1,109 @@
 # Glossario AgentFactory
 
-## AI Agent
+Glossario minimo. Va esteso solo quando un termine serve davvero al percorso.
 
-Sistema basato su modello linguistico capace di perseguire un obiettivo usando contesto, strumenti, regole e verifiche.
+## Markdown
 
-## LLM
-
-Large Language Model. Modello linguistico usato come motore cognitivo dell'agente.
-
-## Tool
-
-Strumento esterno che l'agente può usare, per esempio file system, GitHub, terminale, browser, database o API.
+Formato di testo semplice usato per scrivere documenti leggibili e versionabili. I file Markdown usano estensione `.md`.
 
 ## Artefatto
 
-Output verificabile prodotto da un agente: documento, issue, pull request, report, test plan, codice o checklist.
+Output concreto e verificabile prodotto durante il lavoro. Esempi: lezione, report, Agent Card, checklist, documento requisiti, test plan, prompt operativo.
+
+## Template
+
+Modello riutilizzabile per produrre sempre lo stesso tipo di artefatto con una struttura coerente.
+
+## Agent Card
+
+Scheda tecnica di un agente. Descrive missione, input, output, tool, regole, limiti, criteri di qualita' e punti in cui deve chiedere conferma.
+
+## Privilegio
+
+Permesso operativo concesso a un agente, per esempio leggere file, scrivere file, eseguire comandi, accedere a servizi esterni o modificare memoria.
+
+## Minimo privilegio necessario
+
+Principio secondo cui un agente deve ricevere solo i permessi indispensabili per svolgere il proprio compito.
+
+## Criterio di qualita'
+
+Regola o condizione usata per valutare se un output o un agente ha lavorato bene.
+
+## AI Agent
+
+Sistema basato su modello AI capace di perseguire un obiettivo usando contesto, strumenti, regole e verifiche.
+
+## Prompt
+
+Richiesta data a un modello AI. Un prompt puo' essere semplice o complesso, ma non e' automaticamente un agente.
 
 ## Automazione
 
-Meccanismo che esegue azioni secondo regole predeterminate, trigger e condizioni note.
-
-È adatta a task ripetitivi, prevedibili e deterministici.
+Processo o azione eseguita secondo regole predefinite, senza bisogno di interpretazione o giudizio.
 
 ## Workflow
 
-Processo composto da step, stati, responsabilità, regole di avanzamento, output intermedi e possibili gate di approvazione.
+Sequenza strutturata di passaggi, stati o approvazioni. Puo' essere tradizionale o includere parti agentiche.
 
-Può essere manuale, automatico, semi-automatico o agentico.
+## Workflow agentico
 
-## Agentic Workflow
-
-Workflow in cui alcuni step sono eseguiti da AI Agent.
-
-Combina processo, agenti, automazioni, tool, output verificabili e Human in the Loop.
+Sequenza di passaggi in cui uno o piu' agenti lavorano per produrre un risultato.
 
 ## Pipeline multi-agent
 
-Sequenza coordinata di agenti specializzati che collaborano su un progetto.
+Workflow composto da piu' agenti specializzati, ognuno con responsabilita', input e output distinti.
 
-Ogni agente deve avere ruolo, input, output, regole e criteri di qualità chiari.
+## Tool
 
-## Agent Factory
+Strumento che un agente puo' usare: file system, terminale, GitHub, browser, database, API, test runner.
 
-Sistema capace di creare, configurare, orchestrare e migliorare agenti specializzati in funzione di progetti reali.
+## Handoff
 
-Una Agent Factory non esegue solo una pipeline: decide quali agenti servono, quale contesto fornire, quali template usare e quale conoscenza assorbire.
-
-## Human in the Loop
-
-Presenza di controllo umano nei punti critici del processo.
-
-## Knowledge Base
-
-Archivio permanente della conoscenza validata: principi, lezioni apprese, regole, pattern, template e decisioni.
-
-## Knowledge Librarian
-
-Ruolo o agente incaricato di organizzare e mantenere la conoscenza permanente.
-
-## Knowledge Compiler
-
-Ruolo o agente incaricato di trasformare conoscenza grezza in conoscenza riutilizzabile dagli altri agenti.
+Passaggio strutturato di output da un agente a un altro. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.
 
 ## Context
 
-Insieme delle informazioni effettivamente disponibili all'agente durante un task specifico.
+Informazioni effettivamente disponibili a un agente durante un task specifico.
 
-Il contesto non coincide con tutta la conoscenza permanente: è una selezione operativa costruita per il compito corrente.
-
-## Context Builder
-
-Componente o agente incaricato di costruire il contesto operativo selezionando istruzioni, file, regole, memoria rilevante e output dei tool.
-
-## Retrieval
-
-Processo con cui il sistema recupera dalla memoria permanente solo la conoscenza utile al task corrente.
+Il contesto puo' includere Agent Card, richiesta utente, file, template, regole di governance, output di altri agenti e conoscenza recuperata dalla knowledge base. Non coincide con la sola Agent Card.
 
 ## Memoria permanente
 
 Conoscenza validata, organizzata e riutilizzabile che sopravvive ai singoli task e ai singoli agenti.
 
-Può essere salvata in file Markdown, database, vector store, graph database o altri supporti.
+## Knowledge Base
 
-## Storage
+Archivio di conoscenza validata e riutilizzabile: principi, regole, lezioni apprese, template, decisioni.
 
-Supporto fisico o logico in cui vengono conservati dati o file.
+## Knowledge Compiler
 
-Uno storage non è automaticamente memoria intelligente: diventa memoria utile solo se viene organizzato, mantenuto e recuperato dal sistema.
+Ruolo o agente che trasforma esperienza grezza in conoscenza pulita, sintetica e riutilizzabile.
 
-## Dockerfile
+## Human Gate
 
-File che descrive la ricetta per costruire un container Docker, specificando ambiente, dipendenze, file da copiare e comando di avvio.
+Punto del workflow in cui una persona deve validare, approvare o bloccare il lavoro prima di procedere.
 
-Per un agente che analizza un repository, il Dockerfile è una fonte importante per capire come il progetto viene eseguito.
+## Agent Factory
 
-## CI/CD
+Sistema capace di creare, configurare, orchestrare e migliorare agenti specializzati in base ai progetti.
 
-Pipeline automatica di Continuous Integration e Continuous Delivery/Deployment.
+## Requirement Analyst Agent
 
-Serve a compilare, testare, verificare e talvolta rilasciare software in modo automatico dopo modifiche al codice.
+Agente incaricato di trasformare input progettuali grezzi in requisiti chiari, verificabili e pronti per gli agenti successivi.
 
-Per gli AI Agent può diventare un meccanismo di feedback e validazione esterna.
+## Requisito funzionale
+
+Descrive cosa il sistema deve fare.
+
+## Requisito non funzionale
+
+Descrive come il sistema deve comportarsi, per esempio sicurezza, performance, tracciabilita', usabilita' o affidabilita'.
+
+## Scope
+
+Perimetro di cio' che il progetto include.
+
+## Out of scope
+
+Perimetro di cio' che il progetto non include nella fase corrente.

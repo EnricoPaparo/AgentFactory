@@ -1,70 +1,64 @@
 # AgentFactory
 
-Manuale professionale e laboratorio pratico per imparare a progettare, governare e costruire pipeline di AI Agent fino ad arrivare a una vera **Agent Factory**.
+Manuale personale e laboratorio pratico per diventare capace di progettare, costruire e governare sistemi multi-agent professionali.
 
-Questo repository nasce come percorso formativo incrementale: ogni lezione aggiunge concetti, template, agenti, regole operative e conoscenza permanente.
+L'obiettivo non e' sapere "qualcosina" sugli AI Agent. L'obiettivo e' arrivare a progettare una vera Agent Factory: un sistema capace di creare agenti per progetti diversi, assegnare responsabilita' e privilegi, orchestrare workflow, produrre risultati verificabili e riassorbire conoscenza utile dopo ogni lavoro.
 
-## Obiettivo
+## Obiettivo operativo
 
-L'obiettivo non è imparare a usare un singolo tool AI.
+Questo repository serve a costruire, passo dopo passo:
 
-L'obiettivo è imparare a progettare sistemi agentici professionali capaci di:
+- un manuale personale di apprendimento;
+- una libreria di concetti spiegati in modo semplice;
+- template riutilizzabili;
+- schede di agenti;
+- prove reali di agenti e pipeline;
+- una knowledge base che cresce solo con conoscenza validata.
 
-- analizzare un progetto;
-- scomporlo in attività;
-- generare agenti specializzati;
-- assegnare contesto ottimizzato agli agenti;
-- orchestrare il lavoro;
-- produrre artefatti verificabili;
-- assorbire le lezioni apprese nella knowledge base permanente;
-- mantenere supervisione, governance e controllo umano.
+## Regola guida
 
-## Principio guida
+Ogni file deve aiutare a rispondere a una domanda:
 
-> Ogni lezione, template e file di questo repository deve servire all'obiettivo finale: costruire una Agent Factory replicabile, didattica e professionale.
+```text
+Questa cosa mi rende piu' capace di progettare, costruire o governare agenti AI professionali?
+```
 
-## Struttura del repository
+Se la risposta e' no, il file non serve.
+
+## Struttura minima
 
 ```text
 AgentFactory/
-├── README.md
-├── ROADMAP.md
-├── MANUAL.md
-├── GLOSSARY.md
-├── CHANGELOG.md
-├── lessons/
-├── templates/
-├── agents/
-├── knowledge-base/
-├── projects/
-└── governance/
+  README.md
+  ROADMAP.md
+  MANUAL.md
+  GLOSSARY.md
+  CHANGELOG.md
+  lessons/
+  templates/
+  agents/
+  experiments/
+  knowledge-base/
+  governance/
 ```
 
-## Come usare questo repository
+## Metodo
 
-1. Leggere `MANUAL.md` come manuale principale.
-2. Consultare `lessons/` per le lezioni dettagliate.
-3. Usare `templates/` per progettare agenti, lezioni e analisi progetto.
-4. Aggiornare `knowledge-base/` con i principi validati.
-5. Usare `governance/` per mantenere controllo, sicurezza e qualità.
+Il percorso parte dalle fondamenta:
+
+1. imparare il linguaggio operativo: Markdown, artefatto, template, Agent Card;
+2. capire cosa e' davvero un agente;
+3. progettare agenti prima senza codice;
+4. costruire il primo agente reale;
+5. passare a pipeline multi-agent;
+6. aggiungere memoria, valutazione, privilegi e miglioramento controllato;
+7. arrivare a una Agent Factory.
 
 ## Stato attuale
 
-- [x] Repository inizializzato
-- [x] Lezione 1: Fondamenti degli AI Agent
-- [x] Lezione 2: Requirement Analyst Agent
-- [x] Lezione 3: Differenza tra agente, workflow e automazione
-- [x] Lezione 4: Anatomia di un AI Agent Professionale
-- [x] Roadmap iniziale
-- [x] Template base agenti
-- [x] Template classificazione processo
-- [x] Governance minima
-- [ ] Lezione 5: Context Engineering
-- [ ] Prima pipeline didattica
-- [ ] Primo progetto esempio
-
-## Visione finale
-
-Questo repository dovrà diventare un manuale operativo replicabile anche in contesti didattici, aziendali e laboratoriali.
-
-La destinazione finale è una **Agent Factory**: un sistema capace di creare, usare, coordinare e migliorare agenti AI in funzione di progetti reali.
+- [x] Repository ripulito e riportato a una base essenziale
+- [x] Roadmap ricostruita come percorso personale da zero a livello avanzato
+- [x] Template minimi iniziali
+- [x] Prime lezioni operative
+- [ ] Prima Agent Card
+- [ ] Primo agente reale
