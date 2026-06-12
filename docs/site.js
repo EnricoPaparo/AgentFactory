@@ -18,10 +18,10 @@
         background: "#05070d",
         primaryColor: "#111a2d",
         primaryTextColor: "#f4f7fb",
-        primaryBorderColor: "#2cf8ff",
-        lineColor: "#ff3fd1",
+        primaryBorderColor: "#10d8e5",
+        lineColor: "#2ed66f",
         secondaryColor: "#0c1220",
-        tertiaryColor: "#1b1230",
+        tertiaryColor: "#0d241c",
         fontFamily: "Inter, ui-sans-serif, system-ui",
       },
     });

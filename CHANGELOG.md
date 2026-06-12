@@ -55,3 +55,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiunta attribuzione elegante del sito a Enrico Paparo.
 - Preparato il sito in `docs/` per la pubblicazione con GitHub Pages.
 - Ampliata la Lezione 07 con Output Contract Steward, schema drift ed evoluzione governata dei template.
+- Aggiornato il sito con logo AgentFactory, wordmark in landing e palette coerente con il marchio.

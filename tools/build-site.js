@@ -8,6 +8,8 @@ const pagesDir = path.join(docsDir, "pages");
 const siteTitle = "AgentFactory";
 const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.";
 const siteAuthor = "Enrico Paparo";
+const logoPath = "assets/agentfactory-logo.png";
+const wordmarkPath = "assets/agentfactory-wordmark.png";
 
 const sources = [
   {
@@ -318,6 +320,7 @@ function navHtml(activeSlug) {
 function layout({ title, body, activeSlug, pageClass = "" }) {
   const isIndex = activeSlug === "home";
   const prefix = isIndex ? "" : "../";
+  const logoSrc = `${prefix}${logoPath}`;
   return `<!doctype html>
 <html lang="it">
 <head>
@@ -332,7 +335,7 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="${prefix}index.html" aria-label="AgentFactory home">
-      <span class="brand-mark">AF</span>
+      <span class="brand-mark"><img src="${logoSrc}" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -352,7 +355,7 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
     </aside>
     <main class="content">
       ${body}
-      ${siteFooter()}
+      ${siteFooter(prefix)}
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -361,9 +364,9 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
 </html>`;
 }
 
-function siteFooter() {
+function siteFooter(prefix) {
   return `<footer class="site-footer">
-    <span>Prodotto da ${escapeHtml(siteAuthor)}</span>
+    <span class="footer-brand"><img src="${prefix}${logoPath}" alt="" aria-hidden="true">Prodotto da ${escapeHtml(siteAuthor)}</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>`;
 }
@@ -383,6 +386,7 @@ function pageBody(source, rendered) {
 }
 
 function indexBody() {
+  const wordmarkSrc = wordmarkPath;
   const lessonCards = sources
     .filter((source) => source.group === "Lezioni")
     .map(
@@ -416,7 +420,10 @@ function indexBody() {
       </div>
       <p class="hero-credit">Prodotto da ${escapeHtml(siteAuthor)}</p>
     </div>
-    <div class="hero-panel" aria-label="Pipeline AgentFactory">
+    <div class="hero-panel hero-brand-panel" aria-label="Identita' AgentFactory">
+      <img class="hero-wordmark" src="${wordmarkSrc}" alt="AgentFactory">
+    </div>
+    <div class="hero-panel pipeline-panel" aria-label="Pipeline AgentFactory">
       <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>
       <div class="node-row"><span>Context Builder</span><i></i><span>Architect</span></div>
       <div class="node-row"><span>Developer</span><i></i><span>Tester</span></div>

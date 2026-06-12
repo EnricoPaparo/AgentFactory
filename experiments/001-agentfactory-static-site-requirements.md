@@ -136,7 +136,7 @@ Criterio di accettazione: eseguendo `node tools/build-site.js`, le pagine in `do
 ```text
 RNF-001 - Design dark/cyberpunk.
 Motivazione: dare identita' visiva al progetto e renderlo memorabile.
-Criterio di accettazione: il sito usa dark mode, accenti cyan/pink/lime e composizione coerente.
+Criterio di accettazione: il sito usa dark mode, accenti blu/ciano/verde coerenti con il logo e composizione ordinata.
 
 RNF-002 - Leggibilita' in proiezione.
 Motivazione: il materiale potra' essere mostrato durante lezioni o spiegazioni.
