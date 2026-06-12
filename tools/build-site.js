@@ -147,6 +147,13 @@ const sources = [
     summary: "Come governare il primo agente che potra' modificare file e codice.",
   },
   {
+    title: "16 - Prompt operativo e runtime minimo",
+    file: "lessons/16-prompt-operativo-runtime-primo-agente-reale.md",
+    slug: "lezione-16",
+    group: "Lezioni",
+    summary: "Come preparare il primo agente reale con prompt, API key, budget, output e run record.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -217,6 +224,27 @@ const sources = [
     summary: "Template per pianificare modifiche tecniche prima dell'implementazione.",
   },
   {
+    title: "Real Agent Run Record Template",
+    file: "templates/real-agent-run-record-template.md",
+    slug: "template-real-agent-run-record",
+    group: "Template",
+    summary: "Template per tracciare ogni esecuzione reale di un agente.",
+  },
+  {
+    title: "Requirement Analyst Agent Prompt",
+    file: "prompts/requirement-analyst-agent-prompt.md",
+    slug: "prompt-requirement-analyst-agent",
+    group: "Prompt",
+    summary: "Prompt operativo per eseguire il Requirement Analyst Agent con template e vincoli.",
+  },
+  {
+    title: "Real Agent Execution Rules",
+    file: "governance/real-agent-execution-rules.md",
+    slug: "governance-real-agent-execution-rules",
+    group: "Governance",
+    summary: "Regole minime per API key, budget, output, run record e human gate.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -271,6 +299,13 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-implementation-plan",
     group: "Esperimenti",
     summary: "Primo piano operativo per modifiche controllate al sito statico.",
+  },
+  {
+    title: "001 - Requirement Analyst Real Agent Run Plan",
+    file: "experiments/001-requirement-analyst-real-agent-run-plan.md",
+    slug: "esperimento-001-requirement-analyst-real-agent-run-plan",
+    group: "Esperimenti",
+    summary: "Piano del primo run reale del Requirement Analyst Agent.",
   },
   {
     title: "Requirement Analysis Rules",

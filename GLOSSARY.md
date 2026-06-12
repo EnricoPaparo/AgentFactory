@@ -50,6 +50,22 @@ Sistema basato su modello AI capace di perseguire un obiettivo usando contesto, 
 
 Richiesta data a un modello AI. Un prompt puo' essere semplice o complesso, ma non e' automaticamente un agente.
 
+## Prompt operativo
+
+Documento di esecuzione che trasforma ruolo, input, regole, template e vincoli in istruzioni pronte per un modello. Serve a far comportare il modello come agente dentro una pipeline.
+
+## Runtime minimo
+
+Il pezzo piu' piccolo di sistema capace di eseguire un agente in modo tracciabile: legge input, prompt e template, chiama il modello, salva output e run record.
+
+## API key
+
+Credenziale usata per accedere a un servizio via API. Non deve mai essere salvata nel repository: va gestita come variabile ambiente o tramite secret manager.
+
+## Run record
+
+Registro di una esecuzione reale di un agente. Traccia agente, modello, input, prompt, output, budget, errori, stato, review prevista e conoscenza candidata.
+
 ## Brief
 
 Input iniziale, spesso incompleto o ambiguo, che descrive cosa si vuole ottenere. Un Requirement Analyst Agent lo trasforma in requisiti, domande aperte e handoff.

@@ -99,7 +99,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Tool consentiti e tool vietati
 - [x] Lettura, scrittura, esecuzione, deploy
 - [x] Gate umani
-- [ ] Audit trail
+- [x] Audit trail
 - [ ] Errori, rollback e recovery
 
 ## Livello 6 - Ambiente operativo e Python minimo
@@ -116,12 +116,12 @@ Non si passa al livello successivo finche' non e' chiaro:
 ## Livello 7 - Primo agente reale
 
 - [ ] Chiamare un modello via API
-- [ ] Usare un prompt operativo
+- [x] Usare un prompt operativo
 - [x] Usare un template di output
 - [x] Salvare un artefatto
 - [x] Validare l'output
 - [ ] Versionare il risultato
-- [ ] Valutare OpenAI Agents SDK per eseguire il primo agente
+- [x] Valutare OpenAI Agents SDK per eseguire il primo agente
 
 ## Livello 8 - Pipeline multi-agent reale
 
@@ -137,7 +137,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 ## Livello 9 - Agenti che migliorano nel tempo
 
-- [ ] Tracce di esecuzione
+- [x] Tracce di esecuzione
 - [x] Valutazione output
 - [ ] Failure analysis
 - [ ] Rilevazione schema drift
@@ -145,7 +145,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Knowledge extraction
 - [x] Knowledge validation
 - [x] Knowledge absorption
-- [ ] Versioning di Agent Card, prompt e template
+- [x] Versioning di Agent Card, prompt e template
 
 ## Livello 10 - Agent Factory
 
