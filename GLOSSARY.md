@@ -78,6 +78,14 @@ Strumento che un agente puo' usare: file system, terminale, GitHub, browser, dat
 
 Passaggio strutturato di output da un agente a un altro. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.
 
+## Handoff Contract
+
+Contratto operativo che descrive come un agente passa lavoro a un altro agente: mittente, ricevente, artefatti sorgente, obiettivo, vincoli, scope, out of scope, privilegi, condizioni di stop e output atteso.
+
+## Perdita di contesto
+
+Errore di pipeline in cui l'agente successivo non riceve o non riconosce informazioni necessarie, per esempio obiettivo, vincoli, ipotesi, priorita' o decisioni umane aperte.
+
 ## Context
 
 Informazioni effettivamente disponibili a un agente durante un task specifico.

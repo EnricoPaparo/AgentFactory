@@ -82,8 +82,8 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 ## Livello 4 - Workflow e pipeline manuale
 
-- [ ] Handoff tra agenti
-- [ ] Contratti tra agenti
+- [x] Handoff tra agenti
+- [x] Contratti tra agenti
 - [ ] Output Contract Steward e controllo dei contratti
 - [ ] Pipeline sequenziale
 - [ ] Supervisor-worker pattern

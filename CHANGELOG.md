@@ -59,3 +59,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Corretto il rendering dei loghi sul sito pubblicato con dimensioni robuste e cache-busting degli asset.
 - Aggiunta la Lezione 10 sulla knowledge absorption e aggiornato il template dedicato.
 - Aggiunta la Lezione 11 con la prima knowledge absorption candidate reale e regole requisiti assorbite.
+- Aggiunta la Lezione 12 su handoff e contratti tra agenti con template e primo handoff verso Architect Agent.

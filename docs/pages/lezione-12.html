@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 - Handoff e contratti tra agenti | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a aria-current="page" href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+  </div>
+  <h1>12 - Handoff e contratti tra agenti</h1>
+  <p class="lead">Come passare contesto, vincoli e responsabilita' tra agenti senza perdere controllo.</p>
+  <div class="source-chip">lessons/12-handoff-e-contratti-tra-agenti.md</div>
+  <section class="markdown-body">
+    <h1 id="12-handoff-e-contratti-tra-agenti">12 - Handoff e contratti tra agenti</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a capire come un agente passa il lavoro a un altro agente senza perdere contesto, responsabilita' e vincoli.</p>
+<p>Finora ho costruito questo primo ciclo:</p>
+<pre><code>brief
+  -&gt; Requirement Analyst Agent
+  -&gt; Requirement Analysis Document
+  -&gt; Reviewer Agent
+  -&gt; Knowledge Compiler
+  -&gt; Knowledge Base
+  -&gt; template migliorato</code></pre>
+<p>Adesso devo imparare il passaggio successivo:</p>
+<pre><code>Requirement Analysis Document
+  -&gt; Handoff Contract
+  -&gt; Architect Agent</code></pre>
+<p>Il punto non e' &quot;mandare un file a un altro agente&quot;.</p>
+<p>Il punto e' costruire un passaggio controllato, dove l'agente successivo riceve:</p>
+<ul><li>cosa deve fare;</li><li>cosa non deve fare;</li><li>quali informazioni sono certe;</li><li>quali informazioni sono ipotesi;</li><li>quali vincoli deve rispettare;</li><li>quali decisioni umane bloccano il lavoro;</li><li>quale output deve produrre;</li><li>quali rischi deve tenere presenti.</li></ul>
+<p>Un sistema multi-agent professionale vive o muore sulla qualita' degli handoff.</p>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Quando una persona lavora da sola, puo' tenere molte cose in testa.</p>
+<p>In una pipeline multi-agent questo non basta.</p>
+<p>Ogni agente vede solo una parte del lavoro. Anche quando il sistema ha accesso a molti file, l'agente deve comunque capire quali informazioni sono davvero rilevanti per il suo compito.</p>
+<p>Se il passaggio e' debole, succedono problemi tipici:</p>
+<pre><code>Requirement Analyst:
+&quot;Ho scritto i requisiti.&quot;
+
+Architect:
+&quot;Ok, allora scelgo tecnologie e architettura.&quot;
+
+Problema:
+l'Architect non sa quali parti sono certe, quali sono ipotesi,
+quali decisioni umane sono bloccanti e quali vincoli non puo' violare.</code></pre>
+<p>Il risultato e' un'architettura apparentemente sensata, ma costruita su informazioni non governate.</p>
+<p>Questo e' pericoloso perche':</p>
+<ul><li>l'Architect puo' trasformare ipotesi in decisioni;</li><li>puo' ignorare una domanda aperta critica;</li><li>puo' scegliere una tecnologia prima del tempo;</li><li>puo' progettare oltre lo scope;</li><li>puo' passare al Developer un lavoro non validabile;</li><li>puo' generare ulteriore complessita' invece di ridurla.</li></ul>
+<p>Un handoff non e' burocrazia.</p>
+<p>E' il sistema nervoso della pipeline.</p>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere chiari:</p>
+<ul><li>che cos'e' un artefatto;</li><li>che cos'e' un output contract;</li><li>che cos'e' un Requirement Analysis Document;</li><li>differenza tra fatti, ipotesi e domande aperte;</li><li>ruolo del Reviewer Agent;</li><li>ruolo del Knowledge Compiler;</li><li>perche' un agente non deve avere tutto il potere;</li><li>perche' il contesto non coincide con la sola Agent Card.</li></ul>
+<h2 id="definizione-semplice">Definizione semplice</h2>
+<p>Un handoff e' il passaggio strutturato da un agente a un altro.</p>
+<p>Esempio umano:</p>
+<pre><code>Analista:
+&quot;Ho raccolto i requisiti. Questi sono i vincoli, queste sono le domande aperte,
+queste sono le parti gia' validate. Ora puoi progettare l'architettura,
+ma non scegliere ancora provider a pagamento finche' il cliente non conferma il budget.&quot;</code></pre>
+<p>Esempio agentico:</p>
+<pre><code>Requirement Analyst Agent
+  produce:
+    - documento requisiti;
+    - rischi;
+    - validazioni umane;
+    - handoff per Architect.
+
+Architect Agent
+  riceve:
+    - obiettivo;
+    - scope;
+    - vincoli;
+    - requisiti prioritizzati;
+    - decisioni aperte;
+    - output atteso.</code></pre>
+<p>Il passaggio deve essere abbastanza ricco da evitare perdita di contesto, ma abbastanza selettivo da non sommergere l'agente successivo.</p>
+<h2 id="handoff-non-significa-copiare-tutto">Handoff non significa copiare tutto</h2>
+<p>Il primo errore e' pensare:</p>
+<pre><code>Per evitare perdita di contesto, passo tutto.</code></pre>
+<p>Sembra prudente, ma non lo e'.</p>
+<p>Se passo tutto senza struttura, l'agente successivo deve rifare il lavoro di selezione.</p>
+<p>Questo produce:</p>
+<ul><li>piu' token;</li><li>piu' rumore;</li><li>piu' possibilita' di confondere informazione importante e informazione secondaria;</li><li>piu' rischio di ignorare una decisione bloccante;</li><li>meno controllo sulla responsabilita' dell'agente.</li></ul>
+<p>Un buon handoff non e' un dump.</p>
+<p>Un buon handoff e' una compressione intenzionale.</p>
+<pre><code>Artefatto completo
+  -&gt; estrazione delle parti rilevanti
+  -&gt; contratto di passaggio
+  -&gt; input pulito per l'agente successivo</code></pre>
+<h2 id="cosa-deve-sopravvivere-nel-passaggio">Cosa deve sopravvivere nel passaggio</h2>
+<p>Quando un agente passa il lavoro a un altro, alcune informazioni devono sopravvivere sempre.</p>
+<h3 id="1-obiettivo">1. Obiettivo</h3>
+<p>L'agente successivo deve sapere perche' esiste il lavoro.</p>
+<p>Esempio:</p>
+<pre><code>Rendere il manuale AgentFactory consultabile come sito statico presentabile.</code></pre>
+<p>Senza obiettivo, l'Architect puo' ottimizzare la cosa sbagliata.</p>
+<p>Potrebbe progettare un sistema tecnicamente elegante, ma inadatto allo scopo reale.</p>
+<h3 id="2-scope">2. Scope</h3>
+<p>L'agente successivo deve sapere cosa rientra nella fase corrente.</p>
+<p>Esempio:</p>
+<pre><code>Fase corrente:
+- sito statico;
+- generazione da Markdown;
+- GitHub Pages;
+- nessun backend;
+- nessuna autenticazione.</code></pre>
+<p>Senza scope, l'agente puo' espandere il progetto.</p>
+<p>Questa e' una forma comune di deriva agentica:</p>
+<pre><code>serve un sito statico
+  -&gt; l'agente propone CMS
+  -&gt; poi database
+  -&gt; poi autenticazione
+  -&gt; poi dashboard admin</code></pre>
+<p>Magari tutte idee interessanti, ma fuori fase.</p>
+<h3 id="3-out-of-scope">3. Out of scope</h3>
+<p>Dire cosa non fare e' importante quanto dire cosa fare.</p>
+<p>Esempio:</p>
+<pre><code>Out of scope:
+- backend;
+- database;
+- editing dal sito;
+- login studenti;
+- deploy automatico complesso.</code></pre>
+<p>Un out of scope chiaro protegge il progetto.</p>
+<h3 id="4-fatti-certi">4. Fatti certi</h3>
+<p>L'agente successivo deve distinguere quello che e' dichiarato da quello che e' dedotto.</p>
+<p>Esempio:</p>
+<pre><code>Fatto:
+Il sito deve essere statico.
+
+Ipotesi:
+In futuro potrebbe servire una ricerca interna.</code></pre>
+<p>Se un agente confonde queste due cose, prende decisioni fragili.</p>
+<h3 id="5-ipotesi">5. Ipotesi</h3>
+<p>Le ipotesi sono utili, ma devono restare ipotesi.</p>
+<p>Esempio:</p>
+<pre><code>Ipotesi:
+Il manuale crescera' abbastanza da richiedere ricerca o indice interno.</code></pre>
+<p>L'Architect puo' tenerne conto progettando estendibilita', ma non deve trattarla come requisito obbligatorio.</p>
+<h3 id="6-domande-aperte">6. Domande aperte</h3>
+<p>Le domande aperte indicano incertezza.</p>
+<p>Non sono decorazione.</p>
+<p>Possono bloccare o meno il prossimo step.</p>
+<p>Esempio:</p>
+<pre><code>Domanda:
+Serve ricerca interna gia' nella prima versione?
+
+Tipo:
+Rimandabile.</code></pre>
+<p>Se la domanda non e' bloccante, la pipeline puo' andare avanti.</p>
+<p>Se e' bloccante, l'agente deve fermarsi.</p>
+<h3 id="7-vincoli">7. Vincoli</h3>
+<p>I vincoli sono muri.</p>
+<p>L'agente puo' progettare dentro quei muri, non fingere che non esistano.</p>
+<p>Esempio:</p>
+<pre><code>Vincolo:
+Il sito deve restare statico e compatibile con GitHub Pages.</code></pre>
+<h3 id="8-rischi">8. Rischi</h3>
+<p>I rischi aiutano l'agente successivo a non ottimizzare solo per il caso felice.</p>
+<p>Esempio:</p>
+<pre><code>Rischio:
+La sidebar cresce troppo e diventa difficile da consultare.</code></pre>
+<p>L'Architect deve progettare una struttura che possa crescere.</p>
+<h3 id="9-decisioni-umane">9. Decisioni umane</h3>
+<p>Ogni human gate deve essere classificato.</p>
+<p>Esempio:</p>
+<pre><code>Decisione:
+Passare in futuro ad Astro/MkDocs/Vite?
+
+Tipo:
+Rimandabile.</code></pre>
+<p>Se la decisione e' rimandabile, l'agente puo' progettare una soluzione semplice ora e lasciare spazio a evoluzione futura.</p>
+<h3 id="10-output-atteso">10. Output atteso</h3>
+<p>L'agente successivo deve sapere cosa deve produrre.</p>
+<p>Esempio:</p>
+<pre><code>Architect Agent deve produrre:
+- Architecture Decision Record;
+- proposta struttura sito;
+- scelte tecniche motivate;
+- rischi architetturali;
+- handoff per Developer Agent.</code></pre>
+<p>Senza output atteso, non posso valutare se l'agente ha lavorato bene.</p>
+<h2 id="cos-e-un-handoff-contract">Cos'e' un Handoff Contract</h2>
+<p>Un Handoff Contract e' un output contract specializzato per il passaggio tra agenti.</p>
+<p>Serve a rispondere a tre domande:</p>
+<pre><code>1. Da chi arriva questo lavoro?
+2. Chi deve riceverlo?
+3. Cosa deve fare il ricevente, con quali limiti?</code></pre>
+<p>Nel nostro percorso lo salviamo come file Markdown.</p>
+<p>Questo per ora e' perfetto per imparare, perche':</p>
+<ul><li>e' leggibile;</li><li>e' versionabile;</li><li>e' modificabile senza strumenti complessi;</li><li>puo' essere mostrato agli studenti;</li><li>puo' diventare in futuro input per un agente reale via API.</li></ul>
+<h2 id="differenza-tra-artefatto-sorgente-e-handoff">Differenza tra artefatto sorgente e handoff</h2>
+<p>Il Requirement Analysis Document e' l'artefatto sorgente.</p>
+<p>L'Handoff Contract e' la versione orientata al prossimo agente.</p>
+<p>Non sono la stessa cosa.</p>
+<pre><code>Requirement Analysis Document:
+contiene analisi completa del progetto.
+
+Architect Handoff:
+contiene cio' che serve all'Architect per progettare senza perdere vincoli e contesto.</code></pre>
+<p>Questa distinzione e' fondamentale.</p>
+<p>Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.</p>
+<p>Se passo anche un handoff, gli sto dando un ingresso operativo.</p>
+<h2 id="diagramma-del-passaggio">Diagramma del passaggio</h2>
+<div class="diagram"><div class="mermaid">flowchart LR
+    A[&quot;Brief grezzo&quot;] --&gt; B[&quot;Requirement Analyst Agent&quot;]
+    B --&gt; C[&quot;Requirement Analysis Document&quot;]
+    C --&gt; D[&quot;Handoff Contract&quot;]
+    D --&gt; E[&quot;Architect Agent&quot;]
+    E --&gt; F[&quot;Architecture Decision Record&quot;]
+    F --&gt; G[&quot;Developer Agent&quot;]
+    C --&gt; H[&quot;Reviewer Agent&quot;]
+    H --&gt; I[&quot;Knowledge Compiler&quot;]
+    I --&gt; J[&quot;Knowledge Base&quot;]</div></div>
+<p>Osservazione importante:</p>
+<pre><code>Il Reviewer e il Knowledge Compiler non spariscono.
+Continuano a controllare e migliorare la pipeline.</code></pre>
+<h2 id="perdita-di-contesto">Perdita di contesto</h2>
+<p>La perdita di contesto accade quando l'agente successivo non riceve o non comprende informazioni necessarie.</p>
+<p>Esempio:</p>
+<pre><code>Il Requirement Analyst sa che il sito deve restare statico.
+L'Architect non riceve questo vincolo.
+L'Architect propone un backend.</code></pre>
+<p>Questo non e' solo un errore tecnico.</p>
+<p>E' un errore di handoff.</p>
+<h3 id="tipi-di-perdita-di-contesto">Tipi di perdita di contesto</h3>
+<h4 id="perdita-di-obiettivo">Perdita di obiettivo</h4>
+<p>L'agente sa cosa fare tecnicamente, ma non perche'.</p>
+<p>Esempio:</p>
+<pre><code>Costruire un sito bello</code></pre>
+<p>senza ricordare:</p>
+<pre><code>rendere il manuale consultabile, proiettabile e didatticamente usabile.</code></pre>
+<h4 id="perdita-di-vincoli">Perdita di vincoli</h4>
+<p>L'agente ignora limiti economici, tecnici, temporali o organizzativi.</p>
+<p>Esempio:</p>
+<pre><code>Propone un SaaS a pagamento quando il vincolo e' sito statico semplice.</code></pre>
+<h4 id="perdita-di-incertezza">Perdita di incertezza</h4>
+<p>L'agente trasforma ipotesi in fatti.</p>
+<p>Esempio:</p>
+<pre><code>Ipotesi:
+potrebbe servire ricerca.
+
+Errore:
+progettare gia' un motore di ricerca complesso come requisito obbligatorio.</code></pre>
+<h4 id="perdita-di-responsabilita">Perdita di responsabilita'</h4>
+<p>L'agente fa lavoro che non gli compete.</p>
+<p>Esempio:</p>
+<pre><code>Architect Agent scrive codice invece di produrre architettura.</code></pre>
+<h4 id="perdita-di-priorita">Perdita di priorita'</h4>
+<p>L'agente tratta tutto come ugualmente importante.</p>
+<p>Esempio:</p>
+<pre><code>Logo, ricerca, responsive, CMS e deploy automatico hanno tutti stesso peso.</code></pre>
+<p>Questo produce caos.</p>
+<h2 id="responsabilita-del-mittente">Responsabilita' del mittente</h2>
+<p>L'agente che invia il lavoro deve:</p>
+<ul><li>produrre un output conforme al proprio template;</li><li>evidenziare incertezze;</li><li>separare fatti e ipotesi;</li><li>dichiarare vincoli;</li><li>indicare cosa e' pronto e cosa no;</li><li>non scaricare sull'agente successivo problemi che richiedono validazione umana;</li><li>indicare output atteso dal ricevente.</li></ul>
+<p>Nel nostro caso il mittente e':</p>
+<pre><code>Requirement Analyst Agent</code></pre>
+<h2 id="responsabilita-del-ricevente">Responsabilita' del ricevente</h2>
+<p>L'agente che riceve il lavoro deve:</p>
+<ul><li>leggere il contratto;</li><li>rispettare scope e out of scope;</li><li>non trasformare ipotesi in decisioni;</li><li>fermarsi davanti a gate bloccanti;</li><li>produrre solo l'output previsto;</li><li>indicare eventuali problemi di input;</li><li>preparare il prossimo handoff.</li></ul>
+<p>Nel nostro caso il ricevente e':</p>
+<pre><code>Architect Agent</code></pre>
+<h2 id="privilegi-nel-passaggio">Privilegi nel passaggio</h2>
+<p>Un handoff non trasferisce automaticamente tutti i privilegi.</p>
+<p>Questa e' una regola importantissima.</p>
+<p>Esempio:</p>
+<pre><code>Requirement Analyst Agent:
+puo' scrivere un documento requisiti.
+
+Architect Agent:
+puo' scrivere una proposta architetturale.
+
+Developer Agent:
+potra' modificare codice.</code></pre>
+<p>Il fatto che un agente riceva un file non significa che possa modificare tutto.</p>
+<p>In una factory professionale, ogni agente riceve:</p>
+<ul><li>input;</li><li>missione;</li><li>output atteso;</li><li>tool consentiti;</li><li>limiti;</li><li>criteri di stop.</li></ul>
+<p>Questa separazione protegge il sistema.</p>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Immagino una pipeline per costruire una pagina web.</p>
+<h3 id="handoff-debole">Handoff debole</h3>
+<pre><code>Ecco i requisiti. Fai l'architettura.</code></pre>
+<p>Problemi:</p>
+<ul><li>non dice quali requisiti sono essenziali;</li><li>non dice cosa e' fuori scope;</li><li>non dice se ci sono decisioni bloccanti;</li><li>non dice cosa deve produrre l'Architect;</li><li>non dice quali vincoli tecnici deve rispettare.</li></ul>
+<h3 id="handoff-migliore">Handoff migliore</h3>
+<pre><code>Mittente: Requirement Analyst Agent
+Ricevente: Architect Agent
+Progetto: AgentFactory Static Site
+
+Obiettivo:
+Progettare una struttura statica, semplice e mantenibile per pubblicare il manuale AgentFactory.
+
+Vincoli:
+- usare Markdown come fonte;
+- mantenere sito statico;
+- compatibile con GitHub Pages;
+- niente backend nella fase corrente.
+
+Priorita':
+- navigazione lezioni;
+- leggibilita';
+- rigenerazione da Markdown;
+- responsive.
+
+Output atteso:
+Architecture Decision Record con scelte tecniche, alternative scartate, rischi e handoff per Developer Agent.</code></pre>
+<p>Questo secondo handoff e' molto piu' utile.</p>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>In un progetto vero, potrei avere:</p>
+<pre><code>Requirement Analyst Agent
+  -&gt; produce Requirement Analysis Document
+
+Architect Agent
+  -&gt; produce Architecture Decision Record
+
+Security Reviewer Agent
+  -&gt; valuta rischi di sicurezza
+
+Developer Agent
+  -&gt; implementa
+
+Tester Agent
+  -&gt; crea test plan
+
+Reviewer Agent
+  -&gt; controlla output
+
+Knowledge Compiler
+  -&gt; assorbe lezioni apprese</code></pre>
+<p>Se ogni passaggio e' una chat libera, il sistema diventa fragile.</p>
+<p>Se ogni passaggio ha un contratto, posso:</p>
+<ul><li>capire dove nasce un errore;</li><li>migliorare un singolo agente senza riscrivere tutto;</li><li>valutare output in modo piu' oggettivo;</li><li>versionare template e regole;</li><li>assegnare privilegi diversi;</li><li>inserire human gate;</li><li>creare agenti dinamici in modo piu' sicuro.</li></ul>
+<h2 id="handoff-e-agenti-dinamici">Handoff e agenti dinamici</h2>
+<p>Questa lezione prepara anche un concetto avanzato.</p>
+<p>In futuro la Agent Factory potra' creare agenti dinamicamente.</p>
+<p>Esempio:</p>
+<pre><code>Progetto: sito statico didattico
+Agenti necessari:
+- Requirement Analyst
+- Architect
+- Developer
+- Visual QA Reviewer
+- Knowledge Compiler</code></pre>
+<p>Oppure:</p>
+<pre><code>Progetto: automazione n8n per lead management
+Agenti necessari:
+- Requirement Analyst
+- Integration Architect
+- n8n Workflow Designer
+- Security Reviewer
+- Tester
+- Knowledge Compiler</code></pre>
+<p>Ma se gli agenti sono creati dinamicamente, il bisogno di contratti aumenta.</p>
+<p>Perche'?</p>
+<p>Perche' un agente temporaneo deve sapere subito:</p>
+<ul><li>perche' esiste;</li><li>cosa deve leggere;</li><li>cosa puo' ignorare;</li><li>cosa puo' modificare;</li><li>cosa deve produrre;</li><li>quando deve fermarsi;</li><li>a chi deve passare il lavoro.</li></ul>
+<p>Senza handoff, gli agenti dinamici diventano improvvisazione.</p>
+<p>Con handoff, diventano componenti governabili.</p>
+<h2 id="handoff-e-memoria">Handoff e memoria</h2>
+<p>Un handoff non e' memoria permanente.</p>
+<p>E' contesto operativo per un passaggio specifico.</p>
+<p>Differenza:</p>
+<pre><code>Handoff:
+serve a far lavorare bene il prossimo agente in questo progetto.
+
+Knowledge Base:
+serve a migliorare la factory in tutti i progetti futuri.</code></pre>
+<p>Pero' gli handoff sono fonti preziose per la memoria.</p>
+<p>Dopo un progetto posso chiedere:</p>
+<pre><code>Quali handoff hanno funzionato?
+Quali handoff hanno causato errore?
+Quali campi mancavano?
+Quali regole vanno assorbite?</code></pre>
+<p>In questo modo la factory impara anche dai passaggi, non solo dagli output finali.</p>
+<h2 id="template-prodotto">Template prodotto</h2>
+<p>Da questa lezione nasce un template:</p>
+<pre><code>templates/agent-handoff-contract-template.md</code></pre>
+<p>Il template serve a creare handoff leggibili, versionabili e confrontabili.</p>
+<p>Le sezioni minime sono:</p>
+<ul><li>metadati;</li><li>mittente;</li><li>ricevente;</li><li>artefatti sorgente;</li><li>obiettivo del passaggio;</li><li>contesto essenziale;</li><li>scope;</li><li>out of scope;</li><li>vincoli;</li><li>decisioni aperte;</li><li>rischi;</li><li>input consentiti;</li><li>output atteso;</li><li>criteri di accettazione;</li><li>privilegi consentiti;</li><li>condizioni di stop;</li><li>prossimo handoff.</li></ul>
+<h2 id="primo-handoff-reale-prodotto">Primo handoff reale prodotto</h2>
+<p>Applico subito il concetto al progetto gia' in corso:</p>
+<pre><code>experiments/001-agentfactory-static-site-architect-handoff.md</code></pre>
+<p>Questo file rappresenta il primo passaggio operativo dal Requirement Analyst Agent verso l'Architect Agent per il sito statico AgentFactory.</p>
+<p>Non e' ancora un agente reale via API.</p>
+<p>Ma e' gia' una pipeline reale a livello di artefatti:</p>
+<pre><code>requirements
+  -&gt; review
+  -&gt; absorption
+  -&gt; handoff</code></pre>
+<p>Questo e' il modo giusto di imparare:</p>
+<p>prima costruisco il comportamento corretto a mano; poi lo automatizzo.</p>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-handoff-troppo-generico">Errore 1 - Handoff troppo generico</h3>
+<p>Errore:</p>
+<pre><code>Fai l'architettura del progetto.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>L'Architect deve ricostruire obiettivo, vincoli, priorita' e output atteso.</code></pre>
+<p>Correzione:</p>
+<pre><code>Usare un Handoff Contract.</code></pre>
+<h3 id="errore-2-handoff-troppo-lungo">Errore 2 - Handoff troppo lungo</h3>
+<p>Errore:</p>
+<pre><code>Incollare tutto il documento requisiti, tutta la chat e tutti i file.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Il contesto diventa rumoroso e l'agente puo' ignorare informazioni critiche.</code></pre>
+<p>Correzione:</p>
+<pre><code>Passare il documento completo come fonte, ma creare una sintesi operativa strutturata.</code></pre>
+<h3 id="errore-3-nascondere-le-incertezze">Errore 3 - Nascondere le incertezze</h3>
+<p>Errore:</p>
+<pre><code>Togliere domande aperte per far sembrare il progetto piu' maturo.</code></pre>
+<p>Perche' e' pericoloso:</p>
+<pre><code>L'agente successivo prendera' decisioni su basi false.</code></pre>
+<p>Correzione:</p>
+<pre><code>Le incertezze devono essere visibili e classificate.</code></pre>
+<h3 id="errore-4-non-definire-output-atteso">Errore 4 - Non definire output atteso</h3>
+<p>Errore:</p>
+<pre><code>L'Architect lavora, ma non e' chiaro cosa deve consegnare.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Non posso valutare l'output e non posso passarlo bene al Developer.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni handoff deve indicare output atteso e criteri di accettazione.</code></pre>
+<h3 id="errore-5-trasferire-privilegi-senza-controllo">Errore 5 - Trasferire privilegi senza controllo</h3>
+<p>Errore:</p>
+<pre><code>L'agente riceve un progetto e puo' modificare qualsiasi file.</code></pre>
+<p>Perche' e' rischioso:</p>
+<pre><code>Responsabilita' e permessi si mescolano.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni handoff deve dichiarare privilegi consentiti e vietati.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione sposta AgentFactory da una sequenza di documenti a una vera pipeline.</p>
+<p>Prima:</p>
+<pre><code>Ho un documento requisiti.</code></pre>
+<p>Ora:</p>
+<pre><code>Ho un documento requisiti che puo' essere passato a un agente successivo
+tramite un contratto esplicito.</code></pre>
+<p>Questo e' un salto importante.</p>
+<p>Una Agent Factory deve saper:</p>
+<ul><li>creare agenti;</li><li>assegnare responsabilita';</li><li>assegnare privilegi;</li><li>passare contesto;</li><li>controllare output;</li><li>migliorare nel tempo.</li></ul>
+<p>L'handoff e' il punto in cui responsabilita' e contesto si incontrano.</p>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>templates/agent-handoff-contract-template.md
+experiments/001-agentfactory-static-site-architect-handoff.md</code></pre>
+<p>Aggiorna anche:</p>
+<pre><code>GLOSSARY.md
+ROADMAP.md
+MANUAL.md
+tools/build-site.js
+docs/</code></pre>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Che differenza c'e' tra passare un file e fare un handoff?
+2. Perche' un handoff non deve contenere tutto?
+3. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
+4. Perche' fatti, ipotesi e domande aperte devono restare separati?
+5. Perche' l'out of scope protegge la pipeline?
+6. Che cosa deve produrre un Architect Agent dopo un handoff?
+7. Perche' un handoff non trasferisce automaticamente privilegi?
+8. Come un handoff puo' diventare fonte per knowledge absorption futura?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>Un handoff e' una compressione intenzionale del contesto, non un dump.</li><li>Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.</li><li>Le incertezze devono essere visibili e classificate.</li><li>I privilegi non si trasferiscono automaticamente con il contesto.</li><li>Gli handoff sono fonti importanti per migliorare la factory nel tempo.</li><li>Prima di automatizzare una pipeline multi-agent conviene simulare a mano i contratti tra agenti.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Dopo questa lezione posso progettare il primo vero ricevente:</p>
+<pre><code>Architect Agent</code></pre>
+<p>La prossima lezione dovra' spiegare:</p>
+<ul><li>che cosa fa un Architect Agent;</li><li>cosa non deve fare;</li><li>quale output deve produrre;</li><li>come trasforma requisiti e handoff in una proposta architetturale;</li><li>come prepara il lavoro per Developer Agent e Tester Agent.</li></ul>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

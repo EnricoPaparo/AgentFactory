@@ -32,6 +32,7 @@ Una Agent Factory e' un sistema capace di:
 - [09 - Valutare l'output del Requirement Analyst Agent](lessons/09-valutare-output-requirement-analyst.md)
 - [10 - Knowledge absorption: trasformare esperienza in conoscenza permanente](lessons/10-knowledge-absorption.md)
 - [11 - Prima knowledge absorption candidate reale](lessons/11-prima-knowledge-absorption-candidate.md)
+- [12 - Handoff e contratti tra agenti](lessons/12-handoff-e-contratti-tra-agenti.md)
 
 ## Regola di ogni lezione
 

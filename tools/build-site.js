@@ -119,6 +119,13 @@ const sources = [
     summary: "Applicazione concreta della knowledge absorption alla prima review reale.",
   },
   {
+    title: "12 - Handoff e contratti tra agenti",
+    file: "lessons/12-handoff-e-contratti-tra-agenti.md",
+    slug: "lezione-12",
+    group: "Lezioni",
+    summary: "Come passare contesto, vincoli e responsabilita' tra agenti senza perdere controllo.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -147,6 +154,13 @@ const sources = [
     summary: "Template per decidere cosa assorbire nella memoria permanente.",
   },
   {
+    title: "Agent Handoff Contract Template",
+    file: "templates/agent-handoff-contract-template.md",
+    slug: "template-agent-handoff-contract",
+    group: "Template",
+    summary: "Template per passare lavoro strutturato da un agente a un altro.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -166,6 +180,13 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-knowledge-absorption",
     group: "Esperimenti",
     summary: "Prima candidate reale di knowledge absorption.",
+  },
+  {
+    title: "001 - Architect Handoff Static Site",
+    file: "experiments/001-agentfactory-static-site-architect-handoff.md",
+    slug: "esperimento-001-agentfactory-static-site-architect-handoff",
+    group: "Esperimenti",
+    summary: "Primo handoff operativo verso Architect Agent.",
   },
   {
     title: "Requirement Analysis Rules",
