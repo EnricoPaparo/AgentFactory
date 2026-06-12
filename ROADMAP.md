@@ -76,7 +76,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Semantic memory
 - [ ] Retrieval
 - [ ] Context Builder
-- [ ] Knowledge Base
+- [x] Knowledge Base
 - [x] Knowledge Compiler
 - [x] Knowledge absorption
 
@@ -141,9 +141,9 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Valutazione output
 - [ ] Failure analysis
 - [ ] Rilevazione schema drift
-- [ ] Lesson learned
-- [ ] Knowledge extraction
-- [ ] Knowledge validation
+- [x] Lesson learned
+- [x] Knowledge extraction
+- [x] Knowledge validation
 - [x] Knowledge absorption
 - [ ] Versioning di Agent Card, prompt e template
 

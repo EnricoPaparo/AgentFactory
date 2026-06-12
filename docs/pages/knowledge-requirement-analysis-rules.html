@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Requirement Analysis Rules | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group"><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a></details><details class="nav-group" open><summary>Knowledge Base</summary><a aria-current="page" href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Knowledge Base</span>
+  </div>
+  <h1>Requirement Analysis Rules</h1>
+  <p class="lead">Regole assorbite per migliorare i futuri documenti requisiti.</p>
+  <div class="source-chip">knowledge-base/requirement-analysis-rules.md</div>
+  <section class="markdown-body">
+    <h1 id="requirement-analysis-rules">Requirement Analysis Rules</h1>
+<p>Queste regole sono conoscenza validata per migliorare i futuri Requirement Analysis Document.</p>
+<p>Fonte iniziale:</p>
+<pre><code>experiments/001-agentfactory-static-site-knowledge-absorption.md</code></pre>
+<h2 id="regola-1-priorita-e-fase">Regola 1 - Priorita' e fase</h2>
+<p>Ogni requisito rilevante deve indicare:</p>
+<ul><li>priorita';</li><li>fase.</li></ul>
+<p>Formato consigliato:</p>
+<pre><code>Priorita': [Must / Should / Could]
+Fase: [v0.1 / v0.2 / futuro]</code></pre>
+<p>Perche' serve:</p>
+<ul><li>aiuta il Developer Agent a capire cosa implementare prima;</li><li>aiuta il Tester Agent a capire cosa verificare subito;</li><li>aiuta il Reviewer Agent a valutare scope e completezza;</li><li>aiuta il Supervisor Agent a orchestrare il lavoro.</li></ul>
+<h2 id="regola-2-criteri-qualitativi-osservabili">Regola 2 - Criteri qualitativi osservabili</h2>
+<p>Le richieste qualitative devono essere tradotte in segnali osservabili quando possibile.</p>
+<p>Esempi di segnali osservabili:</p>
+<ul><li>viewport;</li><li>screenshot atteso;</li><li>contrasto;</li><li>assenza di sovrapposizioni;</li><li>comportamento verificabile;</li><li>soglia misurabile;</li><li>output atteso.</li></ul>
+<p>Esempio:</p>
+<pre><code>Debole:
+Il sito deve essere bello.
+
+Migliore:
+Il sito deve mantenere layout leggibile a 1440px e 390px, senza testo tagliato o sovrapposizioni.</code></pre>
+<h2 id="regola-3-human-gate-classificati">Regola 3 - Human gate classificati</h2>
+<p>Ogni punto di validazione umana deve indicare il tipo di gate:</p>
+<pre><code>Tipo: [Bloccante / Rimandabile / Informativo]</code></pre>
+<p>Perche' serve:</p>
+<ul><li>evita blocchi inutili;</li><li>chiarisce quando la pipeline deve fermarsi;</li><li>separa decisioni operative da note informative;</li><li>aiuta la governance.</li></ul>
+<h2 id="regola-4-non-trasformare-ogni-miglioramento-in-obbligo">Regola 4 - Non trasformare ogni miglioramento in obbligo</h2>
+<p>Una review puo' proporre miglioramenti utili che non devono diventare subito obbligatori.</p>
+<p>Decisioni possibili:</p>
+<pre><code>Assorbire
+Non assorbire
+Rimandare</code></pre>
+<p>Esempio:</p>
+<pre><code>La sintesi decisionale finale e' utile, ma resta rimandata finche' non emerge come bisogno ricorrente.</code></pre>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

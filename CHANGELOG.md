@@ -58,3 +58,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornato il sito con logo AgentFactory, wordmark in landing e palette coerente con il marchio.
 - Corretto il rendering dei loghi sul sito pubblicato con dimensioni robuste e cache-busting degli asset.
 - Aggiunta la Lezione 10 sulla knowledge absorption e aggiornato il template dedicato.
+- Aggiunta la Lezione 11 con la prima knowledge absorption candidate reale e regole requisiti assorbite.

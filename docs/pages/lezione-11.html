@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 - Prima knowledge absorption candidate | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a aria-current="page" href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+  </div>
+  <h1>11 - Prima knowledge absorption candidate</h1>
+  <p class="lead">Applicazione concreta della knowledge absorption alla prima review reale.</p>
+  <div class="source-chip">lessons/11-prima-knowledge-absorption-candidate.md</div>
+  <section class="markdown-body">
+    <h1 id="11-prima-knowledge-absorption-candidate-reale">11 - Prima knowledge absorption candidate reale</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a fare per la prima volta il processo di knowledge absorption su un artefatto reale.</p>
+<p>Nella lezione 10 ho studiato il concetto:</p>
+<pre><code>esperienza grezza -&gt; review -&gt; conoscenza candidata -&gt; validazione -&gt; memoria permanente</code></pre>
+<p>Ora lo applico alla prima review concreta:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements-review.md</code></pre>
+<p>L'obiettivo non e' solo leggere la review.</p>
+<p>L'obiettivo e':</p>
+<ul><li>estrarre conoscenza candidata;</li><li>distinguere cosa assorbire e cosa no;</li><li>capire quali file devono cambiare;</li><li>aggiornare un template quando la conoscenza e' abbastanza solida;</li><li>salvare una traccia della decisione.</li></ul>
+<p>Questa e' una lezione importante perche' inizia a rendere AgentFactory una factory che impara davvero.</p>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Finora ho fatto tre passaggi:</p>
+<ol><li>ho creato un template di output;</li><li>ho prodotto un Requirement Analysis Document manuale;</li><li>ho valutato quel documento con una review.</li></ol>
+<p>Ma una review, da sola, non migliora il sistema.</p>
+<p>Una review migliora il sistema solo se produce cambiamenti controllati.</p>
+<p>Esempio:</p>
+<pre><code>Finding:
+I requisiti non hanno priorita'.</code></pre>
+<p>Questo finding puo' restare una nota.</p>
+<p>Oppure puo' diventare:</p>
+<pre><code>Regola:
+Ogni requisito importante deve indicare priorita' e fase.</code></pre>
+<p>La differenza e' enorme.</p>
+<p>Nel primo caso ho corretto un documento.</p>
+<p>Nel secondo caso ho migliorato il modo in cui la factory produrra' documenti futuri.</p>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere chiari:</p>
+<ul><li>che cos'e' una review;</li><li>che cos'e' un finding;</li><li>che cos'e' una knowledge candidate;</li><li>differenza tra storage e memoria permanente;</li><li>ruolo del Knowledge Compiler;</li><li>ruolo del human gate;</li><li>perche' non tutto deve essere assorbito.</li></ul>
+<h2 id="fonte-da-analizzare">Fonte da analizzare</h2>
+<p>La fonte e':</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements-review.md</code></pre>
+<p>Questa review valuta:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements.md</code></pre>
+<p>L'esito e':</p>
+<pre><code>Passa con riserve</code></pre>
+<p>Score:</p>
+<pre><code>25/30
+83%</code></pre>
+<p>Quindi il documento e' buono, ma contiene alcune debolezze utili per imparare.</p>
+<h2 id="finding-emersi-dalla-review">Finding emersi dalla review</h2>
+<p>I finding principali sono:</p>
+<pre><code>P1 - Mancano priorita' o fase dei requisiti.
+P2 - Alcuni criteri qualitativi possono diventare piu' misurabili.
+P2 - Human gate presenti ma non classificati.
+P3 - Sintesi finale utile.</code></pre>
+<p>Questi finding non hanno tutti lo stesso peso.</p>
+<p>Devo capire quali sono:</p>
+<ul><li>problemi del singolo documento;</li><li>segnali di miglioramento del template;</li><li>regole generali da usare in futuro;</li><li>suggerimenti utili ma non ancora abbastanza solidi.</li></ul>
+<h2 id="prima-selezione">Prima selezione</h2>
+<p>Uso una tabella per ragionare.</p>
+<div class="table-wrap"><table><thead><tr><th>Finding</th><th>Tipo</th><th>Decisione iniziale</th><th>Motivo</th></tr></thead><tbody><tr><td>Mancano priorita' o fase</td><td>Pattern strutturale</td><td>Assorbire</td><td>Aiuta handoff, sviluppo e test</td></tr><tr><td>Criteri qualitativi poco misurabili</td><td>Regola di qualita'</td><td>Assorbire</td><td>Rende output piu' verificabili</td></tr><tr><td>Human gate non classificati</td><td>Regola di governance</td><td>Assorbire</td><td>Riduce blocchi e autonomia cieca</td></tr><tr><td>Sintesi finale utile</td><td>Miglioramento di leggibilita'</td><td>Rimandare</td><td>Utile, ma non ancora necessaria come obbligo</td></tr></tbody></table></div>
+<p>Questa e' una distinzione importante.</p>
+<p>Non sto assorbendo tutto.</p>
+<p>Sto scegliendo.</p>
+<h2 id="knowledge-candidate-prodotte">Knowledge candidate prodotte</h2>
+<p>Dalla review estraggo quattro candidate.</p>
+<h3 id="candidate-1-priorita-e-fase-dei-requisiti">Candidate 1 - Priorita' e fase dei requisiti</h3>
+<pre><code>Ogni requisito rilevante dovrebbe indicare priorita' e fase.</code></pre>
+<p>Esempio:</p>
+<pre><code>Priorita': Must
+Fase: v0.1</code></pre>
+<p>Perche' e' utile:</p>
+<ul><li>il Developer Agent capisce cosa implementare prima;</li><li>il Tester Agent capisce cosa coprire subito;</li><li>il Reviewer Agent puo' valutare scope e completezza;</li><li>il Supervisor Agent puo' pianificare meglio.</li></ul>
+<p>Decisione:</p>
+<pre><code>Assorbire.</code></pre>
+<h3 id="candidate-2-criteri-qualitativi-osservabili">Candidate 2 - Criteri qualitativi osservabili</h3>
+<pre><code>Le richieste qualitative devono essere trasformate in segnali verificabili.</code></pre>
+<p>Esempio debole:</p>
+<pre><code>Il sito deve essere bello e leggibile.</code></pre>
+<p>Esempio migliore:</p>
+<pre><code>Il sito deve essere leggibile su desktop e mobile.
+Criterio: verificare screenshot a 1440px e 390px senza sovrapposizioni o testo tagliato.</code></pre>
+<p>Perche' e' utile:</p>
+<ul><li>riduce interpretazioni soggettive;</li><li>aiuta il Tester Agent;</li><li>aiuta il Reviewer Agent;</li><li>evita che il design resti solo gusto.</li></ul>
+<p>Decisione:</p>
+<pre><code>Assorbire.</code></pre>
+<h3 id="candidate-3-human-gate-classificati">Candidate 3 - Human gate classificati</h3>
+<pre><code>Ogni punto di validazione umana dovrebbe indicare se e' bloccante, rimandabile o informativo.</code></pre>
+<p>Esempio:</p>
+<pre><code>Decisione: confermare pubblicazione su GitHub Pages
+Tipo: Bloccante
+Motivo: influenza struttura di deploy e path asset</code></pre>
+<p>Perche' e' utile:</p>
+<ul><li>evita blocchi inutili;</li><li>chiarisce quando fermare la pipeline;</li><li>separa governance vera da promemoria;</li><li>aiuta il Supervisor Agent.</li></ul>
+<p>Decisione:</p>
+<pre><code>Assorbire.</code></pre>
+<h3 id="candidate-4-sintesi-decisionale-finale">Candidate 4 - Sintesi decisionale finale</h3>
+<pre><code>Ogni Requirement Analysis Document dovrebbe chiudere con una sintesi decisionale finale.</code></pre>
+<p>Perche' e' utile:</p>
+<ul><li>aiuta lettura rapida;</li><li>aiuta handoff umano;</li><li>riduce tempo di orientamento.</li></ul>
+<p>Perche' non la assorbo subito come obbligo:</p>
+<ul><li>il template e' gia' abbastanza lungo;</li><li>non e' ancora chiaro se serve in ogni progetto;</li><li>potrebbe diventare rumore nei progetti piccoli;</li><li>va osservata in altri casi.</li></ul>
+<p>Decisione:</p>
+<pre><code>Rimandare.</code></pre>
+<h2 id="artefatto-prodotto">Artefatto prodotto</h2>
+<p>Questa lezione produce il primo record di knowledge absorption:</p>
+<pre><code>experiments/001-agentfactory-static-site-knowledge-absorption.md</code></pre>
+<p>Questo file non e' ancora una regola permanente da solo.</p>
+<p>E' il documento che spiega:</p>
+<ul><li>fonte;</li><li>cosa e' successo;</li><li>cosa abbiamo imparato;</li><li>evidenza;</li><li>ambito di validita';</li><li>rischio di applicazione sbagliata;</li><li>cosa diventa permanente;</li><li>cosa non va salvato;</li><li>file da aggiornare;</li><li>decisione.</li></ul>
+<h2 id="cosa-entra-nella-knowledge-base">Cosa entra nella Knowledge Base</h2>
+<p>Da questa lezione entrano nella Knowledge Base tre regole operative:</p>
+<pre><code>1. I requisiti rilevanti devono indicare priorita' e fase.
+2. I criteri qualitativi devono essere tradotti in segnali osservabili.
+3. I punti di validazione umana devono indicare se sono bloccanti, rimandabili o informativi.</code></pre>
+<p>Queste regole vengono salvate in:</p>
+<pre><code>knowledge-base/requirement-analysis-rules.md</code></pre>
+<p>Non salvo invece:</p>
+<pre><code>usare sempre GitHub Pages</code></pre>
+<p>Perche' e' una scelta valida per questo progetto, ma non una regola universale.</p>
+<p>Non salvo nemmeno:</p>
+<pre><code>aggiungere sempre sintesi decisionale finale</code></pre>
+<p>Per ora resta una candidate rimandata.</p>
+<h2 id="aggiornamento-del-template-requisiti">Aggiornamento del template requisiti</h2>
+<p>La knowledge absorption produce anche un aggiornamento concreto al template:</p>
+<pre><code>templates/requirement-analysis-output-template.md</code></pre>
+<p>Il template viene migliorato con:</p>
+<ul><li>campo <code>Priorita</code>;</li><li>campo <code>Fase</code>;</li><li>human gate classificato per tipo;</li><li>criteri di accettazione piu' osservabili.</li></ul>
+<p>Questo e' il punto in cui la factory impara:</p>
+<pre><code>review -&gt; knowledge absorption -&gt; template migliore</code></pre>
+<p>La prossima volta il Requirement Analyst Agent non dovra' ricordarsi a mano questa regola.</p>
+<p>La trovera' gia' nel template.</p>
+<h2 id="mappa-del-flusso-concreto">Mappa del flusso concreto</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+  RAD[Requirement Analysis Document] --&gt; REV[Review manuale]
+  REV --&gt; F[Finding]
+  F --&gt; KC[Knowledge absorption candidate]
+  KC --&gt; D{Decisione}
+  D --&gt;|Assorbire| KB[Knowledge Base]
+  D --&gt;|Assorbire| T[Template aggiornato]
+  D --&gt;|Rimandare| OBS[Osservare altri casi]
+  KB --&gt; RA[Requirement Analyst Agent futuro]
+  T --&gt; RA</div></div>
+<p>Questo e' il primo ciclo di miglioramento reale.</p>
+<p>Non e' ancora automatico.</p>
+<p>Ma e' gia' il modello che poi potro' automatizzare.</p>
+<h2 id="perche-non-aggiorno-subito-tutto">Perche' non aggiorno subito tutto</h2>
+<p>Potrei essere tentato di aggiornare:</p>
+<ul><li>Agent Card;</li><li>checklist;</li><li>template;</li><li>roadmap;</li><li>knowledge base;</li><li>sito;</li><li>manuale.</li></ul>
+<p>Ma bisogna evitare l'effetto valanga.</p>
+<p>In questa fase aggiorno solo cio' che ha impatto diretto:</p>
+<ul><li>template requisiti;</li><li>knowledge base;</li><li>manuale/roadmap per tracciare il percorso;</li><li>sito generato.</li></ul>
+<p>La Agent Card del Requirement Analyst Agent potra' essere aggiornata quando inizieremo a progettare il primo agente reale.</p>
+<p>La checklist potra' essere aggiornata quando faremo la prossima review.</p>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Situazione:</p>
+<pre><code>Il requisito dice: il sito deve essere bello.</code></pre>
+<p>Review:</p>
+<pre><code>Criterio troppo qualitativo.</code></pre>
+<p>Knowledge absorption:</p>
+<pre><code>Le richieste qualitative devono diventare segnali osservabili.</code></pre>
+<p>Template aggiornato:</p>
+<pre><code>Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportamento, output, viewport, screenshot, soglia o controllo esplicito quando possibile]</code></pre>
+<p>Risultato:</p>
+<pre><code>Il prossimo documento requisiti sara' piu' testabile.</code></pre>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>Scenario:</p>
+<pre><code>Pipeline multi-agent per creare una piattaforma SaaS.</code></pre>
+<p>Il Requirement Analyst Agent produce 40 requisiti senza priorita'.</p>
+<p>Il Developer Agent non sa da dove iniziare.</p>
+<p>Il Tester Agent non sa cosa coprire nella prima suite.</p>
+<p>Il Supervisor Agent non sa stimare fasi.</p>
+<p>La review segnala:</p>
+<pre><code>Manca distinzione tra Must, Should, Could e tra v0.1, v0.2, futuro.</code></pre>
+<p>Knowledge absorption:</p>
+<pre><code>I requisiti rilevanti devono indicare priorita' e fase.</code></pre>
+<p>Template aggiornato.</p>
+<p>Risultato:</p>
+<pre><code>La prossima pipeline riceve output piu' orchestrabile.</code></pre>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-assorbire-tutto-dalla-review">Errore 1 - Assorbire tutto dalla review</h3>
+<p>Errore:</p>
+<pre><code>Ogni suggerimento della review diventa regola permanente.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>La factory diventa pesante e burocratica.</code></pre>
+<p>Correzione:</p>
+<pre><code>Distinguere assorbire, rimandare e non assorbire.</code></pre>
+<h3 id="errore-2-assorbire-solo-concetti-astratti">Errore 2 - Assorbire solo concetti astratti</h3>
+<p>Errore:</p>
+<pre><code>Scrivere &quot;fare requisiti migliori&quot; nella knowledge base.</code></pre>
+<p>Perche' e' inutile:</p>
+<pre><code>Non cambia il comportamento di nessun agente.</code></pre>
+<p>Correzione:</p>
+<pre><code>Tradurre la conoscenza in campi, checklist, esempi o regole operative.</code></pre>
+<h3 id="errore-3-aggiornare-il-template-senza-spiegare-perche">Errore 3 - Aggiornare il template senza spiegare perche'</h3>
+<p>Errore:</p>
+<pre><code>Aggiungo Priorita' al template, ma non traccio la motivazione.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Tra un mese non sapro' se quella sezione serve davvero.</code></pre>
+<p>Correzione:</p>
+<pre><code>Creare una knowledge absorption candidate con evidenza e decisione.</code></pre>
+<h3 id="errore-4-trattare-una-preferenza-come-regola">Errore 4 - Trattare una preferenza come regola</h3>
+<p>Errore:</p>
+<pre><code>Mi piace la sintesi finale, quindi diventa obbligatoria.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Potrebbe allungare inutilmente documenti piccoli.</code></pre>
+<p>Correzione:</p>
+<pre><code>Rimandare finche' non emerge come bisogno ricorrente.</code></pre>
+<h3 id="errore-5-dimenticare-l-agente-a-valle">Errore 5 - Dimenticare l'agente a valle</h3>
+<p>Errore:</p>
+<pre><code>Assorbire conoscenza pensando solo al documento, non alla pipeline.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Una Agent Factory migliora quando gli agenti successivi lavorano meglio.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni regola assorbita deve spiegare quale agente o passaggio aiuta.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione crea il primo piccolo ciclo reale:</p>
+<pre><code>Requirement Analyst output
+  -&gt; Review
+  -&gt; Knowledge absorption
+  -&gt; Knowledge Base
+  -&gt; Template migliorato
+  -&gt; Output futuri migliori</code></pre>
+<p>Questo e' esattamente il principio che voglio padroneggiare:</p>
+<pre><code>un sistema multi-agent professionale non deve solo produrre output;
+deve imparare in modo controllato dai propri output.</code></pre>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>experiments/001-agentfactory-static-site-knowledge-absorption.md
+knowledge-base/requirement-analysis-rules.md</code></pre>
+<p>E aggiorna:</p>
+<pre><code>templates/requirement-analysis-output-template.md</code></pre>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Quali finding della review meritano assorbimento?
+2. Perche' priorita' e fase aiutano la pipeline?
+3. Perche' i criteri qualitativi devono diventare osservabili?
+4. Perche' i human gate devono essere classificati?
+5. Perche' non assorbo subito la sintesi decisionale finale?
+6. Che differenza c'e' tra aggiornare un template e aggiornare una knowledge base?
+7. Come questa lezione migliora gli output futuri del Requirement Analyst Agent?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>La review deve produrre decisioni di assorbimento, non solo giudizi.</li><li>Priorita' e fase rendono i requisiti piu' orchestrabili.</li><li>I criteri qualitativi devono diventare osservabili per essere testabili.</li><li>I punti di validazione umana devono indicare se bloccano il workflow o possono essere rimandati.</li><li>Non ogni miglioramento utile deve diventare obbligatorio subito.</li><li>La knowledge absorption deve lasciare traccia del perche' un template cambia.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Dopo questa lezione posso iniziare a progettare il passaggio successivo:</p>
+<pre><code>dal Requirement Analysis Document al primo handoff verso Architect Agent.</code></pre>
+<p>La prossima lezione dovra' spiegare come un agente riceve un artefatto da un altro agente e come evitare perdita di contesto nel passaggio.</p>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

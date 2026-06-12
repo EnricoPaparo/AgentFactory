@@ -112,6 +112,13 @@ const sources = [
     summary: "Come trasformare review, errori ed esperienze in conoscenza permanente validata.",
   },
   {
+    title: "11 - Prima knowledge absorption candidate",
+    file: "lessons/11-prima-knowledge-absorption-candidate.md",
+    slug: "lezione-11",
+    group: "Lezioni",
+    summary: "Applicazione concreta della knowledge absorption alla prima review reale.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -133,6 +140,13 @@ const sources = [
     summary: "Checklist per valutare un Requirement Analysis Document.",
   },
   {
+    title: "Knowledge Absorption Template",
+    file: "templates/knowledge-absorption-template.md",
+    slug: "template-knowledge-absorption",
+    group: "Template",
+    summary: "Template per decidere cosa assorbire nella memoria permanente.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -145,6 +159,20 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-requirements-review",
     group: "Esperimenti",
     summary: "Prima review manuale di un Requirement Analysis Document.",
+  },
+  {
+    title: "001 - Knowledge Absorption Static Site Review",
+    file: "experiments/001-agentfactory-static-site-knowledge-absorption.md",
+    slug: "esperimento-001-agentfactory-static-site-knowledge-absorption",
+    group: "Esperimenti",
+    summary: "Prima candidate reale di knowledge absorption.",
+  },
+  {
+    title: "Requirement Analysis Rules",
+    file: "knowledge-base/requirement-analysis-rules.md",
+    slug: "knowledge-requirement-analysis-rules",
+    group: "Knowledge Base",
+    summary: "Regole assorbite per migliorare i futuri documenti requisiti.",
   },
 ];
 

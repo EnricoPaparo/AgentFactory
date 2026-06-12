@@ -70,24 +70,32 @@ Fonte input: [Brief / email / meeting notes / issue / altro]
 
 ```text
 RF-001 - [Il sistema deve...]
+Priorita': [Must / Should / Could]
+Fase: [v0.1 / v0.2 / futuro]
 Motivazione: [Perche' serve]
-Criterio di accettazione: [Come verificare che sia soddisfatto]
+Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportamento, output, viewport, screenshot, soglia o controllo esplicito quando possibile]
 
 RF-002 - [Il sistema deve...]
+Priorita': [Must / Should / Could]
+Fase: [v0.1 / v0.2 / futuro]
 Motivazione: [Perche' serve]
-Criterio di accettazione: [Come verificare che sia soddisfatto]
+Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportamento, output, viewport, screenshot, soglia o controllo esplicito quando possibile]
 ```
 
 ## Requisiti non funzionali
 
 ```text
 RNF-001 - [Performance / sicurezza / usabilita' / tracciabilita' / accessibilita' / manutenibilita']
+Priorita': [Must / Should / Could]
+Fase: [v0.1 / v0.2 / futuro]
 Motivazione: [Perche' serve]
-Criterio di accettazione: [Come verificare che sia soddisfatto]
+Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportamento, output, viewport, screenshot, soglia o controllo esplicito quando possibile]
 
 RNF-002 - [Performance / sicurezza / usabilita' / tracciabilita' / accessibilita' / manutenibilita']
+Priorita': [Must / Should / Could]
+Fase: [v0.1 / v0.2 / futuro]
 Motivazione: [Perche' serve]
-Criterio di accettazione: [Come verificare che sia soddisfatto]
+Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportamento, output, viewport, screenshot, soglia o controllo esplicito quando possibile]
 ```
 
 ## Vincoli
@@ -119,8 +127,13 @@ Criterio di accettazione: [Come verificare che sia soddisfatto]
 ## Punti di validazione umana
 
 ```text
-- [Decisione o chiarimento che richiede approvazione umana]
-- [Decisione o chiarimento che richiede approvazione umana]
+- Decisione: [Decisione o chiarimento che richiede approvazione umana]
+  Tipo: [Bloccante / Rimandabile / Informativo]
+  Motivo: [Perche' richiede validazione]
+
+- Decisione: [Decisione o chiarimento che richiede approvazione umana]
+  Tipo: [Bloccante / Rimandabile / Informativo]
+  Motivo: [Perche' richiede validazione]
 ```
 
 ## Handoff per Architect Agent
