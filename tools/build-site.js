@@ -7,6 +7,7 @@ const pagesDir = path.join(docsDir, "pages");
 
 const siteTitle = "AgentFactory";
 const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.";
+const siteAuthor = "Enrico Paparo";
 
 const sources = [
   {
@@ -324,6 +325,7 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)} | ${siteTitle}</title>
   <meta name="description" content="${escapeHtml(tagline)}">
+  <meta name="author" content="${escapeHtml(siteAuthor)}">
   <link rel="stylesheet" href="${prefix}styles.css">
 </head>
 <body class="${pageClass}">
@@ -350,12 +352,20 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
     </aside>
     <main class="content">
       ${body}
+      ${siteFooter()}
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script src="${prefix}site.js"></script>
 </body>
 </html>`;
+}
+
+function siteFooter() {
+  return `<footer class="site-footer">
+    <span>Sito statico prodotto da ${escapeHtml(siteAuthor)}</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>`;
 }
 
 function pageBody(source, rendered) {
@@ -406,6 +416,7 @@ function indexBody() {
         <a class="primary-action" href="pages/manuale.html">Apri il manuale</a>
         <a class="secondary-action" href="pages/lezione-00.html">Inizia dalla lezione 00</a>
       </div>
+      <p class="hero-credit">Sito statico prodotto da ${escapeHtml(siteAuthor)}</p>
     </div>
     <div class="hero-panel" aria-label="Pipeline AgentFactory">
       <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>

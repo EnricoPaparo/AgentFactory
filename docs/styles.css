@@ -321,6 +321,13 @@ select {
   margin-top: 34px;
 }
 
+.hero-credit {
+  margin: 14px 0 0;
+  color: rgba(157, 168, 189, 0.78);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
 .primary-action,
 .secondary-action {
   display: inline-flex;
@@ -599,6 +606,23 @@ select {
 
 .markdown-body {
   padding-bottom: 80px;
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 920px;
+  margin: 30px auto 0;
+  padding: 20px 0 4px;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  color: rgba(157, 168, 189, 0.72);
+  font-size: 0.78rem;
+}
+
+.site-footer span:first-child {
+  color: rgba(244, 247, 251, 0.78);
 }
 
 .markdown-body h1,
