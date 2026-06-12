@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>001 - Review Static Site Architecture ADR | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group"><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a><a href="lezione-14.html"><span>14 - Valutare ADR e Architect output</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="architect-agent.html"><span>Architect Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a><a href="template-architecture-decision-review-checklist.html"><span>Architecture Decision Review Checklist</span></a></details><details class="nav-group" open><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a><a aria-current="page" href="esperimento-001-agentfactory-static-site-architecture-review.html"><span>001 - Review Static Site Architecture ADR</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Esperimenti</span>
+  </div>
+  <h1>001 - Review Static Site Architecture ADR</h1>
+  <p class="lead">Prima review strutturata di un ADR prodotto da Architect Agent.</p>
+  <div class="source-chip">experiments/001-agentfactory-static-site-architecture-review.md</div>
+  <section class="markdown-body">
+    <h1 id="review-agentfactory-static-site-architecture-adr">Review - AgentFactory Static Site Architecture ADR</h1>
+<h2 id="metadati-review">Metadati review</h2>
+<pre><code>Documento valutato: experiments/001-agentfactory-static-site-architecture.md
+Handoff sorgente: experiments/001-agentfactory-static-site-architect-handoff.md
+Reviewer: Reviewer Agent simulato manualmente
+Data: 2026-06-12
+Versione review: v0.1
+Esito: Passa con riserve</code></pre>
+<h2 id="scala-punteggio">Scala punteggio</h2>
+<pre><code>0 = assente o inutilizzabile
+1 = presente ma debole
+2 = buono ma migliorabile
+3 = forte e operativo</code></pre>
+<h2 id="checklist">Checklist</h2>
+<div class="table-wrap"><table><thead><tr><th>Area</th><th>Score</th><th>Domanda guida</th><th>Evidenza</th><th>Azione correttiva</th></tr></thead><tbody><tr><td>Struttura</td><td>3</td><td>L'ADR segue il template previsto?</td><td>Contiene metadati, fonti, contesto, problema, decisione, motivazione, alternative, conseguenze, trade-off, rischi, condizioni di revisione e handoff.</td><td>Nessuna azione immediata.</td></tr><tr><td>Tracciabilita'</td><td>3</td><td>Si capiscono fonti, handoff e contesto?</td><td>L'ADR cita requisiti, review, knowledge absorption, handoff e knowledge base.</td><td>Nessuna azione immediata.</td></tr><tr><td>Aderenza all'handoff</td><td>3</td><td>L'Architect ha rispettato mandato, scope e out of scope?</td><td>Mantiene sito statico, GitHub Pages, Markdown e non introduce framework o backend.</td><td>Nessuna azione immediata.</td></tr><tr><td>Decisione</td><td>3</td><td>La decisione e' esplicita e non ambigua?</td><td>La decisione dice chiaramente di mantenere il generatore statico custom in Node.js nella fase corrente.</td><td>Nessuna azione immediata.</td></tr><tr><td>Motivazione</td><td>3</td><td>La scelta e' motivata da requisiti e vincoli?</td><td>La motivazione collega scelta a fase didattica, GitHub Pages, Markdown e bassa complessita'.</td><td>Nessuna azione immediata.</td></tr><tr><td>Alternative</td><td>3</td><td>Le alternative plausibili sono considerate e motivate?</td><td>Astro, MkDocs, Docusaurus e Vite sono valutati con vantaggi, svantaggi ed esito.</td><td>Nessuna azione immediata.</td></tr><tr><td>Trade-off</td><td>3</td><td>Costi, benefici e compromessi sono dichiarati?</td><td>L'ADR dichiara meno funzioni pronte in cambio di semplicita', controllo e nessuna dipendenza framework.</td><td>Nessuna azione immediata.</td></tr><tr><td>Rischi</td><td>2</td><td>I rischi architetturali sono concreti e mitigati?</td><td>I rischi sono concreti, ma alcuni trigger potrebbero essere piu' misurabili.</td><td>Rendere piu' precise alcune soglie di rischio nella prossima revisione.</td></tr><tr><td>Revisione futura</td><td>2</td><td>Sono indicate condizioni di revisione?</td><td>Le condizioni sono presenti, ma alcune sono qualitative: &quot;numero di lezioni supera una soglia&quot;, &quot;tools/build-site.js diventa difficile&quot;.</td><td>Definire soglie operative quando il progetto cresce.</td></tr><tr><td>Azionabilita'</td><td>2</td><td>L'ADR abilita Developer, Tester e Reviewer?</td><td>Handoff e note sono utili, ma il Developer Agent riceve istruzioni ancora generali.</td><td>Nel prossimo handoff Developer indicare file, permessi e primo task operativo.</td></tr></tbody></table></div>
+<h2 id="score-finale">Score finale</h2>
+<pre><code>Totale: 27/30
+Percentuale: 90%
+Esito consigliato: Passa con riserve</code></pre>
+<h2 id="finding-principali">Finding principali</h2>
+<pre><code>P1 - Le condizioni di revisione sono presenti ma non ancora misurabili.
+L'ADR dice quando rivalutare la scelta, ma alcune soglie sono qualitative. Per ora va bene, ma crescendo serviranno trigger piu' precisi.
+
+P2 - L'handoff per Developer Agent e' utile ma ancora generale.
+L'ADR indica di aggiornare sources, rigenerare docs e non introdurre framework, ma non definisce ancora il primo task di sviluppo autorizzato.
+
+P2 - Manca validazione umana formale della decisione.
+Lo stato e' &quot;Proposta accettabile&quot;, ma non registra ancora una decisione umana esplicita di accettazione definitiva.
+
+P3 - Buona candidate per knowledge absorption.
+La regola &quot;non introdurre framework prima che il bisogno superi il costo&quot; e' utile, ma va osservata in altri casi prima di diventare regola generale permanente.</code></pre>
+<h2 id="azioni-correttive">Azioni correttive</h2>
+<pre><code>- Nel prossimo Developer Handoff indicare file autorizzati, task, limiti e comandi consentiti.
+- Quando il sito cresce, trasformare le condizioni di revisione in soglie piu' osservabili.
+- Registrare human gate se una futura decisione architetturale comporta migrazione o nuova dipendenza.
+- Tenere come knowledge candidate il principio di architettura proporzionata alla fase.</code></pre>
+<h2 id="knowledge-candidate">Knowledge candidate</h2>
+<pre><code>- Un ADR deve passare anche il controllo di aderenza all'handoff, non solo la qualita' della decisione.
+- Le condizioni di revisione devono diventare piu' misurabili quando una decisione temporanea inizia a durare.
+- L'handoff verso Developer Agent deve indicare non solo cosa rispettare, ma anche quali file e privilegi sono autorizzati.
+- Una decisione architetturale leggera e' valida se e' proporzionata a fase, rischi e obiettivi.</code></pre>
+<h2 id="decisione">Decisione</h2>
+<pre><code>L'ADR puo' essere usato come input per preparare il Developer Agent e il primo Developer Handoff.
+
+Non richiede correzioni bloccanti prima di procedere.
+
+La prossima fase deve pero' rendere piu' espliciti privilegi, file autorizzati e primo task operativo del Developer Agent.</code></pre>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

@@ -34,6 +34,7 @@ Una Agent Factory e' un sistema capace di:
 - [11 - Prima knowledge absorption candidate reale](lessons/11-prima-knowledge-absorption-candidate.md)
 - [12 - Handoff e contratti tra agenti](lessons/12-handoff-e-contratti-tra-agenti.md)
 - [13 - Architect Agent e Architecture Decision Record](lessons/13-architect-agent-e-architecture-decision-record.md)
+- [14 - Valutare un ADR e l'output dell'Architect Agent](lessons/14-valutare-adr-e-output-architect-agent.md)
 
 ## Regola di ogni lezione
 

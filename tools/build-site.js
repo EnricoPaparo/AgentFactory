@@ -133,6 +133,13 @@ const sources = [
     summary: "Ruolo dell'Architect Agent, decisioni architetturali e primo ADR reale.",
   },
   {
+    title: "14 - Valutare ADR e Architect output",
+    file: "lessons/14-valutare-adr-e-output-architect-agent.md",
+    slug: "lezione-14",
+    group: "Lezioni",
+    summary: "Come valutare un ADR e decidere se abilita il prossimo agente.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -182,6 +189,13 @@ const sources = [
     summary: "Template per registrare decisioni architetturali motivate e revisionabili.",
   },
   {
+    title: "Architecture Decision Review Checklist",
+    file: "templates/architecture-decision-review-checklist.md",
+    slug: "template-architecture-decision-review-checklist",
+    group: "Template",
+    summary: "Checklist per valutare ADR prodotti manualmente o da Architect Agent.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -215,6 +229,13 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-architecture",
     group: "Esperimenti",
     summary: "Prima decisione architetturale simulata dell'Architect Agent.",
+  },
+  {
+    title: "001 - Review Static Site Architecture ADR",
+    file: "experiments/001-agentfactory-static-site-architecture-review.md",
+    slug: "esperimento-001-agentfactory-static-site-architecture-review",
+    group: "Esperimenti",
+    summary: "Prima review strutturata di un ADR prodotto da Architect Agent.",
   },
   {
     title: "Requirement Analysis Rules",

@@ -88,7 +88,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Pipeline sequenziale
 - [ ] Supervisor-worker pattern
 - [ ] Planner-executor pattern
-- [ ] Reviewer/Critic pattern
+- [x] Reviewer/Critic pattern
 - [ ] Pipeline multi-agent simulata in Markdown
 - [ ] n8n come esempio di workflow automation visuale
 
@@ -138,7 +138,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 ## Livello 9 - Agenti che migliorano nel tempo
 
 - [ ] Tracce di esecuzione
-- [ ] Valutazione output
+- [x] Valutazione output
 - [ ] Failure analysis
 - [ ] Rilevazione schema drift
 - [x] Lesson learned

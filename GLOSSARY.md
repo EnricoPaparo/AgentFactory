@@ -136,6 +136,10 @@ Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotes
 
 Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione.
 
+## Architecture Review
+
+Valutazione strutturata di un Architecture Decision Record. Controlla template, fonti, handoff, decisione, motivazione, alternative, trade-off, rischi, condizioni di revisione e utilita' per gli agenti successivi.
+
 ## Trade-off
 
 Compromesso consapevole tra vantaggi e costi. In architettura non esiste quasi mai una scelta perfetta: esiste una scelta adatta al contesto.
