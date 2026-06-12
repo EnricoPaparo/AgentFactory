@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 - Architect Agent e ADR | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a aria-current="page" href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="architect-agent.html"><span>Architect Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+  </div>
+  <h1>13 - Architect Agent e ADR</h1>
+  <p class="lead">Ruolo dell'Architect Agent, decisioni architetturali e primo ADR reale.</p>
+  <div class="source-chip">lessons/13-architect-agent-e-architecture-decision-record.md</div>
+  <section class="markdown-body">
+    <h1 id="13-architect-agent-e-architecture-decision-record">13 - Architect Agent e Architecture Decision Record</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a capire che cosa fa un Architect Agent dentro una pipeline multi-agent e quale artefatto deve produrre.</p>
+<p>Nella lezione 12 ho creato il primo handoff:</p>
+<pre><code>Requirement Analyst Agent
+  -&gt; Handoff Contract
+  -&gt; Architect Agent</code></pre>
+<p>Adesso devo progettare il ricevente.</p>
+<p>L'obiettivo non e' imparare &quot;architettura software&quot; in modo generico.</p>
+<p>L'obiettivo e' imparare come un agente architetto deve ragionare dentro una Agent Factory:</p>
+<ul><li>riceve requisiti e handoff;</li><li>rispetta vincoli e scope;</li><li>non inventa feature;</li><li>non scrive codice;</li><li>valuta alternative;</li><li>sceglie una direzione tecnica;</li><li>motiva i trade-off;</li><li>produce un artefatto verificabile;</li><li>prepara il lavoro per Developer Agent, Tester Agent e Reviewer Agent.</li></ul>
+<p>L'artefatto centrale di questa lezione e':</p>
+<pre><code>Architecture Decision Record</code></pre>
+<p>abbreviato spesso in:</p>
+<pre><code>ADR</code></pre>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>In una pipeline multi-agent il passaggio da requisiti ad architettura e' delicato.</p>
+<p>Il Requirement Analyst Agent dice:</p>
+<pre><code>cosa serve</code></pre>
+<p>L'Architect Agent deve decidere:</p>
+<pre><code>come strutturare la soluzione</code></pre>
+<p>Ma non deve saltare direttamente a:</p>
+<pre><code>implemento codice</code></pre>
+<p>Questa differenza sembra semplice, ma e' uno dei punti in cui gli agenti sbagliano piu' spesso.</p>
+<p>Un agente, se non governato, tende a:</p>
+<ul><li>proporre tecnologie premature;</li><li>progettare sistemi troppo grandi;</li><li>ignorare vincoli;</li><li>scegliere soluzioni eleganti ma non necessarie;</li><li>mescolare architettura, sviluppo e design;</li><li>produrre risposte convincenti ma non verificabili.</li></ul>
+<p>Un Architect Agent professionale deve invece lavorare con disciplina.</p>
+<p>Deve trasformare i requisiti in decisioni motivate, non in entusiasmo tecnico.</p>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere chiari:</p>
+<ul><li>cosa fa il Requirement Analyst Agent;</li><li>cosa contiene un Requirement Analysis Document;</li><li>cosa contiene un Handoff Contract;</li><li>differenza tra scope e out of scope;</li><li>differenza tra vincolo e preferenza;</li><li>concetto di output contract;</li><li>perche' un agente deve avere responsabilita' e privilegi limitati.</li></ul>
+<h2 id="definizione-semplice">Definizione semplice</h2>
+<p>Un Architect Agent e' un agente specializzato che prende requisiti e vincoli e propone una struttura tecnica coerente.</p>
+<p>Non e' il Developer Agent.</p>
+<p>Non e' il Tester Agent.</p>
+<p>Non e' il Product Owner.</p>
+<p>Non e' il Knowledge Compiler.</p>
+<p>Il suo lavoro e':</p>
+<pre><code>capire quale struttura tecnica rende il progetto realizzabile,
+mantenibile, verificabile e coerente con i vincoli.</code></pre>
+<h2 id="cosa-fa-un-architect-agent">Cosa fa un Architect Agent</h2>
+<p>Un Architect Agent deve:</p>
+<ul><li>leggere il Requirement Analysis Document;</li><li>leggere l'Handoff Contract;</li><li>identificare vincoli tecnici e organizzativi;</li><li>distinguere scelte immediate e opzioni future;</li><li>proporre una struttura del sistema;</li><li>scegliere pattern o strumenti quando servono;</li><li>spiegare alternative scartate;</li><li>dichiarare trade-off;</li><li>indicare rischi architetturali;</li><li>preparare handoff per Developer Agent;</li><li>preparare note utili per Tester Agent;</li><li>proporre candidate per Knowledge Compiler se emergono regole riutilizzabili.</li></ul>
+<h2 id="cosa-non-deve-fare">Cosa non deve fare</h2>
+<p>Un Architect Agent non deve:</p>
+<ul><li>inventare requisiti;</li><li>cambiare scope;</li><li>decidere feature non richieste;</li><li>scrivere codice di produzione;</li><li>modificare file del sito senza autorizzazione;</li><li>installare framework;</li><li>scegliere servizi a pagamento senza human gate;</li><li>aggiornare direttamente la knowledge base;</li><li>ignorare domande aperte bloccanti;</li><li>trasformare ipotesi future in obblighi immediati.</li></ul>
+<p>Questa separazione e' essenziale.</p>
+<p>Un agente potente non e' un agente che fa tutto.</p>
+<p>Un agente potente e' un agente che fa bene il proprio pezzo, dentro confini chiari.</p>
+<h2 id="differenza-tra-requirement-analyst-e-architect">Differenza tra Requirement Analyst e Architect</h2>
+<p>Il Requirement Analyst Agent risponde soprattutto a:</p>
+<pre><code>Che cosa serve?
+Perche' serve?
+Quali sono fatti, ipotesi, domande, rischi e requisiti?</code></pre>
+<p>L'Architect Agent risponde soprattutto a:</p>
+<pre><code>Come organizzo tecnicamente la soluzione?
+Quali scelte faccio ora?
+Quali scelte rimando?
+Quali trade-off accetto?
+Quali rischi devo mitigare?
+Che cosa deve sapere il Developer Agent?</code></pre>
+<p>Esempio:</p>
+<pre><code>Requirement:
+Il sito deve essere statico, consultabile e generato da Markdown.
+
+Decisione architetturale:
+Mantenere un generatore statico custom in Node.js nella fase corrente,
+senza introdurre framework, per ridurre complessita' e mantenere pieno controllo.</code></pre>
+<p>Questa e' architettura perche' non descrive solo una feature.</p>
+<p>Descrive una scelta strutturale, il motivo, il limite e l'impatto.</p>
+<h2 id="cos-e-un-architecture-decision-record">Cos'e' un Architecture Decision Record</h2>
+<p>Un Architecture Decision Record e' un documento che registra una decisione architetturale importante.</p>
+<p>Un ADR risponde a domande come:</p>
+<pre><code>Qual e' il contesto?
+Quale problema devo decidere?
+Quale decisione prendo?
+Quali alternative ho considerato?
+Perche' le scarto?
+Quali conseguenze ha la scelta?
+Quali rischi accetto?
+Quando dovro' rivedere la decisione?</code></pre>
+<p>Un ADR e' utile perche':</p>
+<ul><li>rende le scelte tracciabili;</li><li>evita di dimenticare perche' una scelta e' stata fatta;</li><li>aiuta gli agenti successivi;</li><li>riduce discussioni ripetute;</li><li>permette review e knowledge absorption;</li><li>separa decisione tecnica da implementazione.</li></ul>
+<h2 id="perche-non-basta-dire-usiamo-x">Perche' non basta dire &quot;usiamo X&quot;</h2>
+<p>Una decisione architetturale debole e':</p>
+<pre><code>Usiamo Astro.</code></pre>
+<p>Oppure:</p>
+<pre><code>Usiamo Node.js.</code></pre>
+<p>Questa non e' ancora architettura.</p>
+<p>Manca:</p>
+<ul><li>contesto;</li><li>motivazione;</li><li>alternative;</li><li>vincoli;</li><li>conseguenze;</li><li>rischio;</li><li>criterio di revisione.</li></ul>
+<p>Una decisione migliore e':</p>
+<pre><code>Decisione:
+Nella fase corrente manteniamo il generatore statico custom in Node.js.
+
+Motivo:
+Il sito e' ancora piccolo, il contenuto nasce in Markdown, GitHub Pages e' sufficiente,
+e introdurre un framework ora aumenterebbe complessita' senza beneficio immediato.
+
+Alternative scartate:
+- Astro: potente ma prematuro.
+- MkDocs: adatto alla documentazione, ma richiede migrazione e tema.
+- Vite app custom: troppo applicativo per un sito documentale statico.
+
+Conseguenza:
+Continuiamo a gestire navigazione e rendering nel generatore.
+Rivalutiamo se aumentano ricerca, versioni, tassonomie o componenti interattivi.</code></pre>
+<p>Questa e' una decisione architetturale utile.</p>
+<h2 id="diagramma-della-responsabilita">Diagramma della responsabilita'</h2>
+<div class="diagram"><div class="mermaid">flowchart LR
+    A[&quot;Requirement Analysis Document&quot;] --&gt; B[&quot;Architect Handoff Contract&quot;]
+    B --&gt; C[&quot;Architect Agent&quot;]
+    C --&gt; D[&quot;Architecture Decision Record&quot;]
+    D --&gt; E[&quot;Developer Handoff&quot;]
+    D --&gt; F[&quot;Tester Notes&quot;]
+    D --&gt; G[&quot;Reviewer Focus&quot;]
+    G --&gt; H[&quot;Knowledge Compiler&quot;]</div></div>
+<p>Il punto chiave:</p>
+<pre><code>L'Architect Agent non chiude la pipeline.
+Prepara un output che altri agenti possono usare e valutare.</code></pre>
+<h2 id="architettura-come-gestione-dei-trade-off">Architettura come gestione dei trade-off</h2>
+<p>Una cosa fondamentale: architettura non significa scegliere &quot;la tecnologia migliore&quot; in assoluto.</p>
+<p>Architettura significa scegliere un compromesso adatto al contesto.</p>
+<p>Ogni scelta ha vantaggi e costi.</p>
+<p>Esempio:</p>
+<pre><code>Generatore custom semplice</code></pre>
+<p>Vantaggi:</p>
+<ul><li>leggero;</li><li>controllabile;</li><li>nessuna dipendenza complessa;</li><li>facile da versionare;</li><li>adatto alla fase didattica.</li></ul>
+<p>Costi:</p>
+<ul><li>se il sito cresce molto, manutenzione manuale del generatore;</li><li>poche funzioni pronte rispetto a framework documentali;</li><li>ricerca interna da implementare a mano o aggiungere dopo.</li></ul>
+<p>Esempio opposto:</p>
+<pre><code>Framework statico completo</code></pre>
+<p>Vantaggi:</p>
+<ul><li>routing, componenti e plugin;</li><li>migliore scalabilita' del sito;</li><li>ricerca o indice piu' facili in futuro.</li></ul>
+<p>Costi:</p>
+<ul><li>migrazione;</li><li>dipendenze;</li><li>curva di apprendimento;</li><li>rischio di spostare attenzione dal manuale alla tecnologia.</li></ul>
+<p>L'Architect Agent deve rendere visibili questi trade-off.</p>
+<h2 id="decisioni-immediate-e-opzioni-future">Decisioni immediate e opzioni future</h2>
+<p>Un buon Architect Agent distingue:</p>
+<pre><code>Decisioni immediate</code></pre>
+<p>da:</p>
+<pre><code>Opzioni future</code></pre>
+<p>Questo e' importantissimo per AgentFactory.</p>
+<p>Errore comune:</p>
+<pre><code>In futuro potrebbe servire ricerca.
+Quindi ora progettiamo un motore di ricerca completo.</code></pre>
+<p>Correzione:</p>
+<pre><code>In futuro potrebbe servire ricerca.
+Ora manteniamo markup e struttura coerenti, cosi' sara' possibile aggiungerla.</code></pre>
+<p>Questa e' una mentalita' architetturale sana.</p>
+<p>Non ignorare il futuro.</p>
+<p>Ma non pagare oggi un costo che non serve ancora.</p>
+<h2 id="architettura-e-privilegi">Architettura e privilegi</h2>
+<p>L'Architect Agent deve avere privilegi diversi dal Developer Agent.</p>
+<p>Nella fase attuale:</p>
+<pre><code>Architect Agent:
+- legge requisiti, handoff, template, struttura repo;
+- scrive proposta architetturale;
+- non modifica codice;
+- non installa dipendenze;
+- non fa deploy.</code></pre>
+<p>Developer Agent:</p>
+<pre><code>- legge ADR e handoff;
+- modifica codice autorizzato;
+- esegue build/test autorizzati;
+- non cambia requisiti;
+- non modifica knowledge base permanente.</code></pre>
+<p>Questa separazione e' una base della governance multi-agent.</p>
+<p>Se l'Architect scrive anche codice, testa, deploya e aggiorna memoria, diventa troppo potente e difficile da controllare.</p>
+<h2 id="agent-card-dell-architect-agent">Agent Card dell'Architect Agent</h2>
+<p>Da questa lezione nasce una nuova Agent Card:</p>
+<pre><code>agents/architect-agent.md</code></pre>
+<p>L'Agent Card definisce:</p>
+<ul><li>missione;</li><li>responsabilita';</li><li>input;</li><li>output;</li><li>tool consentiti;</li><li>privilegi;</li><li>regole operative;</li><li>condizioni di stop;</li><li>criteri di qualita';</li><li>rischi.</li></ul>
+<p>Questa Agent Card e' ancora manuale, ma e' gia' un contratto operativo.</p>
+<p>In futuro potra' diventare parte di un sistema reale via API.</p>
+<h2 id="template-adr">Template ADR</h2>
+<p>Da questa lezione nasce anche:</p>
+<pre><code>templates/architecture-decision-record-template.md</code></pre>
+<p>Il template ADR serve a produrre decisioni architetturali confrontabili e valutabili.</p>
+<p>Se ogni ADR ha una struttura diversa, il Reviewer Agent fara' fatica a valutarlo.</p>
+<p>Se ogni ADR ha struttura coerente, posso costruire:</p>
+<ul><li>checklist;</li><li>score;</li><li>review;</li><li>knowledge absorption;</li><li>versioning delle decisioni.</li></ul>
+<h2 id="primo-adr-reale-prodotto">Primo ADR reale prodotto</h2>
+<p>Applico subito il concetto al progetto attuale:</p>
+<pre><code>experiments/001-agentfactory-static-site-architecture.md</code></pre>
+<p>Questo e' il primo output simulato dell'Architect Agent.</p>
+<p>La decisione principale e':</p>
+<pre><code>Mantenere per ora un sito statico generato da Markdown con script Node.js custom,
+pubblicato via GitHub Pages, rimandando framework piu' strutturati finche' la complessita'
+del sito non lo richiedera'.</code></pre>
+<p>Questa e' una decisione conservativa, ma forte.</p>
+<p>Perche'?</p>
+<p>Perche' rispetta il momento del progetto.</p>
+<p>AgentFactory ora deve farti imparare pipeline, contratti, agenti e memoria.</p>
+<p>Non deve trasformarsi prematuramente in un progetto frontend complesso.</p>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Immagino di dover creare una piccola documentazione personale.</p>
+<p>Requisito:</p>
+<pre><code>Voglio leggere appunti su web.</code></pre>
+<p>Architettura debole:</p>
+<pre><code>Facciamo una web app con login, database, editor e dashboard.</code></pre>
+<p>Problema:</p>
+<pre><code>Troppo per il bisogno reale.</code></pre>
+<p>Architettura migliore:</p>
+<pre><code>Per ora uso Markdown e sito statico.
+Quando avro' molti documenti e bisogno di ricerca, rivaluto un generatore documentale.</code></pre>
+<p>Questa seconda scelta e' piu' matura perche' protegge focus e manutenzione.</p>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>In un contesto aziendale, un Architect Agent potrebbe ricevere:</p>
+<pre><code>Requisiti:
+- CRM interno;
+- utenti autenticati;
+- dati sensibili;
+- integrazione con sistemi esistenti;
+- audit log;
+- budget limitato;
+- scadenza in 8 settimane.</code></pre>
+<p>L'Architect Agent non dovrebbe rispondere:</p>
+<pre><code>Usiamo microservizi, Kafka e Kubernetes.</code></pre>
+<p>Risposta migliore:</p>
+<pre><code>Dato il team, la scadenza e i dati sensibili,
+proporre una web app modulare monolitica, con database relazionale,
+audit log centralizzato, ruoli chiari e integrazioni isolate.
+Rimandare microservizi finche' non emergono bisogni reali di scalabilita' organizzativa.</code></pre>
+<p>Questa e' architettura professionale:</p>
+<ul><li>parte dai vincoli;</li><li>evita moda tecnologica;</li><li>considera team e rischio;</li><li>motiva le scelte;</li><li>prepara evoluzione futura.</li></ul>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-technology-first-architecture">Errore 1 - Technology-first architecture</h3>
+<p>Errore:</p>
+<pre><code>Partire da una tecnologia amata o di moda.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>La tecnologia guida il progetto invece dei requisiti.</code></pre>
+<p>Correzione:</p>
+<pre><code>Partire da obiettivo, vincoli, scope, rischi e solo dopo scegliere tecnologia.</code></pre>
+<h3 id="errore-2-architettura-troppo-grande">Errore 2 - Architettura troppo grande</h3>
+<p>Errore:</p>
+<pre><code>Progettare subito una soluzione enterprise per un progetto piccolo.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Aumenta costi, manutenzione e difficolta' di apprendimento.</code></pre>
+<p>Correzione:</p>
+<pre><code>Scegliere la soluzione piu' semplice che rispetta requisiti e crescita prevedibile.</code></pre>
+<h3 id="errore-3-confondere-architect-e-developer">Errore 3 - Confondere Architect e Developer</h3>
+<p>Errore:</p>
+<pre><code>L'Architect Agent produce direttamente codice.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>Salta una fase di decisione verificabile e rende difficile la review.</code></pre>
+<p>Correzione:</p>
+<pre><code>L'Architect produce ADR e handoff. Il Developer implementa dopo.</code></pre>
+<h3 id="errore-4-ignorare-alternative-scartate">Errore 4 - Ignorare alternative scartate</h3>
+<p>Errore:</p>
+<pre><code>Scrivere solo la decisione finale.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>In futuro non sapro' perche' non ho scelto altre strade.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni ADR deve includere alternative considerate e motivo dello scarto.</code></pre>
+<h3 id="errore-5-non-indicare-quando-rivalutare-la-scelta">Errore 5 - Non indicare quando rivalutare la scelta</h3>
+<p>Errore:</p>
+<pre><code>Una decisione temporanea diventa permanente per inerzia.</code></pre>
+<p>Perche' e' pericoloso:</p>
+<pre><code>La factory non evolve quando cambiano dimensione, rischio o requisiti.</code></pre>
+<p>Correzione:</p>
+<pre><code>Ogni ADR deve indicare condizioni di revisione.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione aggiunge il secondo agente strutturato del percorso:</p>
+<pre><code>Requirement Analyst Agent
+Architect Agent</code></pre>
+<p>E aggiunge un nuovo artefatto:</p>
+<pre><code>Architecture Decision Record</code></pre>
+<p>Ora la pipeline manuale diventa:</p>
+<pre><code>Brief
+  -&gt; Requirement Analysis Document
+  -&gt; Review
+  -&gt; Knowledge absorption
+  -&gt; Architect Handoff
+  -&gt; Architecture Decision Record</code></pre>
+<p>Questo e' un salto importante.</p>
+<p>Non sto solo imparando definizioni.</p>
+<p>Sto costruendo una catena di artefatti che un domani potra' essere eseguita da agenti reali.</p>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>agents/architect-agent.md
+templates/architecture-decision-record-template.md
+experiments/001-agentfactory-static-site-architecture.md</code></pre>
+<p>Aggiorna anche:</p>
+<pre><code>GLOSSARY.md
+ROADMAP.md
+MANUAL.md
+tools/build-site.js
+docs/</code></pre>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Che cosa fa un Architect Agent?
+2. Che cosa non deve fare?
+3. Perche' non deve scrivere codice nella fase corrente?
+4. Che cos'e' un Architecture Decision Record?
+5. Perche' un ADR deve includere alternative scartate?
+6. Che differenza c'e' tra decisione immediata e opzione futura?
+7. Perche' architettura significa gestire trade-off?
+8. Perche' nel sito AgentFactory conviene mantenere per ora un generatore custom?
+9. Quando avrebbe senso rivalutare questa scelta?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>L'Architect Agent trasforma requisiti e handoff in decisioni architetturali motivate.</li><li>Un ADR serve a rendere tracciabili contesto, decisione, alternative, trade-off e conseguenze.</li><li>L'Architect non deve implementare codice nella fase corrente.</li><li>Una scelta architetturale deve distinguere decisioni immediate e opzioni future.</li><li>La tecnologia deve seguire requisiti, vincoli e fase del progetto.</li><li>Ogni decisione temporanea deve indicare quando essere rivalutata.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Dopo questa lezione posso introdurre una review dell'output architetturale.</p>
+<p>La prossima lezione dovra' spiegare:</p>
+<ul><li>come valutare un ADR;</li><li>quali errori cercare in una proposta architetturale;</li><li>come capire se l'Architect Agent ha rispettato l'handoff;</li><li>come preparare il passaggio verso Developer Agent e Tester Agent.</li></ul>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>

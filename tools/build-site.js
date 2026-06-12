@@ -126,11 +126,25 @@ const sources = [
     summary: "Come passare contesto, vincoli e responsabilita' tra agenti senza perdere controllo.",
   },
   {
+    title: "13 - Architect Agent e ADR",
+    file: "lessons/13-architect-agent-e-architecture-decision-record.md",
+    slug: "lezione-13",
+    group: "Lezioni",
+    summary: "Ruolo dell'Architect Agent, decisioni architetturali e primo ADR reale.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
     group: "Agenti",
     summary: "Prima Agent Card reale tracciata nel repository.",
+  },
+  {
+    title: "Architect Agent",
+    file: "agents/architect-agent.md",
+    slug: "architect-agent",
+    group: "Agenti",
+    summary: "Agent Card del ruolo che trasforma requisiti e handoff in decisioni architetturali.",
   },
   {
     title: "Requirement Analysis Output Template",
@@ -161,6 +175,13 @@ const sources = [
     summary: "Template per passare lavoro strutturato da un agente a un altro.",
   },
   {
+    title: "Architecture Decision Record Template",
+    file: "templates/architecture-decision-record-template.md",
+    slug: "template-architecture-decision-record",
+    group: "Template",
+    summary: "Template per registrare decisioni architetturali motivate e revisionabili.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -187,6 +208,13 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-architect-handoff",
     group: "Esperimenti",
     summary: "Primo handoff operativo verso Architect Agent.",
+  },
+  {
+    title: "001 - Static Site Architecture ADR",
+    file: "experiments/001-agentfactory-static-site-architecture.md",
+    slug: "esperimento-001-agentfactory-static-site-architecture",
+    group: "Esperimenti",
+    summary: "Prima decisione architetturale simulata dell'Architect Agent.",
   },
   {
     title: "Requirement Analysis Rules",

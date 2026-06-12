@@ -51,7 +51,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Prompt, assistente e agente
 - [x] Automazione, workflow, agentic workflow e pipeline multi-agent
 - [ ] Anatomia di un agente professionale
-- [ ] Artefatti verificabili
+- [x] Artefatti verificabili
 - [ ] Human in the loop
 - [x] Output contract per il primo agente
 - [x] Primo Requirement Analysis Document manuale
@@ -125,9 +125,9 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 ## Livello 8 - Pipeline multi-agent reale
 
-- [ ] Requirement Analyst Agent
+- [x] Requirement Analyst Agent
 - [ ] Context Builder Agent
-- [ ] Architect Agent
+- [x] Architect Agent
 - [ ] Developer Agent
 - [ ] Tester Agent
 - [ ] Reviewer Agent

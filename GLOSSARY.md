@@ -124,9 +124,21 @@ Sistema capace di creare, configurare, orchestrare e migliorare agenti specializ
 
 Agente incaricato di trasformare input progettuali grezzi in requisiti chiari, verificabili e pronti per gli agenti successivi.
 
+## Architect Agent
+
+Agente incaricato di trasformare requisiti, vincoli e handoff in decisioni architetturali motivate, senza scrivere codice nella fase di progettazione.
+
 ## Requirement Analysis Document
 
 Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e handoff per gli agenti successivi.
+
+## Architecture Decision Record
+
+Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione.
+
+## Trade-off
+
+Compromesso consapevole tra vantaggi e costi. In architettura non esiste quasi mai una scelta perfetta: esiste una scelta adatta al contesto.
 
 ## Criterio di accettazione
 
