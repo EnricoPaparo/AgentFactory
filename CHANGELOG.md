@@ -47,3 +47,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornata la Agent Card del Requirement Analyst Agent con il template ufficiale di output.
 - Aggiornata la roadmap con output contract e Requirement Analysis Document.
 - Aggiornata la roadmap con il primo artefatto requisiti salvato manualmente.
+- Aggiornato il sito statico con dettagli futuristici: cornici HUD, micro-animazioni, badge di stato, sidebar neon e header per blocchi codice/diagrammi.

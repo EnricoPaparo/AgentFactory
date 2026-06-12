@@ -339,7 +339,11 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
 
 function pageBody(source, rendered) {
   return `<article class="doc-page">
-  <div class="page-kicker">${escapeHtml(source.group)}</div>
+  <div class="page-meta">
+    <span class="page-kicker">${escapeHtml(source.group)}</span>
+    <span class="status-pill">ONLINE</span>
+    <span class="status-pill">STATIC</span>
+  </div>
   <h1>${escapeHtml(source.title)}</h1>
   <p class="lead">${escapeHtml(source.summary)}</p>
   <div class="source-chip">${escapeHtml(source.file)}</div>
