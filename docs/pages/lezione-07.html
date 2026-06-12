@@ -118,6 +118,104 @@
 <p>Questa lista non e' burocrazia.</p>
 <p>E' architettura.</p>
 <p>Sto creando una forma stabile che altri agenti potranno leggere.</p>
+<h2 id="output-blindato-non-significa-output-immutabile">Output blindato non significa output immutabile</h2>
+<p>Qui nasce un dubbio importante:</p>
+<pre><code>Se in una pipeline multi-agent possono esistere agenti creati dinamicamente,
+ma l'output di un agente deve rispettare un contratto preciso,
+chi controlla che quel contratto sia ancora giusto?</code></pre>
+<p>La risposta e':</p>
+<pre><code>serve un ruolo di controllo del contratto di output.</code></pre>
+<p>In una Agent Factory professionale l'output contract deve essere abbastanza rigido da proteggere la pipeline, ma abbastanza governato da poter evolvere.</p>
+<p>Se il contratto e' troppo libero, gli agenti successivi non sanno cosa leggere.</p>
+<p>Se il contratto e' troppo rigido, la pipeline non riesce ad adattarsi a progetti nuovi.</p>
+<p>Quindi non devo pensare al template come a una pietra immobile.</p>
+<p>Devo pensarlo come a un componente versionato.</p>
+<p>Esempio:</p>
+<pre><code>Requirement Analysis Document v0.1
+Requirement Analysis Document v0.2
+Requirement Analysis Document v1.0</code></pre>
+<p>Ogni versione deve essere tracciata, motivata e compatibile con gli agenti che la usano.</p>
+<h2 id="il-ruolo-dell-output-contract-steward">Il ruolo dell'Output Contract Steward</h2>
+<p>Per ora lo chiamiamo:</p>
+<pre><code>Output Contract Steward</code></pre>
+<p>Non e' ancora un agente che costruiremo subito.</p>
+<p>E' un ruolo concettuale che comparira' piu' avanti nella pipeline.</p>
+<p>Il suo compito e' controllare se gli output prodotti dagli agenti sono:</p>
+<ul><li>conformi al template;</li><li>completi;</li><li>leggibili dagli agenti successivi;</li><li>troppo verbosi;</li><li>troppo poveri;</li><li>pieni di sezioni inutili;</li><li>mancanti di informazioni ricorrenti;</li><li>adatti ai nuovi tipi di progetto che la factory incontra.</li></ul>
+<p>Quando trova un problema, non deve cambiare tutto impulsivamente.</p>
+<p>Deve produrre una proposta di evoluzione.</p>
+<p>Esempio:</p>
+<pre><code>Problema osservato:
+In 4 progetti su 5 il Requirement Analysis Document non distingue bene
+tra &quot;vincoli tecnici&quot; e &quot;decisioni gia' prese&quot;.
+
+Proposta:
+Aggiungere una sezione &quot;Decisioni note&quot; dopo &quot;Vincoli&quot;.
+
+Impatto:
+Architect Agent e Reviewer Agent potranno distinguere meglio cio' che e'
+obbligatorio da cio' che e' solo una scelta gia' effettuata.</code></pre>
+<p>Questa proposta puo' poi passare da:</p>
+<ul><li>human gate;</li><li>review automatica;</li><li>test di compatibilita';</li><li>aggiornamento versionato del template.</li></ul>
+<h2 id="perche-non-basta-lasciare-che-ogni-agente-si-adatti-da-solo">Perche' non basta lasciare che ogni agente si adatti da solo</h2>
+<p>Un agente dinamico puo' essere creato per un progetto specifico.</p>
+<p>Esempio:</p>
+<pre><code>Per un progetto sanitario creo un Compliance Analyst Agent temporaneo.
+Per un progetto e-commerce creo un Conversion Analyst Agent temporaneo.
+Per un progetto enterprise creo un Security Risk Agent temporaneo.</code></pre>
+<p>Questi agenti possono avere bisogni diversi.</p>
+<p>Il Compliance Analyst Agent potrebbe avere bisogno di una sezione su privacy e trattamento dati.</p>
+<p>Il Security Risk Agent potrebbe avere bisogno di una sezione su minacce e superfici di attacco.</p>
+<p>Il Conversion Analyst Agent potrebbe avere bisogno di funnel, metriche e comportamento utente.</p>
+<p>La soluzione sbagliata sarebbe lasciare che ogni agente cambi liberamente il formato.</p>
+<p>Perche'?</p>
+<p>Perche' dopo poche esecuzioni la factory avrebbe decine di output incompatibili.</p>
+<p>La soluzione corretta e':</p>
+<pre><code>gli agenti dinamici possono proporre estensioni;
+la factory valuta le estensioni;
+solo le estensioni utili, ricorrenti e compatibili diventano parte del contratto ufficiale.</code></pre>
+<p>Questo e' un punto fondamentale:</p>
+<pre><code>gli agenti possono imparare dall'esperienza,
+ma la conoscenza assorbita deve passare da un processo di validazione.</code></pre>
+<h2 id="evoluzione-autonoma-ma-governata">Evoluzione autonoma, ma governata</h2>
+<p>Quando diciamo che una Agent Factory deve migliorare nel tempo, non intendiamo:</p>
+<pre><code>ogni agente modifica da solo template, prompt e regole quando vuole.</code></pre>
+<p>Questo sarebbe pericoloso.</p>
+<p>Intendiamo invece:</p>
+<pre><code>la pipeline raccoglie evidenze;
+un agente o ruolo specializzato analizza gli output;
+propone miglioramenti;
+il sistema valuta impatto e compatibilita';
+una persona o una policy approva;
+il cambiamento viene versionato.</code></pre>
+<p>Questa e' evoluzione autonoma governata.</p>
+<p>E' diversa dall'autonomia cieca.</p>
+<p>In una prima fase il gate sara' umano.</p>
+<p>Quando saremo piu' avanti, alcune modifiche piccole e a basso rischio potranno essere approvate automaticamente, per esempio:</p>
+<ul><li>aggiungere un campo facoltativo;</li><li>migliorare una descrizione del template;</li><li>aggiungere un esempio;</li><li>correggere una checklist;</li><li>proporre una nuova sezione senza renderla obbligatoria.</li></ul>
+<p>Le modifiche rischiose invece devono restare sotto controllo umano:</p>
+<ul><li>rimuovere sezioni;</li><li>cambiare il significato di un campo;</li><li>cambiare l'ordine richiesto da agenti a valle;</li><li>modificare criteri di accettazione;</li><li>modificare privilegi o tool consentiti.</li></ul>
+<h2 id="schema-drift-quando-il-contratto-scivola-senza-controllo">Schema drift: quando il contratto scivola senza controllo</h2>
+<p>Un rischio tipico nelle pipeline multi-agent si puo' chiamare:</p>
+<pre><code>schema drift</code></pre>
+<p>Significa che la forma dell'output cambia lentamente, quasi senza accorgersene.</p>
+<p>All'inizio il Requirement Analysis Document ha 17 sezioni.</p>
+<p>Poi un agente aggiunge una sezione.</p>
+<p>Poi un altro la rinomina.</p>
+<p>Poi un terzo ne salta due.</p>
+<p>Dopo dieci esecuzioni nessuno sa piu' quale sia la forma corretta.</p>
+<p>Questo rompe:</p>
+<ul><li>parsing;</li><li>review;</li><li>test;</li><li>handoff;</li><li>memoria;</li><li>riuso della conoscenza.</li></ul>
+<p>L'Output Contract Steward serve proprio a impedire che questo accada.</p>
+<h2 id="nuova-mappa-mentale">Nuova mappa mentale</h2>
+<p>Prima pensavo:</p>
+<pre><code>Agente -&gt; Output -&gt; Agente successivo</code></pre>
+<p>Ora devo pensare:</p>
+<pre><code>Agente -&gt; Output -&gt; Verifica output -&gt; Handoff
+                 -&gt; Proposta miglioramento contratto -&gt; Validazione -&gt; Nuova versione template</code></pre>
+<p>Quindi l'output contract non e' solo un file.</p>
+<p>E' un confine operativo tra:</p>
+<ul><li>produzione;</li><li>controllo;</li><li>apprendimento;</li><li>governance.</li></ul>
 <h2 id="differenza-tra-template-e-output-finale">Differenza tra template e output finale</h2>
 <p>Il template e' lo stampo.</p>
 <p>L'output finale e' il documento compilato.</p>
@@ -152,12 +250,18 @@ poi lo miglioro.</code></pre>
   T[Template output] --&gt; RA
   AC[Agent Card] --&gt; RA
   RA --&gt; D[Requirement Analysis Document]
-  D --&gt; H{Human Gate}
+  D --&gt; V[Output Review]
+  V --&gt; H{Human Gate}
+  V --&gt; OCS[Output Contract Steward]
+  OCS --&gt; P[Proposta evoluzione template]
+  P --&gt; G{Governance Gate}
+  G --&gt;|Approvata| T2[Nuova versione template]
+  T2 --&gt; RA
   H --&gt;|Validato| A[Architect Agent]
   H --&gt;|Da chiarire| Q[Domande al committente]
   D --&gt; KC[Knowledge Compiler: note candidate]</div></div>
 <p>In questo schema ci sono tre elementi importanti:</p>
-<ul><li>l'Agent Card dice chi e' l'agente e cosa puo' fare;</li><li>il template dice come deve essere fatto l'output;</li><li>il documento finale diventa input per altri agenti.</li></ul>
+<ul><li>l'Agent Card dice chi e' l'agente e cosa puo' fare;</li><li>il template dice come deve essere fatto l'output;</li><li>il documento finale diventa input per altri agenti.</li><li>la review controlla se l'output rispetta il contratto;</li><li>l'Output Contract Steward propone evoluzioni del template quando emergono limiti ricorrenti.</li></ul>
 <h2 id="anatomia-del-requirement-analysis-document">Anatomia del Requirement Analysis Document</h2>
 <p>Il template creato in questa lezione vive qui:</p>
 <pre><code>templates/requirement-analysis-output-template.md</code></pre>
@@ -307,6 +411,20 @@ Requisiti non funzionali:
 <pre><code>Il documento si riempie di testo finto.</code></pre>
 <p>Correzione:</p>
 <pre><code>Se una sezione non ha dati, scrivere &quot;Non disponibile nell'input&quot; o &quot;Da chiarire&quot;.</code></pre>
+<h3 id="errore-6-far-evolvere-i-contratti-senza-controllo">Errore 6 - Far evolvere i contratti senza controllo</h3>
+<p>Errore:</p>
+<pre><code>Ogni agente modifica liberamente sezioni, nomi e formato dell'output.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>Gli agenti a valle non sanno piu' quale struttura aspettarsi.</code></pre>
+<p>Correzione:</p>
+<pre><code>Le modifiche ai template devono essere proposte, valutate, versionate e approvate.</code></pre>
+<h3 id="errore-7-bloccare-per-sempre-un-contratto-sbagliato">Errore 7 - Bloccare per sempre un contratto sbagliato</h3>
+<p>Errore:</p>
+<pre><code>Il template e' ufficiale, quindi non si cambia mai.</code></pre>
+<p>Perche' e' un problema:</p>
+<pre><code>La factory non assorbe conoscenza dai progetti reali.</code></pre>
+<p>Correzione:</p>
+<pre><code>Trattare il template come un artefatto versionato che migliora grazie a evidenze raccolte nelle esecuzioni.</code></pre>
 <h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
 <p>Questa lezione crea un pezzo reale della futura Agent Factory.</p>
 <p>Il template di output e' un contratto tra:</p>
@@ -315,10 +433,14 @@ Requisiti non funzionali:
   U[Utente] --&gt; B[Brief]
   B --&gt; RA[Requirement Analyst Agent]
   RA --&gt; R[Requirement Analysis Document]
+  R --&gt; OR[Output Review]
   R --&gt; A[Architect Agent]
   R --&gt; T[Tester Agent]
   R --&gt; G[Governance]
-  R --&gt; K[Knowledge Compiler]</div></div>
+  R --&gt; K[Knowledge Compiler]
+  OR --&gt; OCS[Output Contract Steward]
+  OCS --&gt; TP[Template Proposal]
+  TP --&gt; G</div></div>
 <p>Questa e' la base per arrivare a pipeline multi-agent reali.</p>
 <p>Non sto solo imparando un concetto.</p>
 <p>Sto costruendo un componente.</p>
@@ -340,9 +462,12 @@ Requirement Analysis Document compilato secondo template ufficiale.</code></pre>
 4. Perche' devo separare fatti, ipotesi e domande aperte?
 5. Perche' i criteri di accettazione aiutano il Tester Agent?
 6. Perche' l'handoff e' parte dell'output?
-7. Quando una sezione vuota deve diventare &quot;Da chiarire&quot; invece di essere inventata?</code></pre>
+7. Quando una sezione vuota deve diventare &quot;Da chiarire&quot; invece di essere inventata?
+8. Perche' un output contract deve essere rigido ma versionabile?
+9. Che problema crea lo schema drift in una pipeline multi-agent?
+10. Che differenza c'e' tra agente che propone un'estensione e agente che modifica autonomamente un contratto ufficiale?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li></ul>
+<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li><li>Un output blindato protegge la pipeline, ma deve restare versionabile.</li><li>Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.</li><li>Serve un ruolo di Output Contract Steward per controllare conformita', drift ed evoluzione dei template.</li><li>L'evoluzione autonoma deve essere governata da evidenze, review, compatibilita' e gate.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Usare il template con un brief semplice e produrre il primo Requirement Analysis Document manuale.</p>
 <p>Solo dopo avra' senso iniziare ad automatizzare questo passaggio con Python o con un SDK agentico.</p>

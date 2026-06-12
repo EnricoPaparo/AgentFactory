@@ -54,3 +54,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornata la roadmap con la prima review manuale di un output agentico.
 - Aggiunta attribuzione elegante del sito a Enrico Paparo.
 - Preparato il sito in `docs/` per la pubblicazione con GitHub Pages.
+- Ampliata la Lezione 07 con Output Contract Steward, schema drift ed evoluzione governata dei template.

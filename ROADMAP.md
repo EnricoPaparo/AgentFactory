@@ -83,6 +83,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [ ] Handoff tra agenti
 - [ ] Contratti tra agenti
+- [ ] Output Contract Steward e controllo dei contratti
 - [ ] Pipeline sequenziale
 - [ ] Supervisor-worker pattern
 - [ ] Planner-executor pattern
@@ -138,6 +139,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Tracce di esecuzione
 - [ ] Valutazione output
 - [ ] Failure analysis
+- [ ] Rilevazione schema drift
 - [ ] Lesson learned
 - [ ] Knowledge extraction
 - [ ] Knowledge validation
@@ -148,6 +150,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [ ] Generare agenti temporanei da template
 - [ ] Selezionare agenti in base al progetto
+- [ ] Governare estensioni proposte da agenti dinamici
 - [ ] Costruire contesti ottimizzati
 - [ ] Orchestrare workflow progetto-specifici
 - [ ] Valutare qualita', costi e rischio

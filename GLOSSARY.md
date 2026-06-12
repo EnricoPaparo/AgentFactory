@@ -18,6 +18,14 @@ Modello riutilizzabile per produrre sempre lo stesso tipo di artefatto con una s
 
 Accordo sulla forma dell'output prodotto da un agente. Definisce sezioni, ordine, contenuto atteso e criteri minimi, cosi' gli agenti successivi possono usare l'artefatto senza reinterpretarlo da zero.
 
+## Output Contract Steward
+
+Ruolo o agente incaricato di controllare se gli output rispettano i contratti, individuare drift o limiti ricorrenti e proporre evoluzioni versionate dei template. Non dovrebbe modificare contratti ufficiali senza review, compatibilita' e gate.
+
+## Schema drift
+
+Degrado progressivo della forma di un output: sezioni rinominate, saltate o aggiunte senza controllo. In una pipeline multi-agent rompe handoff, parsing, review, test e memoria.
+
 ## Agent Card
 
 Scheda tecnica di un agente. Descrive missione, input, output, tool, regole, limiti, criteri di qualita' e punti in cui deve chiedere conferma.
