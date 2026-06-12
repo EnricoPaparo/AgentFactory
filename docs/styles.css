@@ -295,23 +295,18 @@ select {
   min-width: 0;
 }
 
-.hero-copy {
-  grid-row: 1 / span 2;
-}
-
-.hero-brand-panel,
-.pipeline-panel {
-  grid-column: 2;
-}
-
 .hero-copy h1 {
   margin: 0;
-  color: var(--text);
-  max-width: 10ch;
-  font-size: clamp(3.2rem, 5.7vw, 5.9rem);
-  line-height: 0.92;
-  letter-spacing: 0;
-  text-shadow: 0 0 32px rgba(16, 216, 229, 0.16), 0 0 48px rgba(46, 214, 111, 0.1);
+}
+
+.hero-title-logo {
+  max-width: min(640px, 100%);
+  filter: drop-shadow(0 0 28px rgba(16, 216, 229, 0.16)) drop-shadow(0 0 34px rgba(46, 214, 111, 0.12));
+}
+
+.hero-title-wordmark {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-copy > p:not(.eyebrow) {
@@ -386,23 +381,8 @@ select {
   box-shadow: var(--shadow), inset 0 0 42px rgba(16, 216, 229, 0.04);
 }
 
-.hero-brand-panel {
-  align-self: end;
-  padding: clamp(14px, 2vw, 22px);
-}
-
-.hero-wordmark {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 0 28px rgba(16, 216, 229, 0.14)) drop-shadow(0 0 34px rgba(46, 214, 111, 0.12));
-}
-
 .pipeline-panel {
-  align-self: start;
-  margin-top: -12px;
+  align-self: center;
 }
 
 .hero-panel::after {
@@ -880,15 +860,8 @@ td {
     padding-top: 34px;
   }
 
-  .hero-copy,
-  .hero-brand-panel,
   .pipeline-panel {
-    grid-column: auto;
-    grid-row: auto;
-  }
-
-  .pipeline-panel {
-    margin-top: 0;
+    align-self: auto;
   }
 }
 
@@ -897,8 +870,8 @@ td {
     padding: 22px 16px 48px;
   }
 
-  .hero-copy h1 {
-    font-size: 3.4rem;
+  .hero-title-logo {
+    max-width: 340px;
   }
 
   .lesson-grid,

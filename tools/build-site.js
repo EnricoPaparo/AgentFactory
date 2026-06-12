@@ -105,6 +105,13 @@ const sources = [
     summary: "Checklist, score, finding e azioni correttive per valutare un artefatto agentico.",
   },
   {
+    title: "10 - Knowledge absorption",
+    file: "lessons/10-knowledge-absorption.md",
+    slug: "lezione-10",
+    group: "Lezioni",
+    summary: "Come trasformare review, errori ed esperienze in conoscenza permanente validata.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -414,16 +421,15 @@ function indexBody() {
   return `<section class="hero">
     <div class="hero-copy">
       <p class="eyebrow">AI Agent Systems Manual</p>
-      <h1>AgentFactory</h1>
+      <h1 class="hero-title-logo">
+        <img class="hero-title-wordmark" src="${wordmarkSrc}" width="1050" height="279" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;" alt="AgentFactory">
+      </h1>
       <p>${tagline}</p>
       <div class="hero-actions">
         <a class="primary-action" href="pages/manuale.html">Apri il manuale</a>
         <a class="secondary-action" href="pages/lezione-00.html">Inizia dalla lezione 00</a>
       </div>
       <p class="hero-credit">Prodotto da ${escapeHtml(siteAuthor)}</p>
-    </div>
-    <div class="hero-panel hero-brand-panel" aria-label="Identita' AgentFactory">
-      <img class="hero-wordmark" src="${wordmarkSrc}" width="1050" height="279" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;" alt="AgentFactory">
     </div>
     <div class="hero-panel pipeline-panel" aria-label="Pipeline AgentFactory">
       <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>

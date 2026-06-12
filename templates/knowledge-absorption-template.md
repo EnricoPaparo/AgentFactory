@@ -20,6 +20,24 @@ Usare questo template dopo una lezione, esperimento o progetto.
 - [Lesson learned]
 ```
 
+## Evidenza
+
+```text
+- [Output, review, errore o dato che supporta la lezione appresa]
+```
+
+## Ambito di validita'
+
+```text
+[Quando questa conoscenza vale e quando potrebbe non valere]
+```
+
+## Rischio di applicazione sbagliata
+
+```text
+[Come questa conoscenza potrebbe essere applicata male]
+```
+
 ## Cosa diventa permanente
 
 ```text

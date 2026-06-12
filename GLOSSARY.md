@@ -96,6 +96,14 @@ Archivio di conoscenza validata e riutilizzabile: principi, regole, lezioni appr
 
 Ruolo o agente che trasforma esperienza grezza in conoscenza pulita, sintetica e riutilizzabile.
 
+## Knowledge absorption
+
+Processo con cui una lezione, una review, un errore o un progetto vengono trasformati in conoscenza candidata, validata e poi assorbita nella memoria permanente della factory.
+
+## Knowledge candidate
+
+Proposta di conoscenza non ancora approvata. Deve indicare fonte, evidenza, ambito di validita', rischio di applicazione sbagliata e decisione di assorbimento.
+
 ## Human Gate
 
 Punto del workflow in cui una persona deve validare, approvare o bloccare il lavoro prima di procedere.

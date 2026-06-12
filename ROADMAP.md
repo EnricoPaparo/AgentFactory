@@ -77,7 +77,8 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Retrieval
 - [ ] Context Builder
 - [ ] Knowledge Base
-- [ ] Knowledge Compiler
+- [x] Knowledge Compiler
+- [x] Knowledge absorption
 
 ## Livello 4 - Workflow e pipeline manuale
 
@@ -143,7 +144,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Lesson learned
 - [ ] Knowledge extraction
 - [ ] Knowledge validation
-- [ ] Knowledge absorption
+- [x] Knowledge absorption
 - [ ] Versioning di Agent Card, prompt e template
 
 ## Livello 10 - Agent Factory
