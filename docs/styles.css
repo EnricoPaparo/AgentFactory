@@ -131,9 +131,9 @@ select {
 
 .shell {
   display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
-  width: min(1480px, 100%);
-  margin: 0 auto;
+  grid-template-columns: 280px minmax(0, 1fr);
+  width: 100%;
+  margin: 0;
 }
 
 .sidebar {
@@ -141,29 +141,76 @@ select {
   top: 72px;
   height: calc(100vh - 72px);
   overflow: auto;
-  padding: 28px 20px 40px;
+  padding: 16px 12px 28px;
   border-right: 1px solid var(--line);
   background: rgba(8, 12, 22, 0.58);
+  scrollbar-color: rgba(44, 248, 255, 0.68) rgba(12, 18, 32, 0.38);
+  scrollbar-width: thin;
 }
 
-.nav-group + .nav-group {
-  margin-top: 28px;
+.sidebar::-webkit-scrollbar {
+  width: 8px;
 }
 
-.nav-group p {
-  margin: 0 0 10px;
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(12, 18, 32, 0.38);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(12, 18, 32, 0.72);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--cyan), var(--pink));
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--lime), var(--cyan));
+}
+
+.nav-group {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  padding: 4px 0;
+}
+
+.nav-group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+  padding: 4px 8px;
   color: var(--lime);
   font-size: 0.74rem;
   font-weight: 800;
   text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+
+.nav-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-group summary::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--cyan);
+  border-bottom: 2px solid var(--cyan);
+  transform: rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.nav-group[open] summary::after {
+  transform: rotate(-135deg);
 }
 
 .nav-group a {
   display: block;
-  margin: 7px 0;
-  padding: 10px 12px;
+  margin: 3px 0;
+  padding: 7px 8px 7px 12px;
   border: 1px solid transparent;
   color: var(--muted);
+  font-size: 0.91rem;
+  line-height: 1.35;
   text-decoration: none;
   transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
 }

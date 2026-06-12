@@ -247,15 +247,20 @@ function navHtml(activeSlug) {
   const groups = [...new Set(sources.map((source) => source.group))];
   return groups
     .map((group) => {
-      const links = sources
-        .filter((source) => source.group === group)
+      const groupSources = sources.filter((source) => source.group === group);
+      const isOpen =
+        activeSlug === "home"
+          ? group === "Lezioni"
+          : groupSources.some((source) => source.slug === activeSlug);
+      const links = groupSources
         .map((source) => {
           const href = `${hrefPrefix}${source.slug}.html`;
           const active = source.slug === activeSlug ? " aria-current=\"page\"" : "";
           return `<a${active} href="${href}"><span>${escapeHtml(source.title)}</span></a>`;
         })
         .join("");
-      return `<div class="nav-group"><p>${group}</p>${links}</div>`;
+      const open = isOpen ? " open" : "";
+      return `<details class="nav-group"${open}><summary>${group}</summary>${links}</details>`;
     })
     .join("");
 }
