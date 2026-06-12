@@ -10,6 +10,7 @@ const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-ag
 const siteAuthor = "Enrico Paparo";
 const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
+const assetVersion = "20260612-logo-fix";
 
 const sources = [
   {
@@ -320,7 +321,7 @@ function navHtml(activeSlug) {
 function layout({ title, body, activeSlug, pageClass = "" }) {
   const isIndex = activeSlug === "home";
   const prefix = isIndex ? "" : "../";
-  const logoSrc = `${prefix}${logoPath}`;
+  const logoSrc = `${prefix}${logoPath}?v=${assetVersion}`;
   return `<!doctype html>
 <html lang="it">
 <head>
@@ -329,13 +330,13 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
   <title>${escapeHtml(title)} | ${siteTitle}</title>
   <meta name="description" content="${escapeHtml(tagline)}">
   <meta name="author" content="${escapeHtml(siteAuthor)}">
-  <link rel="stylesheet" href="${prefix}styles.css">
+  <link rel="stylesheet" href="${prefix}styles.css?v=${assetVersion}">
 </head>
 <body class="${pageClass}">
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="${prefix}index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="${logoSrc}" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="${logoSrc}" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -359,14 +360,15 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script src="${prefix}site.js"></script>
+  <script src="${prefix}site.js?v=${assetVersion}"></script>
 </body>
 </html>`;
 }
 
 function siteFooter(prefix) {
+  const logoSrc = `${prefix}${logoPath}?v=${assetVersion}`;
   return `<footer class="site-footer">
-    <span class="footer-brand"><img src="${prefix}${logoPath}" alt="" aria-hidden="true">Prodotto da ${escapeHtml(siteAuthor)}</span>
+    <span class="footer-brand"><img src="${logoSrc}" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da ${escapeHtml(siteAuthor)}</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>`;
 }
@@ -386,7 +388,7 @@ function pageBody(source, rendered) {
 }
 
 function indexBody() {
-  const wordmarkSrc = wordmarkPath;
+  const wordmarkSrc = `${wordmarkPath}?v=${assetVersion}`;
   const lessonCards = sources
     .filter((source) => source.group === "Lezioni")
     .map(
@@ -421,7 +423,7 @@ function indexBody() {
       <p class="hero-credit">Prodotto da ${escapeHtml(siteAuthor)}</p>
     </div>
     <div class="hero-panel hero-brand-panel" aria-label="Identita' AgentFactory">
-      <img class="hero-wordmark" src="${wordmarkSrc}" alt="AgentFactory">
+      <img class="hero-wordmark" src="${wordmarkSrc}" width="1050" height="279" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;" alt="AgentFactory">
     </div>
     <div class="hero-panel pipeline-panel" aria-label="Pipeline AgentFactory">
       <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>

@@ -56,3 +56,4 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Preparato il sito in `docs/` per la pubblicazione con GitHub Pages.
 - Ampliata la Lezione 07 con Output Contract Steward, schema drift ed evoluzione governata dei template.
 - Aggiornato il sito con logo AgentFactory, wordmark in landing e palette coerente con il marchio.
+- Corretto il rendering dei loghi sul sito pubblicato con dimensioni robuste e cache-busting degli asset.

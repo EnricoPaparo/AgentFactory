@@ -98,8 +98,10 @@ select {
 
 .brand-mark {
   display: grid;
+  flex: 0 0 48px;
   width: 48px;
   height: 48px;
+  overflow: hidden;
   place-items: center;
   border: 1px solid rgba(16, 216, 229, 0.38);
   background: radial-gradient(circle at 35% 35%, rgba(46, 214, 111, 0.16), rgba(18, 104, 255, 0.08) 58%, rgba(5, 7, 13, 0.82));
