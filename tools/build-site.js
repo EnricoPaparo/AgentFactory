@@ -175,6 +175,13 @@ const sources = [
     summary: "Come leggere un agente come package fisico di file versionati.",
   },
   {
+    title: "Agent Package Spec",
+    file: "agents/AGENT_PACKAGE_SPEC.md",
+    slug: "agent-package-spec",
+    group: "Agenti",
+    summary: "Specifica completa file-per-file di un agente professionale.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",

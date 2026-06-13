@@ -38,6 +38,10 @@ Insieme fisico dei file che compongono o supportano un agente: Agent Card, promp
 
 Documento che elenca i file fisici collegati a un agente. Serve a capire cosa compone l'agente, quali file sono attivi, quali sono futuri, quali sono deprecati e quali sono condivisi.
 
+## Agent Package Spec
+
+Documento di riferimento che spiega ogni file possibile di un Agent package: scopo, contenuto, proprietario, momento di aggiornamento, rischi e confini.
+
 ## Privilegio
 
 Permesso operativo concesso a un agente, per esempio leggere file, scrivere file, eseguire comandi, accedere a servizi esterni o modificare memoria.

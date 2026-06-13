@@ -62,6 +62,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Come progettare un agente
 - [x] Agent Card in dettaglio
 - [x] Agent package e file fisici di un agente
+- [x] Specifica completa file-per-file di un Agent Package
 - [x] Missione, input, output, tool, regole e limiti
 - [x] Criteri di qualita'
 - [x] Quando un agente deve fermarsi

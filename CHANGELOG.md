@@ -18,6 +18,7 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiornata la roadmap con Knowledge Curator, Agent Maintainer, Memory Steward, State Store, context budget e knowledge drift.
 - Chiarita nella Lezione 04 la composizione fisica di un agente come package di file.
 - Aggiunto `agents/requirement-analyst-package.md` come primo manifest fisico di un agente.
+- Aggiunta `agents/AGENT_PACKAGE_SPEC.md` come specifica completa file-per-file di un Agent Package.
 
 ### Corretto
 

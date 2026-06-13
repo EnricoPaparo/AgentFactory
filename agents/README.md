@@ -44,6 +44,7 @@ piu' deve avere file espliciti per prompt, runtime, stato, review e governance.
 
 ## File attuali
 
+- [Specifica completa di un Agent Package](agents/AGENT_PACKAGE_SPEC.md)
 - [Requirement Analyst Agent](agents/requirement-analyst-agent.md)
 - [Requirement Analyst Agent Package](agents/requirement-analyst-package.md)
 - [Architect Agent](agents/architect-agent.md)

@@ -370,6 +370,14 @@ questi sono condivisi con altri agenti.
 
 Per questo da ora in poi ogni agente reale dovrebbe avere anche un manifest fisico.
 
+La spiegazione completa file-per-file e' mantenuta nella [Specifica completa di un Agent Package](agents/AGENT_PACKAGE_SPEC.md).
+
+Quella pagina e' la specifica di riferimento.
+
+Questa lezione serve a capire il concetto.
+
+La specifica serve quando devo progettare, controllare o far crescere davvero un agente.
+
 ## Perche' non partire subito dal codice
 
 Potrei pensare:
