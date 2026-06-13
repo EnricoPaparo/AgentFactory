@@ -60,7 +60,7 @@ Diventa professionale quando:
 - riceve input chiari;
 - produce output strutturati;
 - dichiara incertezze;
-- prepara handoff;
+- prepara note utili per gli handoff successivi;
 - rispetta limiti;
 - lascia tracce valutabili.
 
@@ -246,7 +246,7 @@ Quando leggo il documento prodotto devo chiedermi:
 - le domande aperte sono utili?
 - i requisiti sono verificabili?
 - i criteri di accettazione sono concreti?
-- gli handoff aiutano davvero gli agenti successivi?
+- le note per gli agenti successivi aiutano davvero a preparare handoff chiari?
 - ci sono rischi reali?
 - il documento e' troppo lungo o troppo vago?
 - posso usarlo per guidare sviluppo, test e review?
@@ -273,7 +273,7 @@ Esempio:
 Requisito:
 Il sito deve essere consultabile come static site senza backend.
 
-Handoff per Architect Agent:
+Nota preliminare per Architect Agent:
 Valutare se HTML/CSS/JS statico e' sufficiente o se conviene introdurre un generatore piu' robusto.
 ```
 
@@ -281,19 +281,19 @@ Questa e' analisi corretta.
 
 Non sto progettando tutta la soluzione.
 
-Sto preparando il prossimo agente.
+Sto preparando il materiale da cui potra' nascere un Handoff Contract separato.
 
 ## Prima metrica qualitativa
 
 Da questa lezione introduco una prima metrica semplice:
 
 ```text
-Un Requirement Analysis Document e' buono se un agente successivo puo' lavorare senza dover reinterpretare tutto da zero.
+Un Requirement Analysis Document e' buono se un agente successivo puo' usare l'handoff derivato dal RAD senza dover reinterpretare tutto da zero.
 ```
 
 Questa metrica e' semplice ma potente.
 
-Se l'Architect Agent deve chiedersi:
+Se l'Architect Agent, leggendo l'handoff derivato dal RAD, deve chiedersi:
 
 ```text
 ma cosa voleva davvero l'utente?
@@ -309,6 +309,10 @@ posso progettare il prossimo passo.
 ```
 
 allora l'artefatto sta funzionando.
+
+Il RAD resta comunque fonte completa.
+
+L'handoff, quando esiste come file separato, diventa il contesto operativo primario del prossimo agente.
 
 ## Esempio di trasformazione
 
@@ -480,7 +484,7 @@ Dopo questa lezione devo saper rispondere:
 3. Dove vive l'artefatto prodotto?
 4. Come distinguo fatti, ipotesi e domande aperte?
 5. Quando una richiesta estetica diventa un requisito verificabile?
-6. Come capisco se l'artefatto aiuta l'agente successivo?
+6. Come capisco se l'artefatto aiuta a preparare un handoff utile per l'agente successivo?
 7. Perche' questo documento e' gia' parte della futura Agent Factory?
 ```
 
@@ -488,7 +492,7 @@ Dopo questa lezione devo saper rispondere:
 
 - Prima di automatizzare un agente devo sapere valutare manualmente il suo output.
 - Un template va provato su un caso reale, non solo disegnato in astratto.
-- Il Requirement Analysis Document e' utile se prepara il lavoro degli agenti successivi.
+- Il Requirement Analysis Document e' utile se diventa fonte completa e prepara handoff selezionati per gli agenti successivi.
 - Le iterazioni dell'utente sono input importanti e vanno integrate nei requisiti.
 - Una richiesta estetica deve essere tradotta in criteri osservabili.
 - Un artefatto manuale ben fatto diventa esempio di training mentale per l'agente futuro.

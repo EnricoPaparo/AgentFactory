@@ -54,6 +54,10 @@
 <pre><code>Requirement Analysis Document
   -&gt; Handoff Contract
   -&gt; Architect Agent</code></pre>
+<p>Questa freccia non significa che il Requirement Analysis Document sparisce.</p>
+<p>Significa:</p>
+<pre><code>Il Requirement Analysis Document resta la fonte completa.
+L'Handoff Contract diventa il contesto operativo primario per l'Architect Agent.</code></pre>
 <p>Il punto non e' &quot;mandare un file a un altro agente&quot;.</p>
 <p>Il punto e' costruire un passaggio controllato, dove l'agente successivo riceve:</p>
 <ul><li>cosa deve fare;</li><li>cosa non deve fare;</li><li>quali informazioni sono certe;</li><li>quali informazioni sono ipotesi;</li><li>quali vincoli deve rispettare;</li><li>quali decisioni umane bloccano il lavoro;</li><li>quale output deve produrre;</li><li>quali rischi deve tenere presenti.</li></ul>
@@ -117,6 +121,15 @@ Architect Agent
   -&gt; estrazione delle parti rilevanti
   -&gt; contratto di passaggio
   -&gt; input pulito per l'agente successivo</code></pre>
+<p>Qui entra il tema del context budget.</p>
+<p>Ogni agente ha un contesto limitato, non solo in senso tecnico di token, ma anche in senso qualitativo.</p>
+<p>Se gli passo tutto, aumento il rischio che:</p>
+<ul><li>legga informazioni irrilevanti;</li><li>dia troppo peso a dettagli secondari;</li><li>perda il vincolo importante dentro il rumore;</li><li>ripeta analisi gia' fatte;</li><li>costi di piu' senza ragione.</li></ul>
+<p>Quindi la regola non e':</p>
+<pre><code>l'agente successivo deve sempre leggere tutto il RAD.</code></pre>
+<p>La regola e':</p>
+<pre><code>l'agente successivo riceve l'handoff come contesto primario;
+puo' consultare il RAD come fonte quando deve verificare, approfondire o risolvere un dubbio.</code></pre>
 <h2 id="cosa-deve-sopravvivere-nel-passaggio">Cosa deve sopravvivere nel passaggio</h2>
 <p>Quando un agente passa il lavoro a un altro, alcune informazioni devono sopravvivere sempre.</p>
 <h3 id="1-obiettivo">1. Obiettivo</h3>
@@ -248,6 +261,46 @@ contiene cio' che serve all'Architect per progettare senza perdere vincoli e con
 <p>Questa distinzione e' fondamentale.</p>
 <p>Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.</p>
 <p>Se passo anche un handoff, gli sto dando un ingresso operativo.</p>
+<h2 id="il-rad-va-dato-all-agente-successivo">Il RAD va dato all'agente successivo?</h2>
+<p>Risposta corretta:</p>
+<pre><code>si', ma non sempre come contesto principale.</code></pre>
+<p>Il RAD deve essere disponibile all'agente successivo come fonte.</p>
+<p>Ma se l'handoff e' fatto bene, l'agente successivo dovrebbe partire dall'handoff, non dal RAD completo.</p>
+<p>Perche'?</p>
+<p>Perche' l'handoff contiene gia':</p>
+<ul><li>obiettivo del passaggio;</li><li>scope rilevante per il ricevente;</li><li>out of scope;</li><li>vincoli da rispettare;</li><li>decisioni aperte;</li><li>rischi principali;</li><li>output atteso;</li><li>condizioni di stop;</li><li>privilegi consentiti.</li></ul>
+<p>Il RAD serve quando:</p>
+<ul><li>l'handoff non basta;</li><li>l'agente deve verificare la fonte di una informazione;</li><li>c'e' un dubbio su fatti, ipotesi o requisiti;</li><li>il Reviewer chiede auditabilita';</li><li>il ricevente deve citare o motivare una decisione.</li></ul>
+<p>Questa distinzione evita due errori opposti.</p>
+<p>Errore 1:</p>
+<pre><code>Non passo il RAD a nessuno.</code></pre>
+<p>Problema:</p>
+<pre><code>Il prossimo agente non puo' verificare la fonte completa.</code></pre>
+<p>Errore 2:</p>
+<pre><code>Passo sempre tutto il RAD nel contesto attivo.</code></pre>
+<p>Problema:</p>
+<pre><code>Il contesto diventa piu' grande e rumoroso del necessario.</code></pre>
+<p>Regola professionale:</p>
+<pre><code>Handoff come contesto primario.
+RAD come fonte consultabile.</code></pre>
+<h2 id="quando-basta-un-solo-documento">Quando basta un solo documento</h2>
+<p>Non voglio creare burocrazia inutile.</p>
+<p>Per un progetto piccolo, un unico Requirement Analysis Document con note preliminari per gli agenti successivi puo' bastare.</p>
+<p>Esempio:</p>
+<pre><code>Brief piccolo
+un solo agente successivo
+pochi vincoli
+nessun rischio alto
+nessun agente dinamico</code></pre>
+<p>In quel caso il RAD puo' contenere una sezione interna:</p>
+<pre><code>Note per Architect Agent</code></pre>
+<p>e l'Architect puo' usare direttamente quel documento.</p>
+<p>Quando invece il progetto cresce, separare RAD e Handoff Contract diventa utile.</p>
+<p>Creo un Handoff Contract separato quando:</p>
+<ul><li>il RAD e' lungo;</li><li>il prossimo agente ha responsabilita' specifiche;</li><li>ci sono privilegi o limiti da dichiarare;</li><li>ci sono domande aperte bloccanti;</li><li>ci sono piu' agenti destinatari;</li><li>voglio ridurre il contesto attivo;</li><li>voglio tracciare esattamente cosa e' stato passato a chi.</li></ul>
+<p>Regola:</p>
+<pre><code>Un solo documento quando il costo della separazione supera il beneficio.
+Due documenti quando la separazione riduce rumore, rischio e ambiguita'.</code></pre>
 <h2 id="esempio-completo-output-contract-contro-handoff">Esempio completo: output contract contro handoff</h2>
 <p>Prendo il nostro caso reale.</p>
 <p>Il Requirement Analyst Agent produce:</p>
@@ -319,12 +372,12 @@ progettare gia' un motore di ricerca complesso come requisito obbligatorio.</cod
 <p>Questo produce caos.</p>
 <h2 id="responsabilita-del-mittente">Responsabilita' del mittente</h2>
 <p>L'agente che invia il lavoro deve:</p>
-<ul><li>produrre un output conforme al proprio template;</li><li>evidenziare incertezze;</li><li>separare fatti e ipotesi;</li><li>dichiarare vincoli;</li><li>indicare cosa e' pronto e cosa no;</li><li>non scaricare sull'agente successivo problemi che richiedono validazione umana;</li><li>indicare output atteso dal ricevente.</li></ul>
+<ul><li>produrre un output conforme al proprio template;</li><li>evidenziare incertezze;</li><li>separare fatti e ipotesi;</li><li>dichiarare vincoli;</li><li>indicare cosa e' pronto e cosa no;</li><li>non scaricare sull'agente successivo problemi che richiedono validazione umana;</li><li>indicare output atteso dal ricevente.</li><li>preparare un handoff abbastanza completo da non costringere il ricevente a rileggere tutto il RAD per iniziare.</li></ul>
 <p>Nel nostro caso il mittente e':</p>
 <pre><code>Requirement Analyst Agent</code></pre>
 <h2 id="responsabilita-del-ricevente">Responsabilita' del ricevente</h2>
 <p>L'agente che riceve il lavoro deve:</p>
-<ul><li>leggere il contratto;</li><li>rispettare scope e out of scope;</li><li>non trasformare ipotesi in decisioni;</li><li>fermarsi davanti a gate bloccanti;</li><li>produrre solo l'output previsto;</li><li>indicare eventuali problemi di input;</li><li>preparare il prossimo handoff.</li></ul>
+<ul><li>leggere prima l'Handoff Contract;</li><li>rispettare scope e out of scope;</li><li>non trasformare ipotesi in decisioni;</li><li>fermarsi davanti a gate bloccanti;</li><li>produrre solo l'output previsto;</li><li>indicare eventuali problemi di input;</li><li>consultare il RAD quando l'handoff non basta o quando deve verificare una fonte;</li><li>preparare il prossimo handoff.</li></ul>
 <p>Nel nostro caso il ricevente e':</p>
 <pre><code>Architect Agent</code></pre>
 <h2 id="privilegi-nel-passaggio">Privilegi nel passaggio</h2>
@@ -471,7 +524,7 @@ Quali regole vanno assorbite?</code></pre>
 <p>Perche' e' fragile:</p>
 <pre><code>Il contesto diventa rumoroso e l'agente puo' ignorare informazioni critiche.</code></pre>
 <p>Correzione:</p>
-<pre><code>Passare il documento completo come fonte, ma creare una sintesi operativa strutturata.</code></pre>
+<pre><code>Passare il documento completo come fonte consultabile, ma usare una sintesi operativa strutturata come contesto primario.</code></pre>
 <h3 id="errore-3-nascondere-le-incertezze">Errore 3 - Nascondere le incertezze</h3>
 <p>Errore:</p>
 <pre><code>Togliere domande aperte per far sembrare il progetto piu' maturo.</code></pre>
@@ -519,14 +572,16 @@ docs/</code></pre>
 <pre><code>1. Che differenza c'e' tra passare un file e fare un handoff?
 2. Che differenza c'e' tra output contract e Handoff Contract?
 3. Perche' un handoff non deve contenere tutto?
-4. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
-5. Perche' fatti, ipotesi e domande aperte devono restare separati?
-6. Perche' l'out of scope protegge la pipeline?
-7. Che cosa deve produrre un Architect Agent dopo un handoff?
-8. Perche' un handoff non trasferisce automaticamente privilegi?
-9. Come un handoff puo' diventare fonte per knowledge absorption futura?</code></pre>
+4. Perche' il RAD deve restare fonte consultabile ma non sempre contesto primario?
+5. Quando basta un RAD con note interne e quando serve un Handoff Contract separato?
+6. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
+7. Perche' fatti, ipotesi e domande aperte devono restare separati?
+8. Perche' l'out of scope protegge la pipeline?
+9. Che cosa deve produrre un Architect Agent dopo un handoff?
+10. Perche' un handoff non trasferisce automaticamente privilegi?
+11. Come un handoff puo' diventare fonte per knowledge absorption futura?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Un handoff e' una compressione intenzionale del contesto, non un dump.</li><li>Un output contract governa la forma dell'artefatto; un handoff governa il passaggio tra agenti.</li><li>Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.</li><li>Le incertezze devono essere visibili e classificate.</li><li>I privilegi non si trasferiscono automaticamente con il contesto.</li><li>Gli handoff sono fonti importanti per migliorare la factory nel tempo.</li><li>Prima di automatizzare una pipeline multi-agent conviene simulare a mano i contratti tra agenti.</li></ul>
+<ul><li>Un handoff e' una compressione intenzionale del contesto, non un dump.</li><li>Un output contract governa la forma dell'artefatto; un handoff governa il passaggio tra agenti.</li><li>Il RAD e' fonte completa; l'handoff e' contesto operativo primario per il prossimo agente.</li><li>Se l'handoff e' fatto bene, il ricevente consulta il RAD solo per verificare o approfondire.</li><li>Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.</li><li>Le incertezze devono essere visibili e classificate.</li><li>I privilegi non si trasferiscono automaticamente con il contesto.</li><li>Gli handoff sono fonti importanti per migliorare la factory nel tempo.</li><li>Prima di automatizzare una pipeline multi-agent conviene simulare a mano i contratti tra agenti.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Dopo questa lezione posso progettare il primo vero ricevente:</p>
 <pre><code>Architect Agent</code></pre>

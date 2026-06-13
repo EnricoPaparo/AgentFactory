@@ -136,7 +136,7 @@ Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportam
   Motivo: [Perche' richiede validazione]
 ```
 
-## Handoff per Architect Agent
+## Note preliminari per Architect Agent
 
 ```text
 - [Informazione utile per progettare architettura]
@@ -144,7 +144,15 @@ Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportam
 - [Decisione ancora aperta]
 ```
 
-## Handoff per Developer Agent
+Queste note non sostituiscono necessariamente un Handoff Contract separato.
+
+Per progetti medio/complessi, usarle come base per creare un file dedicato:
+
+```text
+experiments/<id>-<project>-architect-handoff.md
+```
+
+## Note preliminari per Developer Agent
 
 ```text
 - [Funzionalita' da implementare]
@@ -152,7 +160,7 @@ Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportam
 - [Output atteso]
 ```
 
-## Handoff per Tester Agent
+## Note preliminari per Tester Agent
 
 ```text
 - [Criterio da testare]
@@ -160,7 +168,7 @@ Criterio di accettazione: [Come verificare che sia soddisfatto, usando comportam
 - [Rischio da coprire]
 ```
 
-## Handoff per Reviewer Agent
+## Note preliminari per Reviewer Agent
 
 ```text
 - [Aspetto da controllare]

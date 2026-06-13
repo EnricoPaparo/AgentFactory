@@ -20,6 +20,7 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiunto `agents/requirement-analyst-package.md` come primo manifest fisico di un agente.
 - Aggiunta `agents/AGENT_PACKAGE_SPEC.md` come specifica completa file-per-file di un Agent Package.
 - Chiarita nelle lezioni 07, 12, 13 e 16 la differenza tra output contract, template, handoff e run record.
+- Chiarita la differenza tra Requirement Analysis Document come fonte completa e Handoff Contract come contesto operativo primario del prossimo agente.
 
 ### Corretto
 

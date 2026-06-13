@@ -128,7 +128,7 @@ Strumento che un agente puo' usare: file system, terminale, GitHub, browser, dat
 
 ## Handoff
 
-Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.
+Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte.
 
 ## Handoff Contract
 
@@ -210,7 +210,7 @@ Agente incaricato di trasformare un piano approvato in modifiche tecniche contro
 
 ## Requirement Analysis Document
 
-Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e handoff per gli agenti successivi.
+Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e note preliminari per gli agenti successivi. E' la fonte completa dell'analisi, non coincide con l'Handoff Contract. Il prossimo agente puo' consultarlo se l'handoff non basta o se deve verificare una fonte.
 
 ## Architecture Decision Record
 

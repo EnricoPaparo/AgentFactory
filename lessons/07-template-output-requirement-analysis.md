@@ -10,7 +10,7 @@ Il template si chiama:
 Requirement Analysis Document
 ```
 
-Serve al Requirement Analyst Agent per trasformare un brief grezzo in un documento requisiti ordinato, verificabile e pronto per gli agenti successivi.
+Serve al Requirement Analyst Agent per trasformare un brief grezzo in un documento requisiti ordinato, verificabile e usabile come fonte dagli agenti successivi.
 
 Fino ad ora ho creato:
 
@@ -557,7 +557,8 @@ flowchart TD
   P --> G{Governance Gate}
   G -->|Approvata| T2[Nuova versione template]
   T2 --> RA
-  H -->|Validato| A[Architect Agent]
+  H -->|Validato| AH[Architect Handoff]
+  AH --> A[Architect Agent]
   H -->|Da chiarire| Q[Domande al committente]
   D --> KC[Knowledge Compiler: note candidate]
 ```
@@ -566,7 +567,8 @@ In questo schema ci sono tre elementi importanti:
 
 - l'Agent Card dice chi e' l'agente e cosa puo' fare;
 - il template dice come deve essere fatto l'output;
-- il documento finale diventa input per altri agenti.
+- il documento finale diventa fonte autorevole consultabile dagli altri agenti;
+- l'handoff seleziona cio' che serve al prossimo agente senza caricare tutto il documento;
 - la review controlla se l'output rispetta il contratto;
 - l'Output Contract Steward propone evoluzioni del template quando emergono limiti ricorrenti.
 
@@ -597,7 +599,7 @@ Le sezioni principali sono:
 | Rischi | Anticipare problemi | Aiuta priorita' e controllo |
 | Criteri di accettazione | Dire come verificare il risultato | Collega requisiti e test |
 | Human gate | Stabilire cosa deve approvare una persona | Evita automazione cieca |
-| Handoff | Preparare input per agenti successivi | Riduce perdita di contesto |
+| Note preliminari di handoff | Preparare indicazioni per agenti successivi | Aiuta a generare Handoff Contract separati quando servono |
 | Note Knowledge Compiler | Proporre conoscenza da assorbire | Alimenta miglioramento nel tempo |
 
 ## Fatti, ipotesi e domande aperte
@@ -698,13 +700,20 @@ Infatti il Tester Agent non deve indovinare cosa verificare.
 
 Riceve criteri gia' collegati ai requisiti.
 
-## Handoff verso gli agenti successivi
+## Note preliminari per gli agenti successivi
 
 Il Requirement Analysis Document non e' solo un documento per l'umano.
 
-E' anche un ponte.
+E' anche una fonte per la pipeline.
 
-Deve preparare input per:
+Pero' non devo confondere due cose:
+
+```text
+Requirement Analysis Document = fonte completa.
+Handoff Contract = contesto operativo selezionato per un agente specifico.
+```
+
+Nel Requirement Analysis Document posso inserire note preliminari per:
 
 - Architect Agent;
 - Developer Agent;
@@ -712,21 +721,45 @@ Deve preparare input per:
 - Reviewer Agent;
 - Knowledge Compiler.
 
+Queste note non sono necessariamente l'Handoff Contract finale.
+
+Sono materiale da cui creare un handoff separato quando il progetto cresce o quando il prossimo agente ha bisogno di un ingresso operativo pulito.
+
 Esempio:
 
 ```text
-Handoff per Architect Agent:
+Note per Architect Agent:
 - valutare se sito statico semplice basta o se serve framework;
 - considerare GitHub Pages come target naturale;
 - mantenere Markdown come fonte principale.
 
-Handoff per Tester Agent:
+Note per Tester Agent:
 - verificare desktop e mobile;
 - verificare link lezioni;
 - verificare leggibilita' dei diagrammi.
 ```
 
 Questo evita che ogni agente riparta da zero.
+
+Quando preparo il passaggio reale verso l'Architect Agent, posso trasformare queste note in:
+
+```text
+Architect Handoff Contract
+```
+
+Regola pratica:
+
+```text
+Se il progetto e' piccolo, il RAD con note interne puo' bastare.
+Se il progetto e' medio o complesso, creo un Handoff Contract separato.
+Se il prossimo agente ha dubbi, puo' consultare il RAD come fonte.
+```
+
+Quindi l'agente successivo non deve sempre ricevere tutto il RAD nel proprio contesto attivo.
+
+Idealmente riceve prima l'handoff.
+
+Il RAD resta disponibile come fonte di approfondimento.
 
 ## Human gate
 
@@ -803,7 +836,7 @@ Un Requirement Analyst Agent professionale deve produrre almeno:
 - domande aperte su autorizzazioni e fonti;
 - rischi legati ad automazione e allucinazione;
 - criteri di accettazione;
-- handoff verso Architect Agent e Governance Agent.
+- note preliminari o handoff verso Architect Agent e Governance Agent.
 
 Output debole:
 
@@ -889,7 +922,7 @@ Correzione:
 Ogni requisito importante deve avere almeno un criterio di accettazione.
 ```
 
-### Errore 4 - Non preparare handoff
+### Errore 4 - Non preparare note per il passaggio successivo
 
 Errore:
 
@@ -906,7 +939,7 @@ La pipeline perde continuita'.
 Correzione:
 
 ```text
-Aggiungere sempre handoff specifici.
+Aggiungere note specifiche per gli agenti successivi e, se il progetto lo richiede, generare Handoff Contract separati.
 ```
 
 ### Errore 5 - Usare il template come gabbia
@@ -1035,7 +1068,7 @@ Dopo questa lezione devo saper rispondere:
 3. Che cos'e' un output contract?
 4. Perche' devo separare fatti, ipotesi e domande aperte?
 5. Perche' i criteri di accettazione aiutano il Tester Agent?
-6. Perche' l'handoff e' parte dell'output?
+6. Perche' nel RAD posso avere note preliminari di handoff senza confonderle con un Handoff Contract completo?
 7. Quando una sezione vuota deve diventare "Da chiarire" invece di essere inventata?
 8. Perche' un output contract deve essere rigido ma versionabile?
 9. Che problema crea lo schema drift in una pipeline multi-agent?
@@ -1048,11 +1081,12 @@ Dopo questa lezione devo saper rispondere:
 - Un agente professionale non produce solo testo, produce artefatti strutturati.
 - Il template di output rende l'agente valutabile.
 - L'output contract governa la forma dell'artefatto; il template la rende concreta; l'handoff prepara il passaggio al prossimo agente.
+- Il Requirement Analysis Document e' fonte completa; l'Handoff Contract e' contesto selezionato per il prossimo agente.
 - Un output stabile riduce perdita di contesto tra agenti.
 - Fatti, ipotesi e domande aperte devono rimanere separati.
 - Ogni requisito importante deve essere verificabile.
 - I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.
-- L'handoff prepara la pipeline multi-agent.
+- Le note preliminari nel RAD aiutano a preparare la pipeline multi-agent, ma nei passaggi complessi l'handoff va separato.
 - Il template deve evolvere dopo uso reale, non prima in astratto.
 - Un output blindato protegge la pipeline, ma deve restare versionabile.
 - Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.

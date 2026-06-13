@@ -44,7 +44,7 @@
 <p>Questa lezione serve a costruire il primo template di output reale del percorso AgentFactory.</p>
 <p>Il template si chiama:</p>
 <pre><code>Requirement Analysis Document</code></pre>
-<p>Serve al Requirement Analyst Agent per trasformare un brief grezzo in un documento requisiti ordinato, verificabile e pronto per gli agenti successivi.</p>
+<p>Serve al Requirement Analyst Agent per trasformare un brief grezzo in un documento requisiti ordinato, verificabile e usabile come fonte dagli agenti successivi.</p>
 <p>Fino ad ora ho creato:</p>
 <ul><li>una roadmap;</li><li>una definizione di agente;</li><li>una distinzione tra automazione, workflow e agente;</li><li>una Agent Card;</li><li>una mappa degli strumenti reali.</li></ul>
 <p>Ora devo fare un passo molto importante:</p>
@@ -296,16 +296,17 @@ poi lo miglioro.</code></pre>
   P --&gt; G{Governance Gate}
   G --&gt;|Approvata| T2[Nuova versione template]
   T2 --&gt; RA
-  H --&gt;|Validato| A[Architect Agent]
+  H --&gt;|Validato| AH[Architect Handoff]
+  AH --&gt; A[Architect Agent]
   H --&gt;|Da chiarire| Q[Domande al committente]
   D --&gt; KC[Knowledge Compiler: note candidate]</div></div>
 <p>In questo schema ci sono tre elementi importanti:</p>
-<ul><li>l'Agent Card dice chi e' l'agente e cosa puo' fare;</li><li>il template dice come deve essere fatto l'output;</li><li>il documento finale diventa input per altri agenti.</li><li>la review controlla se l'output rispetta il contratto;</li><li>l'Output Contract Steward propone evoluzioni del template quando emergono limiti ricorrenti.</li></ul>
+<ul><li>l'Agent Card dice chi e' l'agente e cosa puo' fare;</li><li>il template dice come deve essere fatto l'output;</li><li>il documento finale diventa fonte autorevole consultabile dagli altri agenti;</li><li>l'handoff seleziona cio' che serve al prossimo agente senza caricare tutto il documento;</li><li>la review controlla se l'output rispetta il contratto;</li><li>l'Output Contract Steward propone evoluzioni del template quando emergono limiti ricorrenti.</li></ul>
 <h2 id="anatomia-del-requirement-analysis-document">Anatomia del Requirement Analysis Document</h2>
 <p>Il template creato in questa lezione vive qui:</p>
 <pre><code>templates/requirement-analysis-output-template.md</code></pre>
 <p>Le sezioni principali sono:</p>
-<div class="table-wrap"><table><thead><tr><th>Sezione</th><th>A cosa serve</th><th>Perche' e' importante</th></tr></thead><tbody><tr><td>Metadati</td><td>Identificare progetto, versione, autore e stato</td><td>Rende il documento tracciabile</td></tr><tr><td>Sintesi progetto</td><td>Spiegare il progetto in poche righe</td><td>Aiuta lettura rapida e handoff</td></tr><tr><td>Obiettivo di business</td><td>Chiarire il perche' del progetto</td><td>Evita soluzioni tecniche senza scopo</td></tr><tr><td>Fatti certi</td><td>Separare cio' che e' dichiarato</td><td>Riduce invenzioni dell'agente</td></tr><tr><td>Ipotesi</td><td>Dichiarare deduzioni non confermate</td><td>Evita di trattare ipotesi come verita'</td></tr><tr><td>Domande aperte</td><td>Evidenziare cosa manca</td><td>Prepara human gate e chiarimenti</td></tr><tr><td>Attori e stakeholder</td><td>Capire chi usa o influenza il sistema</td><td>Migliora requisiti e priorita'</td></tr><tr><td>Scope</td><td>Definire cosa entra nella fase corrente</td><td>Riduce espansione incontrollata</td></tr><tr><td>Out of scope</td><td>Definire cosa resta fuori</td><td>Protegge tempi, costi e focus</td></tr><tr><td>Requisiti funzionali</td><td>Descrivere cosa deve fare il sistema</td><td>Base per sviluppo e test</td></tr><tr><td>Requisiti non funzionali</td><td>Descrivere qualita' e vincoli di comportamento</td><td>Base per architettura e governance</td></tr><tr><td>Vincoli</td><td>Esplicitare limiti tecnici, legali o organizzativi</td><td>Evita decisioni incompatibili</td></tr><tr><td>Rischi</td><td>Anticipare problemi</td><td>Aiuta priorita' e controllo</td></tr><tr><td>Criteri di accettazione</td><td>Dire come verificare il risultato</td><td>Collega requisiti e test</td></tr><tr><td>Human gate</td><td>Stabilire cosa deve approvare una persona</td><td>Evita automazione cieca</td></tr><tr><td>Handoff</td><td>Preparare input per agenti successivi</td><td>Riduce perdita di contesto</td></tr><tr><td>Note Knowledge Compiler</td><td>Proporre conoscenza da assorbire</td><td>Alimenta miglioramento nel tempo</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Sezione</th><th>A cosa serve</th><th>Perche' e' importante</th></tr></thead><tbody><tr><td>Metadati</td><td>Identificare progetto, versione, autore e stato</td><td>Rende il documento tracciabile</td></tr><tr><td>Sintesi progetto</td><td>Spiegare il progetto in poche righe</td><td>Aiuta lettura rapida e handoff</td></tr><tr><td>Obiettivo di business</td><td>Chiarire il perche' del progetto</td><td>Evita soluzioni tecniche senza scopo</td></tr><tr><td>Fatti certi</td><td>Separare cio' che e' dichiarato</td><td>Riduce invenzioni dell'agente</td></tr><tr><td>Ipotesi</td><td>Dichiarare deduzioni non confermate</td><td>Evita di trattare ipotesi come verita'</td></tr><tr><td>Domande aperte</td><td>Evidenziare cosa manca</td><td>Prepara human gate e chiarimenti</td></tr><tr><td>Attori e stakeholder</td><td>Capire chi usa o influenza il sistema</td><td>Migliora requisiti e priorita'</td></tr><tr><td>Scope</td><td>Definire cosa entra nella fase corrente</td><td>Riduce espansione incontrollata</td></tr><tr><td>Out of scope</td><td>Definire cosa resta fuori</td><td>Protegge tempi, costi e focus</td></tr><tr><td>Requisiti funzionali</td><td>Descrivere cosa deve fare il sistema</td><td>Base per sviluppo e test</td></tr><tr><td>Requisiti non funzionali</td><td>Descrivere qualita' e vincoli di comportamento</td><td>Base per architettura e governance</td></tr><tr><td>Vincoli</td><td>Esplicitare limiti tecnici, legali o organizzativi</td><td>Evita decisioni incompatibili</td></tr><tr><td>Rischi</td><td>Anticipare problemi</td><td>Aiuta priorita' e controllo</td></tr><tr><td>Criteri di accettazione</td><td>Dire come verificare il risultato</td><td>Collega requisiti e test</td></tr><tr><td>Human gate</td><td>Stabilire cosa deve approvare una persona</td><td>Evita automazione cieca</td></tr><tr><td>Note preliminari di handoff</td><td>Preparare indicazioni per agenti successivi</td><td>Aiuta a generare Handoff Contract separati quando servono</td></tr><tr><td>Note Knowledge Compiler</td><td>Proporre conoscenza da assorbire</td><td>Alimenta miglioramento nel tempo</td></tr></tbody></table></div>
 <h2 id="fatti-ipotesi-e-domande-aperte">Fatti, ipotesi e domande aperte</h2>
 <p>Queste tre sezioni sono fondamentali.</p>
 <p>Molti errori nei sistemi agentici nascono da qui.</p>
@@ -349,22 +350,36 @@ L'utente puo' aprire e chiudere le sezioni Fondazione, Lezioni e Agenti senza ri
 <p>Questa struttura aiuta il Tester Agent.</p>
 <p>Infatti il Tester Agent non deve indovinare cosa verificare.</p>
 <p>Riceve criteri gia' collegati ai requisiti.</p>
-<h2 id="handoff-verso-gli-agenti-successivi">Handoff verso gli agenti successivi</h2>
+<h2 id="note-preliminari-per-gli-agenti-successivi">Note preliminari per gli agenti successivi</h2>
 <p>Il Requirement Analysis Document non e' solo un documento per l'umano.</p>
-<p>E' anche un ponte.</p>
-<p>Deve preparare input per:</p>
+<p>E' anche una fonte per la pipeline.</p>
+<p>Pero' non devo confondere due cose:</p>
+<pre><code>Requirement Analysis Document = fonte completa.
+Handoff Contract = contesto operativo selezionato per un agente specifico.</code></pre>
+<p>Nel Requirement Analysis Document posso inserire note preliminari per:</p>
 <ul><li>Architect Agent;</li><li>Developer Agent;</li><li>Tester Agent;</li><li>Reviewer Agent;</li><li>Knowledge Compiler.</li></ul>
+<p>Queste note non sono necessariamente l'Handoff Contract finale.</p>
+<p>Sono materiale da cui creare un handoff separato quando il progetto cresce o quando il prossimo agente ha bisogno di un ingresso operativo pulito.</p>
 <p>Esempio:</p>
-<pre><code>Handoff per Architect Agent:
+<pre><code>Note per Architect Agent:
 - valutare se sito statico semplice basta o se serve framework;
 - considerare GitHub Pages come target naturale;
 - mantenere Markdown come fonte principale.
 
-Handoff per Tester Agent:
+Note per Tester Agent:
 - verificare desktop e mobile;
 - verificare link lezioni;
 - verificare leggibilita' dei diagrammi.</code></pre>
 <p>Questo evita che ogni agente riparta da zero.</p>
+<p>Quando preparo il passaggio reale verso l'Architect Agent, posso trasformare queste note in:</p>
+<pre><code>Architect Handoff Contract</code></pre>
+<p>Regola pratica:</p>
+<pre><code>Se il progetto e' piccolo, il RAD con note interne puo' bastare.
+Se il progetto e' medio o complesso, creo un Handoff Contract separato.
+Se il prossimo agente ha dubbi, puo' consultare il RAD come fonte.</code></pre>
+<p>Quindi l'agente successivo non deve sempre ricevere tutto il RAD nel proprio contesto attivo.</p>
+<p>Idealmente riceve prima l'handoff.</p>
+<p>Il RAD resta disponibile come fonte di approfondimento.</p>
 <h2 id="human-gate">Human gate</h2>
 <p>Il Requirement Analyst Agent non deve decidere tutto da solo.</p>
 <p>Deve indicare quali punti richiedono validazione umana.</p>
@@ -405,7 +420,7 @@ Requisiti non funzionali:
 <p>Brief:</p>
 <pre><code>Un'azienda vuole automatizzare la ricezione di brief cliente, trasformarli in requisiti e generare una prima proposta tecnica con agenti AI.</code></pre>
 <p>Un Requirement Analyst Agent professionale deve produrre almeno:</p>
-<ul><li>obiettivo di business;</li><li>attori coinvolti;</li><li>canali di input;</li><li>requisiti funzionali;</li><li>requisiti non funzionali;</li><li>vincoli su privacy e dati;</li><li>domande aperte su autorizzazioni e fonti;</li><li>rischi legati ad automazione e allucinazione;</li><li>criteri di accettazione;</li><li>handoff verso Architect Agent e Governance Agent.</li></ul>
+<ul><li>obiettivo di business;</li><li>attori coinvolti;</li><li>canali di input;</li><li>requisiti funzionali;</li><li>requisiti non funzionali;</li><li>vincoli su privacy e dati;</li><li>domande aperte su autorizzazioni e fonti;</li><li>rischi legati ad automazione e allucinazione;</li><li>criteri di accettazione;</li><li>note preliminari o handoff verso Architect Agent e Governance Agent.</li></ul>
 <p>Output debole:</p>
 <pre><code>Serve una pipeline AI che riceve brief, capisce requisiti e produce proposta tecnica.</code></pre>
 <p>Output forte:</p>
@@ -436,13 +451,13 @@ Requisiti non funzionali:
 <pre><code>Il Tester Agent non ha una base chiara.</code></pre>
 <p>Correzione:</p>
 <pre><code>Ogni requisito importante deve avere almeno un criterio di accettazione.</code></pre>
-<h3 id="errore-4-non-preparare-handoff">Errore 4 - Non preparare handoff</h3>
+<h3 id="errore-4-non-preparare-note-per-il-passaggio-successivo">Errore 4 - Non preparare note per il passaggio successivo</h3>
 <p>Errore:</p>
 <pre><code>Concludere il documento senza indicare cosa devono fare gli agenti successivi.</code></pre>
 <p>Perche' e' un problema:</p>
 <pre><code>La pipeline perde continuita'.</code></pre>
 <p>Correzione:</p>
-<pre><code>Aggiungere sempre handoff specifici.</code></pre>
+<pre><code>Aggiungere note specifiche per gli agenti successivi e, se il progetto lo richiede, generare Handoff Contract separati.</code></pre>
 <h3 id="errore-5-usare-il-template-come-gabbia">Errore 5 - Usare il template come gabbia</h3>
 <p>Errore:</p>
 <pre><code>Compilare tutte le sezioni anche quando non ci sono informazioni utili.</code></pre>
@@ -500,14 +515,14 @@ Requirement Analysis Document compilato secondo template ufficiale.</code></pre>
 3. Che cos'e' un output contract?
 4. Perche' devo separare fatti, ipotesi e domande aperte?
 5. Perche' i criteri di accettazione aiutano il Tester Agent?
-6. Perche' l'handoff e' parte dell'output?
+6. Perche' nel RAD posso avere note preliminari di handoff senza confonderle con un Handoff Contract completo?
 7. Quando una sezione vuota deve diventare &quot;Da chiarire&quot; invece di essere inventata?
 8. Perche' un output contract deve essere rigido ma versionabile?
 9. Che problema crea lo schema drift in una pipeline multi-agent?
 10. Che differenza c'e' tra agente che propone un'estensione e agente che modifica autonomamente un contratto ufficiale?
 11. Che differenza c'e' tra output contract, template e handoff?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>L'output contract governa la forma dell'artefatto; il template la rende concreta; l'handoff prepara il passaggio al prossimo agente.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li><li>Un output blindato protegge la pipeline, ma deve restare versionabile.</li><li>Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.</li><li>Serve un ruolo di Output Contract Steward per controllare conformita', drift ed evoluzione dei template.</li><li>L'evoluzione autonoma deve essere governata da evidenze, review, compatibilita' e gate.</li></ul>
+<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>L'output contract governa la forma dell'artefatto; il template la rende concreta; l'handoff prepara il passaggio al prossimo agente.</li><li>Il Requirement Analysis Document e' fonte completa; l'Handoff Contract e' contesto selezionato per il prossimo agente.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>Le note preliminari nel RAD aiutano a preparare la pipeline multi-agent, ma nei passaggi complessi l'handoff va separato.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li><li>Un output blindato protegge la pipeline, ma deve restare versionabile.</li><li>Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.</li><li>Serve un ruolo di Output Contract Steward per controllare conformita', drift ed evoluzione dei template.</li><li>L'evoluzione autonoma deve essere governata da evidenze, review, compatibilita' e gate.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Usare il template con un brief semplice e produrre il primo Requirement Analysis Document manuale.</p>
 <p>Solo dopo avra' senso iniziare ad automatizzare questo passaggio con Python o con un SDK agentico.</p>

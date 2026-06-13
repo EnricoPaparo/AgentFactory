@@ -102,6 +102,14 @@ In questa lezione l'Architect Agent riceve un Handoff Contract, ma deve produrre
 Architecture Decision Record
 ```
 
+Regola di contesto:
+
+```text
+L'Architect parte dall'Handoff Contract.
+Consulta il Requirement Analysis Document se deve verificare una fonte,
+risolvere un dubbio o recuperare un dettaglio non incluso nell'handoff.
+```
+
 ## Definizione semplice
 
 Un Architect Agent e' un agente specializzato che prende requisiti e vincoli e propone una struttura tecnica coerente.
@@ -125,8 +133,8 @@ mantenibile, verificabile e coerente con i vincoli.
 
 Un Architect Agent deve:
 
-- leggere il Requirement Analysis Document;
-- leggere l'Handoff Contract;
+- leggere l'Handoff Contract come ingresso operativo principale;
+- consultare il Requirement Analysis Document come fonte completa quando serve;
 - identificare vincoli tecnici e organizzativi;
 - distinguere scelte immediate e opzioni future;
 - proporre una struttura del sistema;
@@ -275,6 +283,7 @@ Questa e' una decisione architetturale utile.
 flowchart LR
     A["Requirement Analysis Document"] --> B["Architect Handoff Contract"]
     B --> C["Architect Agent"]
+    A -. "fonte consultabile" .-> C
     C --> D["Architecture Decision Record"]
     D --> E["Developer Handoff"]
     D --> F["Tester Notes"]

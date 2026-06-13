@@ -64,7 +64,7 @@ a &quot;sto simulando manualmente il lavoro dell'agente&quot;</code></pre>
 <pre><code>saper giudicare la qualita' di un artefatto.</code></pre>
 <p>Un agente non diventa professionale perche' usa un modello potente.</p>
 <p>Diventa professionale quando:</p>
-<ul><li>riceve input chiari;</li><li>produce output strutturati;</li><li>dichiara incertezze;</li><li>prepara handoff;</li><li>rispetta limiti;</li><li>lascia tracce valutabili.</li></ul>
+<ul><li>riceve input chiari;</li><li>produce output strutturati;</li><li>dichiara incertezze;</li><li>prepara note utili per gli handoff successivi;</li><li>rispetta limiti;</li><li>lascia tracce valutabili.</li></ul>
 <h2 id="prerequisiti">Prerequisiti</h2>
 <p>Prima di questa lezione devo avere chiari:</p>
 <ul><li>che cos'e' un Requirement Analyst Agent;</li><li>che cos'e' un template di output;</li><li>che cos'e' un Requirement Analysis Document;</li><li>differenza tra fatto, ipotesi e domanda aperta;</li><li>differenza tra requisito funzionale e requisito non funzionale;</li><li>concetto di criterio di accettazione;</li><li>concetto di handoff.</li></ul>
@@ -139,7 +139,7 @@ Deve avere una sidebar ordinata, compatta, responsive, con sezioni espandibili e
 <p>E' una simulazione manuale del comportamento che voglio insegnare al Requirement Analyst Agent.</p>
 <h2 id="cosa-imparare-guardando-l-artefatto">Cosa imparare guardando l'artefatto</h2>
 <p>Quando leggo il documento prodotto devo chiedermi:</p>
-<ul><li>i fatti sono separati dalle ipotesi?</li><li>le domande aperte sono utili?</li><li>i requisiti sono verificabili?</li><li>i criteri di accettazione sono concreti?</li><li>gli handoff aiutano davvero gli agenti successivi?</li><li>ci sono rischi reali?</li><li>il documento e' troppo lungo o troppo vago?</li><li>posso usarlo per guidare sviluppo, test e review?</li></ul>
+<ul><li>i fatti sono separati dalle ipotesi?</li><li>le domande aperte sono utili?</li><li>i requisiti sono verificabili?</li><li>i criteri di accettazione sono concreti?</li><li>le note per gli agenti successivi aiutano davvero a preparare handoff chiari?</li><li>ci sono rischi reali?</li><li>il documento e' troppo lungo o troppo vago?</li><li>posso usarlo per guidare sviluppo, test e review?</li></ul>
 <p>Queste domande sono il primo nucleo di valutazione.</p>
 <h2 id="differenza-tra-fare-analisi-e-fare-progettazione">Differenza tra fare analisi e fare progettazione</h2>
 <p>Il Requirement Analyst Agent non deve progettare tutto.</p>
@@ -150,22 +150,24 @@ Deve avere una sidebar ordinata, compatta, responsive, con sezioni espandibili e
 <pre><code>Requisito:
 Il sito deve essere consultabile come static site senza backend.
 
-Handoff per Architect Agent:
+Nota preliminare per Architect Agent:
 Valutare se HTML/CSS/JS statico e' sufficiente o se conviene introdurre un generatore piu' robusto.</code></pre>
 <p>Questa e' analisi corretta.</p>
 <p>Non sto progettando tutta la soluzione.</p>
-<p>Sto preparando il prossimo agente.</p>
+<p>Sto preparando il materiale da cui potra' nascere un Handoff Contract separato.</p>
 <h2 id="prima-metrica-qualitativa">Prima metrica qualitativa</h2>
 <p>Da questa lezione introduco una prima metrica semplice:</p>
-<pre><code>Un Requirement Analysis Document e' buono se un agente successivo puo' lavorare senza dover reinterpretare tutto da zero.</code></pre>
+<pre><code>Un Requirement Analysis Document e' buono se un agente successivo puo' usare l'handoff derivato dal RAD senza dover reinterpretare tutto da zero.</code></pre>
 <p>Questa metrica e' semplice ma potente.</p>
-<p>Se l'Architect Agent deve chiedersi:</p>
+<p>Se l'Architect Agent, leggendo l'handoff derivato dal RAD, deve chiedersi:</p>
 <pre><code>ma cosa voleva davvero l'utente?</code></pre>
 <p>allora l'analisi requisiti e' debole.</p>
 <p>Se invece puo' dire:</p>
 <pre><code>ho obiettivo, scope, vincoli, requisiti e criteri di accettazione;
 posso progettare il prossimo passo.</code></pre>
 <p>allora l'artefatto sta funzionando.</p>
+<p>Il RAD resta comunque fonte completa.</p>
+<p>L'handoff, quando esiste come file separato, diventa il contesto operativo primario del prossimo agente.</p>
 <h2 id="esempio-di-trasformazione">Esempio di trasformazione</h2>
 <p>Input grezzo:</p>
 <pre><code>La sidebar e' troppo schiacciata a sinistra, usiamo meglio gli spazi.</code></pre>
@@ -235,10 +237,10 @@ Criterio di accettazione: a viewport desktop, la shell principale ha una larghez
 3. Dove vive l'artefatto prodotto?
 4. Come distinguo fatti, ipotesi e domande aperte?
 5. Quando una richiesta estetica diventa un requisito verificabile?
-6. Come capisco se l'artefatto aiuta l'agente successivo?
+6. Come capisco se l'artefatto aiuta a preparare un handoff utile per l'agente successivo?
 7. Perche' questo documento e' gia' parte della futura Agent Factory?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Prima di automatizzare un agente devo sapere valutare manualmente il suo output.</li><li>Un template va provato su un caso reale, non solo disegnato in astratto.</li><li>Il Requirement Analysis Document e' utile se prepara il lavoro degli agenti successivi.</li><li>Le iterazioni dell'utente sono input importanti e vanno integrate nei requisiti.</li><li>Una richiesta estetica deve essere tradotta in criteri osservabili.</li><li>Un artefatto manuale ben fatto diventa esempio di training mentale per l'agente futuro.</li></ul>
+<ul><li>Prima di automatizzare un agente devo sapere valutare manualmente il suo output.</li><li>Un template va provato su un caso reale, non solo disegnato in astratto.</li><li>Il Requirement Analysis Document e' utile se diventa fonte completa e prepara handoff selezionati per gli agenti successivi.</li><li>Le iterazioni dell'utente sono input importanti e vanno integrate nei requisiti.</li><li>Una richiesta estetica deve essere tradotta in criteri osservabili.</li><li>Un artefatto manuale ben fatto diventa esempio di training mentale per l'agente futuro.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Valutare il Requirement Analysis Document appena prodotto.</p>
 <p>La prossima lezione dovra' introdurre una checklist di valutazione per capire se l'output del Requirement Analyst Agent e' buono o debole.</p>

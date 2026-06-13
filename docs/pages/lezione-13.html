@@ -75,6 +75,10 @@
 Handoff Contract = passaggio operativo verso il prossimo agente.</code></pre>
 <p>In questa lezione l'Architect Agent riceve un Handoff Contract, ma deve produrre un altro artefatto con il proprio output contract:</p>
 <pre><code>Architecture Decision Record</code></pre>
+<p>Regola di contesto:</p>
+<pre><code>L'Architect parte dall'Handoff Contract.
+Consulta il Requirement Analysis Document se deve verificare una fonte,
+risolvere un dubbio o recuperare un dettaglio non incluso nell'handoff.</code></pre>
 <h2 id="definizione-semplice">Definizione semplice</h2>
 <p>Un Architect Agent e' un agente specializzato che prende requisiti e vincoli e propone una struttura tecnica coerente.</p>
 <p>Non e' il Developer Agent.</p>
@@ -86,7 +90,7 @@ Handoff Contract = passaggio operativo verso il prossimo agente.</code></pre>
 mantenibile, verificabile e coerente con i vincoli.</code></pre>
 <h2 id="cosa-fa-un-architect-agent">Cosa fa un Architect Agent</h2>
 <p>Un Architect Agent deve:</p>
-<ul><li>leggere il Requirement Analysis Document;</li><li>leggere l'Handoff Contract;</li><li>identificare vincoli tecnici e organizzativi;</li><li>distinguere scelte immediate e opzioni future;</li><li>proporre una struttura del sistema;</li><li>scegliere pattern o strumenti quando servono;</li><li>spiegare alternative scartate;</li><li>dichiarare trade-off;</li><li>indicare rischi architetturali;</li><li>preparare handoff per Developer Agent;</li><li>preparare note utili per Tester Agent;</li><li>proporre candidate per Knowledge Compiler se emergono regole riutilizzabili.</li></ul>
+<ul><li>leggere l'Handoff Contract come ingresso operativo principale;</li><li>consultare il Requirement Analysis Document come fonte completa quando serve;</li><li>identificare vincoli tecnici e organizzativi;</li><li>distinguere scelte immediate e opzioni future;</li><li>proporre una struttura del sistema;</li><li>scegliere pattern o strumenti quando servono;</li><li>spiegare alternative scartate;</li><li>dichiarare trade-off;</li><li>indicare rischi architetturali;</li><li>preparare handoff per Developer Agent;</li><li>preparare note utili per Tester Agent;</li><li>proporre candidate per Knowledge Compiler se emergono regole riutilizzabili.</li></ul>
 <h2 id="cosa-non-deve-fare">Cosa non deve fare</h2>
 <p>Un Architect Agent non deve:</p>
 <ul><li>inventare requisiti;</li><li>cambiare scope;</li><li>decidere feature non richieste;</li><li>scrivere codice di produzione;</li><li>modificare file del sito senza autorizzazione;</li><li>installare framework;</li><li>scegliere servizi a pagamento senza human gate;</li><li>aggiornare direttamente la knowledge base;</li><li>ignorare domande aperte bloccanti;</li><li>trasformare ipotesi future in obblighi immediati.</li></ul>
@@ -156,6 +160,7 @@ Rivalutiamo se aumentano ricerca, versioni, tassonomie o componenti interattivi.
 <div class="diagram"><div class="mermaid">flowchart LR
     A[&quot;Requirement Analysis Document&quot;] --&gt; B[&quot;Architect Handoff Contract&quot;]
     B --&gt; C[&quot;Architect Agent&quot;]
+    A -. &quot;fonte consultabile&quot; .-&gt; C
     C --&gt; D[&quot;Architecture Decision Record&quot;]
     D --&gt; E[&quot;Developer Handoff&quot;]
     D --&gt; F[&quot;Tester Notes&quot;]

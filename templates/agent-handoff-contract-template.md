@@ -36,6 +36,14 @@ Output atteso dal ricevente: [Artefatto da produrre]
 - [File o documento da leggere]
 ```
 
+Uso previsto:
+
+```text
+L'Handoff Contract e' il contesto operativo primario del ricevente.
+Gli artefatti sorgente restano disponibili per verifica o approfondimento,
+ma non devono essere caricati tutti nel contesto attivo se l'handoff e' sufficiente.
+```
+
 ## Obiettivo del passaggio
 
 ```text

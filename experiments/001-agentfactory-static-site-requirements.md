@@ -223,7 +223,7 @@ Criterio di accettazione: nuove lezioni rilevanti vengono aggiunte a `MANUAL.md`
 - Confermare se il design cyberpunk attuale e' adatto anche a proiezione didattica.
 ```
 
-## Handoff per Architect Agent
+## Note preliminari per Architect Agent
 
 ```text
 - Valutare architettura del sito statico rispetto alla crescita futura del manuale.
@@ -232,7 +232,7 @@ Criterio di accettazione: nuove lezioni rilevanti vengono aggiunte a `MANUAL.md`
 - Definire strategia per ricerca, indice pagina e versionamento contenuti.
 ```
 
-## Handoff per Developer Agent
+## Note preliminari per Developer Agent
 
 ```text
 - Aggiornare `tools/build-site.js` quando si aggiungono nuove lezioni o categorie.
@@ -241,7 +241,7 @@ Criterio di accettazione: nuove lezioni rilevanti vengono aggiunte a `MANUAL.md`
 - Evitare dipendenze non necessarie nella fase corrente.
 ```
 
-## Handoff per Tester Agent
+## Note preliminari per Tester Agent
 
 ```text
 - Verificare apertura home.
@@ -253,7 +253,7 @@ Criterio di accettazione: nuove lezioni rilevanti vengono aggiunte a `MANUAL.md`
 - Verificare assenza di `undefined`, `NaN` o link `.md` non convertiti nel sito generato.
 ```
 
-## Handoff per Reviewer Agent
+## Note preliminari per Reviewer Agent
 
 ```text
 - Controllare che la sidebar non sia troppo densa o troppo dispersiva.
