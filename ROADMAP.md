@@ -89,6 +89,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [x] Handoff tra agenti
 - [x] Contratti tra agenti
+- [x] Differenza tra output contract e Handoff Contract
 - [ ] Output Contract Steward e controllo dei contratti
 - [ ] Pipeline sequenziale
 - [ ] Supervisor-worker pattern

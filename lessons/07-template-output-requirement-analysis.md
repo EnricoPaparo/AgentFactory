@@ -157,6 +157,34 @@ il documento deve avere queste sezioni, in questo ordine, con questo tipo di con
 
 Un output contract rende l'agente piu' controllabile.
 
+La parola importante e':
+
+```text
+forma.
+```
+
+Un output contract non decide tutto il lavoro dell'agente successivo.
+
+Decide soprattutto come deve essere fatto l'artefatto prodotto dall'agente corrente.
+
+Esempio semplice:
+
+```text
+Il Requirement Analyst Agent deve produrre un Requirement Analysis Document.
+Quel documento deve avere sezioni stabili.
+Ogni sezione deve contenere un certo tipo di informazione.
+```
+
+Quindi l'output contract risponde a domande come:
+
+```text
+Quale artefatto deve uscire?
+Quali sezioni deve avere?
+In che ordine?
+Quali campi sono obbligatori?
+Come capisco se il formato e' rispettato?
+```
+
 Esempio:
 
 ```text
@@ -186,6 +214,58 @@ Questa lista non e' burocrazia.
 E' architettura.
 
 Sto creando una forma stabile che altri agenti potranno leggere.
+
+## Output contract, template e handoff
+
+Qui devo fare una distinzione importante, perche' questi tre concetti sono vicini ma non sono la stessa cosa.
+
+| Concetto | Domanda a cui risponde | Esempio |
+|---|---|---|
+| Output contract | Che forma deve avere l'artefatto prodotto? | Il documento requisiti deve avere fatti, ipotesi, domande, requisiti, rischi e criteri di accettazione |
+| Template | Quale file uso come stampo pratico del contratto? | `templates/requirement-analysis-output-template.md` |
+| Handoff | Che cosa deve ricevere il prossimo agente per lavorare bene? | L'Architect deve ricevere obiettivo, vincoli, scope, rischi e output atteso |
+
+Il template e' la materializzazione pratica dell'output contract.
+
+L'handoff invece e' il passaggio operativo verso un altro agente.
+
+Esempio:
+
+```text
+Output contract:
+"Il Requirement Analysis Document deve avere la sezione Vincoli."
+
+Template:
+file Markdown con la sezione ## Vincoli pronta da compilare.
+
+Handoff:
+"Architect Agent, considera questi vincoli specifici quando progetti l'architettura."
+```
+
+La differenza e' questa:
+
+```text
+Output contract = controlla la forma dell'output.
+Handoff = controlla il passaggio di responsabilita' e contesto.
+```
+
+Un output puo' contenere una sezione di handoff.
+
+Ma la sezione di handoff non coincide con tutto l'output contract.
+
+E un Handoff Contract, quando lo salviamo come file autonomo, puo' avere a sua volta un template e quindi un suo output contract.
+
+Questa frase sembra sottile, ma e' fondamentale:
+
+```text
+anche l'handoff e' un artefatto, quindi anche l'handoff puo' avere un contratto di forma.
+```
+
+Pero' lo scopo resta diverso.
+
+L'output contract protegge la stabilita' dell'artefatto.
+
+L'handoff protegge la continuita' del lavoro tra agenti.
 
 ## Output blindato non significa output immutabile
 
@@ -960,12 +1040,14 @@ Dopo questa lezione devo saper rispondere:
 8. Perche' un output contract deve essere rigido ma versionabile?
 9. Che problema crea lo schema drift in una pipeline multi-agent?
 10. Che differenza c'e' tra agente che propone un'estensione e agente che modifica autonomamente un contratto ufficiale?
+11. Che differenza c'e' tra output contract, template e handoff?
 ```
 
 ## Conoscenza da assorbire
 
 - Un agente professionale non produce solo testo, produce artefatti strutturati.
 - Il template di output rende l'agente valutabile.
+- L'output contract governa la forma dell'artefatto; il template la rende concreta; l'handoff prepara il passaggio al prossimo agente.
 - Un output stabile riduce perdita di contesto tra agenti.
 - Fatti, ipotesi e domande aperte devono rimanere separati.
 - Ogni requisito importante deve essere verificabile.

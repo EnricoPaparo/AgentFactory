@@ -89,6 +89,19 @@ Prima di questa lezione devo avere chiari:
 - concetto di output contract;
 - perche' un agente deve avere responsabilita' e privilegi limitati.
 
+Mini richiamo:
+
+```text
+Output contract = forma dell'artefatto.
+Handoff Contract = passaggio operativo verso il prossimo agente.
+```
+
+In questa lezione l'Architect Agent riceve un Handoff Contract, ma deve produrre un altro artefatto con il proprio output contract:
+
+```text
+Architecture Decision Record
+```
+
 ## Definizione semplice
 
 Un Architect Agent e' un agente specializzato che prende requisiti e vincoli e propone una struttura tecnica coerente.

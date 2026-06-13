@@ -211,7 +211,24 @@ Rimandabile.</code></pre>
 - handoff per Developer Agent.</code></pre>
 <p>Senza output atteso, non posso valutare se l'agente ha lavorato bene.</p>
 <h2 id="cos-e-un-handoff-contract">Cos'e' un Handoff Contract</h2>
-<p>Un Handoff Contract e' un output contract specializzato per il passaggio tra agenti.</p>
+<p>Un Handoff Contract e' un artefatto di passaggio tra agenti.</p>
+<p>Serve a trasferire contesto, responsabilita', vincoli e output atteso da un agente mittente a un agente ricevente.</p>
+<p>Qui devo evitare una confusione importante:</p>
+<pre><code>Handoff Contract non significa semplicemente &quot;un altro nome per output contract&quot;.</code></pre>
+<p>Un output contract controlla la forma di un artefatto.</p>
+<p>Un handoff controlla il passaggio operativo tra due agenti.</p>
+<p>Poiche' anche l'handoff viene salvato come artefatto Markdown, anche l'handoff puo' avere un suo template e quindi un suo output contract.</p>
+<p>Ma lo scopo principale e' diverso.</p>
+<div class="table-wrap"><table><thead><tr><th>Concetto</th><th>Cosa governa</th><th>Domanda principale</th><th>Esempio</th></tr></thead><tbody><tr><td>Output contract</td><td>Forma dell'artefatto</td><td>Com'e' fatto l'output?</td><td>Il Requirement Analysis Document deve avere sezioni obbligatorie</td></tr><tr><td>Handoff Contract</td><td>Passaggio tra agenti</td><td>Cosa deve sapere e fare il prossimo agente?</td><td>L'Architect deve rispettare scope, vincoli e domande aperte</td></tr></tbody></table></div>
+<p>Quindi la relazione corretta e':</p>
+<pre><code>un Handoff Contract e' un artefatto di passaggio;
+se voglio renderlo stabile e verificabile,
+gli assegno un template;
+quel template diventa l'output contract dell'handoff.</code></pre>
+<p>Questo chiarisce perche' nel repo abbiamo:</p>
+<pre><code>templates/agent-handoff-contract-template.md</code></pre>
+<p>Quel file non dice solo &quot;passa qualcosa al prossimo agente&quot;.</p>
+<p>Dice quale forma deve avere un handoff fatto bene.</p>
 <p>Serve a rispondere a tre domande:</p>
 <pre><code>1. Da chi arriva questo lavoro?
 2. Chi deve riceverlo?
@@ -231,6 +248,25 @@ contiene cio' che serve all'Architect per progettare senza perdere vincoli e con
 <p>Questa distinzione e' fondamentale.</p>
 <p>Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.</p>
 <p>Se passo anche un handoff, gli sto dando un ingresso operativo.</p>
+<h2 id="esempio-completo-output-contract-contro-handoff">Esempio completo: output contract contro handoff</h2>
+<p>Prendo il nostro caso reale.</p>
+<p>Il Requirement Analyst Agent produce:</p>
+<pre><code>Requirement Analysis Document</code></pre>
+<p>Il suo output contract dice:</p>
+<pre><code>Questo documento deve contenere metadati, sintesi, obiettivo,
+fatti, ipotesi, domande aperte, scope, requisiti, vincoli,
+rischi, criteri di accettazione, human gate e handoff.</code></pre>
+<p>Questo serve a controllare la forma del documento.</p>
+<p>Poi da quel documento posso preparare:</p>
+<pre><code>Architect Handoff Contract</code></pre>
+<p>Questo handoff dice:</p>
+<pre><code>Architect Agent, per il tuo lavoro considera questi vincoli,
+queste decisioni aperte, questo scope, questi rischi
+e produci un Architecture Decision Record.</code></pre>
+<p>Questo serve a controllare il passaggio tra Requirement Analyst e Architect.</p>
+<p>Regola mentale:</p>
+<pre><code>Output contract = rende l'output leggibile e verificabile.
+Handoff = rende il prossimo passo eseguibile e governato.</code></pre>
 <h2 id="diagramma-del-passaggio">Diagramma del passaggio</h2>
 <div class="diagram"><div class="mermaid">flowchart LR
     A[&quot;Brief grezzo&quot;] --&gt; B[&quot;Requirement Analyst Agent&quot;]
@@ -481,15 +517,16 @@ docs/</code></pre>
 <h2 id="verifica-personale">Verifica personale</h2>
 <p>Dopo questa lezione devo saper rispondere:</p>
 <pre><code>1. Che differenza c'e' tra passare un file e fare un handoff?
-2. Perche' un handoff non deve contenere tutto?
-3. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
-4. Perche' fatti, ipotesi e domande aperte devono restare separati?
-5. Perche' l'out of scope protegge la pipeline?
-6. Che cosa deve produrre un Architect Agent dopo un handoff?
-7. Perche' un handoff non trasferisce automaticamente privilegi?
-8. Come un handoff puo' diventare fonte per knowledge absorption futura?</code></pre>
+2. Che differenza c'e' tra output contract e Handoff Contract?
+3. Perche' un handoff non deve contenere tutto?
+4. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
+5. Perche' fatti, ipotesi e domande aperte devono restare separati?
+6. Perche' l'out of scope protegge la pipeline?
+7. Che cosa deve produrre un Architect Agent dopo un handoff?
+8. Perche' un handoff non trasferisce automaticamente privilegi?
+9. Come un handoff puo' diventare fonte per knowledge absorption futura?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Un handoff e' una compressione intenzionale del contesto, non un dump.</li><li>Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.</li><li>Le incertezze devono essere visibili e classificate.</li><li>I privilegi non si trasferiscono automaticamente con il contesto.</li><li>Gli handoff sono fonti importanti per migliorare la factory nel tempo.</li><li>Prima di automatizzare una pipeline multi-agent conviene simulare a mano i contratti tra agenti.</li></ul>
+<ul><li>Un handoff e' una compressione intenzionale del contesto, non un dump.</li><li>Un output contract governa la forma dell'artefatto; un handoff governa il passaggio tra agenti.</li><li>Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.</li><li>Le incertezze devono essere visibili e classificate.</li><li>I privilegi non si trasferiscono automaticamente con il contesto.</li><li>Gli handoff sono fonti importanti per migliorare la factory nel tempo.</li><li>Prima di automatizzare una pipeline multi-agent conviene simulare a mano i contratti tra agenti.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Dopo questa lezione posso progettare il primo vero ricevente:</p>
 <pre><code>Architect Agent</code></pre>

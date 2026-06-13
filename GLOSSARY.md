@@ -16,7 +16,7 @@ Modello riutilizzabile per produrre sempre lo stesso tipo di artefatto con una s
 
 ## Output contract
 
-Accordo sulla forma dell'output prodotto da un agente. Definisce sezioni, ordine, contenuto atteso e criteri minimi, cosi' gli agenti successivi possono usare l'artefatto senza reinterpretarlo da zero.
+Accordo sulla forma dell'output prodotto da un agente. Definisce sezioni, ordine, contenuto atteso e criteri minimi, cosi' gli agenti successivi possono usare l'artefatto senza reinterpretarlo da zero. Governa la struttura dell'artefatto, non l'intero passaggio di responsabilita' tra agenti.
 
 ## Output Contract Steward
 
@@ -128,11 +128,11 @@ Strumento che un agente puo' usare: file system, terminale, GitHub, browser, dat
 
 ## Handoff
 
-Passaggio strutturato di output da un agente a un altro. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.
+Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero.
 
 ## Handoff Contract
 
-Contratto operativo che descrive come un agente passa lavoro a un altro agente: mittente, ricevente, artefatti sorgente, obiettivo, vincoli, scope, out of scope, privilegi, condizioni di stop e output atteso.
+Contratto operativo che descrive come un agente passa lavoro a un altro agente: mittente, ricevente, artefatti sorgente, obiettivo, vincoli, scope, out of scope, privilegi, condizioni di stop e output atteso. Non coincide con l'output contract: l'output contract governa la forma di un artefatto, l'Handoff Contract governa il passaggio tra agenti. Poiche' l'handoff e' a sua volta un artefatto, puo' avere un template e quindi un proprio output contract.
 
 ## Perdita di contesto
 

@@ -102,6 +102,25 @@ Serve solo capire il flusso.
 
 Il codice arrivera' dopo.
 
+Se questi concetti si confondono, il runtime diventa fragile:
+
+```text
+Agent Card:
+chi e' l'agente e quali confini ha.
+
+Prompt operativo:
+come metto quell'agente in esecuzione in un task concreto.
+
+Output contract:
+quale forma deve avere l'artefatto prodotto.
+
+Handoff:
+cosa deve sapere il prossimo agente per continuare il lavoro.
+
+Run record:
+cosa e' successo davvero durante l'esecuzione.
+```
+
 ## Il problema: prompt generico contro prompt operativo
 
 Un prompt generico e':

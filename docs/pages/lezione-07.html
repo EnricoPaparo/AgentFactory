@@ -95,6 +95,20 @@
 <p>Dice:</p>
 <pre><code>il documento deve avere queste sezioni, in questo ordine, con questo tipo di contenuto.</code></pre>
 <p>Un output contract rende l'agente piu' controllabile.</p>
+<p>La parola importante e':</p>
+<pre><code>forma.</code></pre>
+<p>Un output contract non decide tutto il lavoro dell'agente successivo.</p>
+<p>Decide soprattutto come deve essere fatto l'artefatto prodotto dall'agente corrente.</p>
+<p>Esempio semplice:</p>
+<pre><code>Il Requirement Analyst Agent deve produrre un Requirement Analysis Document.
+Quel documento deve avere sezioni stabili.
+Ogni sezione deve contenere un certo tipo di informazione.</code></pre>
+<p>Quindi l'output contract risponde a domande come:</p>
+<pre><code>Quale artefatto deve uscire?
+Quali sezioni deve avere?
+In che ordine?
+Quali campi sono obbligatori?
+Come capisco se il formato e' rispettato?</code></pre>
 <p>Esempio:</p>
 <pre><code>Il Requirement Analyst Agent deve sempre produrre:
 
@@ -118,6 +132,31 @@
 <p>Questa lista non e' burocrazia.</p>
 <p>E' architettura.</p>
 <p>Sto creando una forma stabile che altri agenti potranno leggere.</p>
+<h2 id="output-contract-template-e-handoff">Output contract, template e handoff</h2>
+<p>Qui devo fare una distinzione importante, perche' questi tre concetti sono vicini ma non sono la stessa cosa.</p>
+<div class="table-wrap"><table><thead><tr><th>Concetto</th><th>Domanda a cui risponde</th><th>Esempio</th></tr></thead><tbody><tr><td>Output contract</td><td>Che forma deve avere l'artefatto prodotto?</td><td>Il documento requisiti deve avere fatti, ipotesi, domande, requisiti, rischi e criteri di accettazione</td></tr><tr><td>Template</td><td>Quale file uso come stampo pratico del contratto?</td><td><code>templates/requirement-analysis-output-template.md</code></td></tr><tr><td>Handoff</td><td>Che cosa deve ricevere il prossimo agente per lavorare bene?</td><td>L'Architect deve ricevere obiettivo, vincoli, scope, rischi e output atteso</td></tr></tbody></table></div>
+<p>Il template e' la materializzazione pratica dell'output contract.</p>
+<p>L'handoff invece e' il passaggio operativo verso un altro agente.</p>
+<p>Esempio:</p>
+<pre><code>Output contract:
+&quot;Il Requirement Analysis Document deve avere la sezione Vincoli.&quot;
+
+Template:
+file Markdown con la sezione ## Vincoli pronta da compilare.
+
+Handoff:
+&quot;Architect Agent, considera questi vincoli specifici quando progetti l'architettura.&quot;</code></pre>
+<p>La differenza e' questa:</p>
+<pre><code>Output contract = controlla la forma dell'output.
+Handoff = controlla il passaggio di responsabilita' e contesto.</code></pre>
+<p>Un output puo' contenere una sezione di handoff.</p>
+<p>Ma la sezione di handoff non coincide con tutto l'output contract.</p>
+<p>E un Handoff Contract, quando lo salviamo come file autonomo, puo' avere a sua volta un template e quindi un suo output contract.</p>
+<p>Questa frase sembra sottile, ma e' fondamentale:</p>
+<pre><code>anche l'handoff e' un artefatto, quindi anche l'handoff puo' avere un contratto di forma.</code></pre>
+<p>Pero' lo scopo resta diverso.</p>
+<p>L'output contract protegge la stabilita' dell'artefatto.</p>
+<p>L'handoff protegge la continuita' del lavoro tra agenti.</p>
 <h2 id="output-blindato-non-significa-output-immutabile">Output blindato non significa output immutabile</h2>
 <p>Qui nasce un dubbio importante:</p>
 <pre><code>Se in una pipeline multi-agent possono esistere agenti creati dinamicamente,
@@ -465,9 +504,10 @@ Requirement Analysis Document compilato secondo template ufficiale.</code></pre>
 7. Quando una sezione vuota deve diventare &quot;Da chiarire&quot; invece di essere inventata?
 8. Perche' un output contract deve essere rigido ma versionabile?
 9. Che problema crea lo schema drift in una pipeline multi-agent?
-10. Che differenza c'e' tra agente che propone un'estensione e agente che modifica autonomamente un contratto ufficiale?</code></pre>
+10. Che differenza c'e' tra agente che propone un'estensione e agente che modifica autonomamente un contratto ufficiale?
+11. Che differenza c'e' tra output contract, template e handoff?</code></pre>
 <h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
-<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li><li>Un output blindato protegge la pipeline, ma deve restare versionabile.</li><li>Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.</li><li>Serve un ruolo di Output Contract Steward per controllare conformita', drift ed evoluzione dei template.</li><li>L'evoluzione autonoma deve essere governata da evidenze, review, compatibilita' e gate.</li></ul>
+<ul><li>Un agente professionale non produce solo testo, produce artefatti strutturati.</li><li>Il template di output rende l'agente valutabile.</li><li>L'output contract governa la forma dell'artefatto; il template la rende concreta; l'handoff prepara il passaggio al prossimo agente.</li><li>Un output stabile riduce perdita di contesto tra agenti.</li><li>Fatti, ipotesi e domande aperte devono rimanere separati.</li><li>Ogni requisito importante deve essere verificabile.</li><li>I criteri di accettazione collegano Requirement Analyst Agent e Tester Agent.</li><li>L'handoff prepara la pipeline multi-agent.</li><li>Il template deve evolvere dopo uso reale, non prima in astratto.</li><li>Un output blindato protegge la pipeline, ma deve restare versionabile.</li><li>Gli agenti dinamici possono proporre estensioni, non cambiare da soli i contratti ufficiali.</li><li>Serve un ruolo di Output Contract Steward per controllare conformita', drift ed evoluzione dei template.</li><li>L'evoluzione autonoma deve essere governata da evidenze, review, compatibilita' e gate.</li></ul>
 <h2 id="prossimo-passo">Prossimo passo</h2>
 <p>Usare il template con un brief semplice e produrre il primo Requirement Analysis Document manuale.</p>
 <p>Solo dopo avra' senso iniziare ad automatizzare questo passaggio con Python o con un SDK agentico.</p>

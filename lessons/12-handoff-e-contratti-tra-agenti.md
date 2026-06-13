@@ -331,7 +331,47 @@ Senza output atteso, non posso valutare se l'agente ha lavorato bene.
 
 ## Cos'e' un Handoff Contract
 
-Un Handoff Contract e' un output contract specializzato per il passaggio tra agenti.
+Un Handoff Contract e' un artefatto di passaggio tra agenti.
+
+Serve a trasferire contesto, responsabilita', vincoli e output atteso da un agente mittente a un agente ricevente.
+
+Qui devo evitare una confusione importante:
+
+```text
+Handoff Contract non significa semplicemente "un altro nome per output contract".
+```
+
+Un output contract controlla la forma di un artefatto.
+
+Un handoff controlla il passaggio operativo tra due agenti.
+
+Poiche' anche l'handoff viene salvato come artefatto Markdown, anche l'handoff puo' avere un suo template e quindi un suo output contract.
+
+Ma lo scopo principale e' diverso.
+
+| Concetto | Cosa governa | Domanda principale | Esempio |
+|---|---|---|---|
+| Output contract | Forma dell'artefatto | Com'e' fatto l'output? | Il Requirement Analysis Document deve avere sezioni obbligatorie |
+| Handoff Contract | Passaggio tra agenti | Cosa deve sapere e fare il prossimo agente? | L'Architect deve rispettare scope, vincoli e domande aperte |
+
+Quindi la relazione corretta e':
+
+```text
+un Handoff Contract e' un artefatto di passaggio;
+se voglio renderlo stabile e verificabile,
+gli assegno un template;
+quel template diventa l'output contract dell'handoff.
+```
+
+Questo chiarisce perche' nel repo abbiamo:
+
+```text
+templates/agent-handoff-contract-template.md
+```
+
+Quel file non dice solo "passa qualcosa al prossimo agente".
+
+Dice quale forma deve avere un handoff fatto bene.
 
 Serve a rispondere a tre domande:
 
@@ -372,6 +412,49 @@ Questa distinzione e' fondamentale.
 Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.
 
 Se passo anche un handoff, gli sto dando un ingresso operativo.
+
+## Esempio completo: output contract contro handoff
+
+Prendo il nostro caso reale.
+
+Il Requirement Analyst Agent produce:
+
+```text
+Requirement Analysis Document
+```
+
+Il suo output contract dice:
+
+```text
+Questo documento deve contenere metadati, sintesi, obiettivo,
+fatti, ipotesi, domande aperte, scope, requisiti, vincoli,
+rischi, criteri di accettazione, human gate e handoff.
+```
+
+Questo serve a controllare la forma del documento.
+
+Poi da quel documento posso preparare:
+
+```text
+Architect Handoff Contract
+```
+
+Questo handoff dice:
+
+```text
+Architect Agent, per il tuo lavoro considera questi vincoli,
+queste decisioni aperte, questo scope, questi rischi
+e produci un Architecture Decision Record.
+```
+
+Questo serve a controllare il passaggio tra Requirement Analyst e Architect.
+
+Regola mentale:
+
+```text
+Output contract = rende l'output leggibile e verificabile.
+Handoff = rende il prossimo passo eseguibile e governato.
+```
 
 ## Diagramma del passaggio
 
@@ -919,18 +1002,20 @@ Dopo questa lezione devo saper rispondere:
 
 ```text
 1. Che differenza c'e' tra passare un file e fare un handoff?
-2. Perche' un handoff non deve contenere tutto?
-3. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
-4. Perche' fatti, ipotesi e domande aperte devono restare separati?
-5. Perche' l'out of scope protegge la pipeline?
-6. Che cosa deve produrre un Architect Agent dopo un handoff?
-7. Perche' un handoff non trasferisce automaticamente privilegi?
-8. Come un handoff puo' diventare fonte per knowledge absorption futura?
+2. Che differenza c'e' tra output contract e Handoff Contract?
+3. Perche' un handoff non deve contenere tutto?
+4. Quali informazioni devono sopravvivere tra Requirement Analyst e Architect?
+5. Perche' fatti, ipotesi e domande aperte devono restare separati?
+6. Perche' l'out of scope protegge la pipeline?
+7. Che cosa deve produrre un Architect Agent dopo un handoff?
+8. Perche' un handoff non trasferisce automaticamente privilegi?
+9. Come un handoff puo' diventare fonte per knowledge absorption futura?
 ```
 
 ## Conoscenza da assorbire
 
 - Un handoff e' una compressione intenzionale del contesto, non un dump.
+- Un output contract governa la forma dell'artefatto; un handoff governa il passaggio tra agenti.
 - Ogni passaggio tra agenti deve dichiarare mittente, ricevente, obiettivo, vincoli e output atteso.
 - Le incertezze devono essere visibili e classificate.
 - I privilegi non si trasferiscono automaticamente con il contesto.
