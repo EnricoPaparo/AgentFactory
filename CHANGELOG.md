@@ -2,6 +2,16 @@
 
 Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 
+## 2026-06-13
+
+### Aggiunto
+
+- Lezione 17: runtime Python minimo per il primo agente reale.
+- Script `runtime/run_requirement_analyst.py` con dry-run predefinito ed execute esplicito.
+- Brief input versionato per il primo run del Requirement Analyst Agent.
+- README runtime, requirements e configurazione esempio senza segreti.
+- `.gitignore` per evitare commit accidentali di env, virtualenv e cache Python.
+
 ## 2026-06-12
 
 ### Cambiato

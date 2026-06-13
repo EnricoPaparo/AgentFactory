@@ -58,6 +58,22 @@ Documento di esecuzione che trasforma ruolo, input, regole, template e vincoli i
 
 Il pezzo piu' piccolo di sistema capace di eseguire un agente in modo tracciabile: legge input, prompt e template, chiama il modello, salva output e run record.
 
+## Runtime
+
+Ambiente o programma che mette in esecuzione un agente. Nel percorso AgentFactory il primo runtime e' uno script Python che legge file versionati, compone il prompt e puo' chiamare un modello solo se autorizzato.
+
+## Dry-run
+
+Esecuzione di prova che mostra cosa succederebbe senza chiamare servizi esterni, senza spendere token e senza produrre l'output finale.
+
+## Execute
+
+Esecuzione reale. Nel runtime AgentFactory indica la modalita' che chiama il modello via API e salva output e run record.
+
+## Variabile ambiente
+
+Valore configurato nel sistema o nella sessione terminale, usato dal programma senza salvarlo nel repository. Esempi: `OPENAI_API_KEY`, `OPENAI_MODEL`.
+
 ## API key
 
 Credenziale usata per accedere a un servizio via API. Non deve mai essere salvata nel repository: va gestita come variabile ambiente o tramite secret manager.

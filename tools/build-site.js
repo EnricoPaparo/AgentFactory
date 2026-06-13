@@ -154,6 +154,13 @@ const sources = [
     summary: "Come preparare il primo agente reale con prompt, API key, budget, output e run record.",
   },
   {
+    title: "17 - Runtime Python minimo",
+    file: "lessons/17-runtime-python-primo-agente-reale.md",
+    slug: "lezione-17",
+    group: "Lezioni",
+    summary: "Come costruire il primo runtime Python con dry-run, execute, output e run record.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -245,6 +252,13 @@ const sources = [
     summary: "Regole minime per API key, budget, output, run record e human gate.",
   },
   {
+    title: "Runtime AgentFactory",
+    file: "runtime/README.md",
+    slug: "runtime-agentfactory",
+    group: "Runtime",
+    summary: "Istruzioni del primo runtime Python controllato per il Requirement Analyst Agent.",
+  },
+  {
     title: "001 - AgentFactory Static Site Requirements",
     file: "experiments/001-agentfactory-static-site-requirements.md",
     slug: "esperimento-001-agentfactory-static-site-requirements",
@@ -306,6 +320,13 @@ const sources = [
     slug: "esperimento-001-requirement-analyst-real-agent-run-plan",
     group: "Esperimenti",
     summary: "Piano del primo run reale del Requirement Analyst Agent.",
+  },
+  {
+    title: "001 - Static Site Requirements Input",
+    file: "experiments/001-agentfactory-static-site-requirements-input.md",
+    slug: "esperimento-001-agentfactory-static-site-requirements-input",
+    group: "Esperimenti",
+    summary: "Brief input versionato per il primo run reale del Requirement Analyst Agent.",
   },
   {
     title: "Requirement Analysis Rules",

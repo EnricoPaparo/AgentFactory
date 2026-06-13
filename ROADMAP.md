@@ -104,14 +104,14 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 ## Livello 6 - Ambiente operativo e Python minimo
 
-- [ ] Terminale essenziale
+- [x] Terminale essenziale
 - [ ] Git e GitHub
-- [ ] File e cartelle
+- [x] File e cartelle
 - [ ] JSON/YAML
-- [ ] Funzioni Python
-- [ ] Script CLI
-- [ ] Lettura di un repository
-- [ ] Generazione di file Markdown
+- [x] Funzioni Python
+- [x] Script CLI
+- [x] Lettura di un repository
+- [x] Generazione di file Markdown
 
 ## Livello 7 - Primo agente reale
 
@@ -121,6 +121,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Salvare un artefatto
 - [x] Validare l'output
 - [ ] Versionare il risultato
+- [x] Preparare runtime minimo con dry-run
 - [x] Valutare OpenAI Agents SDK per eseguire il primo agente
 
 ## Livello 8 - Pipeline multi-agent reale

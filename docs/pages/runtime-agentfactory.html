@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime AgentFactory | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260612-logo-fix">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group"><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a><a href="lezione-14.html"><span>14 - Valutare ADR e Architect output</span></a><a href="lezione-15.html"><span>15 - Developer Agent e Implementation Plan</span></a><a href="lezione-16.html"><span>16 - Prompt operativo e runtime minimo</span></a><a href="lezione-17.html"><span>17 - Runtime Python minimo</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="architect-agent.html"><span>Architect Agent</span></a><a href="developer-agent.html"><span>Developer Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a><a href="template-architecture-decision-review-checklist.html"><span>Architecture Decision Review Checklist</span></a><a href="template-implementation-plan.html"><span>Implementation Plan Template</span></a><a href="template-real-agent-run-record.html"><span>Real Agent Run Record Template</span></a></details><details class="nav-group"><summary>Prompt</summary><a href="prompt-requirement-analyst-agent.html"><span>Requirement Analyst Agent Prompt</span></a></details><details class="nav-group"><summary>Governance</summary><a href="governance-real-agent-execution-rules.html"><span>Real Agent Execution Rules</span></a></details><details class="nav-group" open><summary>Runtime</summary><a aria-current="page" href="runtime-agentfactory.html"><span>Runtime AgentFactory</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-architecture-review.html"><span>001 - Review Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-developer-handoff.html"><span>001 - Developer Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-implementation-plan.html"><span>001 - Static Site Implementation Plan</span></a><a href="esperimento-001-requirement-analyst-real-agent-run-plan.html"><span>001 - Requirement Analyst Real Agent Run Plan</span></a><a href="esperimento-001-agentfactory-static-site-requirements-input.html"><span>001 - Static Site Requirements Input</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Runtime</span>
+  </div>
+  <h1>Runtime AgentFactory</h1>
+  <p class="lead">Istruzioni del primo runtime Python controllato per il Requirement Analyst Agent.</p>
+  <div class="source-chip">runtime/README.md</div>
+  <section class="markdown-body">
+    <h1 id="runtime-agentfactory">Runtime AgentFactory</h1>
+<p>Questa cartella contiene i primi script operativi della factory.</p>
+<p>Per ora esiste un solo runtime:</p>
+<pre><code>runtime/run_requirement_analyst.py</code></pre>
+<h2 id="scopo">Scopo</h2>
+<p>Il runtime esegue il Requirement Analyst Agent in modo controllato.</p>
+<p>Legge:</p>
+<ul><li>brief input;</li><li>Agent Card;</li><li>prompt operativo;</li><li>template output;</li><li>knowledge base.</li></ul>
+<p>Poi compone il prompt finale.</p>
+<p>In modalita' dry-run non chiama nessuna API.</p>
+<p>In modalita' execute chiama il modello e salva:</p>
+<ul><li>output Markdown;</li><li>run record.</li></ul>
+<h2 id="dry-run">Dry-run</h2>
+<pre><code>python runtime\run_requirement_analyst.py</code></pre>
+<p>Questo comando non spende nulla e non chiama servizi esterni.</p>
+<p>Se <code>python</code> non e' riconosciuto su Windows, controllare:</p>
+<pre><code>python --version
+py --version</code></pre>
+<p>Se entrambi falliscono, installare Python e riaprire il terminale.</p>
+<h2 id="setup-execute">Setup execute</h2>
+<pre><code>python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r runtime\requirements.txt
+$env:OPENAI_API_KEY = &quot;[valore segreto reale]&quot;
+$env:OPENAI_MODEL = &quot;gpt-5.5&quot;</code></pre>
+<h2 id="execute">Execute</h2>
+<pre><code>python runtime\run_requirement_analyst.py --execute</code></pre>
+<h2 id="regole">Regole</h2>
+<ul><li>Non salvare mai API key nel repository.</li><li>Eseguire sempre prima dry-run.</li><li>Non usare <code>--force</code> se non si vuole sovrascrivere intenzionalmente output esistenti.</li><li>Dopo l'output, usare la review checklist prima di procedere.</li></ul>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260612-logo-fix" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260612-logo-fix"></script>
+</body>
+</html>
