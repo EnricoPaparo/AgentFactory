@@ -10,7 +10,7 @@ const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-ag
 const siteAuthor = "Enrico Paparo";
 const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
-const assetVersion = "20260613-mobile-sidebar";
+const assetVersion = "20260613-home-clean";
 
 const sources = [
   {
@@ -606,27 +606,6 @@ function pageBody(source, rendered) {
 
 function indexBody() {
   const wordmarkSrc = `${wordmarkPath}?v=${assetVersion}`;
-  const lessonCards = sources
-    .filter((source) => source.group === "Lezioni")
-    .map(
-      (source) => `<a class="lesson-card" href="pages/${source.slug}.html">
-        <span>${escapeHtml(source.title.split(" - ")[0])}</span>
-        <strong>${escapeHtml(source.title.replace(/^\d+\s-\s/, ""))}</strong>
-        <p>${escapeHtml(source.summary)}</p>
-      </a>`
-    )
-    .join("");
-
-  const foundationCards = sources
-    .filter((source) => source.group !== "Lezioni")
-    .map(
-      (source) => `<a class="resource-card" href="pages/${source.slug}.html">
-        <small>${escapeHtml(source.group)}</small>
-        <strong>${escapeHtml(source.title)}</strong>
-        <p>${escapeHtml(source.summary)}</p>
-      </a>`
-    )
-    .join("");
 
   return `<section class="hero">
     <div class="hero-copy">
@@ -641,26 +620,13 @@ function indexBody() {
       </div>
       <p class="hero-credit">Prodotto da ${escapeHtml(siteAuthor)}</p>
     </div>
-    <div class="hero-panel pipeline-panel" aria-label="Pipeline AgentFactory">
-      <div class="node-row"><span>Brief</span><i></i><span>Requirement Analyst</span></div>
-      <div class="node-row"><span>Context Builder</span><i></i><span>Architect</span></div>
-      <div class="node-row"><span>Developer</span><i></i><span>Tester</span></div>
-      <div class="node-row"><span>Reviewer</span><i></i><span>Knowledge Compiler</span></div>
+    <div class="hero-panel home-summary" aria-label="Descrizione AgentFactory">
+      <p class="eyebrow">Obiettivo</p>
+      <h2>Da zero a progettazione agentica professionale</h2>
+      <p>AgentFactory e' un manuale operativo e un laboratorio reale per imparare a progettare agenti AI, workflow multi-agent, runtime controllati, artefatti verificabili e cicli di miglioramento basati su review e knowledge absorption.</p>
+      <p>Partiamo da concetti semplici, file Markdown e singoli agenti. Arriviamo gradualmente a una factory capace di creare, governare e migliorare agenti specializzati per progetti diversi.</p>
+      <p class="home-summary-focus">Competenze chiave: prompt operativo, Agent Card, output contract, governance, Python minimo, API, review, memoria e orchestrazione multi-agent.</p>
     </div>
-  </section>
-  <section class="section-band">
-    <div class="section-heading">
-      <p class="eyebrow">Percorso</p>
-      <h2>Lezioni</h2>
-    </div>
-    <div class="lesson-grid">${lessonCards}</div>
-  </section>
-  <section class="section-band">
-    <div class="section-heading">
-      <p class="eyebrow">Repository</p>
-      <h2>Materiali vivi</h2>
-    </div>
-    <div class="resource-grid">${foundationCards}</div>
   </section>`;
 }
 
