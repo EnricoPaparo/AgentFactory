@@ -14,6 +14,8 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Lezione 18: pre-flight del primo run API con checklist ambiente, modello, API key, budget e review.
 - Template `templates/real-agent-preflight-checklist-template.md`.
 - Prima checklist pre-flight concreta in `experiments/002-requirement-analyst-real-agent-preflight.md`.
+- Ampliata la Lezione 11 con gestione della crescita di knowledge, Agent Card, prompt, template e stato degli agenti.
+- Aggiornata la roadmap con Knowledge Curator, Agent Maintainer, Memory Steward, State Store, context budget e knowledge drift.
 
 ### Corretto
 

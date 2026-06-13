@@ -76,6 +76,9 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Semantic memory
 - [ ] Retrieval
 - [ ] Context Builder
+- [ ] Context budget e rapporto segnale/rumore
+- [ ] Compressione della conoscenza
+- [ ] Memoria attiva vs memoria storica
 - [x] Knowledge Base
 - [x] Knowledge Compiler
 - [x] Knowledge absorption
@@ -143,6 +146,12 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Valutazione output
 - [ ] Failure analysis
 - [ ] Rilevazione schema drift
+- [ ] Rilevazione knowledge drift
+- [ ] Knowledge Curator / Memory Steward
+- [ ] Agent Maintainer
+- [ ] Pulizia di Agent Card, prompt e template
+- [ ] Deprecazione e archiviazione di regole vecchie
+- [ ] State Store degli agenti e delle pipeline
 - [x] Lesson learned
 - [x] Knowledge extraction
 - [x] Knowledge validation
@@ -155,6 +164,8 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Selezionare agenti in base al progetto
 - [ ] Governare estensioni proposte da agenti dinamici
 - [ ] Costruire contesti ottimizzati
+- [ ] Recuperare solo conoscenza rilevante per progetto/agente
+- [ ] Mantenere piccole Agent Card e prompt operativi
 - [ ] Orchestrare workflow progetto-specifici
 - [ ] Valutare qualita', costi e rischio
 - [ ] Riassorbire conoscenza validata

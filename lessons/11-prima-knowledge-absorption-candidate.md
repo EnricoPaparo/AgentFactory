@@ -309,6 +309,193 @@ aggiungere sempre sintesi decisionale finale
 
 Per ora resta una candidate rimandata.
 
+## Quanto puo' crescere la memoria
+
+Questa lezione introduce anche una domanda fondamentale:
+
+```text
+se ogni progetto produce nuova conoscenza,
+Agent Card, template, prompt e knowledge base non rischiano di diventare enormi?
+```
+
+La risposta e':
+
+```text
+si', se la factory assorbe conoscenza senza curatela.
+```
+
+La knowledge absorption non deve diventare:
+
+```text
+aggiungo tutto in fondo a un file.
+```
+
+Deve diventare:
+
+```text
+seleziono, comprimo, sostituisco, archivio, versiono e recupero solo cio' che serve.
+```
+
+Un agente puo' peggiorare anche prima di superare il limite tecnico di contesto del modello.
+
+Perche'?
+
+Perche' se il contesto contiene troppe regole, esempi, eccezioni, note storiche e istruzioni vecchie, il modello riceve piu' rumore.
+
+Il problema quindi non e' solo:
+
+```text
+quanti token entrano?
+```
+
+Il problema e':
+
+```text
+quanto segnale utile c'e' rispetto al rumore?
+```
+
+Una Agent Card non deve diventare una memoria storica completa.
+
+Deve restare il documento identitario dell'agente:
+
+- missione;
+- responsabilita';
+- input;
+- output;
+- tool;
+- privilegi;
+- condizioni di stop;
+- criteri di qualita'.
+
+La conoscenza appresa dai progetti deve vivere soprattutto in:
+
+- knowledge base;
+- regole validate;
+- esempi selezionati;
+- run record;
+- review;
+- decisioni versionate;
+- memoria recuperabile dal Context Builder.
+
+## Chi pulisce la conoscenza vecchia
+
+Quando nuova conoscenza sostituisce conoscenza vecchia, non dovrebbe farlo l'agente operativo da solo.
+
+Il Requirement Analyst Agent non deve decidere liberamente:
+
+```text
+questa vecchia regola non serve piu', la cancello.
+```
+
+Il Developer Agent non deve decidere liberamente:
+
+```text
+questo template e' lungo, lo riscrivo.
+```
+
+Serve un ruolo dedicato.
+
+Nel percorso lo trattero' piu' avanti con nomi come:
+
+```text
+Knowledge Curator
+Agent Maintainer
+Prompt Librarian
+Memory Steward
+```
+
+Questi ruoli non producono direttamente il progetto.
+
+Mantengono sana la factory.
+
+Il loro compito sara':
+
+- trovare regole duplicate;
+- trovare istruzioni in conflitto;
+- proporre compressioni;
+- proporre archiviazioni;
+- distinguere conoscenza attiva e storica;
+- mantenere Agent Card brevi e leggibili;
+- mantenere prompt operativi focalizzati;
+- mantenere template usabili;
+- controllare che i file non diventino discariche di memoria;
+- proporre versioni nuove senza perdere audit trail.
+
+## Stato degli agenti
+
+Un'altra distinzione fondamentale:
+
+```text
+lo stato di un agente non deve stare tutto nella Agent Card.
+```
+
+La Agent Card e':
+
+```text
+identita' stabile dell'agente.
+```
+
+Lo stato operativo vive altrove:
+
+```text
+run record
+trace
+versione della Agent Card
+versione del prompt
+versione del template
+knowledge usata in quel run
+output prodotto
+review ricevuta
+decisioni prese
+metriche di qualita'
+```
+
+Quindi la mappa corretta diventa:
+
+```text
+Agent Card = identita' stabile
+Prompt operativo = istruzioni di esecuzione
+Template = forma dell'output
+Knowledge Base = memoria validata
+Run Record = storia di un'esecuzione
+State Store = stato operativo della pipeline
+Context Builder = selezione del contesto utile
+Knowledge Curator = pulizia e manutenzione della memoria
+Agent Maintainer = pulizia e manutenzione degli agenti
+```
+
+Questo punto e' centrale per il futuro.
+
+La factory non deve solo imparare.
+
+Deve anche dimenticare bene, comprimere bene e recuperare bene.
+
+## Regola provvisoria di crescita sana
+
+Da ora in poi tratto ogni nuova conoscenza con questa domanda:
+
+```text
+dove deve vivere?
+```
+
+Possibili risposte:
+
+| Tipo conoscenza | Dove vive | Note |
+|---|---|---|
+| Identita' dell'agente | Agent Card | Deve restare breve e stabile |
+| Regola operativa riutilizzabile | Knowledge Base | Deve avere ambito di validita' |
+| Forma dell'output | Template | Non deve diventare troppo burocratico |
+| Istruzione di esecuzione | Prompt operativo | Deve essere focalizzata sul run |
+| Evidenza storica | Run record / experiments | Non va caricata sempre nel contesto |
+| Regola vecchia sostituita | Archivio/versione precedente | Non va lasciata attiva se crea conflitto |
+| Conoscenza utile solo in certi casi | Retrieval / Context Builder | Va recuperata solo quando serve |
+
+Questa tabella non chiude il tema.
+
+Lo apre.
+
+Piu' avanti diventera' una parte fondamentale della progettazione della memoria.
+
 ## Aggiornamento del template requisiti
 
 La knowledge absorption produce anche un aggiornamento concreto al template:

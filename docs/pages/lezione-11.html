@@ -153,6 +153,81 @@ Motivo: influenza struttura di deploy e path asset</code></pre>
 <p>Non salvo nemmeno:</p>
 <pre><code>aggiungere sempre sintesi decisionale finale</code></pre>
 <p>Per ora resta una candidate rimandata.</p>
+<h2 id="quanto-puo-crescere-la-memoria">Quanto puo' crescere la memoria</h2>
+<p>Questa lezione introduce anche una domanda fondamentale:</p>
+<pre><code>se ogni progetto produce nuova conoscenza,
+Agent Card, template, prompt e knowledge base non rischiano di diventare enormi?</code></pre>
+<p>La risposta e':</p>
+<pre><code>si', se la factory assorbe conoscenza senza curatela.</code></pre>
+<p>La knowledge absorption non deve diventare:</p>
+<pre><code>aggiungo tutto in fondo a un file.</code></pre>
+<p>Deve diventare:</p>
+<pre><code>seleziono, comprimo, sostituisco, archivio, versiono e recupero solo cio' che serve.</code></pre>
+<p>Un agente puo' peggiorare anche prima di superare il limite tecnico di contesto del modello.</p>
+<p>Perche'?</p>
+<p>Perche' se il contesto contiene troppe regole, esempi, eccezioni, note storiche e istruzioni vecchie, il modello riceve piu' rumore.</p>
+<p>Il problema quindi non e' solo:</p>
+<pre><code>quanti token entrano?</code></pre>
+<p>Il problema e':</p>
+<pre><code>quanto segnale utile c'e' rispetto al rumore?</code></pre>
+<p>Una Agent Card non deve diventare una memoria storica completa.</p>
+<p>Deve restare il documento identitario dell'agente:</p>
+<ul><li>missione;</li><li>responsabilita';</li><li>input;</li><li>output;</li><li>tool;</li><li>privilegi;</li><li>condizioni di stop;</li><li>criteri di qualita'.</li></ul>
+<p>La conoscenza appresa dai progetti deve vivere soprattutto in:</p>
+<ul><li>knowledge base;</li><li>regole validate;</li><li>esempi selezionati;</li><li>run record;</li><li>review;</li><li>decisioni versionate;</li><li>memoria recuperabile dal Context Builder.</li></ul>
+<h2 id="chi-pulisce-la-conoscenza-vecchia">Chi pulisce la conoscenza vecchia</h2>
+<p>Quando nuova conoscenza sostituisce conoscenza vecchia, non dovrebbe farlo l'agente operativo da solo.</p>
+<p>Il Requirement Analyst Agent non deve decidere liberamente:</p>
+<pre><code>questa vecchia regola non serve piu', la cancello.</code></pre>
+<p>Il Developer Agent non deve decidere liberamente:</p>
+<pre><code>questo template e' lungo, lo riscrivo.</code></pre>
+<p>Serve un ruolo dedicato.</p>
+<p>Nel percorso lo trattero' piu' avanti con nomi come:</p>
+<pre><code>Knowledge Curator
+Agent Maintainer
+Prompt Librarian
+Memory Steward</code></pre>
+<p>Questi ruoli non producono direttamente il progetto.</p>
+<p>Mantengono sana la factory.</p>
+<p>Il loro compito sara':</p>
+<ul><li>trovare regole duplicate;</li><li>trovare istruzioni in conflitto;</li><li>proporre compressioni;</li><li>proporre archiviazioni;</li><li>distinguere conoscenza attiva e storica;</li><li>mantenere Agent Card brevi e leggibili;</li><li>mantenere prompt operativi focalizzati;</li><li>mantenere template usabili;</li><li>controllare che i file non diventino discariche di memoria;</li><li>proporre versioni nuove senza perdere audit trail.</li></ul>
+<h2 id="stato-degli-agenti">Stato degli agenti</h2>
+<p>Un'altra distinzione fondamentale:</p>
+<pre><code>lo stato di un agente non deve stare tutto nella Agent Card.</code></pre>
+<p>La Agent Card e':</p>
+<pre><code>identita' stabile dell'agente.</code></pre>
+<p>Lo stato operativo vive altrove:</p>
+<pre><code>run record
+trace
+versione della Agent Card
+versione del prompt
+versione del template
+knowledge usata in quel run
+output prodotto
+review ricevuta
+decisioni prese
+metriche di qualita'</code></pre>
+<p>Quindi la mappa corretta diventa:</p>
+<pre><code>Agent Card = identita' stabile
+Prompt operativo = istruzioni di esecuzione
+Template = forma dell'output
+Knowledge Base = memoria validata
+Run Record = storia di un'esecuzione
+State Store = stato operativo della pipeline
+Context Builder = selezione del contesto utile
+Knowledge Curator = pulizia e manutenzione della memoria
+Agent Maintainer = pulizia e manutenzione degli agenti</code></pre>
+<p>Questo punto e' centrale per il futuro.</p>
+<p>La factory non deve solo imparare.</p>
+<p>Deve anche dimenticare bene, comprimere bene e recuperare bene.</p>
+<h2 id="regola-provvisoria-di-crescita-sana">Regola provvisoria di crescita sana</h2>
+<p>Da ora in poi tratto ogni nuova conoscenza con questa domanda:</p>
+<pre><code>dove deve vivere?</code></pre>
+<p>Possibili risposte:</p>
+<div class="table-wrap"><table><thead><tr><th>Tipo conoscenza</th><th>Dove vive</th><th>Note</th></tr></thead><tbody><tr><td>Identita' dell'agente</td><td>Agent Card</td><td>Deve restare breve e stabile</td></tr><tr><td>Regola operativa riutilizzabile</td><td>Knowledge Base</td><td>Deve avere ambito di validita'</td></tr><tr><td>Forma dell'output</td><td>Template</td><td>Non deve diventare troppo burocratico</td></tr><tr><td>Istruzione di esecuzione</td><td>Prompt operativo</td><td>Deve essere focalizzata sul run</td></tr><tr><td>Evidenza storica</td><td>Run record / experiments</td><td>Non va caricata sempre nel contesto</td></tr><tr><td>Regola vecchia sostituita</td><td>Archivio/versione precedente</td><td>Non va lasciata attiva se crea conflitto</td></tr><tr><td>Conoscenza utile solo in certi casi</td><td>Retrieval / Context Builder</td><td>Va recuperata solo quando serve</td></tr></tbody></table></div>
+<p>Questa tabella non chiude il tema.</p>
+<p>Lo apre.</p>
+<p>Piu' avanti diventera' una parte fondamentale della progettazione della memoria.</p>
 <h2 id="aggiornamento-del-template-requisiti">Aggiornamento del template requisiti</h2>
 <p>La knowledge absorption produce anche un aggiornamento concreto al template:</p>
 <pre><code>templates/requirement-analysis-output-template.md</code></pre>

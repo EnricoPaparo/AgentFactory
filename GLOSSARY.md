@@ -144,6 +144,30 @@ Archivio di conoscenza validata e riutilizzabile: principi, regole, lezioni appr
 
 Ruolo o agente che trasforma esperienza grezza in conoscenza pulita, sintetica e riutilizzabile.
 
+## Knowledge Curator
+
+Ruolo o agente incaricato di mantenere sana la conoscenza validata: elimina duplicati, propone compressioni, archivia regole vecchie, rileva conflitti e distingue memoria attiva da memoria storica.
+
+## Agent Maintainer
+
+Ruolo o agente incaricato di mantenere puliti Agent Card, prompt operativi e template. Non produce direttamente output di progetto: controlla che gli agenti restino leggibili, focalizzati e non gonfiati da memoria non necessaria.
+
+## Memory Steward
+
+Ruolo di governance della memoria: decide, con human gate quando serve, cosa resta attivo, cosa viene archiviato, cosa viene compresso e cosa puo' essere recuperato solo su richiesta.
+
+## State Store
+
+Archivio dello stato operativo di agenti e pipeline: run, trace, versioni usate, output prodotti, review, decisioni e metriche. Non coincide con la Agent Card.
+
+## Context budget
+
+Limite qualitativo e quantitativo del contesto dato a un agente. Non riguarda solo il numero massimo di token, ma anche il rapporto tra informazioni rilevanti e rumore.
+
+## Knowledge drift
+
+Degrado della conoscenza nel tempo: regole vecchie, duplicate, contraddittorie o non piu' valide restano attive e peggiorano output, prompt e decisioni.
+
 ## Knowledge absorption
 
 Processo con cui una lezione, una review, un errore o un progetto vengono trasformati in conoscenza candidata, validata e poi assorbita nella memoria permanente della factory.
