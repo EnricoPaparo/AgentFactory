@@ -279,6 +279,97 @@ Il contesto dice cosa sa adesso per questo task.
 
 La memoria permanente contiene conoscenza validata che puo' essere recuperata quando serve.
 
+## Da quali file e' composto fisicamente un agente
+
+Un punto fondamentale:
+
+```text
+un agente non e' fisicamente solo la sua Agent Card.
+```
+
+La Agent Card e' il documento identitario.
+
+Ma quando un agente diventa reale, e' composto da un package di file.
+
+In AgentFactory devo pensare cosi':
+
+```text
+Agent package = Agent Card + prompt + template + runtime + stato + review + knowledge + governance
+```
+
+La composizione fisica tipica e':
+
+| Tipo file | Esempio | Funzione |
+|---|---|---|
+| Agent Card | `agents/requirement-analyst-agent.md` | Definisce identita', missione, responsabilita', tool e privilegi |
+| Package manifest | `agents/requirement-analyst-package.md` | Elenca tutti i file fisici collegati all'agente |
+| Prompt operativo | `prompts/requirement-analyst-agent-prompt.md` | Trasforma l'identita' dell'agente in istruzioni eseguibili |
+| Output template | `templates/requirement-analysis-output-template.md` | Definisce la forma dell'artefatto prodotto |
+| Review checklist | `templates/requirement-analysis-review-checklist.md` | Definisce come valutare l'output |
+| Runtime | `runtime/run_requirement_analyst.py` | Esegue l'agente o collega l'agente al modello |
+| Config esempio | `runtime/config.example.env` | Documenta variabili senza salvare segreti reali |
+| Input/run plan/pre-flight | `experiments/*input*.md`, `*run-plan*.md`, `*preflight*.md` | Prepara esecuzioni controllate |
+| Run record | `experiments/*run-record*.md` | Traccia cosa e' successo in una esecuzione |
+| Output prodotti | `experiments/*.md` | Artefatti generati o simulati dall'agente |
+| Knowledge base | `knowledge-base/*.md` | Regole validate recuperabili quando servono |
+| Governance | `governance/*.md` | Regole di sicurezza, privilegi, budget e human gate |
+| Evals/test | `evals/`, `tests/` | Misurazioni future della qualita' |
+| State store | `state/` | Stato operativo futuro di agenti e pipeline |
+| Archive | `archive/` | Versioni vecchie o deprecate |
+
+Non tutti questi file esistono subito.
+
+Un agente in fase di progettazione puo' avere solo:
+
+```text
+Agent Card
+```
+
+Un agente pronto per essere eseguito dovrebbe avere almeno:
+
+```text
+Agent Card
+Prompt operativo
+Output template
+Runtime o runner
+Input dichiarato
+Output path
+Run record path
+Review prevista
+Regole di sicurezza
+```
+
+Un agente maturo dovrebbe avere anche:
+
+```text
+evals
+metriche
+versioni
+state store
+archivio
+manutenzione periodica
+```
+
+Questa distinzione evita un errore comune:
+
+```text
+mettere tutto dentro la Agent Card.
+```
+
+La Agent Card deve restare leggibile.
+
+Il package manifest serve proprio a dire:
+
+```text
+questo agente e' composto da questi file,
+questi file sono attivi,
+questi sono futuri,
+questi sono deprecati,
+questi sono condivisi con altri agenti.
+```
+
+Per questo da ora in poi ogni agente reale dovrebbe avere anche un manifest fisico.
+
 ## Perche' non partire subito dal codice
 
 Potrei pensare:

@@ -168,11 +168,25 @@ const sources = [
     summary: "Checklist operativa prima del primo execute via API.",
   },
   {
+    title: "Agents Overview",
+    file: "agents/README.md",
+    slug: "agents-overview",
+    group: "Agenti",
+    summary: "Come leggere un agente come package fisico di file versionati.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
     group: "Agenti",
     summary: "Prima Agent Card reale tracciata nel repository.",
+  },
+  {
+    title: "Requirement Analyst Agent Package",
+    file: "agents/requirement-analyst-package.md",
+    slug: "requirement-analyst-agent-package",
+    group: "Agenti",
+    summary: "Manifest fisico dei file che compongono il Requirement Analyst Agent.",
   },
   {
     title: "Architect Agent",

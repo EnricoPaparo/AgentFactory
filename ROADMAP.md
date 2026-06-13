@@ -50,7 +50,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [x] Prompt, assistente e agente
 - [x] Automazione, workflow, agentic workflow e pipeline multi-agent
-- [ ] Anatomia di un agente professionale
+- [x] Anatomia di un agente professionale
 - [x] Artefatti verificabili
 - [ ] Human in the loop
 - [x] Output contract per il primo agente
@@ -61,6 +61,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [x] Come progettare un agente
 - [x] Agent Card in dettaglio
+- [x] Agent package e file fisici di un agente
 - [x] Missione, input, output, tool, regole e limiti
 - [x] Criteri di qualita'
 - [x] Quando un agente deve fermarsi

@@ -30,6 +30,14 @@ Degrado progressivo della forma di un output: sezioni rinominate, saltate o aggi
 
 Scheda tecnica di un agente. Descrive missione, input, output, tool, regole, limiti, criteri di qualita' e punti in cui deve chiedere conferma.
 
+## Agent package
+
+Insieme fisico dei file che compongono o supportano un agente: Agent Card, prompt operativo, template, runtime, input, output, run record, review, knowledge, governance, eventuali evals e stato.
+
+## Package manifest
+
+Documento che elenca i file fisici collegati a un agente. Serve a capire cosa compone l'agente, quali file sono attivi, quali sono futuri, quali sono deprecati e quali sono condivisi.
+
 ## Privilegio
 
 Permesso operativo concesso a un agente, per esempio leggere file, scrivere file, eseguire comandi, accedere a servizi esterni o modificare memoria.

@@ -16,6 +16,8 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Prima checklist pre-flight concreta in `experiments/002-requirement-analyst-real-agent-preflight.md`.
 - Ampliata la Lezione 11 con gestione della crescita di knowledge, Agent Card, prompt, template e stato degli agenti.
 - Aggiornata la roadmap con Knowledge Curator, Agent Maintainer, Memory Steward, State Store, context budget e knowledge drift.
+- Chiarita nella Lezione 04 la composizione fisica di un agente come package di file.
+- Aggiunto `agents/requirement-analyst-package.md` come primo manifest fisico di un agente.
 
 ### Corretto
 
