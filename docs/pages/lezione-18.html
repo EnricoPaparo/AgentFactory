@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>18 - Pre-flight del primo run API | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="stylesheet" href="../styles.css?v=20260613-mobile-sidebar">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260613-mobile-sidebar" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a><a href="lezione-14.html"><span>14 - Valutare ADR e Architect output</span></a><a href="lezione-15.html"><span>15 - Developer Agent e Implementation Plan</span></a><a href="lezione-16.html"><span>16 - Prompt operativo e runtime minimo</span></a><a href="lezione-17.html"><span>17 - Runtime Python minimo</span></a><a aria-current="page" href="lezione-18.html"><span>18 - Pre-flight del primo run API</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="architect-agent.html"><span>Architect Agent</span></a><a href="developer-agent.html"><span>Developer Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a><a href="template-architecture-decision-review-checklist.html"><span>Architecture Decision Review Checklist</span></a><a href="template-implementation-plan.html"><span>Implementation Plan Template</span></a><a href="template-real-agent-run-record.html"><span>Real Agent Run Record Template</span></a><a href="template-real-agent-preflight-checklist.html"><span>Real Agent Pre-flight Checklist Template</span></a></details><details class="nav-group"><summary>Prompt</summary><a href="prompt-requirement-analyst-agent.html"><span>Requirement Analyst Agent Prompt</span></a></details><details class="nav-group"><summary>Governance</summary><a href="governance-real-agent-execution-rules.html"><span>Real Agent Execution Rules</span></a></details><details class="nav-group"><summary>Runtime</summary><a href="runtime-agentfactory.html"><span>Runtime AgentFactory</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-architecture-review.html"><span>001 - Review Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-developer-handoff.html"><span>001 - Developer Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-implementation-plan.html"><span>001 - Static Site Implementation Plan</span></a><a href="esperimento-001-requirement-analyst-real-agent-run-plan.html"><span>001 - Requirement Analyst Real Agent Run Plan</span></a><a href="esperimento-001-agentfactory-static-site-requirements-input.html"><span>001 - Static Site Requirements Input</span></a><a href="esperimento-002-requirement-analyst-real-agent-preflight.html"><span>002 - Requirement Analyst Real Agent Pre-flight</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+  </div>
+  <h1>18 - Pre-flight del primo run API</h1>
+  <p class="lead">Checklist operativa prima del primo execute via API.</p>
+  <div class="source-chip">lessons/18-preflight-primo-run-api.md</div>
+  <section class="markdown-body">
+    <h1 id="18-pre-flight-del-primo-run-api">18 - Pre-flight del primo run API</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione prepara il primo run reale via API del Requirement Analyst Agent.</p>
+<p>Nella lezione 17 ho creato il runtime Python minimo:</p>
+<pre><code>runtime/run_requirement_analyst.py</code></pre>
+<p>Il runtime funziona gia' in dry-run.</p>
+<p>Questo significa che sa:</p>
+<ul><li>leggere il brief;</li><li>leggere la Agent Card;</li><li>leggere il prompt operativo;</li><li>leggere il template;</li><li>leggere la knowledge base;</li><li>comporre il prompt finale;</li><li>indicare output e run record previsti.</li></ul>
+<p>Ma non ho ancora fatto la chiamata reale al modello.</p>
+<p>Prima di farla serve una fase molto importante:</p>
+<pre><code>pre-flight</code></pre>
+<p>Il pre-flight e' il controllo prima del decollo.</p>
+<p>Nel nostro caso significa:</p>
+<pre><code>prima di spendere token,
+prima di generare un artefatto AI,
+prima di salvare un output reale,
+controllo che ambiente, modello, budget, input, output e review siano pronti.</code></pre>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Un agente reale non fallisce solo perche' il modello risponde male.</p>
+<p>Puo' fallire anche per motivi molto piu' banali:</p>
+<ul><li>Python non e' installato;</li><li>la API key non e' impostata;</li><li>il modello scelto non e' disponibile;</li><li>il pacchetto <code>openai</code> non e' installato;</li><li>l'output path e' gia' occupato;</li><li>il budget non e' deciso;</li><li>il prompt contiene input sbagliato;</li><li>il run record non viene salvato;</li><li>non e' chiaro chi fara' review;</li><li>si fa un secondo run per impulso senza confrontare il primo.</li></ul>
+<p>Questi errori sono importanti perche' insegnano una cosa:</p>
+<pre><code>un sistema agentico professionale non e' solo intelligenza.
+e' anche procedura.</code></pre>
+<p>Il pre-flight e' una procedura.</p>
+<p>Non rende l'agente piu' intelligente.</p>
+<p>Rende il sistema piu' affidabile.</p>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di questa lezione devo avere:</p>
+<ul><li>lezione 16 compresa;</li><li>lezione 17 compresa;</li><li>runtime Python presente;</li><li>prompt operativo presente;</li><li>brief input versionato;</li><li>template di output presente;</li><li>run record template presente;</li><li>regole di execution governance presenti.</li></ul>
+<p>Devo anche accettare una regola:</p>
+<pre><code>se un controllo pre-flight fallisce,
+non eseguo il run.</code></pre>
+<h2 id="che-cos-e-un-pre-flight">Che cos'e' un pre-flight</h2>
+<p>Un pre-flight e' una checklist operativa prima di una esecuzione rischiosa o costosa.</p>
+<p>Nel nostro caso il rischio non e' enorme, ma e' reale:</p>
+<ul><li>posso spendere soldi;</li><li>posso produrre output deboli;</li><li>posso sovrascrivere artefatti;</li><li>posso confondere un test con un risultato validato;</li><li>posso committare file non pronti;</li><li>posso credere che il modello abbia ragione perche' scrive bene.</li></ul>
+<p>Il pre-flight serve a rallentare il momento giusto.</p>
+<p>Non rallenta tutto.</p>
+<p>Rallenta solo il passaggio da:</p>
+<pre><code>dry-run</code></pre>
+<p>a:</p>
+<pre><code>execute</code></pre>
+<h2 id="diagramma-del-pre-flight">Diagramma del pre-flight</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+    A[&quot;Dry-run riuscito&quot;] --&gt; B[&quot;Controllo ambiente Python&quot;]
+    B --&gt; C[&quot;Controllo dipendenza openai&quot;]
+    C --&gt; D[&quot;Controllo API key&quot;]
+    D --&gt; E[&quot;Controllo modello&quot;]
+    E --&gt; F[&quot;Controllo budget&quot;]
+    F --&gt; G[&quot;Controllo output path&quot;]
+    G --&gt; H[&quot;Controllo review pronta&quot;]
+    H --&gt; I{&quot;Tutto ok?&quot;}
+    I --&gt;|No| L[&quot;Stop e correzione&quot;]
+    I --&gt;|Si| M[&quot;Execute singolo run&quot;]
+    M --&gt; N[&quot;Output AI + Run record&quot;]
+    N --&gt; O[&quot;Review obbligatoria&quot;]</div></div>
+<p>Il punto chiave e':</p>
+<pre><code>execute non e' l'inizio del processo.
+execute e' una conseguenza di controlli superati.</code></pre>
+<h2 id="controllo-1-python">Controllo 1 - Python</h2>
+<p>Prima domanda:</p>
+<pre><code>Python e' disponibile nel terminale?</code></pre>
+<p>Comandi:</p>
+<pre><code>python --version
+py --version</code></pre>
+<p>Se almeno uno risponde con una versione, posso procedere.</p>
+<p>Se entrambi falliscono, non devo forzare il runtime.</p>
+<p>Devo installare Python o sistemare il PATH.</p>
+<h2 id="controllo-2-ambiente-virtuale">Controllo 2 - Ambiente virtuale</h2>
+<p>Un ambiente virtuale isola le dipendenze del progetto.</p>
+<p>Comandi:</p>
+<pre><code>python -m venv .venv
+.\.venv\Scripts\Activate.ps1</code></pre>
+<p>Se uso <code>py</code> invece di <code>python</code>:</p>
+<pre><code>py -m venv .venv
+.\.venv\Scripts\Activate.ps1</code></pre>
+<p>L'ambiente virtuale non va committato.</p>
+<p>Per questo <code>.gitignore</code> contiene:</p>
+<pre><code>.venv/</code></pre>
+<h2 id="controllo-3-dipendenza-openai">Controllo 3 - Dipendenza OpenAI</h2>
+<p>Il runtime usa il pacchetto ufficiale:</p>
+<pre><code>openai</code></pre>
+<p>Installazione:</p>
+<pre><code>pip install -r runtime\requirements.txt</code></pre>
+<p>Verifica:</p>
+<pre><code>python -c &quot;import openai; print(openai.__version__)&quot;</code></pre>
+<p>Se questo comando fallisce, non devo eseguire il run.</p>
+<p>Devo prima correggere l'ambiente.</p>
+<h2 id="controllo-4-api-key">Controllo 4 - API key</h2>
+<p>La API key deve essere una variabile ambiente.</p>
+<p>Comando PowerShell:</p>
+<pre><code>$env:OPENAI_API_KEY = &quot;[valore segreto reale]&quot;</code></pre>
+<p>Verifica senza stampare il valore:</p>
+<pre><code>if ($env:OPENAI_API_KEY) { &quot;OPENAI_API_KEY presente&quot; } else { &quot;OPENAI_API_KEY mancante&quot; }</code></pre>
+<p>Non devo mai fare:</p>
+<pre><code>echo $env:OPENAI_API_KEY</code></pre>
+<p>Perche' mostrerebbe la chiave nel terminale.</p>
+<h2 id="controllo-5-modello">Controllo 5 - Modello</h2>
+<p>Il modello deve essere configurato prima dell'esecuzione.</p>
+<p>Comando:</p>
+<pre><code>$env:OPENAI_MODEL = &quot;gpt-5.5&quot;</code></pre>
+<p>Il valore puo' cambiare nel tempo.</p>
+<p>Per questo il runtime non lo fissa nel codice.</p>
+<p>Se il modello non e' disponibile sull'account, si sceglie un modello disponibile e adatto al task, senza cambiare lo script.</p>
+<p>Regola:</p>
+<pre><code>il modello e' configurazione, non comportamento cablato nel runtime.</code></pre>
+<h2 id="controllo-6-budget">Controllo 6 - Budget</h2>
+<p>Per il primo run il budget deve essere banale e stretto:</p>
+<pre><code>1 agente
+1 input
+1 chiamata API
+0 retry automatici
+0 loop automatici
+0 tool esterni</code></pre>
+<p>Questo non e' per risparmiare pochi centesimi.</p>
+<p>E' per imparare correttamente.</p>
+<p>Se il primo output e' debole, devo capire perche'.</p>
+<p>Non devo rigenerare subito cinque volte.</p>
+<h2 id="controllo-7-output-path">Controllo 7 - Output path</h2>
+<p>Il runtime scrivera':</p>
+<pre><code>experiments/002-agentfactory-static-site-requirements-ai.md
+experiments/002-agentfactory-static-site-requirement-analyst-run-record.md</code></pre>
+<p>Prima del run devo controllare che quei file non esistano gia'.</p>
+<p>Se esistono, devo decidere:</p>
+<ul><li>li tengo come artefatti storici;</li><li>creo path nuovi;</li><li>uso <code>--force</code> solo se voglio sovrascrivere intenzionalmente.</li></ul>
+<p>La regola sana e':</p>
+<pre><code>non usare --force nel primo run reale.</code></pre>
+<h2 id="controllo-8-review-pronta">Controllo 8 - Review pronta</h2>
+<p>Prima di eseguire il modello devo sapere come valuterò l'output.</p>
+<p>Review prevista:</p>
+<pre><code>templates/requirement-analysis-review-checklist.md</code></pre>
+<p>Confronto previsto:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements.md</code></pre>
+<p>Questa e' una cosa molto importante:</p>
+<pre><code>non genero prima e poi decido come valutare.
+decido come valutare prima di generare.</code></pre>
+<h2 id="il-documento-pre-flight">Il documento pre-flight</h2>
+<p>Da questa lezione nasce:</p>
+<pre><code>templates/real-agent-preflight-checklist-template.md</code></pre>
+<p>Questo template serve per qualsiasi agente reale futuro.</p>
+<p>Non solo Requirement Analyst Agent.</p>
+<p>Poi creo una prima compilazione concreta:</p>
+<pre><code>experiments/002-requirement-analyst-real-agent-preflight.md</code></pre>
+<p>Questa compilazione dice cosa deve essere vero prima del primo execute.</p>
+<h2 id="comando-finale-previsto">Comando finale previsto</h2>
+<p>Quando tutti i controlli sono verdi:</p>
+<pre><code>python runtime\run_requirement_analyst.py --execute</code></pre>
+<p>Oppure, se il sistema usa <code>py</code>:</p>
+<pre><code>py runtime\run_requirement_analyst.py --execute</code></pre>
+<p>Il comando deve essere eseguito una volta sola.</p>
+<p>Dopo il run, stop.</p>
+<p>Poi review.</p>
+<h2 id="cosa-non-faccio-ancora">Cosa non faccio ancora</h2>
+<p>In questa lezione non faccio ancora:</p>
+<ul><li>loop di miglioramento;</li><li>auto-retry;</li><li>tool use;</li><li>handoff automatico ad Architect Agent;</li><li>aggiornamento automatico della knowledge base;</li><li>scelta dinamica di agenti;</li><li>orchestrazione LangGraph o Agents SDK;</li><li>n8n workflow.</li></ul>
+<p>Questo arrivera' dopo.</p>
+<p>Prima devo completare il ciclo minimo:</p>
+<pre><code>run -&gt; output -&gt; review -&gt; conoscenza candidata</code></pre>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-eseguire-per-curiosita">Errore 1 - Eseguire per curiosita'</h3>
+<p>Errore:</p>
+<pre><code>Vediamo cosa succede.</code></pre>
+<p>Correzione:</p>
+<pre><code>So gia' input, modello, budget, output e review.</code></pre>
+<h3 id="errore-2-stampare-la-api-key">Errore 2 - Stampare la API key</h3>
+<p>Errore:</p>
+<pre><code>echo $env:OPENAI_API_KEY</code></pre>
+<p>Correzione:</p>
+<pre><code>if ($env:OPENAI_API_KEY) { &quot;presente&quot; } else { &quot;mancante&quot; }</code></pre>
+<h3 id="errore-3-cambiare-modello-dopo-un-output-debole-senza-capire">Errore 3 - Cambiare modello dopo un output debole senza capire</h3>
+<p>Errore:</p>
+<pre><code>L'output non mi piace, cambio modello.</code></pre>
+<p>Correzione:</p>
+<pre><code>Prima capisco se il problema e' input, prompt, template, modello o aspettativa.</code></pre>
+<h3 id="errore-4-rigenerare-subito">Errore 4 - Rigenerare subito</h3>
+<p>Errore:</p>
+<pre><code>Riprovo finche' viene bene.</code></pre>
+<p>Correzione:</p>
+<pre><code>Primo run singolo, review, poi decisione.</code></pre>
+<h3 id="errore-5-confondere-run-eseguito-e-output-validato">Errore 5 - Confondere run eseguito e output validato</h3>
+<p>Errore:</p>
+<pre><code>Il run e' andato, quindi il documento e' valido.</code></pre>
+<p>Correzione:</p>
+<pre><code>Il run produce un output da validare.
+La review decide se e' valido.</code></pre>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Pre-flight debole:</p>
+<pre><code>Ho la chiave, lancio.</code></pre>
+<p>Pre-flight professionale:</p>
+<pre><code>Python ok.
+Ambiente virtuale ok.
+Dipendenza openai ok.
+API key presente ma non stampata.
+Modello scelto.
+Budget: 1 run.
+Output path libero.
+Review checklist pronta.
+Confronto manuale pronto.</code></pre>
+<p>La differenza e' che nel secondo caso sto costruendo metodo.</p>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>In azienda, prima di lanciare un agente su documenti cliente, una checklist simile dovrebbe includere anche:</p>
+<ul><li>classificazione dati;</li><li>permessi;</li><li>logging;</li><li>retention;</li><li>compliance;</li><li>costo massimo;</li><li>proprietario del run;</li><li>audit;</li><li>review umana;</li><li>rollback o annullamento.</li></ul>
+<p>AgentFactory parte piccola, ma con lo stesso principio:</p>
+<pre><code>prima governance minima,
+poi automazione.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Con questa lezione la pipeline reale diventa:</p>
+<pre><code>Brief versionato
+  -&gt; Runtime dry-run
+  -&gt; Pre-flight
+  -&gt; Execute singolo
+  -&gt; Output AI
+  -&gt; Run record
+  -&gt; Review
+  -&gt; Knowledge absorption</code></pre>
+<p>Questa e' la prima forma completa di ciclo operativo.</p>
+<p>Non e' ancora multi-agent.</p>
+<p>Ma e' gia' una base professionale.</p>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>lessons/18-preflight-primo-run-api.md
+templates/real-agent-preflight-checklist-template.md
+experiments/002-requirement-analyst-real-agent-preflight.md</code></pre>
+<p>Aggiorna anche:</p>
+<pre><code>MANUAL.md
+ROADMAP.md
+GLOSSARY.md
+CHANGELOG.md
+tools/build-site.js
+docs/</code></pre>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Che cos'e' un pre-flight?
+2. Perche' viene prima di execute?
+3. Come verifico Python?
+4. Come verifico il pacchetto openai?
+5. Come verifico la API key senza stamparla?
+6. Perche' il modello e' configurazione?
+7. Qual e' il budget del primo run?
+8. Perche' non uso --force?
+9. Quale checklist usero' dopo l'output?
+10. Perche' un run riuscito non significa output validato?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>Execute deve essere preceduto da controlli espliciti.</li><li>La API key deve essere verificata senza essere stampata.</li><li>Il modello deve essere configurabile e scelto prima del run.</li><li>Il primo run reale deve essere singolo, senza retry e senza loop.</li><li>La review deve essere definita prima della generazione.</li><li>Il pre-flight e' il primo passo verso audit e governance professionale.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Il prossimo passaggio sara':</p>
+<pre><code>eseguire davvero il primo run API</code></pre>
+<p>solo quando:</p>
+<ul><li>Python e' pronto;</li><li>dipendenza <code>openai</code> e' installata;</li><li>API key e' disponibile;</li><li>modello e' scelto;</li><li>budget e' confermato;</li><li>output path e' libero;</li><li>review e' pronta.</li></ul>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260613-mobile-sidebar" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260613-mobile-sidebar"></script>
+</body>
+</html>

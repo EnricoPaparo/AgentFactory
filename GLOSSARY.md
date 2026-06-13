@@ -70,6 +70,14 @@ Esecuzione di prova che mostra cosa succederebbe senza chiamare servizi esterni,
 
 Esecuzione reale. Nel runtime AgentFactory indica la modalita' che chiama il modello via API e salva output e run record.
 
+## Pre-flight
+
+Checklist operativa eseguita prima di una chiamata API o di un'azione rischiosa. Verifica ambiente, credenziali, modello, budget, input, output, review e condizioni di stop.
+
+## Budget operativo
+
+Limite deciso prima dell'esecuzione di un agente: puo' indicare numero massimo di run, costo, token, tempo, retry o tool autorizzati.
+
 ## Variabile ambiente
 
 Valore configurato nel sistema o nella sessione terminale, usato dal programma senza salvarlo nel repository. Esempi: `OPENAI_API_KEY`, `OPENAI_MODEL`.

@@ -11,6 +11,13 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Brief input versionato per il primo run del Requirement Analyst Agent.
 - README runtime, requirements e configurazione esempio senza segreti.
 - `.gitignore` per evitare commit accidentali di env, virtualenv e cache Python.
+- Lezione 18: pre-flight del primo run API con checklist ambiente, modello, API key, budget e review.
+- Template `templates/real-agent-preflight-checklist-template.md`.
+- Prima checklist pre-flight concreta in `experiments/002-requirement-analyst-real-agent-preflight.md`.
+
+### Corretto
+
+- Migliorata la sidebar mobile del sito: pannello opaco, backdrop, blocco scroll e chiusura con click fuori/Escape/link.
 
 ## 2026-06-12
 

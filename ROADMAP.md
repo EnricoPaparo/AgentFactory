@@ -100,7 +100,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Lettura, scrittura, esecuzione, deploy
 - [x] Gate umani
 - [x] Audit trail
-- [ ] Errori, rollback e recovery
+- [x] Errori, rollback e recovery
 
 ## Livello 6 - Ambiente operativo e Python minimo
 
@@ -122,6 +122,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Validare l'output
 - [ ] Versionare il risultato
 - [x] Preparare runtime minimo con dry-run
+- [x] Preparare pre-flight prima del primo execute
 - [x] Valutare OpenAI Agents SDK per eseguire il primo agente
 
 ## Livello 8 - Pipeline multi-agent reale
@@ -163,9 +164,9 @@ Non si passa al livello successivo finche' non e' chiaro:
 
 - [ ] Evals
 - [ ] Metriche di qualita'
-- [ ] Cost engineering
-- [ ] Sicurezza
-- [ ] Permessi
+- [x] Cost engineering
+- [x] Sicurezza
+- [x] Permessi
 - [ ] Compliance minima
 - [ ] Portfolio di casi studio
 

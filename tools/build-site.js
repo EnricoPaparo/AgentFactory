@@ -10,7 +10,7 @@ const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-ag
 const siteAuthor = "Enrico Paparo";
 const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
-const assetVersion = "20260612-logo-fix";
+const assetVersion = "20260613-mobile-sidebar";
 
 const sources = [
   {
@@ -161,6 +161,13 @@ const sources = [
     summary: "Come costruire il primo runtime Python con dry-run, execute, output e run record.",
   },
   {
+    title: "18 - Pre-flight del primo run API",
+    file: "lessons/18-preflight-primo-run-api.md",
+    slug: "lezione-18",
+    group: "Lezioni",
+    summary: "Checklist operativa prima del primo execute via API.",
+  },
+  {
     title: "Requirement Analyst Agent",
     file: "agents/requirement-analyst-agent.md",
     slug: "requirement-analyst-agent",
@@ -236,6 +243,13 @@ const sources = [
     slug: "template-real-agent-run-record",
     group: "Template",
     summary: "Template per tracciare ogni esecuzione reale di un agente.",
+  },
+  {
+    title: "Real Agent Pre-flight Checklist Template",
+    file: "templates/real-agent-preflight-checklist-template.md",
+    slug: "template-real-agent-preflight-checklist",
+    group: "Template",
+    summary: "Template per controllare ambiente, API key, modello, budget e review prima di un run reale.",
   },
   {
     title: "Requirement Analyst Agent Prompt",
@@ -327,6 +341,13 @@ const sources = [
     slug: "esperimento-001-agentfactory-static-site-requirements-input",
     group: "Esperimenti",
     summary: "Brief input versionato per il primo run reale del Requirement Analyst Agent.",
+  },
+  {
+    title: "002 - Requirement Analyst Real Agent Pre-flight",
+    file: "experiments/002-requirement-analyst-real-agent-preflight.md",
+    slug: "esperimento-002-requirement-analyst-real-agent-preflight",
+    group: "Esperimenti",
+    summary: "Checklist pre-flight concreta per il primo execute del Requirement Analyst Agent.",
   },
   {
     title: "Requirement Analysis Rules",

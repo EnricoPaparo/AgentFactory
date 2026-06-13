@@ -38,6 +38,7 @@ Una Agent Factory e' un sistema capace di:
 - [15 - Developer Agent e Implementation Plan](lessons/15-developer-agent-e-implementation-plan.md)
 - [16 - Prompt operativo e runtime minimo per il primo agente reale](lessons/16-prompt-operativo-runtime-primo-agente-reale.md)
 - [17 - Runtime Python minimo per il primo agente reale](lessons/17-runtime-python-primo-agente-reale.md)
+- [18 - Pre-flight del primo run API](lessons/18-preflight-primo-run-api.md)
 
 ## Regola di ogni lezione
 

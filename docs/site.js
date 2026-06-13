@@ -2,10 +2,30 @@
   const button = document.querySelector("[data-menu-button]");
   const sidebar = document.querySelector("[data-sidebar]");
 
+  function setMenuOpen(isOpen) {
+    if (!button || !sidebar) return;
+    sidebar.classList.toggle("is-open", isOpen);
+    document.body.classList.toggle("nav-open", isOpen);
+    button.setAttribute("aria-expanded", String(isOpen));
+  }
+
   if (button && sidebar) {
     button.addEventListener("click", () => {
-      const isOpen = sidebar.classList.toggle("is-open");
-      button.setAttribute("aria-expanded", String(isOpen));
+      setMenuOpen(!sidebar.classList.contains("is-open"));
+    });
+
+    sidebar.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuOpen(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!sidebar.classList.contains("is-open")) return;
+      if (sidebar.contains(event.target) || button.contains(event.target)) return;
+      setMenuOpen(false);
     });
   }
 
