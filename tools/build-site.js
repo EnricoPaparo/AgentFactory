@@ -10,7 +10,9 @@ const tagline = "Manuale operativo e laboratorio per progettare sistemi multi-ag
 const siteAuthor = "Enrico Paparo";
 const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
-const assetVersion = "20260613-home-clean";
+const faviconPath = "assets/favicon.png";
+const appleTouchIconPath = "assets/apple-touch-icon.png";
+const assetVersion = "20260613-favicon";
 
 const sources = [
   {
@@ -568,6 +570,8 @@ function layout({ title, body, activeSlug, pageClass = "" }) {
   <title>${escapeHtml(title)} | ${siteTitle}</title>
   <meta name="description" content="${escapeHtml(tagline)}">
   <meta name="author" content="${escapeHtml(siteAuthor)}">
+  <link rel="icon" type="image/png" sizes="64x64" href="${prefix}${faviconPath}?v=${assetVersion}">
+  <link rel="apple-touch-icon" sizes="180x180" href="${prefix}${appleTouchIconPath}?v=${assetVersion}">
   <link rel="stylesheet" href="${prefix}styles.css?v=${assetVersion}">
 </head>
 <body class="${pageClass}">
