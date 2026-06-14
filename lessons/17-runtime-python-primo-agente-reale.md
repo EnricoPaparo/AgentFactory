@@ -244,8 +244,18 @@ prompt size
 In execute salva:
 
 ```text
-experiments/002-agentfactory-static-site-requirements-ai.md
-experiments/002-agentfactory-static-site-requirement-analyst-run-record.md
+experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md
+```
+
+Questi nomi sono volutamente generici.
+
+Il runtime puo' ricevere brief diversi, quindi il default non deve essere legato per forza al caso `static-site`.
+
+Quando vorro' distinguere run diversi, potro' passare path espliciti:
+
+```powershell
+python runtime\run_requirement_analyst.py --output experiments/003-nome-progetto-requirement-analysis-ai.md --run-record experiments/003-nome-progetto-requirement-analyst-run-record.md
 ```
 
 ## Comando dry-run
@@ -398,6 +408,97 @@ output AI
 ```
 
 Solo dopo posso migliorare prompt, template o Agent Card.
+
+## Perche' non e' ancora una factory completa
+
+Questo runtime e' gia' un primo agente reale minimo, perche':
+
+- legge input reali;
+- usa Agent Card, prompt, template e knowledge base;
+- chiama un modello solo con `--execute`;
+- salva un output;
+- salva un run record.
+
+Pero' non e' ancora una pipeline multi-agent completa.
+
+Mancano ancora:
+
+- Reviewer Agent automatico;
+- knowledge absorption automatizzata;
+- handoff automatico verso Architect Agent;
+- stato persistente della pipeline;
+- tool use controllato;
+- policy di retry;
+- orchestratore;
+- controllo automatico dei contratti di output.
+
+Quindi la frase corretta e':
+
+```text
+questo e' un agente reale minimo,
+ma non e' ancora una Agent Factory completa.
+```
+
+Il prossimo salto non e' rendere lo script piu' complicato.
+
+Il prossimo salto e' chiudere il ciclo:
+
+```text
+run -> output -> review -> knowledge candidate -> miglioramento governato
+```
+
+## Differenza rispetto a un Developer Agent
+
+Un Developer Agent avrebbe una struttura simile nella parte iniziale:
+
+```text
+input
+Agent Card
+prompt operativo
+template
+knowledge base
+run record
+```
+
+Ma avrebbe una differenza fondamentale:
+
+```text
+tool autorizzati per leggere, proporre e modificare file.
+```
+
+Il modello non dovrebbe modificare file direttamente in modo libero.
+
+Il flusso sano e':
+
+```text
+Developer Agent
+  -> legge handoff, ADR e piano
+  -> propone modifiche o patch
+  -> runtime valida path e privilegi
+  -> runtime applica solo modifiche consentite
+  -> runtime esegue test/build autorizzati
+  -> runtime salva run record
+  -> Reviewer valuta
+```
+
+Quindi il Developer Agent non e' "un modello con accesso totale al repo".
+
+E' un agente con strumenti limitati.
+
+Esempio di privilegi:
+
+```text
+Lettura: file indicati nell'handoff.
+Scrittura: solo file autorizzati dall'Implementation Plan.
+Comandi: solo test/build previsti.
+Stop: se serve modificare file fuori scope o cambiare architettura.
+```
+
+Questa e' la parte pericolosa e interessante degli agenti sviluppatori.
+
+Non basta chiedere al modello di scrivere codice.
+
+Serve un runtime che faccia da controllore tra intenzione del modello e modifica reale del filesystem.
 
 ## Anti-pattern ed errori comuni
 

@@ -62,6 +62,23 @@ $env:OPENAI_MODEL = "gpt-5.5"
 python runtime\run_requirement_analyst.py --execute
 ```
 
+## Output e run record
+
+Il runtime usa nomi generici di default:
+
+```text
+experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md
+```
+
+Sono generici perche' il Requirement Analyst Agent puo' ricevere brief diversi.
+
+Quando serve distinguere un progetto specifico, passare path espliciti:
+
+```powershell
+python runtime\run_requirement_analyst.py --output experiments/003-nome-progetto-requirement-analysis-ai.md --run-record experiments/003-nome-progetto-requirement-analyst-run-record.md
+```
+
 ## Regole
 
 - Non salvare mai API key nel repository.

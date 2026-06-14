@@ -66,10 +66,10 @@ Creare un sito web statico, moderno, dark mode, con palette coerente con il logo
 
 ```text
 Requirement Analysis Document AI:
-experiments/002-agentfactory-static-site-requirements-ai.md
+experiments/002-requirement-analysis-ai-output.md
 
 Run record:
-experiments/002-agentfactory-static-site-requirement-analyst-run-record.md
+experiments/002-requirement-analyst-run-record.md
 ```
 
 ## Verifica prevista

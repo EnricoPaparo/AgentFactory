@@ -447,6 +447,102 @@ Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.
 
 Se passo anche un handoff, gli sto dando un ingresso operativo.
 
+## Postilla: Architect Handoff e ADR non sono la stessa cosa
+
+Qui puo' nascere una confusione naturale.
+
+Nel nostro esempio compaiono due file vicini:
+
+```text
+experiments/001-agentfactory-static-site-architect-handoff.md
+experiments/001-agentfactory-static-site-architecture.md
+```
+
+Sembrano entrambi "documenti per l'Architect", ma hanno scopi opposti.
+
+```text
+Architect Handoff = input operativo per l'Architect Agent.
+Architecture Decision Record = output decisionale prodotto dall'Architect Agent.
+```
+
+L'Architect Handoff viene prima.
+
+Serve a dire:
+
+- da dove arriva il lavoro;
+- quale agente deve riceverlo;
+- quali requisiti, vincoli e rischi deve considerare;
+- cosa e' dentro o fuori scope;
+- quali privilegi ha;
+- quando deve fermarsi;
+- quale artefatto deve produrre.
+
+L'ADR viene dopo.
+
+Serve a registrare:
+
+- quale problema architetturale e' stato deciso;
+- quale decisione e' stata presa;
+- perche' quella decisione e' adatta;
+- quali alternative sono state considerate;
+- quali trade-off e rischi vengono accettati;
+- quando la decisione andra' rivalutata;
+- cosa deve sapere il Developer Agent.
+
+Tabella mentale:
+
+| Documento | Momento | Chi lo usa | Domanda principale |
+|---|---|---|---|
+| Architect Handoff | Prima dell'Architect | Architect Agent | "Che lavoro devo fare, con quali limiti?" |
+| Architecture Decision Record | Dopo l'Architect | Developer, Tester, Reviewer, futuro Architect | "Che decisione architetturale abbiamo preso e perche'?" |
+
+Quindi:
+
+```text
+L'handoff non decide l'architettura.
+L'handoff prepara l'Architect a decidere bene.
+
+L'ADR non passa semplicemente il lavoro.
+L'ADR conserva e motiva la decisione architetturale presa.
+```
+
+Se confondo i due documenti, rischio due errori.
+
+Errore 1:
+
+```text
+Uso l'Architect Handoff come se fosse gia' una decisione.
+```
+
+Problema:
+
+```text
+L'Architect non sta piu' decidendo: sta solo eseguendo una scelta nascosta nel passaggio.
+```
+
+Errore 2:
+
+```text
+Uso l'ADR come se fosse solo un handoff per Developer.
+```
+
+Problema:
+
+```text
+Perdo la memoria del perche' architetturale e riduco l'ADR a una lista di istruzioni.
+```
+
+La sequenza corretta e':
+
+```text
+RAD
+  -> Architect Handoff
+  -> Architect Agent
+  -> Architecture Decision Record
+  -> ADR Review
+  -> Developer Handoff
+```
+
 ## Il RAD va dato all'agente successivo?
 
 Risposta corretta:

@@ -6,15 +6,15 @@
   <title>13 - Architect Agent e ADR | AgentFactory</title>
   <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
   <meta name="author" content="Enrico Paparo">
-  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260613-favicon">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260613-favicon">
-  <link rel="stylesheet" href="../styles.css?v=20260613-favicon">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260614-focus-palette">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260614-focus-palette">
+  <link rel="stylesheet" href="../styles.css?v=20260614-focus-palette">
 </head>
 <body class="doc">
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="../index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -133,6 +133,49 @@ Quali rischi accetto?
 Quando dovro' rivedere la decisione?</code></pre>
 <p>Un ADR e' utile perche':</p>
 <ul><li>rende le scelte tracciabili;</li><li>evita di dimenticare perche' una scelta e' stata fatta;</li><li>aiuta gli agenti successivi;</li><li>riduce discussioni ripetute;</li><li>permette review e knowledge absorption;</li><li>separa decisione tecnica da implementazione.</li></ul>
+<h2 id="differenza-tra-architect-handoff-e-adr">Differenza tra Architect Handoff e ADR</h2>
+<p>Per capire davvero il ruolo dell'Architect Agent devo separare bene due artefatti:</p>
+<pre><code>Architect Handoff
+Architecture Decision Record</code></pre>
+<p>L'Architect Handoff e' il documento che arriva all'Architect.</p>
+<p>L'ADR e' il documento che esce dall'Architect.</p>
+<p>Questa frase sembra banale, ma cambia tutto.</p>
+<h3 id="architect-handoff">Architect Handoff</h3>
+<p>L'Architect Handoff e' un mandato operativo.</p>
+<p>Dice all'Architect Agent:</p>
+<pre><code>Questo e' il progetto.
+Queste sono le fonti.
+Questi sono i vincoli.
+Questo e' lo scope.
+Queste sono le domande aperte.
+Questi sono i privilegi.
+Questo e' l'output che devi produrre.</code></pre>
+<p>Quindi l'handoff non deve risolvere l'architettura al posto dell'Architect.</p>
+<p>Deve preparare un contesto pulito per permettere all'Architect di decidere.</p>
+<h3 id="adr">ADR</h3>
+<p>L'ADR e' una memoria decisionale.</p>
+<p>Dice alla pipeline:</p>
+<pre><code>Dato questo contesto e questi vincoli,
+abbiamo scelto questa direzione architetturale,
+per questi motivi,
+scartando o rimandando queste alternative,
+accettando questi trade-off,
+e la rivaluteremo in queste condizioni.</code></pre>
+<p>Quindi l'ADR non e' solo &quot;istruzioni per il Developer&quot;.</p>
+<p>Contiene anche istruzioni per il Developer, ma il suo scopo principale e' conservare la decisione.</p>
+<h3 id="regola-pratica">Regola pratica</h3>
+<pre><code>Se il documento serve a far partire l'Architect, e' un handoff.
+Se il documento serve a ricordare e valutare cosa ha deciso l'Architect, e' un ADR.</code></pre>
+<p>Esempio nel nostro progetto:</p>
+<pre><code>Architect Handoff:
+&quot;Progetta l'evoluzione del sito statico, resta compatibile con GitHub Pages,
+non introdurre backend, considera la crescita del manuale.&quot;
+
+ADR:
+&quot;Manteniamo per ora il generatore statico custom in Node.js,
+perche' e' sufficiente, formativo, controllabile e meno complesso di una migrazione a framework.&quot;</code></pre>
+<p>L'handoff contiene il mandato.</p>
+<p>L'ADR contiene la decisione.</p>
 <h2 id="perche-non-basta-dire-usiamo-x">Perche' non basta dire &quot;usiamo X&quot;</h2>
 <p>Una decisione architetturale debole e':</p>
 <pre><code>Usiamo Astro.</code></pre>
@@ -361,12 +404,12 @@ docs/</code></pre>
   </section>
 </article>
       <footer class="site-footer">
-    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script src="../site.js?v=20260613-favicon"></script>
+  <script src="../site.js?v=20260614-focus-palette"></script>
 </body>
 </html>

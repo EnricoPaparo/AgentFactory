@@ -6,15 +6,15 @@
   <title>Glossario | AgentFactory</title>
   <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
   <meta name="author" content="Enrico Paparo">
-  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260613-favicon">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260613-favicon">
-  <link rel="stylesheet" href="../styles.css?v=20260613-favicon">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260614-focus-palette">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260614-focus-palette">
+  <link rel="stylesheet" href="../styles.css?v=20260614-focus-palette">
 </head>
 <body class="doc">
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="../index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -106,7 +106,7 @@
 <h2 id="tool">Tool</h2>
 <p>Strumento che un agente puo' usare: file system, terminale, GitHub, browser, database, API, test runner.</p>
 <h2 id="handoff">Handoff</h2>
-<p>Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte.</p>
+<p>Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte. Un Architect Handoff e' l'input operativo dell'Architect Agent, non la decisione architetturale finale.</p>
 <h2 id="handoff-contract">Handoff Contract</h2>
 <p>Contratto operativo che descrive come un agente passa lavoro a un altro agente: mittente, ricevente, artefatti sorgente, obiettivo, vincoli, scope, out of scope, privilegi, condizioni di stop e output atteso. Non coincide con l'output contract: l'output contract governa la forma di un artefatto, l'Handoff Contract governa il passaggio tra agenti. Poiche' l'handoff e' a sua volta un artefatto, puo' avere un template e quindi un proprio output contract.</p>
 <h2 id="perdita-di-contesto">Perdita di contesto</h2>
@@ -149,7 +149,7 @@
 <h2 id="requirement-analysis-document">Requirement Analysis Document</h2>
 <p>Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotesi, domande aperte, requisiti, vincoli, rischi, criteri di accettazione e note preliminari per gli agenti successivi. E' la fonte completa dell'analisi, non coincide con l'Handoff Contract. Il prossimo agente puo' consultarlo se l'handoff non basta o se deve verificare una fonte.</p>
 <h2 id="architecture-decision-record">Architecture Decision Record</h2>
-<p>Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione.</p>
+<p>Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione. A differenza dell'Architect Handoff, che prepara il lavoro dell'Architect Agent, l'ADR e' prodotto dopo il ragionamento architetturale e conserva il perche' della scelta.</p>
 <h2 id="architecture-review">Architecture Review</h2>
 <p>Valutazione strutturata di un Architecture Decision Record. Controlla template, fonti, handoff, decisione, motivazione, alternative, trade-off, rischi, condizioni di revisione e utilita' per gli agenti successivi.</p>
 <h2 id="implementation-plan">Implementation Plan</h2>
@@ -185,12 +185,12 @@
   </section>
 </article>
       <footer class="site-footer">
-    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script src="../site.js?v=20260613-favicon"></script>
+  <script src="../site.js?v=20260614-focus-palette"></script>
 </body>
 </html>

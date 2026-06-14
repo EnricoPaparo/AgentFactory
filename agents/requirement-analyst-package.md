@@ -51,8 +51,8 @@ preso questo agente, da quali file e' composto davvero?
 |---|---|---|
 | `experiments/001-agentfactory-static-site-requirements.md` | Manuale / riferimento | Primo Requirement Analysis Document compilato manualmente |
 | `experiments/001-agentfactory-static-site-requirements-review.md` | Manuale / riferimento | Review manuale del primo output |
-| `experiments/002-agentfactory-static-site-requirements-ai.md` | Futuro | Output AI previsto dal primo run reale |
-| `experiments/002-agentfactory-static-site-requirement-analyst-run-record.md` | Futuro | Run record previsto dal primo run reale |
+| `experiments/002-requirement-analysis-ai-output.md` | Futuro | Output AI previsto dal primo run reale |
+| `experiments/002-requirement-analyst-run-record.md` | Futuro | Run record previsto dal primo run reale |
 
 ## Knowledge e regole recuperabili
 

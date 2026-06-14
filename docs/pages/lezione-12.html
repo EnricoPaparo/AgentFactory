@@ -6,15 +6,15 @@
   <title>12 - Handoff e contratti tra agenti | AgentFactory</title>
   <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
   <meta name="author" content="Enrico Paparo">
-  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260613-favicon">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260613-favicon">
-  <link rel="stylesheet" href="../styles.css?v=20260613-favicon">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260614-focus-palette">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260614-focus-palette">
+  <link rel="stylesheet" href="../styles.css?v=20260614-focus-palette">
 </head>
 <body class="doc">
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="../index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -263,6 +263,44 @@ contiene cio' che serve all'Architect per progettare senza perdere vincoli e con
 <p>Questa distinzione e' fondamentale.</p>
 <p>Se passo solo il documento sorgente, l'Architect deve capire da solo cosa usare.</p>
 <p>Se passo anche un handoff, gli sto dando un ingresso operativo.</p>
+<h2 id="postilla-architect-handoff-e-adr-non-sono-la-stessa-cosa">Postilla: Architect Handoff e ADR non sono la stessa cosa</h2>
+<p>Qui puo' nascere una confusione naturale.</p>
+<p>Nel nostro esempio compaiono due file vicini:</p>
+<pre><code>experiments/001-agentfactory-static-site-architect-handoff.md
+experiments/001-agentfactory-static-site-architecture.md</code></pre>
+<p>Sembrano entrambi &quot;documenti per l'Architect&quot;, ma hanno scopi opposti.</p>
+<pre><code>Architect Handoff = input operativo per l'Architect Agent.
+Architecture Decision Record = output decisionale prodotto dall'Architect Agent.</code></pre>
+<p>L'Architect Handoff viene prima.</p>
+<p>Serve a dire:</p>
+<ul><li>da dove arriva il lavoro;</li><li>quale agente deve riceverlo;</li><li>quali requisiti, vincoli e rischi deve considerare;</li><li>cosa e' dentro o fuori scope;</li><li>quali privilegi ha;</li><li>quando deve fermarsi;</li><li>quale artefatto deve produrre.</li></ul>
+<p>L'ADR viene dopo.</p>
+<p>Serve a registrare:</p>
+<ul><li>quale problema architetturale e' stato deciso;</li><li>quale decisione e' stata presa;</li><li>perche' quella decisione e' adatta;</li><li>quali alternative sono state considerate;</li><li>quali trade-off e rischi vengono accettati;</li><li>quando la decisione andra' rivalutata;</li><li>cosa deve sapere il Developer Agent.</li></ul>
+<p>Tabella mentale:</p>
+<div class="table-wrap"><table><thead><tr><th>Documento</th><th>Momento</th><th>Chi lo usa</th><th>Domanda principale</th></tr></thead><tbody><tr><td>Architect Handoff</td><td>Prima dell'Architect</td><td>Architect Agent</td><td>&quot;Che lavoro devo fare, con quali limiti?&quot;</td></tr><tr><td>Architecture Decision Record</td><td>Dopo l'Architect</td><td>Developer, Tester, Reviewer, futuro Architect</td><td>&quot;Che decisione architetturale abbiamo preso e perche'?&quot;</td></tr></tbody></table></div>
+<p>Quindi:</p>
+<pre><code>L'handoff non decide l'architettura.
+L'handoff prepara l'Architect a decidere bene.
+
+L'ADR non passa semplicemente il lavoro.
+L'ADR conserva e motiva la decisione architetturale presa.</code></pre>
+<p>Se confondo i due documenti, rischio due errori.</p>
+<p>Errore 1:</p>
+<pre><code>Uso l'Architect Handoff come se fosse gia' una decisione.</code></pre>
+<p>Problema:</p>
+<pre><code>L'Architect non sta piu' decidendo: sta solo eseguendo una scelta nascosta nel passaggio.</code></pre>
+<p>Errore 2:</p>
+<pre><code>Uso l'ADR come se fosse solo un handoff per Developer.</code></pre>
+<p>Problema:</p>
+<pre><code>Perdo la memoria del perche' architetturale e riduco l'ADR a una lista di istruzioni.</code></pre>
+<p>La sequenza corretta e':</p>
+<pre><code>RAD
+  -&gt; Architect Handoff
+  -&gt; Architect Agent
+  -&gt; Architecture Decision Record
+  -&gt; ADR Review
+  -&gt; Developer Handoff</code></pre>
 <h2 id="il-rad-va-dato-all-agente-successivo">Il RAD va dato all'agente successivo?</h2>
 <p>Risposta corretta:</p>
 <pre><code>si', ma non sempre come contesto principale.</code></pre>
@@ -592,12 +630,12 @@ docs/</code></pre>
   </section>
 </article>
       <footer class="site-footer">
-    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script src="../site.js?v=20260613-favicon"></script>
+  <script src="../site.js?v=20260614-focus-palette"></script>
 </body>
 </html>

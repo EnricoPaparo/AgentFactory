@@ -16,8 +16,8 @@ DEFAULTS = {
     "prompt": "prompts/requirement-analyst-agent-prompt.md",
     "template": "templates/requirement-analysis-output-template.md",
     "knowledge_base": "knowledge-base/requirement-analysis-rules.md",
-    "output": "experiments/002-agentfactory-static-site-requirements-ai.md",
-    "run_record": "experiments/002-agentfactory-static-site-requirement-analyst-run-record.md",
+    "output": "experiments/002-requirement-analysis-ai-output.md",
+    "run_record": "experiments/002-requirement-analyst-run-record.md",
 }
 
 REPLACEMENTS = {

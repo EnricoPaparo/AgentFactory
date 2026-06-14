@@ -12,7 +12,7 @@ const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
 const faviconPath = "assets/favicon.png";
 const appleTouchIconPath = "assets/apple-touch-icon.png";
-const assetVersion = "20260613-favicon";
+const assetVersion = "20260614-focus-palette";
 
 const sources = [
   {

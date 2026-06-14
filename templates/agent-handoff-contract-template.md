@@ -4,6 +4,20 @@ Usare questo template quando un agente deve passare lavoro strutturato a un altr
 
 L'obiettivo e' evitare perdita di contesto, ambiguita' di responsabilita' e trasferimento non controllato di privilegi.
 
+Nota importante:
+
+```text
+Questo template descrive un input operativo per il prossimo agente.
+Non e' il documento decisionale prodotto dal prossimo agente.
+```
+
+Esempio:
+
+```text
+Architect Handoff = mandato dato all'Architect Agent.
+Architecture Decision Record = decisione prodotta dall'Architect Agent dopo aver lavorato.
+```
+
 ## Metadati
 
 ```text

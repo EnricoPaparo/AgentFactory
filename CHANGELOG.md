@@ -21,10 +21,13 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Aggiunta `agents/AGENT_PACKAGE_SPEC.md` come specifica completa file-per-file di un Agent Package.
 - Chiarita nelle lezioni 07, 12, 13 e 16 la differenza tra output contract, template, handoff e run record.
 - Chiarita la differenza tra Requirement Analysis Document come fonte completa e Handoff Contract come contesto operativo primario del prossimo agente.
+- Chiarita la differenza tra Architect Handoff come input operativo e Architecture Decision Record come output decisionale.
 
 ### Corretto
 
 - Migliorata la sidebar mobile del sito: pannello opaco, backdrop, blocco scroll e chiusura con click fuori/Escape/link.
+- Ammorbidita la palette del sito per ridurre affaticamento visivo durante la lettura prolungata.
+- Resi generici i path default del primo Requirement Analyst Agent e chiarita la differenza tra agente minimo, factory completa e Developer Agent con tool.
 
 ## 2026-06-12
 

@@ -229,6 +229,83 @@ Un ADR e' utile perche':
 - permette review e knowledge absorption;
 - separa decisione tecnica da implementazione.
 
+## Differenza tra Architect Handoff e ADR
+
+Per capire davvero il ruolo dell'Architect Agent devo separare bene due artefatti:
+
+```text
+Architect Handoff
+Architecture Decision Record
+```
+
+L'Architect Handoff e' il documento che arriva all'Architect.
+
+L'ADR e' il documento che esce dall'Architect.
+
+Questa frase sembra banale, ma cambia tutto.
+
+### Architect Handoff
+
+L'Architect Handoff e' un mandato operativo.
+
+Dice all'Architect Agent:
+
+```text
+Questo e' il progetto.
+Queste sono le fonti.
+Questi sono i vincoli.
+Questo e' lo scope.
+Queste sono le domande aperte.
+Questi sono i privilegi.
+Questo e' l'output che devi produrre.
+```
+
+Quindi l'handoff non deve risolvere l'architettura al posto dell'Architect.
+
+Deve preparare un contesto pulito per permettere all'Architect di decidere.
+
+### ADR
+
+L'ADR e' una memoria decisionale.
+
+Dice alla pipeline:
+
+```text
+Dato questo contesto e questi vincoli,
+abbiamo scelto questa direzione architetturale,
+per questi motivi,
+scartando o rimandando queste alternative,
+accettando questi trade-off,
+e la rivaluteremo in queste condizioni.
+```
+
+Quindi l'ADR non e' solo "istruzioni per il Developer".
+
+Contiene anche istruzioni per il Developer, ma il suo scopo principale e' conservare la decisione.
+
+### Regola pratica
+
+```text
+Se il documento serve a far partire l'Architect, e' un handoff.
+Se il documento serve a ricordare e valutare cosa ha deciso l'Architect, e' un ADR.
+```
+
+Esempio nel nostro progetto:
+
+```text
+Architect Handoff:
+"Progetta l'evoluzione del sito statico, resta compatibile con GitHub Pages,
+non introdurre backend, considera la crescita del manuale."
+
+ADR:
+"Manteniamo per ora il generatore statico custom in Node.js,
+perche' e' sufficiente, formativo, controllabile e meno complesso di una migrazione a framework."
+```
+
+L'handoff contiene il mandato.
+
+L'ADR contiene la decisione.
+
 ## Perche' non basta dire "usiamo X"
 
 Una decisione architetturale debole e':

@@ -314,8 +314,8 @@ OPENAI_API_KEY=[variabile ambiente, mai nel repo]
 OPENAI_MODEL=[modello scelto prima del run]
 INPUT_FILE=experiments/001-agentfactory-static-site-requirements-input.md
 PROMPT_FILE=prompts/requirement-analyst-agent-prompt.md
-OUTPUT_FILE=experiments/002-agentfactory-static-site-requirements-ai.md
-RUN_RECORD_FILE=experiments/002-agentfactory-static-site-run-record.md
+OUTPUT_FILE=experiments/002-requirement-analysis-ai-output.md
+RUN_RECORD_FILE=experiments/002-requirement-analyst-run-record.md
 ```
 
 La chiave API non deve mai essere scritta in un file del repository.
@@ -419,7 +419,7 @@ Non un testo copiato a mano senza traccia.
 Il file previsto sara':
 
 ```text
-experiments/002-agentfactory-static-site-requirements-ai.md
+experiments/002-requirement-analysis-ai-output.md
 ```
 
 Lo stato iniziale sara':

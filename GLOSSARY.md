@@ -128,7 +128,7 @@ Strumento che un agente puo' usare: file system, terminale, GitHub, browser, dat
 
 ## Handoff
 
-Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte.
+Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte. Un Architect Handoff e' l'input operativo dell'Architect Agent, non la decisione architetturale finale.
 
 ## Handoff Contract
 
@@ -214,7 +214,7 @@ Artefatto prodotto dal Requirement Analyst Agent. Organizza brief, fatti, ipotes
 
 ## Architecture Decision Record
 
-Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione.
+Documento che registra una decisione architetturale: contesto, problema, decisione, motivazione, alternative, trade-off, conseguenze, rischi e condizioni di revisione. A differenza dell'Architect Handoff, che prepara il lavoro dell'Architect Agent, l'ADR e' prodotto dopo il ragionamento architetturale e conserva il perche' della scelta.
 
 ## Architecture Review
 

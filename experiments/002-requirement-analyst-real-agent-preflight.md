@@ -57,8 +57,8 @@ Agent Card path: agents/requirement-analyst-agent.md
 Prompt path: prompts/requirement-analyst-agent-prompt.md
 Template output path: templates/requirement-analysis-output-template.md
 Knowledge base path: knowledge-base/requirement-analysis-rules.md
-Output path: experiments/002-agentfactory-static-site-requirements-ai.md
-Run record path: experiments/002-agentfactory-static-site-requirement-analyst-run-record.md
+Output path: experiments/002-requirement-analysis-ai-output.md
+Run record path: experiments/002-requirement-analyst-run-record.md
 Output path libero: Da verificare prima del run
 Run record path libero: Da verificare prima del run
 ```

@@ -4,6 +4,16 @@ Usare questo template per registrare una decisione architetturale presa da Archi
 
 Un ADR deve spiegare non solo cosa si decide, ma anche perche', quali alternative sono state considerate e quando la decisione andra' rivalutata.
 
+Nota importante:
+
+```text
+Un ADR non e' l'handoff ricevuto dall'Architect Agent.
+L'handoff e' l'input operativo.
+L'ADR e' l'output decisionale.
+```
+
+L'ADR puo' contenere note o handoff per Developer Agent, ma il suo scopo principale resta registrare e motivare una decisione architetturale.
+
 ## Metadati
 
 ```text

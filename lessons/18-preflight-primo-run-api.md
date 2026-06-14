@@ -288,8 +288,8 @@ Non devo rigenerare subito cinque volte.
 Il runtime scrivera':
 
 ```text
-experiments/002-agentfactory-static-site-requirements-ai.md
-experiments/002-agentfactory-static-site-requirement-analyst-run-record.md
+experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md
 ```
 
 Prima del run devo controllare che quei file non esistano gia'.

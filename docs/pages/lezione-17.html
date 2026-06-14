@@ -6,15 +6,15 @@
   <title>17 - Runtime Python minimo | AgentFactory</title>
   <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
   <meta name="author" content="Enrico Paparo">
-  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260613-favicon">
-  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260613-favicon">
-  <link rel="stylesheet" href="../styles.css?v=20260613-favicon">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260614-focus-palette">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260614-focus-palette">
+  <link rel="stylesheet" href="../styles.css?v=20260614-focus-palette">
 </head>
 <body class="doc">
   <div class="scanline" aria-hidden="true"></div>
   <header class="topbar">
     <a class="brand" href="../index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
         <small>Manuale multi-agent</small>
@@ -156,8 +156,12 @@ output path
 run record path
 prompt size</code></pre>
 <p>In execute salva:</p>
-<pre><code>experiments/002-agentfactory-static-site-requirements-ai.md
-experiments/002-agentfactory-static-site-requirement-analyst-run-record.md</code></pre>
+<pre><code>experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md</code></pre>
+<p>Questi nomi sono volutamente generici.</p>
+<p>Il runtime puo' ricevere brief diversi, quindi il default non deve essere legato per forza al caso <code>static-site</code>.</p>
+<p>Quando vorro' distinguere run diversi, potro' passare path espliciti:</p>
+<pre><code>python runtime\run_requirement_analyst.py --output experiments/003-nome-progetto-requirement-analysis-ai.md --run-record experiments/003-nome-progetto-requirement-analyst-run-record.md</code></pre>
 <h2 id="comando-dry-run">Comando dry-run</h2>
 <p>Il primo comando da usare e':</p>
 <pre><code>python runtime\run_requirement_analyst.py</code></pre>
@@ -222,6 +226,48 @@ pip install -r runtime\requirements.txt</code></pre>
   -&gt; decisione
   -&gt; eventuale knowledge absorption</code></pre>
 <p>Solo dopo posso migliorare prompt, template o Agent Card.</p>
+<h2 id="perche-non-e-ancora-una-factory-completa">Perche' non e' ancora una factory completa</h2>
+<p>Questo runtime e' gia' un primo agente reale minimo, perche':</p>
+<ul><li>legge input reali;</li><li>usa Agent Card, prompt, template e knowledge base;</li><li>chiama un modello solo con <code>--execute</code>;</li><li>salva un output;</li><li>salva un run record.</li></ul>
+<p>Pero' non e' ancora una pipeline multi-agent completa.</p>
+<p>Mancano ancora:</p>
+<ul><li>Reviewer Agent automatico;</li><li>knowledge absorption automatizzata;</li><li>handoff automatico verso Architect Agent;</li><li>stato persistente della pipeline;</li><li>tool use controllato;</li><li>policy di retry;</li><li>orchestratore;</li><li>controllo automatico dei contratti di output.</li></ul>
+<p>Quindi la frase corretta e':</p>
+<pre><code>questo e' un agente reale minimo,
+ma non e' ancora una Agent Factory completa.</code></pre>
+<p>Il prossimo salto non e' rendere lo script piu' complicato.</p>
+<p>Il prossimo salto e' chiudere il ciclo:</p>
+<pre><code>run -&gt; output -&gt; review -&gt; knowledge candidate -&gt; miglioramento governato</code></pre>
+<h2 id="differenza-rispetto-a-un-developer-agent">Differenza rispetto a un Developer Agent</h2>
+<p>Un Developer Agent avrebbe una struttura simile nella parte iniziale:</p>
+<pre><code>input
+Agent Card
+prompt operativo
+template
+knowledge base
+run record</code></pre>
+<p>Ma avrebbe una differenza fondamentale:</p>
+<pre><code>tool autorizzati per leggere, proporre e modificare file.</code></pre>
+<p>Il modello non dovrebbe modificare file direttamente in modo libero.</p>
+<p>Il flusso sano e':</p>
+<pre><code>Developer Agent
+  -&gt; legge handoff, ADR e piano
+  -&gt; propone modifiche o patch
+  -&gt; runtime valida path e privilegi
+  -&gt; runtime applica solo modifiche consentite
+  -&gt; runtime esegue test/build autorizzati
+  -&gt; runtime salva run record
+  -&gt; Reviewer valuta</code></pre>
+<p>Quindi il Developer Agent non e' &quot;un modello con accesso totale al repo&quot;.</p>
+<p>E' un agente con strumenti limitati.</p>
+<p>Esempio di privilegi:</p>
+<pre><code>Lettura: file indicati nell'handoff.
+Scrittura: solo file autorizzati dall'Implementation Plan.
+Comandi: solo test/build previsti.
+Stop: se serve modificare file fuori scope o cambiare architettura.</code></pre>
+<p>Questa e' la parte pericolosa e interessante degli agenti sviluppatori.</p>
+<p>Non basta chiedere al modello di scrivere codice.</p>
+<p>Serve un runtime che faccia da controllore tra intenzione del modello e modifica reale del filesystem.</p>
 <h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
 <h3 id="errore-1-eseguire-subito-senza-dry-run">Errore 1 - Eseguire subito senza dry-run</h3>
 <p>Errore:</p>
@@ -319,12 +365,12 @@ conferma su un solo run</code></pre>
   </section>
 </article>
       <footer class="site-footer">
-    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260613-favicon" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260614-focus-palette" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
     <span>AgentFactory manuale e laboratorio multi-agent</span>
   </footer>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <script src="../site.js?v=20260613-favicon"></script>
+  <script src="../site.js?v=20260614-focus-palette"></script>
 </body>
 </html>
