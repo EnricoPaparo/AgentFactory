@@ -12,7 +12,7 @@ const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
 const faviconPath = "assets/favicon.png";
 const appleTouchIconPath = "assets/apple-touch-icon.png";
-const assetVersion = "20260614-skills-triggers";
+const assetVersion = "20260614-lesson-20";
 
 const sources = [
   {
@@ -175,6 +175,13 @@ const sources = [
     slug: "lezione-19",
     group: "Lezioni",
     summary: "Come skill, trigger e orchestratore preparano una pipeline multi-agent modulare.",
+  },
+  {
+    title: "20 - Primo execute Requirement Analyst",
+    file: "lessons/20-primo-execute-requirement-analyst-agent.md",
+    slug: "lezione-20",
+    group: "Lezioni",
+    summary: "Come passare da dry-run a execute senza confondere run riuscito e output validato.",
   },
   {
     title: "Agents Overview",

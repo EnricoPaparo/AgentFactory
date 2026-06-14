@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>20 - Primo execute Requirement Analyst | AgentFactory</title>
+  <meta name="description" content="Manuale operativo e laboratorio per progettare sistemi multi-agent professionali.">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=20260614-lesson-20">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=20260614-lesson-20">
+  <link rel="stylesheet" href="../styles.css?v=20260614-lesson-20">
+</head>
+<body class="doc">
+  <div class="scanline" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=20260614-lesson-20" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span>
+        <strong>AgentFactory</strong>
+        <small>Manuale multi-agent</small>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-label="Apri navigazione" aria-expanded="false" data-menu-button>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  <div class="shell">
+    <aside class="sidebar" data-sidebar>
+      <nav aria-label="Indice sito">
+        <details class="nav-group"><summary>Fondazione</summary><a href="manuale.html"><span>Manuale</span></a><a href="roadmap.html"><span>Roadmap</span></a><a href="glossario.html"><span>Glossario</span></a></details><details class="nav-group" open><summary>Lezioni</summary><a href="lezione-00.html"><span>00 - Come usare questo manuale</span></a><a href="lezione-01.html"><span>01 - Fondamenta operative</span></a><a href="lezione-02.html"><span>02 - Che cos'e' davvero un AI Agent</span></a><a href="lezione-03.html"><span>03 - Automazione, workflow, agente o Agent Factory</span></a><a href="lezione-04.html"><span>04 - Progettare un agente con una Agent Card</span></a><a href="lezione-05.html"><span>05 - Prima Agent Card: Requirement Analyst Agent</span></a><a href="lezione-06.html"><span>06 - Strumenti reali agentici e automazione</span></a><a href="lezione-07.html"><span>07 - Template di output: Requirement Analysis Document</span></a><a href="lezione-08.html"><span>08 - Primo Requirement Analysis Document manuale</span></a><a href="lezione-09.html"><span>09 - Valutare l'output del Requirement Analyst Agent</span></a><a href="lezione-10.html"><span>10 - Knowledge absorption</span></a><a href="lezione-11.html"><span>11 - Prima knowledge absorption candidate</span></a><a href="lezione-12.html"><span>12 - Handoff e contratti tra agenti</span></a><a href="lezione-13.html"><span>13 - Architect Agent e ADR</span></a><a href="lezione-14.html"><span>14 - Valutare ADR e Architect output</span></a><a href="lezione-15.html"><span>15 - Developer Agent e Implementation Plan</span></a><a href="lezione-16.html"><span>16 - Prompt operativo e runtime minimo</span></a><a href="lezione-17.html"><span>17 - Runtime Python minimo</span></a><a href="lezione-18.html"><span>18 - Pre-flight del primo run API</span></a><a href="lezione-19.html"><span>19 - Skill, trigger e attivazione agenti</span></a><a aria-current="page" href="lezione-20.html"><span>20 - Primo execute Requirement Analyst</span></a></details><details class="nav-group"><summary>Agenti</summary><a href="agents-overview.html"><span>Agents Overview</span></a><a href="agent-package-spec.html"><span>Agent Package Spec</span></a><a href="requirement-analyst-agent.html"><span>Requirement Analyst Agent</span></a><a href="requirement-analyst-agent-package.html"><span>Requirement Analyst Agent Package</span></a><a href="architect-agent.html"><span>Architect Agent</span></a><a href="developer-agent.html"><span>Developer Agent</span></a></details><details class="nav-group"><summary>Template</summary><a href="template-requirement-analysis-output.html"><span>Requirement Analysis Output Template</span></a><a href="template-requirement-analysis-review-checklist.html"><span>Requirement Analysis Review Checklist</span></a><a href="template-knowledge-absorption.html"><span>Knowledge Absorption Template</span></a><a href="template-agent-skill.html"><span>Agent Skill Template</span></a><a href="template-agent-handoff-contract.html"><span>Agent Handoff Contract Template</span></a><a href="template-architecture-decision-record.html"><span>Architecture Decision Record Template</span></a><a href="template-architecture-decision-review-checklist.html"><span>Architecture Decision Review Checklist</span></a><a href="template-implementation-plan.html"><span>Implementation Plan Template</span></a><a href="template-real-agent-run-record.html"><span>Real Agent Run Record Template</span></a><a href="template-real-agent-preflight-checklist.html"><span>Real Agent Pre-flight Checklist Template</span></a></details><details class="nav-group"><summary>Prompt</summary><a href="prompt-requirement-analyst-agent.html"><span>Requirement Analyst Agent Prompt</span></a></details><details class="nav-group"><summary>Governance</summary><a href="governance-real-agent-execution-rules.html"><span>Real Agent Execution Rules</span></a></details><details class="nav-group"><summary>Runtime</summary><a href="runtime-agentfactory.html"><span>Runtime AgentFactory</span></a></details><details class="nav-group"><summary>Esperimenti</summary><a href="esperimento-001-agentfactory-static-site-requirements.html"><span>001 - AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-requirements-review.html"><span>001 - Review AgentFactory Static Site Requirements</span></a><a href="esperimento-001-agentfactory-static-site-knowledge-absorption.html"><span>001 - Knowledge Absorption Static Site Review</span></a><a href="esperimento-001-agentfactory-static-site-architect-handoff.html"><span>001 - Architect Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-architecture.html"><span>001 - Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-architecture-review.html"><span>001 - Review Static Site Architecture ADR</span></a><a href="esperimento-001-agentfactory-static-site-developer-handoff.html"><span>001 - Developer Handoff Static Site</span></a><a href="esperimento-001-agentfactory-static-site-implementation-plan.html"><span>001 - Static Site Implementation Plan</span></a><a href="esperimento-001-requirement-analyst-real-agent-run-plan.html"><span>001 - Requirement Analyst Real Agent Run Plan</span></a><a href="esperimento-001-agentfactory-static-site-requirements-input.html"><span>001 - Static Site Requirements Input</span></a><a href="esperimento-002-requirement-analyst-real-agent-preflight.html"><span>002 - Requirement Analyst Real Agent Pre-flight</span></a></details><details class="nav-group"><summary>Knowledge Base</summary><a href="knowledge-requirement-analysis-rules.html"><span>Requirement Analysis Rules</span></a></details>
+      </nav>
+    </aside>
+    <main class="content">
+      <article class="doc-page">
+  <div class="page-meta">
+    <span class="page-kicker">Lezioni</span>
+  </div>
+  <h1>20 - Primo execute Requirement Analyst</h1>
+  <p class="lead">Come passare da dry-run a execute senza confondere run riuscito e output validato.</p>
+  <div class="source-chip">lessons/20-primo-execute-requirement-analyst-agent.md</div>
+  <section class="markdown-body">
+    <h1 id="20-primo-execute-del-requirement-analyst-agent">20 - Primo execute del Requirement Analyst Agent</h1>
+<h2 id="obiettivo-della-lezione">Obiettivo della lezione</h2>
+<p>Questa lezione serve a preparare il primo vero passaggio da:</p>
+<pre><code>dry-run</code></pre>
+<p>a:</p>
+<pre><code>execute</code></pre>
+<p>del Requirement Analyst Agent.</p>
+<p>Nella lezione 17 ho creato il runtime Python minimo.</p>
+<p>Nella lezione 18 ho preparato il pre-flight.</p>
+<p>Nella lezione 19 ho capito che un agente, in futuro, verra' attivato tramite trigger, skill e orchestratore.</p>
+<p>Adesso torno al ciclo operativo reale.</p>
+<p>Il prossimo obiettivo e':</p>
+<pre><code>eseguire una chiamata API singola,
+produrre un Requirement Analysis Document AI,
+salvare un run record,
+fermarmi,
+e preparare la review.</code></pre>
+<p>Questa lezione non deve creare entusiasmo incontrollato.</p>
+<p>Deve creare metodo.</p>
+<h2 id="perche-questa-lezione-conta">Perche' questa lezione conta</h2>
+<p>Il primo execute e' un momento delicato.</p>
+<p>Per la prima volta AgentFactory non produce solo documenti scritti a mano.</p>
+<p>Produce un artefatto generato da un modello tramite runtime.</p>
+<p>Questo cambia il significato del repository.</p>
+<p>Prima:</p>
+<pre><code>sto progettando come dovra' funzionare un agente.</code></pre>
+<p>Ora:</p>
+<pre><code>sto eseguendo davvero un agente minimo.</code></pre>
+<p>Ma devo evitare una confusione pericolosa:</p>
+<pre><code>run riuscito = output valido</code></pre>
+<p>Questa equivalenza e' falsa.</p>
+<p>Un run riuscito significa solo:</p>
+<pre><code>lo script ha chiamato il modello,
+ha ricevuto una risposta,
+ha salvato output e run record.</code></pre>
+<p>Non significa che:</p>
+<ul><li>il documento sia buono;</li><li>i requisiti siano corretti;</li><li>l'agente abbia rispettato il template;</li><li>l'output sia pronto per Architect Agent;</li><li>la knowledge base debba essere aggiornata;</li><li>il prompt sia gia' ottimo.</li></ul>
+<p>La qualita' arriva dopo:</p>
+<pre><code>review</code></pre>
+<p>Questa lezione insegna proprio a separare:</p>
+<pre><code>successo tecnico</code></pre>
+<p>da:</p>
+<pre><code>successo agentico</code></pre>
+<h2 id="prerequisiti">Prerequisiti</h2>
+<p>Prima di fare execute devo avere:</p>
+<ul><li>runtime presente;</li><li>dry-run riuscito;</li><li>pre-flight compilato;</li><li>ambiente virtuale attivo;</li><li>pacchetto <code>openai</code> installato;</li><li>API key configurata come variabile ambiente;</li><li>modello scelto;</li><li>budget confermato;</li><li>output path libero;</li><li>run record path libero;</li><li>review checklist pronta;</li><li>decisione umana di fare un solo run.</li></ul>
+<p>Se manca uno di questi punti, non eseguo.</p>
+<p>Non e' prudenza eccessiva.</p>
+<p>E' disciplina operativa.</p>
+<h2 id="stato-attuale-del-runtime">Stato attuale del runtime</h2>
+<p>Il runtime e':</p>
+<pre><code>runtime/run_requirement_analyst.py</code></pre>
+<p>In dry-run legge:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements-input.md
+agents/requirement-analyst-agent.md
+prompts/requirement-analyst-agent-prompt.md
+templates/requirement-analysis-output-template.md
+knowledge-base/requirement-analysis-rules.md</code></pre>
+<p>In execute produce:</p>
+<pre><code>experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md</code></pre>
+<p>Questi nomi sono generici.</p>
+<p>Il brief attuale riguarda AgentFactory Static Site, ma il runtime non deve essere legato per sempre a quel caso.</p>
+<p>Se in futuro daro' un altro brief, potro' cambiare input e output da comando.</p>
+<h2 id="comando-corretto-dalla-root-del-repository">Comando corretto dalla root del repository</h2>
+<p>Il comando va lanciato dalla root:</p>
+<pre><code>cd C:\Users\Erry\Documents\AgentFactory</code></pre>
+<p>Poi:</p>
+<pre><code>python runtime\run_requirement_analyst.py</code></pre>
+<p>oppure, se sto usando il virtual environment creato in <code>agentfactory-test</code>:</p>
+<pre><code>.\agentfactory-test\.venv\Scripts\python.exe runtime\run_requirement_analyst.py</code></pre>
+<p>Questo comando e' ancora dry-run.</p>
+<p>Non chiama API.</p>
+<p>Serve a verificare che il runtime legga i file giusti.</p>
+<h2 id="perche-non-devo-lanciare-il-comando-dalla-cartella-sbagliata">Perche' non devo lanciare il comando dalla cartella sbagliata</h2>
+<p>Se mi trovo in:</p>
+<pre><code>C:\Users\Erry\Documents\AgentFactory\agentfactory-test</code></pre>
+<p>e lancio:</p>
+<pre><code>python runtime\run_requirement_analyst.py</code></pre>
+<p>Python cerca:</p>
+<pre><code>agentfactory-test/runtime/run_requirement_analyst.py</code></pre>
+<p>Ma il file non e' li'.</p>
+<p>Il file e':</p>
+<pre><code>AgentFactory/runtime/run_requirement_analyst.py</code></pre>
+<p>Quindi ho due possibilita':</p>
+<pre><code>cd C:\Users\Erry\Documents\AgentFactory
+python runtime\run_requirement_analyst.py</code></pre>
+<p>oppure:</p>
+<pre><code>cd C:\Users\Erry\Documents\AgentFactory\agentfactory-test
+python ..\runtime\run_requirement_analyst.py</code></pre>
+<p>La prima e' piu' pulita.</p>
+<p>Per AgentFactory usero' come regola:</p>
+<pre><code>i comandi del runtime si lanciano dalla root del repository.</code></pre>
+<h2 id="configurazione-api-key">Configurazione API key</h2>
+<p>La API key non deve mai stare nel repository.</p>
+<p>Va configurata nel terminale.</p>
+<p>In PowerShell:</p>
+<pre><code>$env:OPENAI_API_KEY = &quot;[valore segreto reale]&quot;</code></pre>
+<p>Verifica sicura:</p>
+<pre><code>if ($env:OPENAI_API_KEY) { &quot;OPENAI_API_KEY presente&quot; } else { &quot;OPENAI_API_KEY mancante&quot; }</code></pre>
+<p>Non devo fare:</p>
+<pre><code>echo $env:OPENAI_API_KEY</code></pre>
+<p>Perche' stamperebbe il segreto nel terminale.</p>
+<h2 id="configurazione-modello">Configurazione modello</h2>
+<p>Il modello deve essere deciso prima del run.</p>
+<p>In PowerShell:</p>
+<pre><code>$env:OPENAI_MODEL = &quot;[modello scelto]&quot;</code></pre>
+<p>Il modello e' configurazione, non comportamento.</p>
+<p>Questo significa:</p>
+<pre><code>se cambio modello, non sto cambiando il codice dell'agente;
+sto cambiando il motore che esegue quel comportamento.</code></pre>
+<p>Il comportamento resta definito da:</p>
+<ul><li>Agent Card;</li><li>prompt operativo;</li><li>template;</li><li>knowledge base;</li><li>runtime;</li><li>regole di governance.</li></ul>
+<h2 id="controllo-dipendenza-openai">Controllo dipendenza OpenAI</h2>
+<p>Prima di execute devo controllare che il pacchetto sia installato:</p>
+<pre><code>python -c &quot;import openai; print(openai.__version__)&quot;</code></pre>
+<p>Se uso il Python del venv:</p>
+<pre><code>.\agentfactory-test\.venv\Scripts\python.exe -c &quot;import openai; print(openai.__version__)&quot;</code></pre>
+<p>Se fallisce, installo:</p>
+<pre><code>pip install -r runtime\requirements.txt</code></pre>
+<p>oppure:</p>
+<pre><code>.\agentfactory-test\.venv\Scripts\python.exe -m pip install -r runtime\requirements.txt</code></pre>
+<p>Non devo fare execute finche' questa verifica non passa.</p>
+<h2 id="controllo-output-path">Controllo output path</h2>
+<p>Prima di execute devo verificare che questi file non esistano gia':</p>
+<pre><code>experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md</code></pre>
+<p>Il runtime rifiuta overwrite accidentali.</p>
+<p>Questa e' una cosa buona.</p>
+<p>Se quei file esistono gia', ho tre opzioni:</p>
+<h3 id="opzione-1-tengo-lo-storico-e-scelgo-nuovi-path">Opzione 1 - tengo lo storico e scelgo nuovi path</h3>
+<pre><code>python runtime\run_requirement_analyst.py --execute --output experiments/003-requirement-analysis-ai-output.md --run-record experiments/003-requirement-analyst-run-record.md</code></pre>
+<h3 id="opzione-2-decido-consapevolmente-di-sovrascrivere">Opzione 2 - decido consapevolmente di sovrascrivere</h3>
+<pre><code>python runtime\run_requirement_analyst.py --execute --force</code></pre>
+<p>Questa opzione non va usata nel primo run reale.</p>
+<h3 id="opzione-3-mi-fermo">Opzione 3 - mi fermo</h3>
+<p>Se non so cosa fare, mi fermo.</p>
+<p>In AgentFactory fermarsi davanti a un dubbio e' un comportamento corretto.</p>
+<h2 id="comando-execute">Comando execute</h2>
+<p>Quando tutti i controlli sono verdi:</p>
+<pre><code>python runtime\run_requirement_analyst.py --execute</code></pre>
+<p>Oppure con il venv:</p>
+<pre><code>.\agentfactory-test\.venv\Scripts\python.exe runtime\run_requirement_analyst.py --execute</code></pre>
+<p>Questo comando:</p>
+<ul><li>legge input, Agent Card, prompt, template e knowledge base;</li><li>compone il prompt finale;</li><li>chiama il modello;</li><li>riceve la risposta;</li><li>salva output Markdown;</li><li>salva run record;</li><li>stampa i path prodotti.</li></ul>
+<p>Deve essere eseguito una volta sola.</p>
+<p>Dopo il run:</p>
+<pre><code>stop.</code></pre>
+<p>Non rigenero subito.</p>
+<p>Non cambio modello subito.</p>
+<p>Non modifico prompt per impulso.</p>
+<p>Prima review.</p>
+<h2 id="diagramma-del-primo-execute">Diagramma del primo execute</h2>
+<div class="diagram"><div class="mermaid">flowchart TD
+    A[&quot;Dry-run riuscito&quot;] --&gt; B[&quot;Pre-flight completo&quot;]
+    B --&gt; C[&quot;API key presente&quot;]
+    C --&gt; D[&quot;Modello scelto&quot;]
+    D --&gt; E[&quot;Output path libero&quot;]
+    E --&gt; F[&quot;Execute singolo&quot;]
+    F --&gt; G[&quot;Output AI&quot;]
+    F --&gt; H[&quot;Run record&quot;]
+    G --&gt; I[&quot;Review manuale guidata&quot;]
+    H --&gt; I
+    I --&gt; J[&quot;Decisione: passa / correggi / blocca / assorbi conoscenza&quot;]</div></div>
+<p>Il punto importante e':</p>
+<pre><code>execute non decide la qualita'.
+execute produce materiale da valutare.</code></pre>
+<h2 id="cosa-contiene-l-output-ai">Cosa contiene l'output AI</h2>
+<p>L'output AI dovrebbe essere un Requirement Analysis Document.</p>
+<p>Deve rispettare:</p>
+<pre><code>templates/requirement-analysis-output-template.md</code></pre>
+<p>Quindi mi aspetto sezioni come:</p>
+<ul><li>metadati;</li><li>sintesi;</li><li>brief ricevuto;</li><li>fatti;</li><li>ipotesi;</li><li>domande aperte;</li><li>scope;</li><li>out of scope;</li><li>requisiti funzionali;</li><li>requisiti non funzionali;</li><li>vincoli;</li><li>rischi;</li><li>criteri di accettazione;</li><li>human gate;</li><li>handoff.</li></ul>
+<p>Se il modello produce un testo bello ma fuori struttura, non va bene.</p>
+<p>L'agente deve produrre un artefatto.</p>
+<p>Non una risposta piacevole.</p>
+<h2 id="cosa-contiene-il-run-record">Cosa contiene il run record</h2>
+<p>Il run record serve a sapere cosa e' successo.</p>
+<p>Deve tracciare:</p>
+<ul><li>data;</li><li>agente;</li><li>Agent Card;</li><li>prompt;</li><li>modello;</li><li>input;</li><li>output prodotto;</li><li>run record prodotto;</li><li>presenza API key;</li><li>token se disponibili;</li><li>errore se presente;</li><li>prossimo step.</li></ul>
+<p>Il run record non valuta la qualita' del documento.</p>
+<p>Registra l'esecuzione.</p>
+<p>Questa distinzione e' importante:</p>
+<pre><code>run record = audit tecnico.
+review = valutazione qualitativa.</code></pre>
+<h2 id="come-leggere-il-risultato">Come leggere il risultato</h2>
+<p>Dopo execute posso avere tre scenari.</p>
+<h3 id="scenario-1-successo-tecnico">Scenario 1 - Successo tecnico</h3>
+<p>Il terminale mostra:</p>
+<pre><code>Wrote output: experiments/002-requirement-analysis-ai-output.md
+Wrote run record: experiments/002-requirement-analyst-run-record.md</code></pre>
+<p>Significa:</p>
+<pre><code>run tecnico riuscito.</code></pre>
+<p>Non significa:</p>
+<pre><code>output validato.</code></pre>
+<h3 id="scenario-2-errore-prima-della-chiamata">Scenario 2 - Errore prima della chiamata</h3>
+<p>Esempi:</p>
+<pre><code>OPENAI_API_KEY is missing.
+OPENAI_MODEL or --model is missing.
+Missing dependency: install with pip install -r runtime/requirements.txt.</code></pre>
+<p>Questi errori sono buoni.</p>
+<p>Significa che il runtime ha bloccato un execute non pronto.</p>
+<h3 id="scenario-3-errore-durante-la-chiamata-api">Scenario 3 - Errore durante la chiamata API</h3>
+<p>Possibili cause:</p>
+<ul><li>modello non disponibile;</li><li>API key errata;</li><li>rete non disponibile;</li><li>quota o billing non attivi;</li><li>errore temporaneo del servizio;</li><li>input troppo grande;</li><li>problema SDK.</li></ul>
+<p>In questo caso non devo modificare subito il prompt.</p>
+<p>Prima devo capire:</p>
+<pre><code>errore di ambiente?
+errore di configurazione?
+errore di modello?
+errore di runtime?</code></pre>
+<h2 id="cosa-non-fare-dopo-il-primo-execute">Cosa non fare dopo il primo execute</h2>
+<h3 id="non-rigenerare-subito">Non rigenerare subito</h3>
+<p>Errore:</p>
+<pre><code>L'output non mi convince, rilancio.</code></pre>
+<p>Perche' e' sbagliato:</p>
+<pre><code>perdo l'occasione di capire il problema.</code></pre>
+<p>Prima devo revieware.</p>
+<h3 id="non-cambiare-modello-subito">Non cambiare modello subito</h3>
+<p>Errore:</p>
+<pre><code>Provo un modello piu' potente.</code></pre>
+<p>Possibile, ma non come prima reazione.</p>
+<p>Prima devo capire se il problema e':</p>
+<ul><li>brief;</li><li>prompt;</li><li>template;</li><li>Agent Card;</li><li>knowledge base;</li><li>modello;</li><li>aspettativa umana.</li></ul>
+<h3 id="non-committare-come-se-fosse-validato">Non committare come se fosse validato</h3>
+<p>Un output AI appena prodotto deve avere stato:</p>
+<pre><code>Da validare</code></pre>
+<p>Solo dopo review potra' diventare:</p>
+<pre><code>Validato</code></pre>
+<p>o:</p>
+<pre><code>Validabile con riserve</code></pre>
+<p>o:</p>
+<pre><code>Da correggere</code></pre>
+<h3 id="non-passarlo-subito-ad-architect-agent">Non passarlo subito ad Architect Agent</h3>
+<p>Il passaggio corretto e':</p>
+<pre><code>output AI
+  -&gt; review
+  -&gt; decisione
+  -&gt; eventuale handoff</code></pre>
+<p>Non:</p>
+<pre><code>output AI
+  -&gt; Architect Agent</code></pre>
+<h2 id="review-successiva">Review successiva</h2>
+<p>La review usera':</p>
+<pre><code>templates/requirement-analysis-review-checklist.md</code></pre>
+<p>Confronto utile:</p>
+<pre><code>experiments/001-agentfactory-static-site-requirements.md</code></pre>
+<p>Perche' ho gia' un output manuale di riferimento.</p>
+<p>Questo e' prezioso.</p>
+<p>Mi permette di chiedere:</p>
+<ul><li>l'agente ha capito il brief?</li><li>ha rispettato il template?</li><li>ha separato fatti e ipotesi?</li><li>ha prodotto requisiti verificabili?</li><li>ha preparato handoff utili?</li><li>ha inventato cose non dette?</li><li>ha saltato vincoli importanti?</li><li>ha scritto troppo o troppo poco?</li><li>il manuale umano resta migliore?</li><li>quali parti dell'output AI sono riutilizzabili?</li></ul>
+<h2 id="collegamento-con-skill-e-trigger">Collegamento con skill e trigger</h2>
+<p>Nel futuro, questo execute non sara' sempre manuale.</p>
+<p>Potrebbe partire da:</p>
+<pre><code>Trigger: nuovo brief validato</code></pre>
+<p>L'orchestratore potrebbe decidere:</p>
+<pre><code>Agente: Requirement Analyst Agent
+Skill: requirement-analysis
+Runtime: run_requirement_analyst.py
+Output: nuovo RAD
+Review: obbligatoria</code></pre>
+<p>Ma oggi non automatizzo ancora quel trigger.</p>
+<p>Oggi faccio:</p>
+<pre><code>trigger manuale umano</code></pre>
+<p>Perche' sto imparando e voglio vedere ogni passaggio.</p>
+<p>Questa e' la progressione corretta.</p>
+<p>Prima:</p>
+<pre><code>manuale e controllato</code></pre>
+<p>Poi:</p>
+<pre><code>semi-automatico</code></pre>
+<p>Poi:</p>
+<pre><code>orchestrato</code></pre>
+<p>Poi:</p>
+<pre><code>adattivo e governato</code></pre>
+<h2 id="esempio-semplice">Esempio semplice</h2>
+<p>Voglio generare un documento requisiti da un brief.</p>
+<p>Approccio debole:</p>
+<pre><code>apro ChatGPT e chiedo &quot;fammi i requisiti&quot;.</code></pre>
+<p>Problema:</p>
+<ul><li>output non tracciato;</li><li>prompt non versionato;</li><li>nessun run record;</li><li>nessuna checklist;</li><li>nessun confronto;</li><li>nessun controllo su overwrite;</li><li>nessun budget.</li></ul>
+<p>Approccio AgentFactory:</p>
+<pre><code>brief versionato
+Agent Card versionata
+prompt versionato
+template versionato
+knowledge base versionata
+runtime controllato
+output salvato
+run record salvato
+review obbligatoria</code></pre>
+<p>Questa e' la differenza tra usare un modello e costruire una factory.</p>
+<h2 id="esempio-professionale">Esempio professionale</h2>
+<p>In un'azienda potrei avere un agente che analizza richieste cliente.</p>
+<p>Il processo serio non sarebbe:</p>
+<pre><code>manda la richiesta al modello e fidati.</code></pre>
+<p>Sarebbe:</p>
+<pre><code>ticket ricevuto
+classificazione dati
+controllo permessi
+budget
+modello approvato
+prompt versionato
+output salvato
+review umana o automatica
+audit trail
+handoff al team corretto
+knowledge absorption se emergono pattern ricorrenti</code></pre>
+<p>Il nostro primo execute e' piccolo, ma segue gia' la stessa logica.</p>
+<h2 id="anti-pattern-ed-errori-comuni">Anti-pattern ed errori comuni</h2>
+<h3 id="errore-1-execute-come-esperimento-casuale">Errore 1 - Execute come esperimento casuale</h3>
+<p>Errore:</p>
+<pre><code>Lancio per vedere cosa succede.</code></pre>
+<p>Correzione:</p>
+<pre><code>Eseguo solo quando so input, modello, budget, output e review.</code></pre>
+<h3 id="errore-2-confondere-output-generato-e-output-approvato">Errore 2 - Confondere output generato e output approvato</h3>
+<p>Errore:</p>
+<pre><code>Il modello ha scritto il documento, quindi lo uso.</code></pre>
+<p>Correzione:</p>
+<pre><code>Il modello ha prodotto un candidato. La review decide se usarlo.</code></pre>
+<h3 id="errore-3-usare-force-per-comodita">Errore 3 - Usare <code>--force</code> per comodita'</h3>
+<p>Errore:</p>
+<pre><code>Sovrascrivo tanto era solo un test.</code></pre>
+<p>Correzione:</p>
+<pre><code>Gli output sono artefatti. Se serve, creo un nuovo path.</code></pre>
+<h3 id="errore-4-non-leggere-il-run-record">Errore 4 - Non leggere il run record</h3>
+<p>Errore:</p>
+<pre><code>Guardo solo il documento generato.</code></pre>
+<p>Correzione:</p>
+<pre><code>Leggo anche il run record per capire contesto, modello, input e stato.</code></pre>
+<h3 id="errore-5-correggere-tutto-insieme">Errore 5 - Correggere tutto insieme</h3>
+<p>Errore:</p>
+<pre><code>L'output e' debole, cambio prompt, modello, template e brief.</code></pre>
+<p>Perche' e' fragile:</p>
+<pre><code>non sapro' quale modifica ha migliorato o peggiorato il risultato.</code></pre>
+<p>Correzione:</p>
+<pre><code>Una modifica alla volta, motivata da review.</code></pre>
+<h2 id="collegamento-con-agentfactory">Collegamento con AgentFactory</h2>
+<p>Questa lezione porta AgentFactory in una fase nuova:</p>
+<pre><code>manuale
+  -&gt; runtime
+  -&gt; execute
+  -&gt; output reale
+  -&gt; review</code></pre>
+<p>Non sto piu' solo progettando.</p>
+<p>Sto iniziando a misurare.</p>
+<p>Il primo execute mi dara' informazioni su:</p>
+<ul><li>qualita' della Agent Card;</li><li>qualita' del prompt operativo;</li><li>chiarezza del template;</li><li>utilita' della knowledge base;</li><li>capacita' del modello scelto;</li><li>robustezza del runtime;</li><li>qualita' del processo di review.</li></ul>
+<p>Questo e' il primo vero feedback loop tecnico.</p>
+<h2 id="artefatti-prodotti">Artefatti prodotti</h2>
+<p>Questa lezione produce:</p>
+<pre><code>lessons/20-primo-execute-requirement-analyst-agent.md</code></pre>
+<p>Quando verra' eseguito davvero il run, produrra':</p>
+<pre><code>experiments/002-requirement-analysis-ai-output.md
+experiments/002-requirement-analyst-run-record.md</code></pre>
+<p>Aggiorna anche:</p>
+<pre><code>MANUAL.md
+ROADMAP.md
+lessons/README.md
+CHANGELOG.md
+tools/build-site.js
+docs/</code></pre>
+<h2 id="verifica-personale">Verifica personale</h2>
+<p>Dopo questa lezione devo saper rispondere:</p>
+<pre><code>1. Che differenza c'e' tra dry-run ed execute?
+2. Perche' execute non e' la modalita' predefinita?
+3. Perche' devo configurare API key fuori dal repository?
+4. Perche' il modello e' configurazione?
+5. Perche' non devo usare --force nel primo run?
+6. Che cosa significa successo tecnico?
+7. Perche' successo tecnico non significa output valido?
+8. Che cosa contiene il run record?
+9. Quale checklist usero' dopo il primo output AI?
+10. Perche' dopo il primo execute devo fermarmi?</code></pre>
+<h2 id="conoscenza-da-assorbire">Conoscenza da assorbire</h2>
+<ul><li>Il primo execute produce un candidato, non una verita'.</li><li>Output AI e run record sono artefatti distinti.</li><li>Run record significa audit tecnico; review significa valutazione qualitativa.</li><li>Un solo run controllato insegna piu' di molti retry impulsivi.</li><li>Il modello non va cambiato prima di capire se il problema sta in prompt, template, input o aspettativa.</li><li>L'output AI non passa al prossimo agente senza review.</li></ul>
+<h2 id="prossimo-passo">Prossimo passo</h2>
+<p>Dopo questa lezione il passo naturale e':</p>
+<pre><code>eseguire il primo execute reale</code></pre>
+<p>solo quando:</p>
+<ul><li>API key e' configurata;</li><li>modello e' scelto;</li><li>budget e' confermato;</li><li>output path e run record path sono liberi;</li><li>review checklist e' pronta.</li></ul>
+<p>La lezione successiva dovra' essere:</p>
+<pre><code>review del primo output AI del Requirement Analyst Agent</code></pre>
+<p>Se non abbiamo ancora eseguito l'API, la prossima lezione potra' preparare la review in anticipo.</p>
+  </section>
+</article>
+      <footer class="site-footer">
+    <span class="footer-brand"><img src="../assets/agentfactory-logo.png?v=20260614-lesson-20" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
+    <span>AgentFactory manuale e laboratorio multi-agent</span>
+  </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="../site.js?v=20260614-lesson-20"></script>
+</body>
+</html>

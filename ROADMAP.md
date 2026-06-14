@@ -133,6 +133,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Versionare il risultato
 - [x] Preparare runtime minimo con dry-run
 - [x] Preparare pre-flight prima del primo execute
+- [x] Preparare procedura di primo execute controllato
 - [x] Valutare OpenAI Agents SDK per eseguire il primo agente
 
 ## Livello 8 - Pipeline multi-agent reale

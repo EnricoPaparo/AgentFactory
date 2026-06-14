@@ -40,6 +40,7 @@ Una Agent Factory e' un sistema capace di:
 - [17 - Runtime Python minimo per il primo agente reale](lessons/17-runtime-python-primo-agente-reale.md)
 - [18 - Pre-flight del primo run API](lessons/18-preflight-primo-run-api.md)
 - [19 - Skill, trigger e attivazione degli agenti](lessons/19-skill-trigger-attivazione-agenti.md)
+- [20 - Primo execute del Requirement Analyst Agent](lessons/20-primo-execute-requirement-analyst-agent.md)
 
 ## Regola di ogni lezione
 

@@ -2,6 +2,12 @@
 
 Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 
+## 2026-06-14
+
+### Aggiunto
+
+- Lezione 20: primo execute controllato del Requirement Analyst Agent.
+
 ## 2026-06-13
 
 ### Aggiunto

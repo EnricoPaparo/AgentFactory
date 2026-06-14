@@ -24,6 +24,7 @@ Questa cartella contiene il percorso progressivo del manuale.
 - [17 - Runtime Python minimo per il primo agente reale](17-runtime-python-primo-agente-reale.md)
 - [18 - Pre-flight del primo run API](18-preflight-primo-run-api.md)
 - [19 - Skill, trigger e attivazione degli agenti](19-skill-trigger-attivazione-agenti.md)
+- [20 - Primo execute del Requirement Analyst Agent](20-primo-execute-requirement-analyst-agent.md)
 
 ## Regola
 
