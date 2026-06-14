@@ -33,6 +33,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [x] Mappa iniziale: n8n, OpenAI Agents SDK, CrewAI, LangGraph, OpenClaw
 - [ ] n8n come workflow automation layer
 - [ ] OpenAI Agents SDK per il primo agente reale
+- [x] Skill come procedure riutilizzabili per agenti
 - [ ] CrewAI per crew role/task based
 - [ ] LangGraph per orchestrazione stateful a grafo
 - [ ] OpenClaw come caso studio su autonomia, memoria e governance
@@ -95,6 +96,8 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Pipeline sequenziale
 - [ ] Supervisor-worker pattern
 - [ ] Planner-executor pattern
+- [x] Skill come capacita' riutilizzabili dentro la pipeline
+- [x] Trigger come segnali di attivazione degli agenti
 - [x] Reviewer/Critic pattern
 - [ ] Pipeline multi-agent simulata in Markdown
 - [ ] n8n come esempio di workflow automation visuale
@@ -142,6 +145,8 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Reviewer Agent
 - [ ] Documentation Agent
 - [ ] Supervisor Agent
+- [ ] Orchestratore minimo con trigger manuale
+- [ ] Routing agente + skill
 - [ ] Confrontare CrewAI e LangGraph per orchestrazione multi-agent
 
 ## Livello 9 - Agenti che migliorano nel tempo
@@ -171,6 +176,7 @@ Non si passa al livello successivo finche' non e' chiaro:
 - [ ] Recuperare solo conoscenza rilevante per progetto/agente
 - [ ] Mantenere piccole Agent Card e prompt operativi
 - [ ] Orchestrare workflow progetto-specifici
+- [ ] Definire trigger manuali, file-based, review-based ed esterni
 - [ ] Valutare qualita', costi e rischio
 - [ ] Riassorbire conoscenza validata
 - [ ] Migliorare la factory dopo ogni progetto

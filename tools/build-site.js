@@ -12,7 +12,7 @@ const logoPath = "assets/agentfactory-logo.png";
 const wordmarkPath = "assets/agentfactory-wordmark.png";
 const faviconPath = "assets/favicon.png";
 const appleTouchIconPath = "assets/apple-touch-icon.png";
-const assetVersion = "20260614-focus-palette";
+const assetVersion = "20260614-skills-triggers";
 
 const sources = [
   {
@@ -170,6 +170,13 @@ const sources = [
     summary: "Checklist operativa prima del primo execute via API.",
   },
   {
+    title: "19 - Skill, trigger e attivazione agenti",
+    file: "lessons/19-skill-trigger-attivazione-agenti.md",
+    slug: "lezione-19",
+    group: "Lezioni",
+    summary: "Come skill, trigger e orchestratore preparano una pipeline multi-agent modulare.",
+  },
+  {
     title: "Agents Overview",
     file: "agents/README.md",
     slug: "agents-overview",
@@ -231,6 +238,13 @@ const sources = [
     slug: "template-knowledge-absorption",
     group: "Template",
     summary: "Template per decidere cosa assorbire nella memoria permanente.",
+  },
+  {
+    title: "Agent Skill Template",
+    file: "templates/agent-skill-template.md",
+    slug: "template-agent-skill",
+    group: "Template",
+    summary: "Template leggero per progettare skill riutilizzabili dagli agenti.",
   },
   {
     title: "Agent Handoff Contract Template",

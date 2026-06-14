@@ -126,6 +126,18 @@ Workflow composto da piu' agenti specializzati, ognuno con responsabilita', inpu
 
 Strumento che un agente puo' usare: file system, terminale, GitHub, browser, database, API, test runner.
 
+## Skill
+
+Procedura riutilizzabile che insegna a un agente come svolgere una capacita' specifica. Non coincide con l'agente: la Agent Card definisce identita' e confini, la skill definisce il modo operativo per eseguire un compito. Una skill puo' richiamare template, esempi, checklist, tool consentiti e condizioni di stop.
+
+## Trigger
+
+Evento o condizione che segnala che un lavoro agentico potrebbe partire: richiesta manuale, nuovo file, output prodotto, review fallita, evento Git, schedule, webhook o messaggio esterno. Un trigger non e' autorizzazione automatica: l'orchestratore e la governance devono decidere se procedere.
+
+## Orchestratore
+
+Componente, script, workflow o agente supervisore che decide quale agente attivare, con quale input, skill, modello, tool, output path, review e prossimo passaggio.
+
 ## Handoff
 
 Passaggio strutturato di lavoro da un agente a un altro. Include contesto essenziale, vincoli, scope, out of scope, decisioni aperte, privilegi, condizioni di stop e output atteso. Un buon handoff evita che l'agente successivo debba ricostruire tutto da zero. In una pipeline matura e' il contesto operativo primario del ricevente; gli artefatti sorgente restano consultabili come fonte. Un Architect Handoff e' l'input operativo dell'Architect Agent, non la decisione architetturale finale.

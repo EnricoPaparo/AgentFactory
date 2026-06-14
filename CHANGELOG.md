@@ -28,6 +28,8 @@ Tutte le modifiche principali ad AgentFactory verranno tracciate qui.
 - Migliorata la sidebar mobile del sito: pannello opaco, backdrop, blocco scroll e chiusura con click fuori/Escape/link.
 - Ammorbidita la palette del sito per ridurre affaticamento visivo durante la lettura prolungata.
 - Resi generici i path default del primo Requirement Analyst Agent e chiarita la differenza tra agente minimo, factory completa e Developer Agent con tool.
+- Aggiunta la Lezione 19 su skill, trigger, orchestratore e attivazione degli agenti.
+- Aggiunto `templates/agent-skill-template.md` per progettare skill riutilizzabili.
 
 ## 2026-06-12
 
