@@ -1146,3 +1146,114 @@ td {
     padding: 16px;
   }
 }
+
+/* Icon-only header navigation */
+.iconnav {
+  gap: 10px;
+}
+
+.iconnav a {
+  position: relative;
+  display: inline-grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  padding: 0;
+  border-color: rgba(52, 211, 230, 0.16);
+  background: rgba(21, 26, 35, 0.56);
+  color: var(--cyan);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.iconnav a svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: translateY(-1px);
+}
+
+.iconnav a:hover {
+  border-color: rgba(124, 227, 91, 0.36);
+  background: radial-gradient(circle at 35% 25%, rgba(124, 227, 91, 0.14), rgba(52, 211, 230, 0.06) 58%, rgba(21, 26, 35, 0.74));
+  color: var(--green);
+  box-shadow: 0 0 18px rgba(52, 211, 230, 0.08);
+}
+
+.iconnav a::before,
+.iconnav a::after {
+  position: absolute;
+  left: 50%;
+  z-index: 80;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.iconnav a::before {
+  content: attr(data-tooltip);
+  top: calc(100% + 10px);
+  width: max-content;
+  max-width: 180px;
+  padding: 7px 9px;
+  border: 1px solid rgba(52, 211, 230, 0.28);
+  background: rgba(14, 17, 23, 0.96);
+  color: var(--text);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+}
+
+.iconnav a::after {
+  content: "";
+  top: calc(100% + 5px);
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid rgba(52, 211, 230, 0.28);
+  border-left: 1px solid rgba(52, 211, 230, 0.28);
+  background: rgba(14, 17, 23, 0.96);
+  transform: translate(-50%, 8px) rotate(45deg);
+}
+
+.iconnav a:hover::before,
+.iconnav a:focus-visible::before,
+.iconnav a:hover::after,
+.iconnav a:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.iconnav a:hover::after,
+.iconnav a:focus-visible::after {
+  transform: translate(-50%, 0) rotate(45deg);
+}
+
+@media (max-width: 900px) {
+  .topnav.iconnav {
+    display: flex;
+  }
+}
+
+@media (max-width: 560px) {
+  .iconnav {
+    gap: 6px;
+  }
+
+  .iconnav a {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .brand small {
+    display: none;
+  }
+}
