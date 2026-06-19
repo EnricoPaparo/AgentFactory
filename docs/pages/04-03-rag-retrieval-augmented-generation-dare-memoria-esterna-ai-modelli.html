@@ -16,11 +16,79 @@
       <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
       <span><strong>AgentFactory</strong><small>AISchool</small></span>
     </a>
-    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
-      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
-      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
-    </nav>
+    <button class="menu-button" type="button" data-menu-button aria-label="Apri indice del corso" aria-expanded="false"><span></span><span></span><span></span></button>
   </header>
+
+  <aside class="sidebar course-sidebar" data-sidebar aria-label="Indice del corso">
+    <p class="sidebar-title">Corso di AI Engineering</p>
+    <details class="nav-group" open>
+      <summary><span>01</span> Il Web come lo Conosciamo</summary>
+      <a href="01-01-come-funziona-internet-client-server-e-il-viaggio-di-una-richiesta.html"><span>01-01</span>Come funziona Internet: client, server e il viaggio di una richiesta</a>
+      <a href="01-02-siti-web-statici-html-css-e-il-concetto-di-documento.html"><span>01-02</span>Siti Web Statici: HTML, CSS e il concetto di documento</a>
+      <a href="01-03-siti-web-dinamici-server-database-e-la-nascita-della-logica.html"><span>01-03</span>Siti Web Dinamici: server, database e la nascita della logica</a>
+      <a href="01-04-web-application-quando-il-browser-diventa-un-interfaccia.html"><span>01-04</span>Web Application: quando il browser diventa un'interfaccia</a>
+      <a href="01-05-le-api-il-linguaggio-universale-tra-sistemi.html"><span>01-05</span>Le API: il linguaggio universale tra sistemi</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>02</span> L'Intelligenza Artificiale: Cosa È Davvero</summary>
+      <a href="02-01-intelligenza-artificiale-storia-definizioni-e-rami-principali.html"><span>02-01</span>Intelligenza Artificiale: storia, definizioni e rami principali</a>
+      <a href="02-02-machine-learning-come-una-macchina-impara-dai-dati.html"><span>02-02</span>Machine Learning: come una macchina impara dai dati</a>
+      <a href="02-03-reti-neurali-e-deep-learning-il-cervello-artificiale-spiegato-bene.html"><span>02-03</span>Reti Neurali e Deep Learning: il cervello artificiale spiegato bene</a>
+      <a href="02-04-nlp-e-il-problema-del-linguaggio-perche-il-testo-e-difficile-per-le-macchine.html"><span>02-04</span>NLP e il problema del linguaggio: perché il testo è difficile per le macchine</a>
+      <a href="02-05-l-architettura-transformer-la-rivoluzione-che-ha-reso-possibile-gli-llm.html"><span>02-05</span>L'architettura Transformer: la rivoluzione che ha reso possibile gli LLM</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>03</span> I Modelli Linguistici di Grandi Dimensioni (LLM)</summary>
+      <a href="03-01-cos-e-un-llm-previsione-del-token-successivo-come-intelligenza-emergente.html"><span>03-01</span>Cos'è un LLM: previsione del token successivo come intelligenza emergente</a>
+      <a href="03-02-training-fine-tuning-e-rlhf-come-si-costruisce-un-assistente-ai.html"><span>03-02</span>Training, Fine-tuning e RLHF: come si costruisce un assistente AI</a>
+      <a href="03-03-il-portale-chatgpt-e-i-suoi-equivalenti-anatomia-di-un-prodotto-ai.html"><span>03-03</span>Il Portale ChatGPT e i suoi equivalenti: anatomia di un prodotto AI</a>
+      <a href="03-04-il-prompting-comunicare-con-un-llm-in-modo-efficace.html"><span>03-04</span>Il Prompting: comunicare con un LLM in modo efficace</a>
+      <a href="03-05-limiti-allucinazioni-e-confini-degli-llm.html"><span>03-05</span>Limiti, allucinazioni e confini degli LLM</a>
+    </details>
+    <details class="nav-group" open>
+      <summary><span>04</span> Strumenti e Infrastruttura per Sistemi AI</summary>
+      <a href="04-01-l-api-degli-llm-come-si-usa-un-modello-da-un-programma.html"><span>04-01</span>L'API degli LLM: come si usa un modello da un programma</a>
+      <a href="04-02-output-strutturati-e-output-parser-forzare-il-modello-a-rispondere-in-formato-preciso.html"><span>04-02</span>Output Strutturati e Output Parser: forzare il modello a rispondere in formato preciso</a>
+      <a href="04-03-rag-retrieval-augmented-generation-dare-memoria-esterna-ai-modelli.html" aria-current="page"><span>04-03</span>RAG — Retrieval-Augmented Generation: dare memoria esterna ai modelli</a>
+      <a href="04-04-tool-use-e-function-calling-dare-al-modello-la-capacita-di-agire.html"><span>04-04</span>Tool Use e Function Calling: dare al modello la capacità di agire</a>
+      <a href="04-05-mcp-model-context-protocol-lo-standard-per-connettere-agenti-a-risorse-esterne.html"><span>04-05</span>MCP — Model Context Protocol: lo standard per connettere agenti a risorse esterne</a>
+      <a href="04-06-memory-nei-sistemi-ai-breve-e-lungo-termine.html"><span>04-06</span>Memory nei sistemi AI: breve e lungo termine</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>05</span> Agenti AI: Architettura e Ragionamento</summary>
+      <a href="05-01-cos-e-un-agente-ai-definizione-componenti-e-loop-agentivo.html"><span>05-01</span>Cos'è un Agente AI: definizione, componenti e loop agentivo</a>
+      <a href="05-02-react-chain-of-thought-e-pattern-di-ragionamento-agentivo.html"><span>05-02</span>ReAct, Chain-of-Thought e Pattern di Ragionamento Agentivo</a>
+      <a href="05-03-l-orchestratore-il-direttore-d-orchestra-del-sistema-agentivo.html"><span>05-03</span>L'Orchestratore: il direttore d'orchestra del sistema agentivo</a>
+      <a href="05-04-agenti-single-vs-multi-agent-quando-un-agente-non-basta.html"><span>05-04</span>Agenti Single vs Multi-Agent: quando un agente non basta</a>
+      <a href="05-05-gestione-degli-errori-robustezza-e-osservabilita-negli-agenti.html"><span>05-05</span>Gestione degli Errori, Robustezza e Osservabilità negli Agenti</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>06</span> L'Agent Package: Struttura, Contratti e Artefatti</summary>
+      <a href="06-01-yaml-e-frontmatter-il-linguaggio-dei-metadati-strutturati.html"><span>06-01</span>YAML e Frontmatter: il linguaggio dei metadati strutturati</a>
+      <a href="06-02-l-agent-package-struttura-di-file-e-directory-di-un-agente-professionale.html"><span>06-02</span>L'Agent Package: struttura di file e directory di un agente professionale</a>
+      <a href="06-03-agent-card-il-documento-di-identita-di-un-agente.html"><span>06-03</span>Agent Card: il documento di identità di un agente</a>
+      <a href="06-04-i-prompt-come-artefatti-struttura-template-istanze-e-versionamento.html"><span>06-04</span>I Prompt come Artefatti: struttura, template, istanze e versionamento</a>
+      <a href="06-05-contratti-tra-agenti-schemi-di-input-output-e-validazione.html"><span>06-05</span>Contratti tra Agenti: schemi di input/output e validazione</a>
+      <a href="06-06-gli-handoff-come-un-agente-passa-il-controllo-a-un-altro.html"><span>06-06</span>Gli Handoff: come un agente passa il controllo a un altro</a>
+      <a href="06-07-skills-e-skill-library-competenze-riutilizzabili-tra-agenti.html"><span>06-07</span>Skills e Skill Library: competenze riutilizzabili tra agenti</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>07</span> Workflow Multi-Agente: Design e Implementazione</summary>
+      <a href="07-01-progettare-un-workflow-agentivo-dal-problema-al-grafo.html"><span>07-01</span>Progettare un Workflow Agentivo: dal problema al grafo</a>
+      <a href="07-02-langgraph-costruire-workflow-come-grafi-orientati-con-stato.html"><span>07-02</span>LangGraph: costruire workflow come grafi orientati con stato</a>
+      <a href="07-03-il-layer-di-review-agenti-critici-e-quality-assurance-nel-workflow.html"><span>07-03</span>Il Layer di Review: agenti critici e quality assurance nel workflow</a>
+      <a href="07-04-supervisione-umana-human-in-the-loop-come-componente-architetturale.html"><span>07-04</span>Supervisione Umana: Human-in-the-Loop come componente architetturale</a>
+      <a href="07-05-valutazione-dei-workflow-metriche-evals-e-testing-end-to-end.html"><span>07-05</span>Valutazione dei Workflow: metriche, evals e testing end-to-end</a>
+    </details>
+    <details class="nav-group">
+      <summary><span>08</span> Sistemi Agentici che si Auto-Migliorano</summary>
+      <a href="08-01-self-reflection-e-self-critique-l-agente-che-valuta-se-stesso.html"><span>08-01</span>Self-Reflection e Self-Critique: l'agente che valuta sé stesso</a>
+      <a href="08-02-prompt-auto-evolutivi-come-i-prompt-migliorano-nel-tempo.html"><span>08-02</span>Prompt Auto-Evolutivi: come i prompt migliorano nel tempo</a>
+      <a href="08-03-riassorbimento-della-conoscenza-la-knowledge-base-che-cresce-con-l-uso.html"><span>08-03</span>Riassorbimento della Conoscenza: la Knowledge Base che cresce con l'uso</a>
+      <a href="08-04-governance-versioning-e-ciclo-di-vita-degli-artefatti-agentivi.html"><span>08-04</span>Governance, Versioning e Ciclo di Vita degli Artefatti Agentivi</a>
+      <a href="08-05-progetto-finale-costruzione-di-un-workflow-agentivo-supervisionato-e-auto-evolutivo.html"><span>08-05</span>Progetto Finale: Costruzione di un Workflow Agentivo Supervisionato e Auto-Evolutivo</a>
+    </details>
+  </aside>
 
   <main class="course-shell lesson-shell">
     <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-03</strong></nav>
@@ -29,8 +97,7 @@
         <p class="eyebrow">Lezione 04-03</p>
         <h1>RAG — Retrieval-Augmented Generation: dare memoria esterna ai modelli</h1>
         <p class="lesson-subtitle">Come risolvere il knowledge cutoff e ridurre le allucinazioni, in pratica</p>
-        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
-        <div class="tag-row"><span>RAG</span><span>vector database</span><span>embedding</span><span>indicizzazione</span><span>retrieval</span><span>chunking</span></div>
+        <p class="producer-credit">Prodotto da Enrico Paparo</p>
       </header>
       <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il problema che RAG risolve, collegandolo ai limiti del Capitolo 3</li><li>Descrivere il flusso completo recupera-poi-genera</li><li>Spiegare cosa è un vector database e come si interroga per similarità</li><li>Riconoscere i limiti di RAG e quando non è la soluzione giusta</li></ul></section>
       <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>

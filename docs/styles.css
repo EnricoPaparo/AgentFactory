@@ -318,11 +318,18 @@ select {
   margin-top: 34px;
 }
 
-.hero-credit {
+.hero-credit,
+.producer-credit {
   margin: 14px 0 0;
   color: var(--muted-soft);
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.producer-credit::before {
+  content: "— ";
+  color: var(--green);
 }
 
 .primary-action,
@@ -1266,9 +1273,52 @@ td {
 }
 
 /* AISchool course layout */
+.aischool-page .menu-button {
+  display: none;
+}
+
+.course-sidebar {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  z-index: 20;
+  width: 330px;
+  height: calc(100vh - 72px);
+  padding: 18px 14px 30px;
+  border-right: 1px solid rgba(52, 211, 230, 0.18);
+  background:
+    linear-gradient(90deg, rgba(52, 211, 230, 0.028) 1px, transparent 1px),
+    linear-gradient(rgba(124, 227, 91, 0.018) 1px, transparent 1px),
+    rgba(17, 23, 34, 0.94);
+  background-size: 34px 34px, 34px 34px, auto;
+}
+
+.sidebar-title {
+  margin: 0 0 14px;
+  padding: 0 8px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.course-sidebar .nav-group a {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+.course-sidebar .nav-group a span {
+  color: var(--cyan);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
 .course-shell {
-  width: min(1180px, calc(100% - 32px));
-  margin: 0 auto;
+  width: min(1180px, calc(100vw - 330px - 48px));
+  margin: 0 24px 0 calc(330px + max(24px, calc((100vw - 330px - 1180px) / 2)));
   padding: 34px 0 72px;
 }
 
@@ -1394,6 +1444,7 @@ td {
 }
 
 .lesson-shell {
+  width: min(980px, calc(100% - 32px));
   max-width: 980px;
 }
 
@@ -1420,31 +1471,13 @@ td {
   font-size: 1.12rem;
 }
 
-.lesson-meta-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin-top: 22px;
+.lesson-hero .producer-credit {
+  margin-top: 10px;
 }
 
-.lesson-meta-grid div {
-  border: 1px solid var(--line);
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.025);
-}
-
-.lesson-meta-grid span {
-  display: block;
-  color: var(--muted-soft);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.lesson-meta-grid strong {
-  display: block;
-  margin-top: 4px;
-  line-height: 1.25;
+.lesson-meta-grid,
+.tag-row {
+  display: none;
 }
 
 .objectives-card {
@@ -1496,11 +1529,34 @@ td {
 }
 
 .markdown-body pre {
+  position: relative;
   overflow: auto;
-  padding: 18px;
+  margin: 22px 0;
+  padding: 50px 22px 22px;
   border: 1px solid rgba(52, 211, 230, 0.24);
   background: #070b12;
   color: #d8f7ff;
+}
+
+.markdown-body pre::before {
+  content: "TEXT BLOCK";
+  position: absolute;
+  top: 13px;
+  left: 18px;
+  color: var(--green);
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.markdown-body pre::after {
+  content: "";
+  position: absolute;
+  top: 36px;
+  right: 18px;
+  left: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(124, 227, 91, 0.34), transparent);
 }
 
 .markdown-body code {
@@ -1549,7 +1605,93 @@ td {
   border-top: 1px solid var(--line);
 }
 
+@media (max-width: 1100px) {
+  .aischool-page .menu-button {
+    display: grid;
+  }
+
+  .course-sidebar {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    z-index: 55;
+    width: min(88vw, 380px);
+    max-width: calc(100vw - 22px);
+    height: calc(100vh - 72px);
+    transform: translateX(-100%);
+    transition: transform 180ms ease;
+    box-shadow: 24px 0 58px rgba(0, 0, 0, 0.56);
+  }
+
+  .course-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .course-shell,
+  .lesson-shell {
+    width: min(100% - 32px, 760px);
+    margin: 0 auto;
+    padding-top: 24px;
+  }
+
+  .course-hero {
+    min-height: calc(100vh - 120px);
+  }
+}
+
 @media (max-width: 720px) {
+  .topbar {
+    min-height: 64px;
+    padding: 10px 14px;
+  }
+
+  .brand-mark {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .brand-mark img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .course-sidebar {
+    top: 64px;
+    width: 100vw;
+    max-width: 100vw;
+    height: calc(100vh - 64px);
+  }
+
+  body.nav-open::before {
+    inset: 64px 0 0;
+  }
+
+  .course-shell,
+  .lesson-shell {
+    width: calc(100% - 24px);
+    padding: 18px 0 52px;
+  }
+
+  .course-hero {
+    min-height: auto;
+    padding-top: 18px;
+  }
+
+  .course-hero h1,
+  .lesson-hero h1 {
+    letter-spacing: -0.045em;
+  }
+
+  .home-wordmark {
+    max-width: 230px;
+  }
+
+  .lesson-article,
+  .objectives-card {
+    padding: 18px;
+  }
+
   .lesson-list a {
     grid-template-columns: auto 1fr;
   }
@@ -1560,5 +1702,10 @@ td {
 
   .lesson-pagination {
     flex-direction: column;
+  }
+
+  .markdown-body pre {
+    padding: 48px 14px 16px;
+    font-size: 0.9rem;
   }
 }
