@@ -925,3 +925,224 @@ td {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Landing refresh */
+.landing-page {
+  overflow-x: hidden;
+}
+
+.landing-topbar {
+  gap: 20px;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topnav a {
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.topnav a:hover {
+  border-color: rgba(52, 211, 230, 0.24);
+  background: rgba(52, 211, 230, 0.055);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.landing-shell {
+  width: min(1180px, calc(100% - clamp(28px, 5vw, 88px)));
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px) 0 28px;
+}
+
+.landing-hero {
+  min-height: calc(100vh - 136px);
+  padding-bottom: clamp(32px, 6vw, 72px);
+}
+
+.landing-hero .hero-title-logo {
+  max-width: min(720px, 100%);
+}
+
+.landing-hero .hero-title-wordmark {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.landing-section {
+  scroll-margin-top: 96px;
+  padding: clamp(42px, 7vw, 84px) 0 10px;
+}
+
+.landing-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.landing-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 230px;
+  padding: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: var(--hud-corner), rgba(12, 18, 32, 0.78);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+}
+
+.landing-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 24% 0%, rgba(52, 211, 230, 0.1), transparent 38%),
+    linear-gradient(120deg, transparent 0 38%, rgba(124, 227, 91, 0.045), transparent 70%);
+  pointer-events: none;
+}
+
+.landing-card span,
+.timeline-item span {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  margin-bottom: 18px;
+  color: var(--green);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.landing-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--text);
+  font-size: 1.28rem;
+  line-height: 1.15;
+}
+
+.landing-card p {
+  position: relative;
+  z-index: 1;
+  margin: 14px 0 0;
+  color: var(--muted);
+}
+
+.split-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+  gap: clamp(18px, 4vw, 42px);
+  align-items: stretch;
+}
+
+.method-panel h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.55rem);
+  line-height: 1.05;
+}
+
+.method-panel p:not(.eyebrow) {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+}
+
+.method-list {
+  display: grid;
+  gap: 12px;
+}
+
+.method-list div,
+.timeline-item {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: linear-gradient(135deg, rgba(52, 211, 230, 0.04), transparent 52%), rgba(17, 23, 34, 0.76);
+  padding: 18px;
+}
+
+.method-list strong,
+.method-list span {
+  display: block;
+}
+
+.method-list strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.method-list span {
+  margin-top: 5px;
+  color: var(--muted);
+}
+
+.timeline-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.timeline-item {
+  min-height: 178px;
+}
+
+.timeline-item strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.08rem;
+  line-height: 1.2;
+}
+
+.timeline-item p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.landing-footer {
+  max-width: none;
+  margin-top: clamp(44px, 8vw, 88px);
+}
+
+@media (max-width: 900px) {
+  .topnav {
+    display: none;
+  }
+
+  .landing-shell {
+    width: min(100% - 32px, 720px);
+  }
+
+  .landing-card-grid,
+  .timeline-panel,
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-hero {
+    min-height: auto;
+    padding-top: 18px;
+  }
+}
+
+@media (max-width: 520px) {
+  .landing-shell {
+    width: calc(100% - 28px);
+  }
+
+  .landing-card,
+  .method-list div,
+  .timeline-item {
+    padding: 16px;
+  }
+}

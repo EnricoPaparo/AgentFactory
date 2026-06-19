@@ -3,53 +3,126 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AgentFactory | Sito statico</title>
-  <meta name="description" content="AgentFactory - sito statico in preparazione per nuove lezioni.">
+  <title>AgentFactory | Laboratorio multi-agent</title>
+  <meta name="description" content="AgentFactory è un laboratorio operativo per progettare, costruire e governare sistemi multi-agent professionali.">
   <meta name="author" content="Enrico Paparo">
-  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png?v=20260619-static-cleanup">
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260619-static-cleanup">
-  <link rel="stylesheet" href="styles.css?v=20260619-static-cleanup">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png?v=20260619-home-refresh">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=20260619-home-refresh">
+  <link rel="stylesheet" href="styles.css?v=20260619-home-refresh">
 </head>
-<body class="home">
+<body class="home landing-page">
   <div class="scanline" aria-hidden="true"></div>
-  <header class="topbar">
+  <header class="topbar landing-topbar">
     <a class="brand" href="index.html" aria-label="AgentFactory home">
-      <span class="brand-mark"><img src="assets/agentfactory-logo.png?v=20260619-static-cleanup" width="38" height="38" style="display:block;width:38px;height:38px;object-fit:contain;" alt="" aria-hidden="true"></span>
+      <span class="brand-mark"><img src="assets/agentfactory-logo.png?v=20260619-home-refresh" width="38" height="38" alt="" aria-hidden="true"></span>
       <span>
         <strong>AgentFactory</strong>
-        <small>Manuale multi-agent</small>
+        <small>AI Agent Systems Lab</small>
       </span>
     </a>
+    <nav class="topnav" aria-label="Navigazione principale">
+      <a href="#percorso">Percorso</a>
+      <a href="#metodo">Metodo</a>
+      <a href="#prossime-lezioni">Prossime lezioni</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory">GitHub</a>
+    </nav>
   </header>
 
-  <main class="content" style="max-width:1180px;margin:0 auto;padding:48px 24px;">
-    <section class="hero">
+  <main class="landing-shell">
+    <section class="hero landing-hero">
       <div class="hero-copy">
         <p class="eyebrow">AI Agent Systems Manual</p>
         <h1 class="hero-title-logo">
-          <img class="hero-title-wordmark" src="assets/agentfactory-wordmark.png?v=20260619-static-cleanup" width="1050" height="279" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;" alt="AgentFactory">
+          <img class="hero-title-wordmark" src="assets/agentfactory-wordmark.png?v=20260619-home-refresh" width="1050" height="279" alt="AgentFactory">
         </h1>
-        <p>Il sito statico AgentFactory e' stato ripulito ed e' pronto per ricevere le nuove lezioni.</p>
+        <p>Un laboratorio operativo per imparare a progettare, costruire e governare sistemi multi-agent professionali: agenti, workflow, runtime controllati, review e memoria.</p>
         <div class="hero-actions">
-          <a class="primary-action" href="https://github.com/EnricoPaparo/AgentFactory">Repository GitHub</a>
+          <a class="primary-action" href="#prossime-lezioni">Vedi cosa arriva</a>
+          <a class="secondary-action" href="https://github.com/EnricoPaparo/AgentFactory">Apri il repository</a>
         </div>
-        <p class="hero-credit">Prodotto da Enrico Paparo</p>
+        <p class="hero-credit">Nuovo ciclo contenuti in preparazione · Prodotto da Enrico Paparo</p>
       </div>
 
       <div class="hero-panel home-summary" aria-label="Stato AgentFactory">
-        <p class="eyebrow">Stato</p>
-        <h2>Nuovo ciclo contenuti in preparazione</h2>
-        <p>Le vecchie lezioni sono state rimosse. La struttura grafica e gli asset del sito statico restano disponibili per pubblicare il prossimo percorso.</p>
-        <p class="home-summary-focus">Prossimo step: inserire le nuove lezioni e ricostruire la navigazione del manuale.</p>
+        <p class="eyebrow">Stato del progetto</p>
+        <h2>Base statica pronta. Nuove lezioni in arrivo.</h2>
+        <p>Il sito è stato ripulito per mantenere solo la struttura web. Le vecchie lezioni sono state rimosse: il prossimo percorso verrà inserito come contenuto nuovo, più ordinato e più utile.</p>
+        <p class="home-summary-focus">Focus: trasformare AgentFactory in un manuale pratico, progressivo e pubblicabile, senza rumore e senza materiale obsoleto.</p>
       </div>
     </section>
 
-    <footer class="site-footer">
-      <span class="footer-brand"><img src="assets/agentfactory-logo.png?v=20260619-static-cleanup" width="22" height="22" style="display:block;width:22px;height:22px;object-fit:contain;" alt="" aria-hidden="true">Prodotto da Enrico Paparo</span>
-      <span>AgentFactory sito statico</span>
+    <section id="percorso" class="section-band landing-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Percorso</p>
+          <h2>Cosa diventerà AgentFactory</h2>
+        </div>
+      </div>
+      <div class="landing-card-grid">
+        <article class="landing-card">
+          <span>01</span>
+          <h3>Fondamenta operative</h3>
+          <p>Prompt, artefatti, template, Agent Card, output contract e regole minime per lavorare con agenti in modo verificabile.</p>
+        </article>
+        <article class="landing-card">
+          <span>02</span>
+          <h3>Workflow multi-agent</h3>
+          <p>Come collegare ruoli diversi: analyst, architect, developer, tester, reviewer e supervisor, con handoff chiari.</p>
+        </article>
+        <article class="landing-card">
+          <span>03</span>
+          <h3>Runtime e governance</h3>
+          <p>Esecuzioni controllate, privilegi, budget, API key, run record, review, rollback e miglioramento continuo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="metodo" class="section-band landing-section split-section">
+      <div class="hero-panel method-panel">
+        <p class="eyebrow">Metodo</p>
+        <h2>Non solo teoria: ogni lezione deve produrre qualcosa.</h2>
+        <p>Il nuovo sito sarà costruito attorno a risultati concreti: una lezione deve lasciare un template, una checklist, una regola, una decisione o un esperimento riutilizzabile.</p>
+      </div>
+      <div class="method-list" aria-label="Principi del metodo AgentFactory">
+        <div><strong>Artefatti verificabili</strong><span>Ogni output deve poter essere letto, revisionato e versionato.</span></div>
+        <div><strong>Progressione controllata</strong><span>Si passa allo step successivo solo quando lo step precedente è chiaro.</span></div>
+        <div><strong>Human gate</strong><span>Le decisioni rischiose restano sotto controllo umano.</span></div>
+        <div><strong>Memoria utile</strong><span>Solo la conoscenza validata entra nella factory.</span></div>
+      </div>
+    </section>
+
+    <section id="prossime-lezioni" class="section-band landing-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Prossime lezioni</p>
+          <h2>Contenuti da inserire</h2>
+        </div>
+      </div>
+      <div class="timeline-panel">
+        <div class="timeline-item">
+          <span>Step 1</span>
+          <strong>Nuova struttura del manuale</strong>
+          <p>Definire indice, categorie e navigazione delle nuove lezioni.</p>
+        </div>
+        <div class="timeline-item">
+          <span>Step 2</span>
+          <strong>Lezioni sostitutive</strong>
+          <p>Inserire i nuovi contenuti forniti e trasformarli in pagine statiche pulite.</p>
+        </div>
+        <div class="timeline-item">
+          <span>Step 3</span>
+          <strong>Navigazione e pubblicazione</strong>
+          <p>Ricostruire menu, pagine, link interni e pubblicazione stabile su GitHub Pages.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer landing-footer">
+      <span class="footer-brand"><img src="assets/agentfactory-logo.png?v=20260619-home-refresh" width="22" height="22" alt="" aria-hidden="true">AgentFactory</span>
+      <span>Laboratorio statico per sistemi multi-agent · Enrico Paparo</span>
     </footer>
   </main>
 
-  <script src="site.js?v=20260619-static-cleanup"></script>
+  <script src="site.js?v=20260619-home-refresh"></script>
 </body>
 </html>
