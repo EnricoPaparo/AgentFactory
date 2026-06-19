@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>I Prompt come Artefatti: struttura, template, istanze e versionamento | AgentFactory</title>
+  <meta name="description" content="Il prompt non è una stringa: è il codice sorgente del comportamento di un agente">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-06-agent-package">L'Agent Package: Struttura, Contratti e Artefatti</a><span>/</span><strong>06-04</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 06-04</p>
+        <h1>I Prompt come Artefatti: struttura, template, istanze e versionamento</h1>
+        <p class="lesson-subtitle">Il prompt non è una stringa: è il codice sorgente del comportamento di un agente</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>06 · L'Agent Package: Struttura, Contratti e Artefatti</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>prompt template</span><span>prompt instance</span><span>versionamento prompt</span><span>prompt stabile</span><span>prompt dinamico</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere prompt template da prompt instance con precisione</li><li>Versionare un prompt in git seguendo pratiche da codice sorgente</li><li>Implementare un sistema di compilazione di template a runtime</li><li>Separare correttamente prompt stabili da prompt costruiti dinamicamente</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella Lezione 6.2 abbiamo visto la cartella <code>prompts/</code> come componente dell'agent package, e abbiamo accennato che separare il prompt dal codice permette di modificarlo senza rischiare di introdurre bug nella logica di esecuzione. Questa lezione approfondisce con grande precisione <strong>perché</strong> e <strong>come</strong> un prompt deve essere trattato esattamente come codice sorgente: versionato, testato, sottoposto a revisione prima di un deploy, e mai modificato &quot;al volo&quot; senza disciplina.</p>
+<p>Questo cambio di prospettiva — dal prompt come &quot;testo che funziona&quot; al prompt come &quot;artefatto di ingegneria&quot; — è probabilmente la transizione mentale più importante per chiunque costruisca sistemi agentivi professionali. Un'organizzazione che tratta i propri prompt con la stessa disciplina con cui tratta il proprio codice costruisce sistemi affidabili nel tempo; un'organizzazione che li tratta come testo informale, modificabile da chiunque senza processo, costruisce sistemi che degradano silenziosamente.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere con precisione un prompt template da un prompt instance</li><li>Versionare un prompt in git seguendo pratiche equivalenti a quelle del codice sorgente</li><li>Implementare un sistema che compila un template in un'istanza concreta a runtime</li><li>Separare correttamente prompt stabili (raramente modificati) da prompt costruiti dinamicamente</li></ul>
+<hr>
+<h3 id="1-anatomia-di-un-prompt-professionale">1. Anatomia di un prompt professionale</h3>
+<p>Riprendiamo e formalizziamo, con maggiore rigore di quanto fatto nella Lezione 3.4, la struttura di un prompt ben progettato. Un prompt professionale, in un agent package, tipicamente contiene sezioni distinte e riconoscibili:</p>
+<pre><code>---
+tipo: &quot;system_prompt&quot;
+agente: &quot;agente-analista-vendite&quot;
+versione: &quot;2.1.0&quot;
+autore: &quot;team-data-engineering&quot;
+ultima_revisione: &quot;2026-05-10&quot;
+---
+
+## Ruolo
+
+Sei un analista di dati specializzato in vendite, parte di
+un sistema più ampio che assiste il team commerciale.
+
+## Contesto
+
+Riceverai dati di vendita già estratti e strutturati. Il tuo
+compito è identificare pattern, NON formattare nuovamente
+i dati grezzi che ricevi.
+
+## Istruzioni
+
+1. Analizza SOLO i numeri forniti, senza presumere dati non presenti
+2. Esprimi sempre le variazioni in percentuale, mai solo in valore assoluto
+3. Se i dati sono insufficienti per una conclusione solida, dichiaralo esplicitamente
+
+## Vincoli
+
+- Non fornire raccomandazioni di business strategiche
+- Non usare linguaggio vago (&quot;buono&quot;, &quot;discreto&quot;): solo numeri precisi
+- Lunghezza massima della risposta: 200 parole
+
+## Formato di Output
+
+Rispondi sempre con la struttura:
+TREND: [crescita/calo/stabile]
+VARIAZIONE: [percentuale]
+CONFIDENZA: [alta/media/bassa]
+NOTE: [eventuali limitazioni dei dati]
+
+## Esempi
+
+Input: &quot;Vendite Q3 2026: 1.2M€. Vendite Q3 2025: 1.1M€.&quot;
+Output:
+TREND: crescita
+VARIAZIONE: +9.1%
+CONFIDENZA: alta
+NOTE: nessuna</code></pre>
+<p>Ogni sezione risponde a una domanda progettuale specifica: <strong>Ruolo</strong> (chi è l'agente), <strong>Contesto</strong> (cosa riceverà e cosa no), <strong>Istruzioni</strong> (come deve comportarsi), <strong>Vincoli</strong> (cosa non deve fare), <strong>Formato di Output</strong> (la struttura attesa, collegandosi direttamente agli output strutturati della Lezione 4.2), <strong>Esempi</strong> (few-shot prompting, Lezione 3.4). Questa struttura sistematica, ripetuta in modo consistente su tutti i prompt del sistema, è ciò che rende un prompt <strong>revisionabile</strong>: un collega può controllare se ciascuna sezione è presente e ben formulata, esattamente come si farebbe con una code review.</p>
+<hr>
+<h3 id="2-prompt-template-vs-prompt-instance">2. Prompt Template vs Prompt Instance</h3>
+<p>Una distinzione cruciale, spesso confusa, è quella tra <strong>template</strong> (la struttura riutilizzabile, con segnaposto) e <strong>instance</strong> (la versione concreta, compilata con dati reali, effettivamente inviata al modello in una specifica chiamata).</p>
+<pre><code>PROMPT TEMPLATE (vive in prompts/, versionato in git)
+
+Analizza i dati di vendita per il periodo {{periodo}}.
+Confronta con il periodo precedente: {{periodo_confronto}}.
+I dati forniti sono: {{dati_grezzi}}
+
+
+PROMPT INSTANCE (generato a runtime, MAI salvato come file
+permanente nell'agent package — esiste solo durante l'esecuzione)
+
+Analizza i dati di vendita per il periodo Q3-2026.
+Confronta con il periodo precedente: Q3-2025.
+I dati forniti sono: [1.2M€ di vendite, 450 transazioni, ...]</code></pre>
+<p>Il <strong>template</strong> è ciò che un membro del team scrive, revisiona, e versiona — è statico e stabile. L'<strong>instance</strong> è ciò che viene effettivamente generato e inviato al modello, diverso a ogni esecuzione, perché i segnaposto (<code>{{periodo}}</code>, <code>{{dati_grezzi}}</code>) vengono sostituiti con i dati reali di quella specifica richiesta.</p>
+<hr>
+<h3 id="3-implementazione-pratica-un-sistema-di-compilazione-di-template">3. Implementazione pratica: un sistema di compilazione di template</h3>
+<p>Vediamo come si implementa questa distinzione in codice, estendendo il sistema di caricamento dell'agent package costruito nella Lezione 6.2.</p>
+<pre><code>import re
+
+def compila_template(template: str, variabili: dict) -&gt; str:
+    &quot;&quot;&quot;
+    Sostituisce i segnaposto {{nome_variabile}} in un template
+    con i valori reali forniti, producendo un'istanza concreta.
+    &quot;&quot;&quot;
+    def sostituisci(match):
+        nome_variabile = match.group(1).strip()
+        if nome_variabile not in variabili:
+            raise ValueError(
+                f&quot;Variabile '{nome_variabile}' richiesta dal &quot;
+                f&quot;template ma non fornita.&quot;
+            )
+        return str(variabili[nome_variabile])
+
+    return re.sub(r&quot;\{\{(\w+)\}\}&quot;, sostituisci, template)
+
+
+def costruisci_prompt_analisi(periodo: str, periodo_confronto: str,
+                                dati_grezzi: str) -&gt; str:
+    &quot;&quot;&quot;
+    Carica il template dell'agente Analista (Lezione 6.2) e
+    lo compila in un'istanza pronta per essere inviata al modello.
+    &quot;&quot;&quot;
+    _, template = estrai_frontmatter(
+        &quot;agenti/agente-analista-vendite/prompts/task_analisi.md&quot;
+    )
+
+    return compila_template(template, {
+        &quot;periodo&quot;: periodo,
+        &quot;periodo_confronto&quot;: periodo_confronto,
+        &quot;dati_grezzi&quot;: dati_grezzi
+    })
+
+
+# Utilizzo:
+prompt_pronto = costruisci_prompt_analisi(
+    periodo=&quot;Q3-2026&quot;,
+    periodo_confronto=&quot;Q3-2025&quot;,
+    dati_grezzi=&quot;1.2M€ di vendite, 450 transazioni&quot;
+)
+# Solo ORA, con il template compilato, si procede alla
+# chiamata API vista nella Lezione 4.1</code></pre>
+<p>Osserva che la funzione <code>compila_template</code> <strong>solleva esplicitamente un errore</strong> se una variabile richiesta dal template non viene fornita, invece di produrre silenziosamente un prompt malformato (con un segnaposto non sostituito inviato per errore al modello). Questo è lo stesso principio di fail-fast e gestione esplicita degli errori visto nella Lezione 4.2 e nella Lezione 5.5: meglio un fallimento immediato e diagnosticabile che un comportamento scorretto silenzioso.</p>
+<hr>
+<h3 id="4-versionare-i-prompt-come-si-versiona-il-codice">4. Versionare i prompt come si versiona il codice</h3>
+<p>Un prompt, salvato come file di testo in un repository git, beneficia esattamente delle stesse pratiche usate per il codice sorgente.</p>
+<pre><code># Vedere la storia delle modifiche a un prompt specifico
+git log --follow prompts/system.md
+
+# Vedere ESATTAMENTE cosa è cambiato tra due versioni
+git diff v2.0.0 v2.1.0 -- prompts/system.md
+
+# Proporre una modifica al prompt attraverso un Pull Request,
+# permettendo a un collega di rivederla prima del merge
+git checkout -b miglioramento-prompt-analista
+# ... modifica del file prompts/system.md ...
+git commit -m &quot;Chiarire vincolo su linguaggio vago nelle conclusioni&quot;</code></pre>
+<p>Questa disciplina — ogni modifica a un prompt passa attraverso un commit, con un messaggio che spiega il <strong>perché</strong> della modifica, eventualmente attraverso una revisione di un collega prima del merge — è esattamente ciò che differenzia un sistema agentivo professionale da un sistema fragile, dove &quot;qualcuno ha cambiato qualcosa nel prompt e ora l'agente si comporta diversamente&quot; senza che nessuno sappia esattamente cosa, quando, o perché.</p>
+<blockquote><strong>Perché questo conta enormemente per il Capitolo 8:</strong> quando, nella Lezione 8.2, parleremo di prompt auto-evolutivi (un sistema che modifica automaticamente i propri prompt per migliorarsi), la tracciabilità garantita dal versionamento qui descritto sarà la condizione <strong>indispensabile</strong> per poter verificare se una modifica automatica ha effettivamente migliorato le prestazioni, e per poter tornare indietro (rollback) se non lo ha fatto.</blockquote>
+<hr>
+<h3 id="5-prompt-stabili-vs-prompt-dinamici-dove-tracciare-il-confine">5. Prompt stabili vs prompt dinamici: dove tracciare il confine</h3>
+<p>Riprendendo la distinzione tra <code>system</code> e <code>user</code> introdotta nella Lezione 3.3, formalizziamo ora il principio architetturale che ne deriva per un agent package:</p>
+<pre><code>PROMPT STABILE (system prompt, in prompts/system.md)
+
+- Definisce ruolo, vincoli, formato di output
+- Cambia RARAMENTE, solo quando si vuole modificare
+  il comportamento generale dell'agente
+- Versionato con disciplina (Sezione 4)
+- Identico per OGNI esecuzione dell'agente
+
+
+PROMPT DINAMICO (task prompt, costruito a runtime)
+
+- Contiene i dati specifici della richiesta corrente
+  (il periodo, i dati grezzi, l'obiettivo dell'utente)
+- Cambia AD OGNI esecuzione, per definizione
+- Costruito tramite compilazione di template
+  (Sezione 3), non scritto a mano ogni volta
+- Diverso per ogni singola chiamata</code></pre>
+<p>Un errore progettuale comune, da evitare con attenzione, è mescolare questi due livelli: inserire dati specifici della richiesta direttamente nel system prompt (rendendolo, di fatto, instabile e difficile da versionare con significato), oppure ripetere a ogni chiamata istruzioni di comportamento generale che dovrebbero invece vivere, una volta per tutte, nel prompt stabile.</p>
+<hr>
+<h3 id="esempio-pratico-diagnosticare-un-prompt-mal-progettato">Esempio Pratico: Diagnosticare un Prompt Mal Progettato</h3>
+<p>Osserva questo prompt, e identifica perché mescola in modo problematico le due categorie appena descritte:</p>
+<pre><code>&quot;Sei un analista di dati. Analizza le vendite di Q3-2026
+confrontandole con Q3-2025: 1.2M€ contro 1.1M€. Rispondi
+sempre con TREND, VARIAZIONE, CONFIDENZA. Non usare
+linguaggio vago.&quot;</code></pre>
+<p>Questo singolo blocco di testo mescola informazioni stabili (il ruolo, il formato di output richiesto, il vincolo sul linguaggio) con dati specifici di questa particolare richiesta (i numeri di Q3-2026 e Q3-2025). Se questo testo venisse versionato come fosse il system prompt dell'agente, ogni nuova richiesta richiederebbe di &quot;modificare&quot; il prompt stabile — rendendo il versionamento (Sezione 4) privo di significato, perché il file cambierebbe costantemente per ragioni non legate a un effettivo miglioramento del comportamento dell'agente, ma solo ai dati della richiesta del momento.</p>
+<p>La correzione, applicando i principi di questa lezione, separerebbe questo testo in un system prompt stabile (ruolo, formato, vincoli) e un task prompt dinamico, costruito per compilazione di template, contenente solo i dati specifici (Q3-2026, Q3-2025, i numeri).</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un prompt professionale ha una struttura sistematica e revisionabile: <strong>Ruolo</strong>, <strong>Contesto</strong>, <strong>Istruzioni</strong>, <strong>Vincoli</strong>, <strong>Formato di Output</strong>, <strong>Esempi</strong>.</li><li>Il <strong>prompt template</strong> è la struttura riutilizzabile con segnaposto, versionata in git; il <strong>prompt instance</strong> è la versione concreta, compilata con dati reali a runtime, mai salvata come file permanente.</li><li>La compilazione di un template, implementabile con una semplice sostituzione di segnaposto, deve <strong>fallire esplicitamente</strong> se una variabile richiesta non è fornita, evitando prompt malformati silenziosi.</li><li>Versionare i prompt con le stesse pratiche del codice sorgente (commit, diff, pull request) garantisce tracciabilità, revisione, e possibilità di rollback.</li><li>Separare con disciplina <strong>prompt stabili</strong> (system, raramente modificati) da <strong>prompt dinamici</strong> (task, costruiti per ogni esecuzione) è un principio architetturale essenziale, la cui violazione rende il versionamento privo di significato.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché, se un'organizzazione modificasse il prompt di un agente in produzione senza passare attraverso un commit versionato (ad esempio, editando direttamente un file su un server), diventerebbe enormemente più difficile diagnosticare un eventuale degrado nelle prestazioni dell'agente nei giorni successivi.</li></ol>
+<ol><li>Nel codice della Sezione 3, cosa succederebbe se <code>compila_template</code> non sollevasse un errore esplicito per una variabile mancante, ma sostituisse semplicemente con una stringa vuota? Descrivi un possibile scenario problematico che ne deriverebbe.</li></ol>
+<ol><li>Riprendi l'esempio pratico della Sezione finale. Riscrivi tu stesso, separandoli correttamente, il system prompt stabile e il template del task prompt dinamico per quel caso.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 3.4 (Il Prompting) e Lezione 3.3 (ruoli system/user) — questa lezione formalizza con rigore professionale concetti introdotti lì in forma base. Lezione 6.2 (L'Agent Package) — approfondisce la cartella <code>prompts/</code> introdotta in quella lezione.</p>
+<p><strong>Porta a:</strong> Lezione 6.7 (Skills e Skill Library) — vedremo come alcune istruzioni, troppo specifiche per il system prompt ma troppo generali per un singolo task, trovano una collocazione propria come &quot;skill&quot; riutilizzabili.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.2 (Prompt Auto-Evolutivi) — il versionamento qui descritto come buona pratica diventa, in quella lezione, un prerequisito tecnico indispensabile per un sistema che modifica automaticamente i propri prompt. Lezione 8.4 (Governance) — il ciclo di revisione tramite pull request qui introdotto sarà formalizzato come parte del ciclo di vita completo degli artefatti agentivi.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="06-03-agent-card-il-documento-di-identita-di-un-agente.html">← 06-03 Agent Card</a>
+        <a class="primary-action" href="06-05-contratti-tra-agenti-schemi-di-input-output-e-validazione.html">06-05 Contratti tra Agenti →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

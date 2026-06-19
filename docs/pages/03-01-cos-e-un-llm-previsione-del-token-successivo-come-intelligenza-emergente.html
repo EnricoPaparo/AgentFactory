@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cos'è un LLM: previsione del token successivo come intelligenza emergente | AgentFactory</title>
+  <meta name="description" content="Il momento in cui tutto ciò che abbiamo costruito converge in una domanda precisa">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-03-llm">I Modelli Linguistici di Grandi Dimensioni (LLM)</a><span>/</span><strong>03-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 03-01</p>
+        <h1>Cos'è un LLM: previsione del token successivo come intelligenza emergente</h1>
+        <p class="lesson-subtitle">Il momento in cui tutto ciò che abbiamo costruito converge in una domanda precisa</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>03 · I Modelli Linguistici di Grandi Dimensioni (LLM)</strong></div><div><span>Durata</span><strong>55 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>LLM</span><span>token</span><span>tokenizzazione</span><span>parametri</span><span>previsione del token successivo</span><span>modello vs prodotto</span><span>capacità emergenti</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Definire un LLM nei termini tecnici corretti: previsione del token successivo</li><li>Spiegare cosa è un token e perché non è né una lettera né una parola</li><li>Capire perché capacità complesse emergono da un compito apparentemente semplice</li><li>Distinguere con precisione un modello da un prodotto che lo utilizza</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Siamo arrivati al momento in cui tutto il Capitolo 2 converge in una risposta precisa. Abbiamo visto le reti neurali (2.3), il problema di rappresentare il linguaggio con numeri (2.4), e l'architettura Transformer che risolve quel problema in modo scalabile (2.5). Un <strong>LLM</strong> — Large Language Model, modello linguistico di grandi dimensioni — è, in termini essenziali, un'architettura Transformer (tipicamente solo-decoder, come visto nella lezione precedente) addestrata su quantità di testo straordinariamente grandi, con un numero di parametri che si misura in miliardi.</p>
+<p>Questa lezione ha un obiettivo che va oltre la definizione tecnica: vuole costruire in te un modello mentale <strong>corretto e resistente alle esagerazioni</strong> di cosa sia davvero un LLM. Capire con precisione che un LLM è, alla base, un sistema che prevede il token successivo — e capire come da questo compito apparentemente meccanico emergano capacità sorprendenti — è la base di ogni decisione progettuale che prenderemo costruendo agenti, dal Capitolo 5 in poi.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Definire un LLM nei termini tecnici corretti: un sistema addestrato a prevedere il token successivo</li><li>Spiegare cosa è un token e perché non coincide né con una lettera né con una parola</li><li>Capire perché capacità complesse possono emergere da un compito apparentemente semplice</li><li>Distinguere con precisione un modello (es. Claude Sonnet 4.6) da un prodotto che lo utilizza (es. Claude.ai)</li></ul>
+<hr>
+<h3 id="1-la-definizione-tecnica-prevedere-il-token-successivo">1. La definizione tecnica: prevedere il token successivo</h3>
+<p>Spogliato di ogni mistificazione, un LLM esegue, alla sua base, un compito sorprendentemente semplice da descrivere:</p>
+<blockquote>Dato un testo (il contesto), prevedere quale sia il <strong>prossimo elemento</strong> più probabile che segue.</blockquote>
+<pre><code>Contesto:  &quot;Il gatto è salito sul&quot;
+
+Il modello calcola una probabilità per OGNI possibile
+elemento successivo nel suo vocabolario:
+
+&quot;tetto&quot;     → probabilità: 0.31
+&quot;divano&quot;    → probabilità: 0.24
+&quot;albero&quot;    → probabilità: 0.18
+&quot;tavolo&quot;    → probabilità: 0.09
+&quot;elefante&quot;  → probabilità: 0.0001
+...</code></pre>
+<p>Il modello, dopo aver calcolato queste probabilità per ogni possibile elemento del suo vocabolario, ne seleziona uno (con meccanismi che vedremo nella Lezione 3.4 a proposito della &quot;temperature&quot;), lo aggiunge al testo, e ripete l'intero processo da capo per generare l'elemento successivo, e poi il successivo ancora — fino a costruire, parola per parola (più precisamente, token per token), un'intera risposta.</p>
+<p>Questo è, letteralmente, tutto quello che un LLM fa al livello più fondamentale. Non c'è un modulo separato per &quot;comprendere&quot;, un altro per &quot;ragionare&quot;, un altro per &quot;decidere cosa è vero&quot;: c'è un singolo meccanismo, ripetuto milioni di volte, che prevede l'elemento successivo più probabile dato tutto il contesto fino a quel momento.</p>
+<hr>
+<h3 id="2-cosa-sono-i-token-ne-lettere-ne-parole">2. Cosa sono i token: né lettere, né parole</h3>
+<p>Abbiamo usato la parola &quot;elemento&quot; sopra invece di &quot;parola&quot; deliberatamente. Il vero elemento che un LLM manipola si chiama <strong>token</strong>, ed è importante capire con precisione cosa sia, perché non corrisponde esattamente né a una singola lettera né a una parola intera.</p>
+<p>Un token è un'unità di testo, determinata da un processo chiamato <strong>tokenizzazione</strong>, che spezza il testo in pezzi che possono essere:</p>
+<ul><li>Parole intere comuni (&quot;gatto&quot;, &quot;il&quot;, &quot;casa&quot;)</li><li>Pezzi di parole più lunghe o rare (&quot;anti&quot;, &quot;costituzional&quot;, &quot;issimo&quot; — frammenti che, combinati, formano &quot;anticostituzionalissimo&quot;)</li><li>Singoli caratteri, per simboli rari o sequenze non viste durante l'addestramento</li><li>Spazi, punteggiatura, e altri caratteri speciali, spesso uniti alla parola successiva</li></ul>
+<pre><code>Testo:  &quot;L'intelligenza artificiale è straordinaria&quot;
+
+Possibile tokenizzazione (semplificata, indicativa):
+[&quot;L'&quot;, &quot;intelligen&quot;, &quot;za&quot;, &quot; artificiale&quot;, &quot; è&quot;, &quot; straordinari&quot;, &quot;a&quot;]</code></pre>
+<blockquote><strong>Perché questa scelta progettuale:</strong> usare frammenti di sottoparola, invece di parole intere, permette al modello di gestire elegantemente parole nuove, errori di battitura, parole composte, e lingue diverse, senza dover avere un vocabolario infinito che contenga ogni possibile parola esistente al mondo. Se il modello incontra una parola che non ha mai visto per intero, può comunque costruirla a partire da frammenti più piccoli e familiari.</blockquote>
+<p>Questo dettaglio tecnico ha conseguenze pratiche dirette e immediate: il <strong>context window</strong> di cui parleremo nella prossima lezione si misura in token, non in parole o caratteri; il costo delle chiamate API ai modelli linguistici si calcola tipicamente in base al numero di token elaborati; e capire approssimativamente quanti token occupa un testo (in inglese, una buona regola empirica è circa 4 caratteri per token; in italiano spesso leggermente meno, per via di parole più lunghe) è un'abilità pratica utile per chiunque lavori con questi sistemi.</p>
+<hr>
+<h3 id="3-come-da-un-compito-semplice-emergono-capacita-complesse">3. Come da un compito semplice emergono capacità complesse</h3>
+<p>Ecco il punto concettualmente più sorprendente, e anche il più frainteso, di tutto l'argomento LLM: come può un sistema che fa &quot;solo&quot; prevedere il token successivo risolvere problemi di matematica, scrivere codice funzionante, ragionare su scenari ipotetici, o tradurre tra lingue?</p>
+<p>La risposta sta nella scala e nella natura statistica del compito. Per essere davvero bravo a prevedere il token successivo su <strong>qualsiasi</strong> testo possibile — non solo frasi semplici, ma anche dimostrazioni matematiche, codice sorgente, dialoghi filosofici, articoli scientifici — un modello deve, implicitamente, sviluppare al suo interno rappresentazioni che catturano:</p>
+<ul><li>Relazioni grammaticali e sintattiche</li><li>Fatti sul mondo (per prevedere correttamente &quot;la capitale della Francia è ___&quot;, il modello deve aver &quot;assorbito&quot; questa informazione dai dati)</li><li>Schemi logici e matematici (per completare correttamente una dimostrazione o un calcolo)</li><li>Strutture di codice e logica di programmazione</li></ul>
+<blockquote><strong>Analogia concreta:</strong> immagina un essere umano che leggesse letteralmente ogni libro, articolo, sito web, codice sorgente pubblicamente disponibile su Internet, e che venisse allenato — ripetutamente, per anni — esclusivamente sul gioco &quot;indovina la prossima parola&quot;. Per diventare davvero bravo in questo gioco su una varietà così estrema di testi, questa persona dovrebbe necessariamente sviluppare una comprensione profonda di grammatica, fatti, logica, stile — non perché qualcuno gliel'abbia insegnato direttamente, ma perché è l'unico modo per eccellere nel compito assegnato.</blockquote>
+<p>Questo fenomeno — capacità sofisticate che emergono come sottoprodotto necessario di un obiettivo di addestramento semplice, quando applicato su scala sufficientemente grande — si chiama spesso <strong>emergenza</strong>, e resta uno degli aspetti più studiati e meno completamente compresi degli LLM moderni.</p>
+<h4 id="una-cautela-importante">Una cautela importante</h4>
+<p>È fondamentale non scambiare questa emergenza per comprensione nel senso umano, né per garanzia di correttezza. Un modello che prevede statisticamente il token successivo più probabile può produrre testo grammaticalmente perfetto e stilisticamente convincente che è, nei fatti, sbagliato — perché il suo obiettivo di addestramento è &quot;cosa è statisticamente plausibile dato il contesto&quot;, non &quot;cosa è vero&quot;. Questa distinzione sarà al centro della Lezione 3.5, quando parleremo delle allucinazioni.</p>
+<hr>
+<h3 id="4-i-parametri-cosa-significano-i-miliardi">4. I parametri: cosa significano i &quot;miliardi&quot;</h3>
+<p>Nella Lezione 2.3 abbiamo definito i pesi come i numeri regolabili di una rete neurale, aggiustati durante l'addestramento tramite backpropagation. Quando si parla di un LLM con &quot;70 miliardi di parametri&quot; o &quot;un trilione di parametri&quot;, ci si riferisce esattamente a questo: il numero totale di pesi regolabili distribuiti in tutti gli strati dell'architettura Transformer che compone il modello.</p>
+<p>Più parametri significano, in generale (anche se non in modo strettamente lineare né garantito), una maggiore capacità del modello di catturare pattern complessi e sottili nei dati di addestramento — ma comportano anche costi computazionali proporzionalmente più alti, sia per l'addestramento sia per l'utilizzo (l'inferenza, cioè il momento in cui il modello genera effettivamente una risposta).</p>
+<p>Non esiste un numero &quot;giusto&quot; di parametri in assoluto: i laboratori di ricerca bilanciano costantemente dimensione del modello, quantità di dati di addestramento disponibili, e budget computazionale, in una ricerca di efficienza che è essa stessa un campo di studio attivo.</p>
+<hr>
+<h3 id="5-la-differenza-tra-modello-e-prodotto">5. La differenza tra modello e prodotto</h3>
+<p>Un'ultima distinzione, essenziale per evitare confusioni che si ripercuoteranno su tutto il resto del corso: <strong>un modello non è la stessa cosa di un prodotto che lo utilizza</strong>.</p>
+<ul><li><strong>Claude Sonnet 4.6</strong> è un modello: un insieme di pesi (parametri) addestrati, accessibile tecnicamente tramite API (esattamente come visto nella Lezione 1.5)</li><li><strong>Claude.ai</strong> è un prodotto: un'applicazione web (una Web Application, secondo la definizione della Lezione 1.4) che usa quel modello come componente, aggiungendo un'interfaccia di chat, gestione della cronologia, funzionalità di ricerca, e molto altro</li></ul>
+<pre><code>        PRODOTTO (es. Claude.ai, ChatGPT)
+        ┌─────────────────────────────────┐
+        │  Interfaccia di chat              │
+        │  Gestione cronologia conversazioni│
+        │  Funzionalità aggiuntive          │
+        │  (ricerca, generazione file, ...) │
+        │                                    │
+        │   ┌───────────────────────┐       │
+        │   │       MODELLO           │       │
+        │   │  (es. Claude Sonnet 4.6)│       │
+        │   │  i pesi/parametri        │       │
+        │   │  addestrati              │       │
+        │   └───────────────────────┘       │
+        └─────────────────────────────────┘</code></pre>
+<p>Questa distinzione è esattamente quella che ci permetterà, dal Capitolo 4 in poi, di costruire <strong>i nostri stessi prodotti</strong> attorno al modello: il modello resta lo stesso (lo stesso insieme di parametri accessibile via API), ma noi costruiremo attorno a esso strumenti, memoria, logica di orchestrazione — esattamente come Anthropic ha costruito Claude.ai attorno al modello Claude.</p>
+<hr>
+<h3 id="esempio-pratico-stimare-i-token-di-un-testo">Esempio Pratico: Stimare i Token di un Testo</h3>
+<p>Prendi una frase qualsiasi, ad esempio: &quot;L'intelligenza artificiale sta trasformando il modo in cui lavoriamo.&quot;</p>
+<p>Usando la regola empirica approssimativa di circa 4 caratteri per token (valida soprattutto per l'inglese, leggermente meno precisa per l'italiano), questa frase di circa 75 caratteri occuperebbe grossolanamente 18-20 token. Questo tipo di stima rapida è un'abilità pratica che userai costantemente quando, nel Capitolo 4, dovrai ragionare su quanto testo &quot;entra&quot; nel context window di un modello, o su quanto costerà, in termini di token elaborati, una determinata chiamata API.</p>
+<p>Molti provider (incluso Anthropic) offrono strumenti online per contare esattamente i token di un testo specifico: vale la pena, quando inizierai a costruire sistemi reali, familiarizzare con questi strumenti per sviluppare un'intuizione precisa.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un <strong>LLM</strong>, alla sua base tecnica, prevede il <strong>token successivo</strong> più probabile dato un contesto, ripetendo questo processo per generare testo via via più lungo.</li><li>Un <strong>token</strong> è un'unità di testo (spesso un frammento di parola), determinata da un processo di tokenizzazione, né lettera né parola intera.</li><li>Capacità complesse (ragionamento, conoscenza fattuale, scrittura di codice) <strong>emergono</strong> dal compito apparentemente semplice di prevedere il token successivo, quando applicato su scala enorme — ma questo non equivale a comprensione né garantisce correttezza.</li><li>I <strong>parametri</strong> di un LLM sono i pesi della sua architettura Transformer, il cui numero (spesso miliardi) influenza la capacità del modello di catturare pattern complessi.</li><li>Un <strong>modello</strong> (es. Claude Sonnet 4.6) è distinto da un <strong>prodotto</strong> che lo utilizza (es. Claude.ai): il modello è accessibile via API ed è il componente centrale attorno a cui si costruiscono prodotti e, come vedremo, agenti.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Se un LLM &quot;prevede solo il token successivo&quot;, come spieghi il fatto che riesca a mantenere coerenza logica su un intero paragrafo o persino su un documento lungo? Cosa deve necessariamente &quot;tenere in conto&quot; a ogni singola previsione?</li></ol>
+<ol><li>Perché la tokenizzazione a livello di sottoparola (invece che a livello di parola intera) rende un modello più robusto nel gestire parole nuove o errori di battitura?</li></ol>
+<ol><li>Spiega, con parole tue, perché &quot;il modello produce testo statisticamente plausibile&quot; non è la stessa cosa di &quot;il modello produce testo vero&quot;. Quali conseguenze pratiche ha questa distinzione per chi usa un LLM in un contesto professionale?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 2.5 — il Transformer descritto lì è esattamente l'architettura che, addestrata su scala enorme, costituisce un LLM.</p>
+<p><strong>Porta a:</strong> Lezione 3.2 (Training, Fine-tuning e RLHF) — vedremo esattamente come, concretamente, un LLM viene addestrato a diventare un assistente utile, partendo dal compito grezzo di previsione del token successivo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 3.5 (Limiti e allucinazioni) — la distinzione tra plausibilità statistica e verità, introdotta qui, sarà il fondamento per capire perché e come un LLM allucina. Lezione 4.1 (L'API degli LLM) — vedremo concretamente come si invia una richiesta a un modello come quello descritto in questa lezione, riusando esattamente la struttura di richiesta/risposta API vista nella Lezione 1.5.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="02-05-l-architettura-transformer-la-rivoluzione-che-ha-reso-possibile-gli-llm.html">← 02-05 L'architettura Transformer</a>
+        <a class="primary-action" href="03-02-training-fine-tuning-e-rlhf-come-si-costruisce-un-assistente-ai.html">03-02 Training, Fine-tuning e RLHF →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Il Prompting: comunicare con un LLM in modo efficace | AgentFactory</title>
+  <meta name="description" content="La prima competenza pratica e trasferibile di tutto il corso">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-03-llm">I Modelli Linguistici di Grandi Dimensioni (LLM)</a><span>/</span><strong>03-04</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 03-04</p>
+        <h1>Il Prompting: comunicare con un LLM in modo efficace</h1>
+        <p class="lesson-subtitle">La prima competenza pratica e trasferibile di tutto il corso</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>03 · I Modelli Linguistici di Grandi Dimensioni (LLM)</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>prompt</span><span>zero-shot</span><span>few-shot</span><span>chain-of-thought</span><span>system prompt</span><span>temperature</span><span>top-p</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare perché la formulazione di un prompt cambia il risultato</li><li>Distinguere zero-shot, few-shot e chain-of-thought con esempi</li><li>Descrivere il ruolo del system prompt nella definizione del comportamento</li><li>Capire cosa controllano temperature e altri parametri di generazione</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Fino a questa lezione, abbiamo costruito comprensione: cosa è un LLM, come viene addestrato, come è strutturato un prodotto che lo utilizza. Da qui in poi iniziamo a costruire <strong>competenza pratica</strong>: come comunicare efficacemente con un modello per ottenere il risultato che desideri.</p>
+<p>Questa è, volutamente, la prima lezione del corso che ha un taglio più immediatamente applicabile. Tutto quello che imparerai qui — come strutturare istruzioni, come fornire esempi, come guidare il ragionamento — sarà esattamente la base tecnica su cui costruiremo, dal Capitolo 6 in avanti, i prompt professionali e versionati che faranno funzionare i nostri agenti. Il prompting non è un'abilità &quot;soft&quot; o intuitiva: è ingegneria della comunicazione con un sistema che si comporta secondo regole precise, anche se probabilistiche.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare perché la formulazione di un prompt cambia sistematicamente il risultato ottenuto</li><li>Distinguere zero-shot, few-shot e chain-of-thought prompting, con esempi concreti</li><li>Descrivere il ruolo del system prompt nella definizione del comportamento del modello</li><li>Capire cosa controllano concretamente la temperature e altri parametri di generazione</li></ul>
+<hr>
+<h3 id="1-perche-la-formulazione-conta-il-prompt-come-contesto-che-guida-la-previsione">1. Perché la formulazione conta: il prompt come contesto che guida la previsione</h3>
+<p>Ricorda la definizione di LLM data nella Lezione 3.1: il modello prevede il token successivo più probabile <strong>dato il contesto fornito finora</strong>. Questo significa, in modo diretto e non metaforico, che <strong>il prompt è l'unico strumento che hai per influenzare quel contesto</strong>, e quindi l'unico strumento per influenzare quale risposta il modello considererà più probabile generare.</p>
+<p>Un prompt vago produce un contesto vago, che lascia ampio spazio a molteplici continuazioni plausibili — non perché il modello sia &quot;confuso&quot;, ma perché, dato un contesto poco specifico, esistono effettivamente molte continuazioni statisticamente ragionevoli. Un prompt preciso restringe drasticamente lo spazio delle continuazioni plausibili, aumentando la probabilità che il modello produca esattamente il tipo di risposta che desideri.</p>
+<pre><code>PROMPT VAGO:
+&quot;Parlami di Roma&quot;
+→ Il modello potrebbe rispondere con storia, turismo, cucina,
+  politica attuale, calcio — tutte continuazioni plausibili
+  dato un contesto così aperto
+
+PROMPT PRECISO:
+&quot;Elenca 3 monumenti dell'antica Roma da visitare in un giorno,
+con il tempo di visita consigliato per ciascuno, in formato elenco&quot;
+→ Lo spazio delle risposte plausibili si restringe
+  drasticamente: il modello sa esattamente quale tipo
+  di contenuto, formato e ampiezza produrre</code></pre>
+<hr>
+<h3 id="2-zero-shot-few-shot-chain-of-thought-le-tecniche-fondamentali">2. Zero-shot, Few-shot, Chain-of-thought: le tecniche fondamentali</h3>
+<h4 id="zero-shot-prompting">Zero-shot prompting</h4>
+<p><strong>Zero-shot</strong> significa chiedere al modello di svolgere un compito senza fornire alcun esempio di come farlo — ti affidi interamente alla conoscenza e capacità già acquisite dal modello durante l'addestramento (Lezione 3.2).</p>
+<pre><code>Prompt zero-shot:
+&quot;Classifica il sentimento di questa recensione come
+positivo, negativo o neutro: 'Il prodotto è arrivato
+in ritardo ma la qualità è eccellente.'&quot;</code></pre>
+<p>Per molti compiti comuni e ben rappresentati nei dati di addestramento, lo zero-shot funziona sorprendentemente bene — il modello istruito (Lezione 3.2) ha già &quot;visto&quot;, durante il proprio addestramento, moltissimi esempi di classificazione di sentimento, e ha generalizzato il compito.</p>
+<h4 id="few-shot-prompting">Few-shot prompting</h4>
+<p><strong>Few-shot</strong> significa fornire, all'interno del prompt stesso, alcuni esempi di come vuoi che il compito venga svolto, prima di presentare il caso reale su cui vuoi una risposta.</p>
+<pre><code>Prompt few-shot:
+
+Esempio 1:
+Recensione: &quot;Consegna velocissima, prodotto difettoso.&quot;
+Sentimento: misto
+
+Esempio 2:
+Recensione: &quot;Tutto perfetto, lo consiglio.&quot;
+Sentimento: positivo
+
+Ora classifica questa:
+Recensione: &quot;Il prodotto è arrivato in ritardo ma la
+qualità è eccellente.&quot;
+Sentimento: ?</code></pre>
+<p>Fornendo esempi, stai effettivamente &quot;restringendo il contesto&quot; in modo molto più specifico di quanto farebbe una semplice istruzione: mostri esattamente il formato di risposta desiderato (qui, &quot;misto&quot; come categoria che forse non sarebbe stata scelta in zero-shot), il livello di dettaglio, lo stile. Il few-shot è particolarmente utile quando il compito è ambiguo, specifico di un dominio, o quando vuoi un formato di output molto preciso che difficilmente il modello indovinerebbe da una sola descrizione testuale.</p>
+<h4 id="chain-of-thought-prompting">Chain-of-thought prompting</h4>
+<p><strong>Chain-of-thought</strong> (catena di pensiero) significa istruire il modello a esplicitare il proprio ragionamento passo per passo, prima di arrivare alla risposta finale, invece di fornire direttamente una conclusione.</p>
+<pre><code>Prompt senza chain-of-thought:
+&quot;Se un treno parte da Roma alle 14:00 viaggiando a 120 km/h
+e deve percorrere 360 km, a che ora arriva?&quot;
+→ Rischio: il modello potrebbe generare direttamente una
+  risposta, saltando passaggi intermedi, con più probabilità
+  di errore nei calcoli
+
+Prompt con chain-of-thought:
+&quot;Risolvi questo problema mostrando il ragionamento passo
+per passo: Se un treno parte da Roma alle 14:00 viaggiando
+a 120 km/h e deve percorrere 360 km, a che ora arriva?&quot;
+→ Il modello tende a generare: &quot;Prima calcolo il tempo di
+  viaggio: 360 km ÷ 120 km/h = 3 ore. Poi aggiungo questo
+  tempo all'orario di partenza: 14:00 + 3 ore = 17:00.
+  Risposta: arriva alle 17:00.&quot;</code></pre>
+<blockquote><strong>Perché questo funziona, collegandolo a quanto già sai:</strong> ricorda che ogni token generato diventa parte del contesto per il token successivo (Lezione 3.1). Quando il modello genera esplicitamente &quot;360 km ÷ 120 km/h = 3 ore&quot;, questo calcolo intermedio diventa disponibile come contesto per generare il passo successivo, riducendo la probabilità di errori che potrebbero verificarsi se il modello dovesse &quot;saltare&quot; direttamente a una conclusione complessa senza passaggi intermedi espliciti nel proprio stesso output.</blockquote>
+<p>Questa tecnica anticipa direttamente un concetto centrale del Capitolo 5: il pattern <strong>ReAct</strong>, che vedremo nella Lezione 5.2, estende esattamente questa idea di &quot;ragionamento esplicito prima dell'azione&quot; al contesto degli agenti che devono decidere quali strumenti usare.</p>
+<hr>
+<h3 id="3-il-ruolo-del-system-prompt-nella-definizione-del-comportamento">3. Il ruolo del system prompt nella definizione del comportamento</h3>
+<p>Avevamo introdotto il ruolo <code>system</code> nella lezione precedente come &quot;istruzioni che definiscono il comportamento generale per l'intera conversazione&quot;. Approfondiamo ora perché questo ruolo è strategicamente diverso dai messaggi <code>user</code>.</p>
+<p>Un'istruzione inserita nel <code>system</code> prompt si applica, concettualmente, <strong>come sfondo costante</strong> per tutta la conversazione, mentre un'istruzione inserita in un singolo messaggio <code>user</code> riguarda primariamente quel turno specifico.</p>
+<pre><code>SYSTEM: &quot;Sei un assistente che risponde sempre in modo
+         conciso, massimo 3 frasi per risposta, in
+         italiano formale.&quot;
+
+USER (turno 1): &quot;Spiegami la fotosintesi&quot;
+→ Risposta concisa, 3 frasi, italiano formale
+
+USER (turno 5, molto dopo): &quot;E la respirazione cellulare?&quot;
+→ ANCORA concisa, 3 frasi, italiano formale —
+  l'istruzione di sistema continua ad applicarsi,
+  senza doverla ripetere a ogni turno</code></pre>
+<p>Questa persistenza è esattamente ciò che rende il system prompt lo strumento giusto per definire <strong>ruolo, tono, vincoli di formato, e regole di comportamento stabili</strong> — mentre i messaggi <code>user</code> sono lo strumento giusto per richieste specifiche di quel particolare turno. Questa distinzione, qui vista a livello di utilizzo base, diventerà cruciale nel Capitolo 6 quando parleremo di prompt come artefatti versionati: il system prompt di un agente è tipicamente un file stabile, raramente modificato, mentre i task prompt (costruiti dinamicamente con i dati del turno specifico) cambiano a ogni esecuzione.</p>
+<hr>
+<h3 id="4-temperature-e-altri-parametri-cosa-controllano-davvero">4. Temperature e altri parametri: cosa controllano davvero</h3>
+<p>Oltre al testo del prompt, le API dei modelli linguistici esposero tipicamente alcuni parametri numerici che influenzano <strong>come</strong> il modello seleziona il token successivo tra quelli ad alta probabilità.</p>
+<p>Ricorda, dalla Lezione 3.1, che il modello calcola una distribuzione di probabilità su tutti i token possibili. La <strong>temperature</strong> controlla quanto &quot;audacemente&quot; il modello si allontana dalla scelta più probabile in assoluto:</p>
+<pre><code>Temperature BASSA (es. 0.1):
+Il modello tende quasi sempre a scegliere il token con
+probabilità più alta → risposte più prevedibili, coerenti,
+ripetibili. Adatta per compiti che richiedono precisione
+(calcoli, estrazione di dati, codice)
+
+Temperature ALTA (es. 1.0 o superiore):
+Il modello è più disposto a scegliere anche token con
+probabilità più basse → risposte più varie, creative,
+meno prevedibili. Adatta per compiti creativi (scrittura
+narrativa, brainstorming)</code></pre>
+<p>Un parametro correlato, <strong>top-p</strong> (o nucleus sampling), limita la selezione solo all'insieme più ristretto di token la cui probabilità cumulativa raggiunge una certa soglia, escludendo la &quot;coda&quot; di opzioni molto improbabili — un meccanismo complementare per controllare la varietà delle risposte senza permettere scelte assurde o totalmente fuori contesto.</p>
+<blockquote><strong>Implicazione pratica diretta:</strong> quando costruiremo agenti nel Capitolo 5, la scelta della temperature non sarà un dettaglio estetico. Un agente che deve eseguire calcoli precisi o seguire un protocollo rigoroso vorrà tipicamente una temperature bassa (comportamento prevedibile, ripetibile); un agente coinvolto in compiti di brainstorming creativo potrebbe beneficiare di una temperature più alta.</blockquote>
+<hr>
+<h3 id="5-i-limiti-del-prompting-semplice">5. I limiti del prompting semplice</h3>
+<p>Per quanto potenti, le tecniche descritte in questa lezione hanno limiti che è importante riconoscere onestamente, perché motivano direttamente tutto ciò che costruiremo nei capitoli successivi:</p>
+<ul><li><strong>Il prompting non dà accesso a informazioni che il modello non possiede</strong> (problema risolto dal RAG, Lezione 4.3)</li><li><strong>Il prompting non permette al modello di eseguire azioni reali nel mondo</strong> — può solo generare testo (problema risolto dal Function Calling, Lezione 4.4)</li><li><strong>Il prompting non garantisce, da solo, un comportamento coerente su compiti molto lunghi e complessi</strong> che richiedono pianificazione, verifica, correzione (problema affrontato dall'intera architettura agentiva, a partire dal Capitolo 5)</li></ul>
+<p>Tieni a mente questi limiti: non significano che il prompting sia &quot;insufficiente&quot; o &quot;superato&quot; — significa che il prompting è la <strong>base fondamentale e indispensabile</strong> su cui si costruiscono tecniche più sofisticate, non un'alternativa a esse.</p>
+<hr>
+<h3 id="esempio-pratico-trasformare-un-prompt-vago-in-un-prompt-efficace">Esempio Pratico: Trasformare un Prompt Vago in un Prompt Efficace</h3>
+<p>Prendi questo prompt vago: <em>&quot;Scrivimi qualcosa sul cambiamento climatico.&quot;</em></p>
+<p>Applicando i principi di questa lezione, potresti trasformarlo in:</p>
+<pre><code>&quot;Scrivi un paragrafo di massimo 150 parole sul cambiamento
+climatico, indirizzato a studenti delle scuole medie.
+Usa un linguaggio semplice, evita tecnicismi, e concludi
+con un'azione concreta che chiunque può fare per contribuire.
+
+Esempio di tono desiderato:
+'Sai che anche piccole azioni quotidiane possono fare
+la differenza? Per esempio, spegnere le luci quando esci
+da una stanza...'&quot;</code></pre>
+<p>Nota come questo prompt migliorato combina più tecniche viste in questa lezione: specifica il formato (150 parole, paragrafo), il pubblico (studenti scuole medie, che vincola implicitamente anche il registro), e fornisce un esempio parziale di tono (few-shot, anche se incompleto) — restringendo drasticamente lo spazio delle risposte plausibili rispetto al prompt originale.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il <strong>prompt</strong> è l'unico strumento per influenzare il contesto su cui il modello basa la previsione del token successivo: maggiore precisione nel prompt significa minore ambiguità nello spazio delle risposte plausibili.</li><li><strong>Zero-shot</strong> si affida alla conoscenza già acquisita dal modello; <strong>few-shot</strong> fornisce esempi espliciti nel prompt; <strong>chain-of-thought</strong> istruisce il modello a esplicitare il ragionamento passo per passo, riducendo errori nei compiti complessi.</li><li>Il <strong>system prompt</strong> definisce comportamento stabile per l'intera conversazione, mentre i messaggi <strong>user</strong> riguardano richieste specifiche di un singolo turno.</li><li><strong>Temperature</strong> e <strong>top-p</strong> controllano quanto il modello si discosta dalla scelta più probabile: bassa per precisione e coerenza, alta per creatività e varietà.</li><li>Il prompting da solo non risolve l'accesso a informazioni esterne, l'esecuzione di azioni reali, o compiti complessi che richiedono pianificazione — limiti che motivano direttamente RAG, Function Calling e architetture agentive.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché un prompt più specifico tende a produrre risposte più prevedibili e coerenti, collegando questa osservazione alla definizione di LLM come &quot;previsione del token più probabile dato il contesto&quot;?</li></ol>
+<ol><li>In quale scenario useresti il few-shot prompting invece dello zero-shot? Costruisci un esempio concreto, diverso da quelli della lezione, in cui fornire esempi sarebbe chiaramente vantaggioso.</li></ol>
+<ol><li>Se dovessi costruire un assistente che genera codice Python e deve essere assolutamente preciso e prevedibile, quale valore di temperature (basso o alto) scegliere? E se invece dovessi costruire un assistente per generare idee di nomi creativi per un nuovo prodotto?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 3.3 — qui rendiamo operativa la distinzione tra ruoli system/user/assistant appena introdotta.</p>
+<p><strong>Porta a:</strong> Lezione 3.5 (Limiti e allucinazioni) — vedremo che, per quanto ben formulato, un prompt non può eliminare completamente alcuni limiti strutturali del modello.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 5.2 (ReAct e Chain-of-Thought) — la tecnica chain-of-thought vista qui in forma semplice si estenderà a un intero pattern architetturale per gli agenti. Lezione 6.4 (I Prompt come Artefatti) — system prompt e task prompt, qui distinti a livello di utilizzo, diventeranno artefatti professionali versionati e strutturati.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="03-03-il-portale-chatgpt-e-i-suoi-equivalenti-anatomia-di-un-prodotto-ai.html">← 03-03 Anatomia di un prodotto AI</a>
+        <a class="primary-action" href="03-05-limiti-allucinazioni-e-confini-degli-llm.html">03-05 Limiti, allucinazioni e confini degli LLM →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

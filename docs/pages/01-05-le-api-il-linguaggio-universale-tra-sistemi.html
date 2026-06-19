@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le API: il linguaggio universale tra sistemi | AgentFactory</title>
+  <meta name="description" content="Il ponte tra tutto ciò che abbiamo visto e tutto ciò che vedremo: come due programmi si parlano">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-01-il-web">Il Web come lo Conosciamo</a><span>/</span><strong>01-05</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 01-05</p>
+        <h1>Le API: il linguaggio universale tra sistemi</h1>
+        <p class="lesson-subtitle">Il ponte tra tutto ciò che abbiamo visto e tutto ciò che vedremo: come due programmi si parlano</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>01 · Il Web come lo Conosciamo</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>API</span><span>REST</span><span>endpoint</span><span>JSON</span><span>YAML</span><span>API key</span><span>autenticazione</span><span>metodo HTTP</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Definire cosa è un'API con parole proprie, senza ricorrere a gergo</li><li>Leggere e interpretare una richiesta e una risposta REST</li><li>Distinguere JSON e YAML e sapere quando si usa l'uno o l'altro</li><li>Spiegare perché esiste l'autenticazione tramite API key e come funziona</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Questa è la lezione di chiusura del primo capitolo, e non per caso è anche una delle più importanti di tutto il corso. Tutto quello che abbiamo costruito finora — client e server, HTML statico, logica dinamica, frontend e backend separati — converge in un singolo concetto: l'<strong>API</strong>.</p>
+<p>Da qui in avanti, ogni volta che il nostro futuro agente AI &quot;chiamerà un modello&quot;, &quot;interrogherà un database vettoriale&quot;, &quot;userà uno strumento esterno&quot;, starà facendo esattamente quello che descriviamo in questa lezione: una richiesta HTTP strutturata secondo regole precise, verso un endpoint specifico, con un formato di risposta prevedibile. Se questa lezione è chiara, tutto il Capitolo 4 risulterà una naturale estensione di concetti già posseduti, non materiale nuovo da imparare da zero.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Definire cosa è un'API con parole proprie, senza ricorrere a gergo tecnico vuoto</li><li>Leggere e interpretare una richiesta e una risposta REST</li><li>Distinguere JSON e YAML e sapere quando si usa l'uno o l'altro</li><li>Spiegare perché esiste l'autenticazione tramite API key e come funziona</li></ul>
+<hr>
+<h3 id="1-cos-e-un-api">1. Cos'è un'API</h3>
+<p><strong>API</strong> sta per <em>Application Programming Interface</em> — interfaccia di programmazione applicativa. Il nome è tecnico, ma il concetto è semplice: un'API è un insieme di regole che permette a un programma di chiedere qualcosa a un altro programma, senza dover sapere nulla di come quel secondo programma è costruito internamente.</p>
+<blockquote><strong>Analogia concreta:</strong> pensa al menù di un ristorante. Tu non sai come è organizzata la cucina, chi cucina cosa, in che ordine vengono preparati i piatti. Il menù ti dice solo: &quot;Se ordini la voce numero 12, riceverai questo piatto specifico&quot;. Il menù è l'interfaccia tra te (il client) e la cucina (il server). L'API è il menù del programma.</blockquote>
+<p>Questa idea — nascondere la complessità interna dietro un'interfaccia semplice e stabile — è uno dei principi più potenti dell'informatica, ed è esattamente il motivo per cui possiamo usare un modello AI scritto da Anthropic, gestito su infrastrutture che non vedremo mai, senza dover capire una sola riga del suo funzionamento interno. Mandiamo una richiesta secondo le regole dell'API; riceviamo una risposta. Tutto il resto è incapsulato.</p>
+<h4 id="non-tutte-le-api-sono-via-internet">Non tutte le API sono &quot;via Internet&quot;</h4>
+<p>È utile chiarire: il termine API è generale e si applica anche dentro un singolo programma (una libreria software offre un'API alle sue funzioni). Ma nel contesto di questo corso, parliamo quasi sempre di <strong>API web</strong>, cioè API esposte da un server e raggiungibili tramite HTTP — esattamente il protocollo descritto nella Lezione 1.1.</p>
+<hr>
+<h3 id="2-rest-lo-stile-architetturale-piu-diffuso">2. REST: lo stile architetturale più diffuso</h3>
+<p>Esistono diversi modi di progettare un'API web. Lo stile di gran lunga più diffuso — usato da Anthropic, OpenAI, Google, e dalla stragrande maggioranza dei servizi che incontrerai — si chiama <strong>REST</strong> (Representational State Transfer).</p>
+<p>Senza entrare nei dettagli teorici, REST si traduce in pratica in alcune convenzioni semplici:</p>
+<ul><li>Le risorse sono identificate da <strong>URL</strong> (es. <code>/utenti/42</code>, <code>/messaggi</code>)</li><li>Le azioni sono espresse tramite <strong>metodi HTTP</strong> (li abbiamo già visti nella Lezione 1.1):</li><li><code>GET</code> → leggere/ottenere qualcosa</li><li><code>POST</code> → creare qualcosa di nuovo</li><li><code>PUT</code> / <code>PATCH</code> → modificare qualcosa esistente</li><li><code>DELETE</code> → eliminare qualcosa</li><li>Le risposte hanno <strong>codici di stato HTTP</strong> standard (<code>200</code>, <code>404</code>, <code>500</code>...)</li></ul>
+<p>Un singolo URL combinato con un metodo si chiama <strong>endpoint</strong>. Ad esempio:</p>
+<pre><code>POST https://api.anthropic.com/v1/messages</code></pre>
+<p>è l'endpoint che usi per inviare un messaggio a Claude e ottenere una risposta. È, letteralmente, una voce del &quot;menù&quot; di Anthropic.</p>
+<hr>
+<h3 id="3-anatomia-di-una-richiesta-api-reale">3. Anatomia di una richiesta API reale</h3>
+<p>Vediamo una richiesta API completa, di tipo realistico, e analizziamola riga per riga.</p>
+<pre><code>POST /v1/messages HTTP/1.1
+Host: api.anthropic.com
+Content-Type: application/json
+x-api-key: sk-ant-xxxxxxxxxxxxxxxx
+
+{
+  &quot;model&quot;: &quot;claude-sonnet-4-6&quot;,
+  &quot;max_tokens&quot;: 1000,
+  &quot;messages&quot;: [
+    { &quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Spiegami cos'è la fotosintesi&quot; }
+  ]
+}</code></pre>
+<ul><li><strong><code>POST /v1/messages</code></strong> → metodo e percorso, esattamente come visto nella Lezione 1.1</li><li><strong><code>Host</code></strong> → identifica il server di destinazione (qui entra in gioco il DNS, Lezione 1.1)</li><li><strong><code>Content-Type: application/json</code></strong> → un header che dichiara: &quot;il corpo di questa richiesta è scritto in formato JSON&quot;</li><li><strong><code>x-api-key</code></strong> → un header personalizzato che contiene la chiave di autenticazione (ne parliamo nella sezione 5)</li><li>Il blocco tra parentesi graffe è il <strong>corpo</strong> (body) della richiesta, in formato <strong>JSON</strong></li></ul>
+<p>E una risposta tipica:</p>
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  &quot;id&quot;: &quot;msg_01XYZ&quot;,
+  &quot;role&quot;: &quot;assistant&quot;,
+  &quot;content&quot;: [
+    { &quot;type&quot;: &quot;text&quot;, &quot;text&quot;: &quot;La fotosintesi è il processo...&quot; }
+  ],
+  &quot;model&quot;: &quot;claude-sonnet-4-6&quot;,
+  &quot;stop_reason&quot;: &quot;end_turn&quot;
+}</code></pre>
+<p>Nota come la struttura sia identica a quella vista nella Lezione 1.1 per le pagine web: codice di stato, header, corpo. Cambia solo il formato del corpo: invece di HTML destinato a un browser, qui c'è JSON destinato a essere letto da un altro programma.</p>
+<hr>
+<h3 id="4-json-e-yaml-i-formati-dati-standard">4. JSON e YAML: i formati dati standard</h3>
+<h4 id="json">JSON</h4>
+<p><strong>JSON</strong> (JavaScript Object Notation) è il formato dati più usato per scambiare informazioni tra programmi via API. La sua struttura si basa su pochi elementi:</p>
+<pre><code>{
+  &quot;nome&quot;: &quot;Claude&quot;,
+  &quot;versione&quot;: 4.6,
+  &quot;attivo&quot;: true,
+  &quot;strumenti&quot;: [&quot;ricerca web&quot;, &quot;esecuzione codice&quot;],
+  &quot;creatore&quot;: {
+    &quot;azienda&quot;: &quot;Anthropic&quot;,
+    &quot;anno_fondazione&quot;: 2021
+  }
+}</code></pre>
+<ul><li><strong>Oggetti</strong> tra <code>{ }</code>, con coppie <code>chiave: valore</code></li><li><strong>Array</strong> (liste) tra <code>[ ]</code></li><li>Valori che possono essere stringhe, numeri, booleani (<code>true</code>/<code>false</code>), altri oggetti, o <code>null</code></li></ul>
+<p>JSON è preferito nelle API perché è compatto, facilmente generabile e interpretabile da qualsiasi linguaggio di programmazione, e non ammette ambiguità di formattazione.</p>
+<h4 id="yaml">YAML</h4>
+<p><strong>YAML</strong> (YAML Ain't Markup Language) rappresenta concettualmente le stesse informazioni, ma con una sintassi pensata per essere scritta e letta comodamente da un essere umano, basata sull'indentazione invece che su parentesi:</p>
+<pre><code>nome: Claude
+versione: 4.6
+attivo: true
+strumenti:
+  - ricerca web
+  - esecuzione codice
+creatore:
+  azienda: Anthropic
+  anno_fondazione: 2021</code></pre>
+<p>Stesso identico contenuto del JSON sopra, ma più leggibile a colpo d'occhio, senza il &quot;rumore visivo&quot; di parentesi e virgolette ripetute.</p>
+<h4 id="quando-si-usa-l-uno-e-quando-l-altro">Quando si usa l'uno e quando l'altro</h4>
+<ul><li><strong>JSON</strong> domina nelle <strong>comunicazioni API</strong>: è il formato che viaggia nelle richieste e risposte HTTP, perché deve essere generato e letto velocemente da codice.</li><li><strong>YAML</strong> domina nei <strong>file di configurazione</strong> che un essere umano scrive e modifica a mano: file di setup, definizioni di comportamento, e — anticipiamo qui un concetto che ritroveremo in profondità nel Capitolo 6 — il <strong>frontmatter</strong> dei file Markdown che useremo per descrivere lezioni, agenti, e contratti nei workflow agentivi.</li></ul>
+<blockquote>Non è un caso che il file che stai leggendo ora abbia, in cima, un blocco YAML tra <code>---</code>. È esattamente l'applicazione pratica di questa distinzione: i metadati (capitolo, prerequisiti, difficoltà) sono scritti in YAML perché un umano li deve poter leggere e modificare comodamente; se questa lezione venisse scambiata tra due programmi via API, probabilmente viaggerebbe invece in JSON.</blockquote>
+<hr>
+<h3 id="5-autenticazione-con-api-key">5. Autenticazione con API Key</h3>
+<p>Quasi nessuna API seria è completamente aperta al pubblico: chi gestisce il server deve sapere chi sta facendo la richiesta, per almeno tre motivi:</p>
+<ol><li><strong>Fatturazione</strong> — molti servizi (incluse le API dei modelli AI) sono a pagamento in base all'uso</li><li><strong>Limiti di utilizzo (rate limiting)</strong> — evitare che un singolo utente sovraccarichi il sistema</li><li><strong>Sicurezza</strong> — impedire accessi non autorizzati a dati o funzionalità sensibili</li></ol>
+<p>Il meccanismo più comune per le API è la <strong>API key</strong>: una stringa lunga e segreta, generata dal fornitore del servizio, che il client deve includere in ogni richiesta (tipicamente in un header, come abbiamo visto con <code>x-api-key</code> nell'esempio precedente).</p>
+<pre><code>x-api-key: sk-ant-xxxxxxxxxxxxxxxx</code></pre>
+<p>Il server, ricevendo la richiesta, controlla questa chiave prima di fare qualsiasi altra cosa: se è valida e ha credito/permessi sufficienti, procede; altrimenti risponde con un codice di errore (tipicamente <code>401 Unauthorized</code> se la chiave è invalida, o <code>429 Too Many Requests</code> se hai superato i limiti consentiti — codici che avevamo già incontrato nella Lezione 1.1).</p>
+<h4 id="perche-la-api-key-va-trattata-come-una-password">Perché la API key va trattata come una password</h4>
+<p>Una API key è, a tutti gli effetti, equivalente a una password che dà accesso a un servizio spesso a pagamento. Non va mai:</p>
+<ul><li>Scritta direttamente nel codice che condividi pubblicamente (es. un repository GitHub pubblico)</li><li>Inviata in chat, email, o messaggi non sicuri</li><li>Condivisa con persone che non devono avere accesso al tuo account</li></ul>
+<p>La pratica corretta — che useremo costantemente da qui in avanti — è conservarla in variabili d'ambiente o file di configurazione esclusi dal controllo di versione (per questo, ricorderai, il nostro repository AISchool ha un file <code>.gitignore</code>).</p>
+<hr>
+<h3 id="esempio-pratico-una-chiamata-api-reale-passo-per-passo">Esempio Pratico: Una Chiamata API Reale, Passo per Passo</h3>
+<p>Immaginiamo di voler ottenere informazioni meteo per Roma tramite un'API pubblica (uno scenario classico per iniziare a familiarizzare con le API prima di affrontare quelle dei modelli AI).</p>
+<pre><code>1. Consultiamo la documentazione dell'API e troviamo l'endpoint:
+   GET https://api.esempio-meteo.com/v1/meteo?citta=Roma
+
+2. Costruiamo la richiesta:
+   GET /v1/meteo?citta=Roma HTTP/1.1
+   Host: api.esempio-meteo.com
+   x-api-key: la-nostra-chiave-segreta
+
+3. Il server elabora la richiesta (probabilmente interroga
+   un proprio database interno, come visto nella Lezione 1.3)
+
+4. Riceviamo la risposta:
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+
+   {
+     &quot;citta&quot;: &quot;Roma&quot;,
+     &quot;temperatura&quot;: 24,
+     &quot;condizione&quot;: &quot;soleggiato&quot;,
+     &quot;umidita&quot;: 45
+   }
+
+5. Il nostro programma legge questo JSON ed estrae,
+   ad esempio, solo il campo &quot;temperatura&quot; per mostrarlo
+   nella nostra applicazione</code></pre>
+<p>Questo schema — endpoint, richiesta con autenticazione, risposta JSON, estrazione dei dati necessari — è identico, concettualmente, a qualsiasi chiamata che faremo più avanti verso le API di Claude, GPT, o qualsiasi strumento esterno integrato in un agente. Cambiano i dettagli, non la struttura.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un'<strong>API</strong> è un'interfaccia che permette a un programma di usare le funzionalità di un altro senza conoscerne i dettagli interni — come un menù di ristorante.</li><li><strong>REST</strong> è lo stile più comune per le API web: risorse identificate da URL, azioni espresse da metodi HTTP (<code>GET</code>, <code>POST</code>, ecc.), risposte con codici di stato standard. Un URL più un metodo formano un <strong>endpoint</strong>.</li><li><strong>JSON</strong> è il formato standard per i dati che viaggiano nelle chiamate API; <strong>YAML</strong> è preferito nei file di configurazione pensati per essere letti e scritti da umani — incluso il frontmatter dei file Markdown.</li><li>L'<strong>autenticazione tramite API key</strong> permette al fornitore del servizio di identificare chi fa la richiesta, per motivi di fatturazione, limiti d'uso e sicurezza. Una API key va sempre trattata come una password.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Se un'API restituisce <code>401 Unauthorized</code> invece di <code>200 OK</code>, in quale fase del processo descritto in questa lezione si è verificato il problema? Cosa controlleresti per primo?</li></ol>
+<ol><li>Perché pensi che la documentazione di un'API venga spesso paragonata a un &quot;contratto&quot; tra chi fornisce il servizio e chi lo consuma? Cosa succederebbe se il fornitore cambiasse la struttura della risposta senza preavviso?</li></ol>
+<ol><li>Rifletti sulla differenza JSON/YAML: se dovessi progettare un file che un agente AI legge automaticamente migliaia di volte al secondo, quale formato useresti? E se dovessi progettare un file che un umano deve poter modificare a mano ogni giorno?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezioni 1.1–1.4 — questa lezione è la sintesi naturale di client/server, HTTP, logica dinamica e separazione frontend/backend, tutti applicati al caso specifico della comunicazione programma-programma.</p>
+<p><strong>Porta a:</strong> Capitolo 2 (L'Intelligenza Artificiale) — da qui in avanti smettiamo di parlare del Web in generale e iniziamo a costruire la comprensione di cosa sia, internamente, il sistema che risponde dall'altra parte di quelle chiamate API.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 4.1 (L'API degli LLM) — useremo esattamente questo schema (endpoint, header, autenticazione, corpo JSON) per chiamare un modello linguistico. Lezione 6.1 (YAML e Frontmatter) — approfondiremo perché YAML è lo standard per gli artefatti dei workflow agentivi. Lezione 6.5 (Contratti tra Agenti) — il concetto di &quot;contratto&quot; accennato nella domanda di verifica diventerà centrale quando parleremo di schemi di input/output tra agenti.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="01-04-web-application-quando-il-browser-diventa-un-interfaccia.html">← 01-04 Web Application</a>
+        <a class="primary-action" href="02-01-intelligenza-artificiale-storia-definizioni-e-rami-principali.html">02-01 AI: storia, definizioni e rami principali →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

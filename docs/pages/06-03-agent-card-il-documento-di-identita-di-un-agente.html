@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Card: il documento di identità di un agente | AgentFactory</title>
+  <meta name="description" content="Dal config interno all'interfaccia pubblica: come un agente si presenta al resto del mondo">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-06-agent-package">L'Agent Package: Struttura, Contratti e Artefatti</a><span>/</span><strong>06-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 06-03</p>
+        <h1>Agent Card: il documento di identità di un agente</h1>
+        <p class="lesson-subtitle">Dal config interno all'interfaccia pubblica: come un agente si presenta al resto del mondo</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>06 · L'Agent Package: Struttura, Contratti e Artefatti</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>agent card</span><span>interoperabilità</span><span>contratto di servizio</span><span>discovery</span><span>versioning</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere Agent Card da agent.yaml con precisione</li><li>Costruire un'Agent Card completa per un agente reale</li><li>Spiegare come un orchestratore usa le Agent Card per la discovery</li><li>Descrivere il ciclo di vita di un'Agent Card: versioning e deprecazione</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo costruito <code>agent.yaml</code>: il file di configurazione <strong>interno</strong> di un agente, che dichiara modello, parametri, e riferimenti a prompt e strumenti. Questo file risponde a una domanda specifica: &quot;come si configura ed esegue questo agente?&quot; — una domanda rilevante per chi <strong>mantiene</strong> l'agente.</p>
+<p>Questa lezione introduce un documento diverso, con uno scopo diverso: l'<strong>Agent Card</strong>. Risponde a una domanda altrettanto importante ma distinta: &quot;<strong>cosa fa</strong> questo agente, e come posso usarlo, senza dover conoscere nulla della sua implementazione interna?&quot; — una domanda rilevante per chi <strong>usa</strong> l'agente, che potrebbe essere un orchestratore (Lezione 5.3), un altro agente in un sistema multi-agente (Lezione 5.4), o persino un sistema costruito da un'organizzazione completamente diversa.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere con precisione un'Agent Card da <code>agent.yaml</code>, riconoscendo a quale domanda ciascuno risponde</li><li>Costruire un'Agent Card completa per un agente reale</li><li>Spiegare come un orchestratore usa le Agent Card per il processo di discovery (scoperta delle capacità disponibili)</li><li>Descrivere il ciclo di vita di un'Agent Card: versioning e deprecazione</li></ul>
+<hr>
+<h3 id="1-configurazione-interna-vs-interfaccia-pubblica">1. Configurazione interna vs interfaccia pubblica</h3>
+<p>Riprendiamo il principio di incapsulamento introdotto nella Lezione 5.3, parlando dell'orchestratore: &quot;vede i risultati, non i meccanismi interni&quot;. L'Agent Card è precisamente l'applicazione concreta e formale di questo principio.</p>
+<pre><code>AGENT.YAML (Lezione 6.2)              AGENT CARD (questa lezione)
+
+Risponde a: &quot;come funziona            Risponde a: &quot;cosa fa questo
+QUESTO agente, internamente?&quot;          agente, e come ci si interfaccia
+                                        con lui, dall'ESTERNO?&quot;
+
+Contiene: modello specifico            Contiene: capacità dichiarate,
+usato, parametri di temperature,       schema di input/output atteso,
+percorsi di file interni,              limiti noti, informazioni di
+dettagli implementativi                contatto/responsabilità
+
+Letto da: chi MANTIENE l'agente        Letto da: chi USA l'agente
+(sviluppatori del team che lo          (orchestratori, altri agenti,
+possiede)                              sistemi di terze parti)
+
+Cambia: spesso, a ogni modifica         Cambia: raramente, solo quando
+implementativa interna                 l'interfaccia pubblica cambia
+                                        (es. nuova versione con nuove
+                                        capacità)</code></pre>
+<p>Questa distinzione tra interno ed esterno è la stessa logica delle API REST (Lezione 1.5): l'implementazione interna di un servizio può cambiare liberamente, purché l'interfaccia pubblica dichiarata resti stabile e prevedibile per chi la consuma.</p>
+<hr>
+<h3 id="2-anatomia-di-una-agent-card-completa">2. Anatomia di una Agent Card completa</h3>
+<pre><code>---
+# AGENT CARD — agente-analista-vendite
+# Questo documento descrive l'INTERFACCIA PUBBLICA dell'agente,
+# non la sua implementazione interna.
+
+identita:
+  id: &quot;agente-analista-vendite&quot;
+  nome: &quot;Analista Vendite&quot;
+  versione: &quot;1.2.0&quot;
+  owner: &quot;team-data-engineering&quot;
+  contatto: &quot;data-eng@azienda.esempio&quot;
+
+capacita:
+  descrizione: &gt;
+    Analizza dati di vendita strutturati e identifica trend
+    significativi, confronti temporali, e anomalie statistiche.
+  domini_competenza:
+    - &quot;analisi dati di vendita&quot;
+    - &quot;confronti temporali (anno su anno, trimestre su trimestre)&quot;
+  NON_fa:
+    - &quot;raccomandazioni strategiche di business&quot;
+    - &quot;previsioni a lungo termine (oltre 1 anno)&quot;
+
+interfaccia:
+  schema_input:
+    riferimento: &quot;schemas/input_schema.json&quot;
+    esempio:
+      periodo: &quot;Q3-2026&quot;
+      metrica: &quot;vendite_totali&quot;
+  schema_output:
+    riferimento: &quot;schemas/output_schema.json&quot;
+    esempio:
+      trend: &quot;crescita&quot;
+      percentuale_variazione: 12.5
+      confidenza: &quot;alta&quot;
+
+limiti_noti:
+  - &quot;Richiede dati già strutturati: non elabora documenti non strutturati&quot;
+  - &quot;Accuratezza ridotta per periodi con meno di 30 giorni di dati&quot;
+
+stato: &quot;produzione&quot;
+ultima_modifica: &quot;2026-06-01&quot;
+---</code></pre>
+<p>Nota la sezione <strong><code>NON_fa</code></strong>: dichiarare esplicitamente cosa un agente <em>non</em> fa è altrettanto importante, per chi deve decidere se usarlo, quanto dichiarare cosa fa. Questo previene un errore comune nei sistemi multi-agente: un orchestratore (o uno sviluppatore umano) che assume erroneamente che un agente possa gestire un compito fuori dal suo dominio dichiarato, semplicemente perché nessuno lo ha esplicitamente escluso.</p>
+<blockquote><strong>Perché questo richiama direttamente la Lezione 4.4:</strong> ricorda l'importanza della <code>description</code> di uno strumento nel Function Calling — un testo vago produce un uso scorretto dello strumento. La stessa identica logica si applica, su scala più ampia, alla descrizione delle capacità di un intero agente nella sua Agent Card.</blockquote>
+<hr>
+<h3 id="3-implementazione-pratica-discovery-automatica-tramite-agent-card">3. Implementazione pratica: discovery automatica tramite Agent Card</h3>
+<p>Il valore pratico più significativo delle Agent Card emerge quando un orchestratore deve scegliere, tra molti agenti disponibili, quale sia il più adatto per un compito specifico — un processo chiamato <strong>discovery</strong>.</p>
+<pre><code>import yaml
+import os
+
+def carica_tutte_le_agent_card(cartella_agenti: str) -&gt; list[dict]:
+    &quot;&quot;&quot;Carica le Agent Card di tutti gli agenti disponibili nel sistema.&quot;&quot;&quot;
+    cards = []
+    for nome_cartella in os.listdir(cartella_agenti):
+        percorso_card = os.path.join(
+            cartella_agenti, nome_cartella, &quot;agent_card.yaml&quot;
+        )
+        if os.path.exists(percorso_card):
+            with open(percorso_card) as f:
+                cards.append(yaml.safe_load(f))
+    return cards
+
+
+def trova_agente_adatto(cards: list[dict], dominio_richiesto: str) -&gt; dict | None:
+    &quot;&quot;&quot;
+    Discovery semplificata: trova il primo agente la cui Agent Card
+    dichiara competenza nel dominio richiesto.
+    &quot;&quot;&quot;
+    for card in cards:
+        domini = card[&quot;capacita&quot;][&quot;domini_competenza&quot;]
+        if any(dominio_richiesto.lower() in d.lower() for d in domini):
+            return card
+    return None
+
+
+def orchestratore_con_discovery(richiesta_utente: str, cartella_agenti: str) -&gt; str:
+    &quot;&quot;&quot;
+    Un orchestratore che, invece di avere agenti cablati
+    direttamente nel codice (come nella Lezione 5.3), li
+    SCOPRE dinamicamente leggendo le loro Agent Card.
+    &quot;&quot;&quot;
+    cards_disponibili = carica_tutte_le_agent_card(cartella_agenti)
+
+    # In un caso reale, questa classificazione del dominio
+    # richiesto sarebbe essa stessa una chiamata al modello
+    # (Lezione 4.1), qui semplificata per chiarezza
+    dominio = &quot;analisi dati di vendita&quot;
+
+    agente_scelto = trova_agente_adatto(cards_disponibili, dominio)
+
+    if not agente_scelto:
+        return &quot;Nessun agente disponibile per questo tipo di richiesta.&quot;
+
+    return f&quot;Richiesta delegata a: {agente_scelto['identita']['nome']}&quot;</code></pre>
+<p>Questa è una versione semplificata, ma il principio è esattamente quello usato in sistemi multi-agente professionali su scala più ampia: invece di un orchestratore che &quot;conosce&quot; staticamente ogni singolo agente disponibile (come nell'esempio della Lezione 5.3, dove gli agenti erano funzioni Python importate direttamente), un orchestratore con discovery può adattarsi dinamicamente a un catalogo di agenti che <strong>cresce nel tempo</strong>, senza richiedere modifiche al codice dell'orchestratore stesso ogni volta che un nuovo agente viene aggiunto al sistema.</p>
+<hr>
+<h3 id="4-agent-card-come-contratto-di-servizio">4. Agent Card come contratto di servizio</h3>
+<p>Una volta che altri componenti del sistema (o, in scenari di interoperabilità più ampia, sistemi di organizzazioni terze) iniziano a <strong>dipendere</strong> dall'interfaccia dichiarata in un'Agent Card, quella dichiarazione diventa, di fatto, un <strong>contratto di servizio</strong>: una promessa che deve essere rispettata con disciplina.</p>
+<pre><code>SCENARIO PROBLEMATICO:
+
+L'Agente Analista Vendite, versione 1.2.0, dichiara nello
+schema_output un campo &quot;percentuale_variazione&quot; (numero)
+
+Il team decide di rinominarlo in &quot;variazione_percentuale&quot;
+nella versione 1.3.0, SENZA preavviso
+
+→ Ogni orchestratore o agente che si aspettava il campo
+  originale ora fallisce silenziosamente o produce errori
+  difficili da diagnosticare</code></pre>
+<p>Questo scenario motiva direttamente perché il versionamento (già introdotto nella Lezione 6.1, e approfondito con maggiore rigore nella Lezione 8.4) sia così importante per le Agent Card: una modifica che rompe la compatibilità con l'interfaccia pubblica dichiarata dovrebbe sempre corrispondere a un cambiamento di versione esplicito (tipicamente, nel semantic versioning, un incremento del numero &quot;maggiore&quot; — da <code>1.x.x</code> a <code>2.0.0</code>), permettendo a chi dipende dall'agente di sapere, semplicemente guardando il numero di versione, se un aggiornamento potrebbe richiedere modifiche dal proprio lato.</p>
+<hr>
+<h3 id="esempio-pratico-identificare-cosa-appartiene-all-agent-card">Esempio Pratico: Identificare Cosa Appartiene all'Agent Card</h3>
+<p>Per consolidare la distinzione della Sezione 1, classifica ciascuna di queste informazioni come appartenente più correttamente ad <code>agent.yaml</code> (configurazione interna) o all'Agent Card (interfaccia pubblica):</p>
+<ol><li>Il valore specifico del parametro <code>temperature</code> usato nelle chiamate API → <strong>agent.yaml</strong> (dettaglio implementativo interno, irrilevante per chi usa l'agente dall'esterno)</li><li>La descrizione dei domini di competenza dell'agente → <strong>Agent Card</strong> (informazione necessaria per decidere se delegare un compito a questo agente)</li><li>Il percorso del file Python che implementa un determinato strumento → <strong>agent.yaml</strong> (dettaglio implementativo)</li><li>Lo schema esatto del formato di output che l'agente garantisce di produrre → <strong>Agent Card</strong> (un orchestratore o un altro agente deve conoscere questo per poter elaborare correttamente il risultato)</li><li>Quali compiti l'agente esplicitamente NON gestisce → <strong>Agent Card</strong> (essenziale per la discovery e per evitare un uso scorretto)</li></ol>
+<p>Questo esercizio di classificazione, semplice in apparenza, è precisamente il tipo di giudizio progettuale che applicherai costantemente costruendo agent package reali: ogni nuova informazione che aggiungi a un agente richiede di chiederti &quot;questo serve a chi mantiene l'agente, o a chi lo usa dall'esterno?&quot;</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>L'<strong>Agent Card</strong> dichiara l'interfaccia pubblica di un agente — cosa fa, cosa non fa, quale formato di input si aspetta e quale output garantisce — distinta da <code>agent.yaml</code>, che configura il funzionamento interno.</li><li>Una sezione esplicita di capacità <strong>NON dichiarate</strong> (<code>NON_fa</code>) è altrettanto importante della dichiarazione delle capacità presenti, per prevenire un uso scorretto dell'agente.</li><li>Il processo di <strong>discovery</strong> permette a un orchestratore di scegliere dinamicamente l'agente più adatto per un compito, leggendo le Agent Card disponibili, invece di avere ogni agente cablato staticamente nel codice.</li><li>Una volta che altri componenti dipendono dall'interfaccia dichiarata, l'Agent Card diventa un <strong>contratto di servizio</strong>: modifiche che rompono questa interfaccia devono essere accompagnate da un cambiamento di versione esplicito.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché un cambiamento al valore di <code>temperature</code> in <code>agent.yaml</code> non richiede tipicamente un aggiornamento di versione dell'Agent Card, mentre un cambiamento al formato dello schema di output sì.</li></ol>
+<ol><li>Nel codice della Sezione 3, la funzione <code>trova_agente_adatto</code> usa una corrispondenza testuale molto semplice. Quale tecnica, vista in una lezione precedente del corso, potrebbe rendere questa discovery più robusta, capace di trovare un agente adatto anche quando la richiesta non condivide parole esatte con i domini dichiarati?</li></ol>
+<ol><li>Un'Agent Card dichiara, nella sezione <code>NON_fa</code>, che l'agente &quot;non elabora documenti non strutturati&quot;. Un orchestratore, nonostante questa dichiarazione, gli invia comunque un PDF non strutturato. Di chi è, secondo te, la responsabilità del comportamento scorretto risultante: dell'agente, dell'orchestratore, o di chi ha progettato il sistema di discovery?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 6.2 (L'Agent Package) — l'Agent Card è un componente specifico, con uno scopo distinto da <code>agent.yaml</code>, di quella stessa struttura. Lezione 5.3 (L'Orchestratore) — il principio di incapsulamento introdotto lì trova qui una formalizzazione completa.</p>
+<p><strong>Porta a:</strong> Lezione 6.5 (Contratti tra Agenti) — gli schemi di input/output referenziati nell'Agent Card riceveranno qui un trattamento tecnico completo e rigoroso.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 7.1 (Progettare un Workflow Agentivo) — il protocollo A2A menzionerà esplicitamente le Agent Card come meccanismo di interoperabilità tra agenti di sistemi diversi. Lezione 8.4 (Governance e Versioning) — il ciclo di vita e il versionamento delle Agent Card, qui solo introdotti, riceveranno un trattamento formale completo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="06-02-l-agent-package-struttura-di-file-e-directory-di-un-agente-professionale.html">← 06-02 L'Agent Package</a>
+        <a class="primary-action" href="06-04-i-prompt-come-artefatti-struttura-template-istanze-e-versionamento.html">06-04 I Prompt come Artefatti →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Il Layer di Review: agenti critici e quality assurance nel workflow | AgentFactory</title>
+  <meta name="description" content="Prima di chiamare un umano, fai controllare un altro agente: il primo livello di qualità">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-07-workflow-multi-agente">Workflow Multi-Agente: Design e Implementazione</a><span>/</span><strong>07-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 07-03</p>
+        <h1>Il Layer di Review: agenti critici e quality assurance nel workflow</h1>
+        <p class="lesson-subtitle">Prima di chiamare un umano, fai controllare un altro agente: il primo livello di qualità</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>07 · Workflow Multi-Agente: Design e Implementazione</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>critic agent</span><span>rubrica di valutazione</span><span>ciclo produce-critica-revisione</span><span>quality gate</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il pattern Critic-Agent e la sua differenza dalla revisione umana</li><li>Definire una rubrica di valutazione strutturata per un agente reviewer</li><li>Implementare un nodo di review in LangGraph con ciclo di correzione</li><li>Decidere quando il review automatico è sufficiente e quando serve escalation</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Prima di affrontare, nella prossima lezione, la supervisione umana — che hai giustamente segnalato come concetto da non dimenticare — questa lezione costruisce un livello di qualità che precede e spesso riduce la necessità di intervento umano: il <strong>layer di review automatico</strong>, dove un agente specializzato valuta criticamente l'output di un altro agente, prima che quell'output proceda nel workflow.</p>
+<p>Questo non sostituisce la supervisione umana della Lezione 7.4: la <strong>precede</strong>, in una logica a strati. Molti problemi possono essere rilevati e corretti automaticamente, senza bisogno di fermare il processo per un intervento umano; solo i casi che superano la soglia di affidabilità del review automatico devono essere effettivamente escalati. Costruire bene questo strato riduce drasticamente il carico di lavoro umano richiesto nella fase successiva.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare il pattern Critic-Agent e distinguerlo con precisione dalla revisione umana</li><li>Definire una rubrica di valutazione strutturata, applicabile automaticamente da un agente reviewer</li><li>Implementare un nodo di review in LangGraph, con un ciclo di correzione basato sul feedback ricevuto</li><li>Decidere, con criteri espliciti, quando il review automatico è sufficiente e quando è necessaria l'escalation a un umano</li></ul>
+<hr>
+<h3 id="1-il-pattern-critic-agent">1. Il pattern Critic-Agent</h3>
+<p>L'idea centrale è semplice da enunciare e potente nella sua applicazione: <strong>un agente produce, un secondo agente — indipendente dal primo — critica il risultato</strong>, prima che questo proceda al passo successivo del workflow.</p>
+<pre><code>                [Agente Produttore]
+                (es. Requirement Analyst,
+                 Lezione 6.6)
+                        │
+                        ▼
+              [Agente Critico / Reviewer]
+              (valuta l'output secondo
+               criteri espliciti)
+                        │
+              ┌─────────┴─────────┐
+              ▼                   ▼
+         VALIDO              PROBLEMA RILEVATO
+              │                   │
+              ▼                   ▼
+      [Procedi nel workflow]  [Torna al Produttore
+                                con feedback specifico]</code></pre>
+<blockquote><strong>Perché un secondo agente, e non lo stesso agente che si autovaluta:</strong> un agente che valuta il proprio stesso output rischia di ripetere gli stessi errori di giudizio che hanno prodotto l'output originale (un problema che approfondiremo con rigore nella Lezione 8.1, parlando di self-critique). Un agente <strong>indipendente</strong>, con un prompt e un'istruzione di valutazione separati da quelli del produttore, è meno soggetto a questo tipo di bias di conferma.</blockquote>
+<hr>
+<h3 id="2-definire-una-rubrica-di-valutazione-strutturata">2. Definire una rubrica di valutazione strutturata</h3>
+<p>Una rubrica è precisamente l'applicazione, al contesto della valutazione, dei principi di output strutturato già visti nella Lezione 4.2 e dei contratti della Lezione 6.5: criteri <strong>espliciti e verificabili</strong>, non un giudizio vago e discorsivo.</p>
+<pre><code>from pydantic import BaseModel
+from typing import Literal
+
+class ValutazioneReview(BaseModel):
+    &quot;&quot;&quot;
+    Rubrica di valutazione strutturata per l'output del
+    Requirement Analyst Agent (riprendendo l'esempio della
+    Lezione 6.6).
+    &quot;&quot;&quot;
+    completezza: Literal[&quot;completo&quot;, &quot;parziale&quot;, &quot;insufficiente&quot;]
+    coerenza_interna: bool  # i requisiti si contraddicono tra loro?
+    ambiguita_non_segnalate: list[str]  # ambiguità che il
+                                          # produttore NON ha rilevato
+    decisione: Literal[&quot;approva&quot;, &quot;richiedi_revisione&quot;, &quot;escala_a_umano&quot;]
+    motivazione: str</code></pre>
+<p>Il campo <code>decisione</code> con tre valori possibili (<code>approva</code>, <code>richiedi_revisione</code>, <code>escala_a_umano</code>) è precisamente il meccanismo che separa i tre possibili esiti di un review: tutto a posto, problema correggibile automaticamente, problema che richiede intervento umano (un'anteprima diretta della Lezione 7.4).</p>
+<hr>
+<h3 id="3-implementazione-pratica-il-nodo-di-review-in-langgraph">3. Implementazione pratica: il nodo di review in LangGraph</h3>
+<p>Estendiamo il grafo costruito nella Lezione 7.2, aggiungendo un nodo di review subito dopo l'analisi dei requisiti, con un ciclo di correzione automatica.</p>
+<pre><code>import anthropic
+import json
+
+def nodo_review_requisiti(stato: StatoWorkflowRequisiti) -&gt; dict:
+    &quot;&quot;&quot;
+    Un agente CRITICO, indipendente dal Requirement Analyst,
+    valuta l'output prodotto secondo la rubrica della Sezione 2.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=500,
+        system=&quot;Sei un revisore indipendente di requisiti software. &quot;
+               &quot;Valuta CRITICAMENTE l'analisi fornita, cercando &quot;
+               &quot;ambiguità non rilevate, contraddizioni interne, &quot;
+               &quot;o completezza insufficiente. Rispondi SOLO in &quot;
+               &quot;formato JSON conforme allo schema fornito.&quot;,
+        messages=[{
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: f&quot;Requisiti da valutare: &quot;
+                       f&quot;{json.dumps(stato.requisiti_identificati)}\n&quot;
+                       f&quot;Ambiguità già segnalate dal produttore: &quot;
+                       f&quot;{stato.ambiguita_rilevate}&quot;
+        }]
+    )
+
+    valutazione = ValutazioneReview(**json.loads(risposta.content[0].text))
+
+    return {&quot;valutazione_review&quot;: valutazione.model_dump()}
+
+
+def decidi_dopo_review(stato: StatoWorkflowRequisiti) -&gt; str:
+    &quot;&quot;&quot;
+    Funzione di ROUTING (Lezione 7.2): instrada il workflow
+    in base alla decisione del Critic-Agent.
+    &quot;&quot;&quot;
+    decisione = stato.valutazione_review[&quot;decisione&quot;]
+    if decisione == &quot;approva&quot;:
+        return &quot;costruisci_handoff&quot;
+    elif decisione == &quot;richiedi_revisione&quot;:
+        return &quot;analisi&quot;  # CICLO: torna al produttore con feedback
+    else:  # &quot;escala_a_umano&quot;
+        return &quot;checkpoint_umano&quot;  # Lezione 7.4
+
+
+# Aggiunta al grafo della Lezione 7.2
+grafo.add_node(&quot;review&quot;, nodo_review_requisiti)
+grafo.add_edge(&quot;analisi&quot;, &quot;review&quot;)  # sostituisce l'arco diretto
+                                       # analisi → decidi_se_richiedere
+
+grafo.add_conditional_edges(
+    &quot;review&quot;,
+    decidi_dopo_review,
+    {
+        &quot;costruisci_handoff&quot;: &quot;costruisci_handoff&quot;,
+        &quot;analisi&quot;: &quot;analisi&quot;,
+        &quot;checkpoint_umano&quot;: &quot;checkpoint_umano&quot;
+    }
+)</code></pre>
+<p>Osserva l'arco <code>&quot;analisi&quot;: &quot;analisi&quot;</code> nella mappa delle destinazioni: questo implementa un <strong>ciclo controllato</strong>, esattamente il concetto introdotto nella Lezione 7.2 come uno dei vantaggi di LangGraph rispetto al codice scritto a mano. Se il reviewer richiede una revisione, il workflow torna al nodo di analisi, ma questa volta con il feedback del reviewer disponibile nello stato — permettendo al Requirement Analyst di correggere specificamente i problemi rilevati, invece di ripartire da zero.</p>
+<hr>
+<h3 id="4-quando-il-review-automatico-basta-e-quando-serve-l-umano">4. Quando il review automatico basta, e quando serve l'umano</h3>
+<p>Il campo <code>decisione</code> della rubrica (Sezione 2) formalizza esattamente questa scelta, ma vale la pena esplicitare i criteri che dovrebbero guidare un reviewer (umano o agente) nella scelta tra queste tre opzioni:</p>
+<pre><code>APPROVA
+  Il problema, se esiste, è chiaramente all'interno della
+  competenza dichiarata dell'agente produttore (Agent Card,
+  Lezione 6.3), e i criteri della rubrica sono pienamente
+  soddisfatti
+
+RICHIEDI REVISIONE (ciclo automatico)
+  Il problema è SPECIFICO e CORREGGIBILE con un nuovo
+  tentativo guidato da feedback puntuale — es. &quot;hai
+  dimenticato di specificare il formato di output per
+  il requisito 3&quot;
+
+ESCALA A UMANO (Lezione 7.4)
+  Il problema è di natura AMBIGUA o richiede un giudizio
+  che esula dalla competenza dichiarata dell'agente (es.
+  una decisione di business strategica, non solo tecnica),
+  oppure il ciclo di correzione automatica ha già fallito
+  un numero di tentativi superiore a una soglia di sicurezza
+  (collegandosi al max_iterazioni della Lezione 5.1)</code></pre>
+<blockquote><strong>Perché questa gerarchia a tre livelli è efficiente:</strong> se ogni singola imperfezione richiedesse intervento umano, il vantaggio di automazione del sistema agentivo andrebbe perso. Se nessuna imperfezione venisse mai escalata, il sistema rischierebbe di propagare errori che richiedono effettivamente un giudizio umano. Il layer di review automatico, posizionato strategicamente PRIMA dell'escalation, è ciò che bilancia questi due rischi opposti.</blockquote>
+<hr>
+<h3 id="esempio-pratico-distinguere-i-tre-esiti-su-casi-concreti">Esempio Pratico: Distinguere i Tre Esiti su Casi Concreti</h3>
+<p>Applichiamo i criteri della Sezione 4 a tre scenari, riprendendo il caso del Requirement Analyst:</p>
+<ol><li><strong>&quot;Il requisito 2 non specifica un limite di tempo massimo&quot;</strong> — probabilmente <strong>richiedi_revisione</strong>: è un'omissione specifica, correggibile chiedendo al produttore di aggiungere quel dettaglio</li><li><strong>&quot;I documenti del cliente sono contraddittori su un requisito di business strategico (vogliono sia massima personalizzazione sia massima standardizzazione)&quot;</strong> — probabilmente <strong>escala_a_umano</strong>: non è un problema tecnico risolvibile rianalizzando i documenti, è una decisione che richiede un giudizio di business</li><li><strong>&quot;Tutti i criteri della rubrica sono soddisfatti, nessuna ambiguità rilevata&quot;</strong> — <strong>approva</strong>: il workflow procede senza ulteriori interventi</li></ol>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il pattern <strong>Critic-Agent</strong> introduce un agente indipendente che valuta criticamente l'output di un agente produttore, prima che questo proceda nel workflow, riducendo i bias di auto-valutazione.</li><li>Una <strong>rubrica di valutazione strutturata</strong> (con Pydantic, riprendendo la Lezione 4.2 e la Lezione 6.5) rende il giudizio del reviewer esplicito e verificabile, non discorsivo e ambiguo.</li><li>L'implementazione in LangGraph (Lezione 7.2) usa un <strong>ciclo controllato</strong>: se il reviewer richiede una revisione, il workflow torna al nodo produttore con feedback specifico, invece di procedere con un output insufficiente.</li><li>La gerarchia a tre livelli — <strong>approva</strong>, <strong>richiedi revisione</strong> (ciclo automatico), <strong>escala a umano</strong> — bilancia l'efficienza dell'automazione con la necessità di intervento umano per problemi che esulano dalla competenza tecnica del sistema.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché un agente che valuta il proprio stesso output (invece di un Critic-Agent indipendente) rischierebbe di non rilevare gli stessi errori che ha commesso nel produrre quell'output.</li></ol>
+<ol><li>Nel codice della Sezione 3, cosa garantisce che il ciclo <code>&quot;analisi&quot;: &quot;analisi&quot;</code> non diventi un loop infinito, ripetendo all'infinito la stessa correzione senza mai arrivare a un'approvazione? (Suggerimento: ricollega la tua risposta al concetto di <code>max_iterazioni</code> della Lezione 5.1.)</li></ol>
+<ol><li>Riprendi il secondo scenario dell'esempio pratico (requisiti di business contraddittori). Perché questo caso specifico non potrebbe essere risolto efficacemente nemmeno con un numero illimitato di tentativi di &quot;richiedi_revisione&quot;?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 7.2 (LangGraph) — il nodo di review è implementato esattamente con i meccanismi di ciclo controllato visti in quella lezione. Lezione 6.5 (Contratti tra Agenti) — la rubrica di valutazione è un'applicazione diretta dei principi di validazione strutturata.</p>
+<p><strong>Porta a:</strong> Lezione 7.4 (Human-in-the-Loop) — l'esito &quot;escala_a_umano&quot; di questa lezione è precisamente il punto di ingresso del pattern che formalizzeremo nella prossima lezione.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.1 (Self-Reflection) — la distinzione tra valutazione da un agente indipendente (questa lezione) e auto-valutazione (quella lezione) sarà approfondita con maggiore rigore. Lezione 7.5 (Valutazione dei Workflow) — le rubriche di review qui costruite diventeranno parte delle metriche di sistema misurate in quella lezione.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="07-02-langgraph-costruire-workflow-come-grafi-orientati-con-stato.html">← 07-02 LangGraph</a>
+        <a class="primary-action" href="07-04-supervisione-umana-human-in-the-loop-come-componente-architetturale.html">07-04 Human-in-the-Loop →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

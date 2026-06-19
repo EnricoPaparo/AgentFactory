@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills e Skill Library: competenze riutilizzabili tra agenti | AgentFactory</title>
+  <meta name="description" content="L'ultimo mattone del package: come centralizzare la conoscenza condivisa tra molti agenti">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-06-agent-package">L'Agent Package: Struttura, Contratti e Artefatti</a><span>/</span><strong>06-07</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 06-07</p>
+        <h1>Skills e Skill Library: competenze riutilizzabili tra agenti</h1>
+        <p class="lesson-subtitle">L'ultimo mattone del package: come centralizzare la conoscenza condivisa tra molti agenti</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>06 · L'Agent Package: Struttura, Contratti e Artefatti</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>skill</span><span>skill library</span><span>skill injection</span><span>tool vs skill</span><span>governance delle skill</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere con precisione una skill da uno strumento (tool)</li><li>Costruire una skill riutilizzabile in formato standard</li><li>Implementare un meccanismo di skill injection in un agent package</li><li>Progettare la governance di una skill library condivisa</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 6 — il nucleo ingegneristico professionale di questo corso — con un concetto che completa l'agent package costruito nella Lezione 6.2: le <strong>skill</strong>. Avevamo lasciato questa cartella, <code>skills/</code>, solo accennata in quella lezione. È il momento di trattarla con la stessa profondità riservata a prompt, contratti, e handoff.</p>
+<p>Una skill risolve un problema specifico, diverso da quelli già affrontati: cosa fare quando una <strong>competenza specifica</strong> — non uno strumento eseguibile, non un singolo prompt — deve essere condivisa tra <strong>molti agenti diversi</strong>, e mantenuta aggiornata in un unico posto, invece di essere duplicata (e quindi, inevitabilmente, fatta divergere nel tempo) in ciascun agente che ne ha bisogno.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere con precisione una skill da uno strumento (tool), due concetti spesso confusi</li><li>Costruire una skill riutilizzabile in un formato standard, coerente con tutto il resto dell'agent package</li><li>Implementare un meccanismo di skill injection che inserisce dinamicamente una skill nel prompt di un agente</li><li>Progettare la governance di una skill library condivisa tra molti agenti</li></ul>
+<hr>
+<h3 id="1-tool-vs-skill-una-distinzione-che-va-fissata-con-precisione">1. Tool vs Skill: una distinzione che va fissata con precisione</h3>
+<p>Il termine &quot;skill&quot; viene a volte usato in modo intercambiabile con &quot;tool&quot; (Lezione 4.4), ma descrive un concetto fondamentalmente diverso.</p>
+<pre><code>TOOL (Lezione 4.4)                     SKILL
+
+È CODICE eseguibile                    È CONOSCENZA/ISTRUZIONE
+                                         strutturata
+
+Il modello lo &quot;richiede&quot;, il           Il modello la &quot;usa&quot; come
+programma lo ESEGUE                     parte del proprio contesto
+                                         di ragionamento
+
+Esempio: una funzione che              Esempio: un documento che
+interroga un database                  spiega &quot;come si calcola
+                                        correttamente la crescita
+                                        percentuale anno su anno,
+                                        gestendo i casi limite
+                                        come valori a zero&quot;
+
+Restituisce un RISULTATO                Arricchisce il PROMPT con
+concreto (dati, conferma                conoscenza procedurale o
+di un'azione)                           di dominio</code></pre>
+<blockquote><strong>Un'analogia per fissare la distinzione:</strong> un tool è come usare una calcolatrice — esegue un'operazione e restituisce un numero. Una skill è come avere studiato un metodo specifico per risolvere un certo tipo di problema — non esegue nulla direttamente, ma cambia <em>come</em> affronti il problema, perché ora possiedi una procedura o una conoscenza che prima non avevi.</blockquote>
+<hr>
+<h3 id="2-perche-serve-una-skill-library">2. Perché serve una Skill Library</h3>
+<p>Immagina che, nel tuo sistema, sia l'Agente Analista Vendite (Lezione 5.3) sia un nuovo Agente Previsioni Finanziarie debbano entrambi calcolare correttamente variazioni percentuali anno su anno, gestendo correttamente i casi limite (ad esempio, cosa succede se il valore dell'anno precedente era zero — un'operazione che produrrebbe una divisione per zero).</p>
+<p>Senza una skill condivisa, questa logica dovrebbe essere <strong>scritta due volte</strong>, in due prompt diversi, da persone potenzialmente diverse, in momenti diversi. Il rischio concreto: una delle due versioni viene successivamente corretta per un bug scoperto in produzione, mentre l'altra resta con il problema originale — le due versioni <strong>divergono silenziosamente</strong>, esattamente il tipo di incoerenza che abbiamo combattuto, sotto altre forme, in tutto questo capitolo.</p>
+<pre><code>SENZA SKILL LIBRARY
+
+Agente A: istruzioni su calcolo            Agente B: istruzioni su
+percentuali scritte nel SUO                calcolo percentuali scritte
+prompt specifico                           nel SUO prompt specifico
+(duplicate, possono divergere)             (duplicate, possono divergere)
+
+
+CON SKILL LIBRARY
+
+              skill: &quot;calcolo_variazioni_percentuali.md&quot;
+              (UN SOLO documento, fonte di verità unica)
+                         │              │
+                         ▼              ▼
+                  Agente A          Agente B
+            (la &quot;carica&quot; a runtime, (la &quot;carica&quot; a runtime,
+             stessa logica sempre)   stessa logica sempre)</code></pre>
+<p>Aggiornare la skill in un unico punto <strong>propaga automaticamente</strong> la correzione a tutti gli agenti che la usano, alla prossima esecuzione — senza dover ricordare di modificare manualmente ogni singolo prompt che conteneva quella stessa logica duplicata.</p>
+<hr>
+<h3 id="3-struttura-di-una-skill">3. Struttura di una skill</h3>
+<pre><code>---
+id: &quot;calcolo-variazioni-percentuali&quot;
+versione: &quot;1.1&quot;
+tipo: &quot;skill&quot;
+dominio: &quot;analisi-finanziaria&quot;
+owner: &quot;team-data-engineering&quot;
+ultima_modifica: &quot;2026-04-02&quot;
+---
+
+# Skill: Calcolo di Variazioni Percentuali
+
+## Quando usare questa skill
+
+Usa questa procedura ogni volta che devi calcolare una
+variazione percentuale tra due periodi (es. anno su anno,
+trimestre su trimestre).
+
+## Procedura
+
+1. Variazione % = ((valore_attuale - valore_precedente) /
+   valore_precedente) × 100
+
+2. CASO LIMITE: se valore_precedente è 0, NON calcolare
+   una percentuale (divisione per zero). Dichiara invece:
+   &quot;variazione non calcolabile: assenza di dato base&quot;
+
+3. Arrotonda sempre a una cifra decimale
+
+## Esempio
+
+valore_attuale = 1200, valore_precedente = 1100
+→ ((1200 - 1100) / 1100) × 100 = 9.1%
+
+valore_attuale = 500, valore_precedente = 0
+→ &quot;variazione non calcolabile: assenza di dato base&quot;</code></pre>
+<p>Nota che questo documento è scritto seguendo esattamente le stesse convenzioni di frontmatter della Lezione 6.1, e una struttura per sezioni simile a quella dei prompt professionali della Lezione 6.4 — non è un caso: una skill è, concettualmente, un <strong>frammento di prompt riutilizzabile</strong>, con la propria identità, versione, e ciclo di vita.</p>
+<hr>
+<h3 id="4-implementazione-pratica-skill-injection">4. Implementazione pratica: skill injection</h3>
+<p>Vediamo come un agente &quot;carica&quot; dinamicamente una skill, inserendola nel proprio contesto al momento dell'esecuzione — un meccanismo chiamato <strong>skill injection</strong>.</p>
+<pre><code>def carica_skill(id_skill: str, cartella_skill_library: str) -&gt; str:
+    &quot;&quot;&quot;
+    Carica il contenuto di una skill dalla libreria condivisa,
+    riusando il parser di frontmatter della Lezione 6.1.
+    &quot;&quot;&quot;
+    percorso = os.path.join(cartella_skill_library, f&quot;{id_skill}.md&quot;)
+    _, contenuto = estrai_frontmatter(percorso)
+    return contenuto
+
+
+def costruisci_system_prompt_con_skills(prompt_base: str,
+                                          skills_richieste: list[str],
+                                          cartella_skill_library: str) -&gt; str:
+    &quot;&quot;&quot;
+    Inietta una o più skill nel prompt di sistema di un agente,
+    estendendo le sue competenze senza duplicare la logica.
+    &quot;&quot;&quot;
+    sezioni_skill = []
+    for id_skill in skills_richieste:
+        contenuto_skill = carica_skill(id_skill, cartella_skill_library)
+        sezioni_skill.append(f&quot;## Competenza: {id_skill}\n{contenuto_skill}&quot;)
+
+    blocco_skills = &quot;\n\n&quot;.join(sezioni_skill)
+
+    return f&quot;{prompt_base}\n\n# Competenze Disponibili\n\n{blocco_skills}&quot;
+
+
+# Utilizzo: l'Agente Analista Vendite E l'Agente Previsioni
+# Finanziarie possono entrambi caricare la STESSA skill
+
+prompt_analista = costruisci_system_prompt_con_skills(
+    prompt_base=&quot;Sei un analista di dati di vendita...&quot;,
+    skills_richieste=[&quot;calcolo-variazioni-percentuali&quot;],
+    cartella_skill_library=&quot;skill_library_condivisa/&quot;
+)
+
+prompt_previsioni = costruisci_system_prompt_con_skills(
+    prompt_base=&quot;Sei un analista di previsioni finanziarie...&quot;,
+    skills_richieste=[&quot;calcolo-variazioni-percentuali&quot;],
+    cartella_skill_library=&quot;skill_library_condivisa/&quot;
+)</code></pre>
+<p>Entrambi i prompt risultanti includono <strong>esattamente la stessa procedura</strong>, caricata dinamicamente dalla stessa fonte unica. Se la skill viene successivamente aggiornata — ad esempio, per gestire un nuovo caso limite scoperto in produzione — entrambi gli agenti beneficeranno automaticamente della correzione alla loro prossima esecuzione, senza che nessuno debba ricordarsi di propagare manualmente la modifica.</p>
+<hr>
+<h3 id="5-governance-di-una-skill-library-condivisa">5. Governance di una Skill Library condivisa</h3>
+<p>Quando una skill library serve molti agenti, possibilmente mantenuti da team diversi, emerge una domanda organizzativa, non solo tecnica: <strong>chi può modificare una skill condivisa</strong>, e con quale processo?</p>
+<pre><code>PRINCIPI DI GOVERNANCE CONSIGLIATI
+
+1. Ogni skill ha un OWNER dichiarato (visto nel frontmatter
+   della Sezione 3) — responsabile della sua correttezza
+
+2. Le modifiche passano attraverso REVISIONE (pull request,
+   Lezione 6.4), specialmente se la skill è usata da agenti
+   di più team diversi
+
+3. Le modifiche sono VERSIONATE (Lezione 6.1, e formalizzate
+   nella Lezione 8.4): un cambiamento che altera il
+   comportamento atteso della skill richiede un nuovo
+   numero di versione, non una modifica silenziosa
+
+4. Gli agenti che usano una skill DICHIARANO quale versione
+   si aspettano (esattamente come un contratto, Lezione 6.5),
+   permettendo di rilevare automaticamente se un agente sta
+   usando una versione obsoleta o se una nuova versione
+   della skill introduce un cambiamento che richiede verifica</code></pre>
+<p>Questi principi anticipano direttamente la trattazione completa della governance degli artefatti agentivi che affronteremo nella Lezione 8.4 — qui applicata specificamente al caso delle skill condivise, che per la loro natura di &quot;conoscenza centralizzata usata da molti&quot; sono particolarmente sensibili a una governance disciplinata.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-quando-una-logica-merita-di-diventare-una-skill">Esempio Pratico: Riconoscere Quando una Logica Merita di Diventare una Skill</h3>
+<p>Applica questo criterio: <strong>una logica merita di diventare una skill condivisa quando viene usata, o probabilmente verrà usata, da più di un agente, e quando la sua correttezza richiede mantenimento nel tempo</strong> (non è una semplice istruzione statica che non cambierà mai).</p>
+<ol><li>&quot;Rispondi sempre in italiano formale&quot; — <strong>non una skill</strong>: è una preferenza di comportamento specifica di un singolo agente, non una competenza procedurale condivisibile</li><li>&quot;Come interpretare correttamente le date in formato italiano vs americano, evitando ambiguità tra giorno/mese&quot; — <strong>buona candidata a skill</strong>: è una procedura specifica, riutilizzabile da qualsiasi agente che debba elaborare date, e potrebbe richiedere aggiornamenti se si scoprono nuovi casi limite</li><li>&quot;Il nome del cliente per questa specifica richiesta è Mario Rossi&quot; — <strong>non una skill, né un prompt stabile</strong>: è un dato specifico della singola esecuzione (un task prompt dinamico, Lezione 6.4), non una competenza riutilizzabile</li></ol>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Una <strong>skill</strong> è conoscenza o istruzione procedurale strutturata che arricchisce il contesto di ragionamento di un agente, distinta da un <strong>tool</strong> (Lezione 4.4), che è codice eseguibile che produce un risultato concreto.</li><li>Una <strong>skill library</strong> centralizza competenze condivise tra più agenti, evitando la duplicazione (e la conseguente divergenza nel tempo) della stessa logica in prompt separati.</li><li>Una skill si struttura come documento <code>.md</code> con frontmatter (Lezione 6.1), seguendo le stesse convenzioni degli altri artefatti dell'agent package.</li><li>La <strong>skill injection</strong> inserisce dinamicamente il contenuto di una skill nel prompt di sistema di un agente a runtime, permettendo a più agenti di condividere esattamente la stessa logica senza duplicarla nel codice.</li><li>La <strong>governance</strong> di una skill library condivisa richiede owner dichiarati, processo di revisione, versionamento esplicito, e dichiarazione delle versioni attese da parte di chi consuma la skill.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Riprendi la skill &quot;calcolo-variazioni-percentuali&quot; della Sezione 3. Se questa logica fosse implementata come un <strong>tool</strong> (una funzione Python che esegue il calcolo) invece che come una skill, quali vantaggi e quali svantaggi avrebbe questa scelta alternativa? (Suggerimento: pensa a precisione del calcolo vs flessibilità di adattare la spiegazione del caso limite al contesto specifico.)</li></ol>
+<ol><li>Spiega perché, senza un meccanismo di versionamento dichiarato per le skill (Sezione 5), un aggiornamento a una skill condivisa potrebbe causare un comportamento inatteso in un agente che, di fatto, era stato progettato e testato assumendo una versione precedente della stessa skill.</li></ol>
+<ol><li>Applicando il criterio dell'esempio pratico finale, valuta se questa istruzione meriterebbe di diventare una skill condivisa: &quot;Come anonimizzare correttamente dati sensibili (nomi, indirizzi email) prima di includerli in un log o in un report, rispettando le normative sulla privacy.&quot;</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 6.4 (I Prompt come Artefatti) — una skill è concettualmente un frammento di prompt riutilizzabile, con la stessa disciplina di versionamento. Lezione 4.4 (Function Calling) — la distinzione tool/skill richiama e completa quella distinzione.</p>
+<p><strong>Porta a:</strong> Capitolo 7 (Workflow Multi-Agente) — un workflow professionale combina agent package completi (Lezione 6.2), ciascuno potenzialmente arricchito da skill condivise, coordinati attraverso handoff (Lezione 6.6) e contratti (Lezione 6.5).</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.4 (Governance e Versioning) — i principi di governance qui applicati alle skill saranno generalizzati a tutti gli artefatti di un sistema agentivo maturo.</p>
+<hr>
+<p><strong>CHIUSURA DEL CAPITOLO 6.</strong> Con questa lezione si conclude l'intero nucleo ingegneristico professionale del corso: la struttura di file di un agent package (6.2), la sua identità pubblica tramite Agent Card (6.3), i prompt trattati come codice sorgente versionato (6.4), i contratti che garantiscono coerenza tra agenti (6.5), gli handoff che trasferiscono responsabilità con tutto il contesto necessario (6.6), e le skill che centralizzano conoscenza condivisa (6.7) — tutto fondato sul formato YAML/frontmatter introdotto in apertura (6.1). Il Capitolo 7 assembla ora questi agent package in workflow multi-agente completi, implementati con strumenti professionali come LangGraph.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="06-06-gli-handoff-come-un-agente-passa-il-controllo-a-un-altro.html">← 06-06 Gli Handoff</a>
+        <a class="primary-action" href="07-01-progettare-un-workflow-agentivo-dal-problema-al-grafo.html">07-01 Progettare un Workflow Agentivo →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YAML e Frontmatter: il linguaggio dei metadati strutturati | AgentFactory</title>
+  <meta name="description" content="Il primo mattone dell'ingegneria professionale degli agenti: come strutturare un documento misto">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-06-agent-package">L'Agent Package: Struttura, Contratti e Artefatti</a><span>/</span><strong>06-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 06-01</p>
+        <h1>YAML e Frontmatter: il linguaggio dei metadati strutturati</h1>
+        <p class="lesson-subtitle">Il primo mattone dell'ingegneria professionale degli agenti: come strutturare un documento misto</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>06 · L'Agent Package: Struttura, Contratti e Artefatti</strong></div><div><span>Durata</span><strong>55 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>YAML</span><span>frontmatter</span><span>metadati machine-readable</span><span>parsing</span><span>convenzioni di naming</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Scrivere YAML sintatticamente corretto per casi d'uso reali</li><li>Spiegare perché il frontmatter è lo standard per gli artefatti agentivi</li><li>Implementare un parser di frontmatter funzionante</li><li>Progettare convenzioni di naming coerenti per un sistema multi-agente</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Con questa lezione entriamo nel Capitolo 6, il nucleo ingegneristico professionale di tutto il corso. Fino ad ora abbiamo costruito agenti come <strong>codice</strong>: funzioni Python, system prompt scritti come stringhe, strumenti definiti inline. Questo approccio funziona per esempi didattici e prototipi, ma non scala a un sistema reale, mantenuto da un team, che deve evolvere nel tempo senza che ogni modifica richieda di toccare il codice sorgente.</p>
+<p>La soluzione a questo problema passa attraverso un concetto che abbiamo già incontrato più volte nel corso, ma mai analizzato in profondità: il <strong>frontmatter</strong> — un blocco YAML che precede un documento Markdown, e che useremo, da questa lezione in avanti, come formato standard per ogni artefatto di un sistema agentivo: agenti, prompt, contratti, handoff, skill. Non è un caso che tu stia leggendo, in questo momento, un file che usa esattamente questa struttura: ogni lezione di questo corso è già un esempio vivente di ciò che stiamo per studiare.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Scrivere YAML sintatticamente corretto per casi d'uso reali, non solo riconoscerlo</li><li>Spiegare con precisione perché il frontmatter è diventato lo standard per gli artefatti dei sistemi agentivi</li><li>Implementare un parser di frontmatter funzionante in Python</li><li>Progettare convenzioni di naming coerenti per i metadati di un intero sistema multi-agente</li></ul>
+<hr>
+<h3 id="1-yaml-ripreso-e-approfondito">1. YAML, ripreso e approfondito</h3>
+<p>Avevamo introdotto YAML nella Lezione 1.5, contrapposto a JSON: stessa informazione, sintassi diversa, pensata per essere scritta e letta comodamente da un essere umano. Approfondiamo ora la sintassi con precisione sufficiente a scriverla correttamente, non solo a riconoscerla.</p>
+<pre><code># Valori scalari semplici
+nome: Agente Analista
+versione: 1.2
+attivo: true
+soglia_confidenza: 0.85
+
+# Liste
+strumenti:
+  - cerca_database
+  - genera_report
+  - invia_notifica
+
+# Oggetti annidati (indentazione = struttura, NON tab, solo spazi)
+autore:
+  nome: Mario Rossi
+  team: Data Engineering
+
+# Stringhe multilinea (usando il simbolo pipe)
+descrizione: |
+  Questo agente analizza i dati di vendita
+  e genera report settimanali automaticamente.
+  Supporta confronti anno su anno.
+
+# Stringhe che necessitano di quote (per caratteri speciali)
+titolo: &quot;Report: Analisi Q3 — vs Q2&quot;</code></pre>
+<p>Alcune regole sintattiche che causano errori frequenti, e che vale la pena fissare con precisione:</p>
+<ul><li><strong>L'indentazione è strutturale</strong>, esattamente come in Python: due elementi allo stesso livello di indentazione appartengono allo stesso oggetto</li><li><strong>Mai usare tab per l'indentazione</strong>, solo spazi — molti parser YAML falliscono silenziosamente o producono errori criptici se trovano un tab</li><li><strong>I due punti dopo una chiave richiedono uno spazio successivo</strong> (<code>chiave: valore</code>, non <code>chiave:valore</code>)</li><li><strong>Le stringhe non necessitano quasi mai di virgolette</strong>, a meno che contengano caratteri speciali come <code>:</code>, <code>#</code>, o iniziino con caratteri che YAML potrebbe interpretare diversamente (es. un numero che deve restare testo)</li></ul>
+<hr>
+<h3 id="2-perche-il-frontmatter-e-lo-standard-per-gli-artefatti-agentivi">2. Perché il frontmatter è lo standard per gli artefatti agentivi</h3>
+<p>Il <strong>frontmatter</strong> è un blocco YAML, delimitato da tre trattini (<code>---</code>) prima e dopo, posto all'inizio di un file Markdown. La struttura risolve un problema preciso: un documento che deve essere <strong>sia leggibile da un umano sia interpretabile automaticamente da un programma</strong>.</p>
+<pre><code>---
+[METADATI in YAML: machine-readable]
+---
+
+[CONTENUTO in Markdown: human-readable]</code></pre>
+<p>Pensa a un singolo file che descrive un agente del tuo sistema. Da un lato, vuoi che un umano possa aprirlo e capire immediatamente di cosa si tratta, leggendo prosa normale. Dall'altro, vuoi che un programma — ad esempio, il tuo orchestratore (Lezione 5.3), o uno script che genera automaticamente un catalogo di tutti gli agenti disponibili — possa estrarre informazioni precise senza dover &quot;interpretare&quot; un testo discorsivo.</p>
+<pre><code>---
+id: &quot;agente-analista-vendite&quot;
+versione: &quot;1.2.0&quot;
+modello: &quot;claude-sonnet-4-6&quot;
+strumenti: [&quot;query_database&quot;, &quot;calcola_statistiche&quot;]
+owner: &quot;team-data-engineering&quot;
+stato: &quot;produzione&quot;
+---
+
+# Agente Analista Vendite
+
+Questo agente analizza i dati di vendita trimestrali,
+identifica trend significativi, e prepara un riassunto
+strutturato per il team commerciale.
+
+## Comportamento atteso
+
+L'agente non genera mai raccomandazioni di business
+dirette: si limita a riportare dati e tendenze
+osservate, lasciando l'interpretazione strategica
+al team umano.</code></pre>
+<p>Un programma può leggere <code>versione</code>, <code>strumenti</code>, <code>stato</code> con un parsing immediato e affidabile (esattamente come nella Lezione 4.2, parsing di output strutturati). Un umano può leggere la sezione &quot;Comportamento atteso&quot; e capire immediatamente il contesto, senza dover decifrare una struttura puramente tecnica. <strong>Nessuna delle due esigenze viene sacrificata per l'altra.</strong></p>
+<blockquote><strong>Perché questo non è un dettaglio estetico:</strong> ricorda dalla Lezione 5.4 il problema della coerenza terminologica tra agenti. Se ogni agente del sistema dichiara i propri metadati (versione, strumenti, owner, stato) in un formato standardizzato e prevedibile, diventa possibile costruire strumenti automatici che verificano la coerenza dell'intero sistema — ad esempio, uno script che controlla se tutti gli agenti dichiarati &quot;in produzione&quot; hanno effettivamente una sezione di test associata. Senza una struttura standard, questo tipo di verifica automatica sarebbe impossibile.</blockquote>
+<hr>
+<h3 id="3-implementazione-pratica-un-parser-di-frontmatter">3. Implementazione pratica: un parser di frontmatter</h3>
+<p>Vediamo come si estrae programmaticamente il frontmatter da un file, separandolo dal contenuto Markdown — un'operazione che useremo costantemente da qui in avanti, ogni volta che un agente o un orchestratore deve &quot;leggere&quot; un artefatto del sistema.</p>
+<pre><code>import yaml
+import re
+
+def estrai_frontmatter(percorso_file: str) -&gt; tuple[dict, str]:
+    &quot;&quot;&quot;
+    Legge un file Markdown con frontmatter YAML,
+    restituendo (metadati, contenuto_markdown).
+    &quot;&quot;&quot;
+    with open(percorso_file, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
+        testo_completo = f.read()
+
+    # Il frontmatter è delimitato da --- all'inizio del file
+    pattern = r&quot;^---\s*\n(.*?)\n---\s*\n(.*)$&quot;
+    corrispondenza = re.match(pattern, testo_completo, re.DOTALL)
+
+    if not corrispondenza:
+        raise ValueError(
+            f&quot;Il file {percorso_file} non contiene un &quot;
+            f&quot;frontmatter YAML valido.&quot;
+        )
+
+    blocco_yaml, contenuto_markdown = corrispondenza.groups()
+    metadati = yaml.safe_load(blocco_yaml)
+
+    return metadati, contenuto_markdown.strip()
+
+
+# Utilizzo:
+metadati, contenuto = estrai_frontmatter(&quot;agenti/analista-vendite.md&quot;)
+
+print(f&quot;Versione: {metadati['versione']}&quot;)
+print(f&quot;Strumenti: {metadati['strumenti']}&quot;)
+print(f&quot;Stato: {metadati['stato']}&quot;)
+
+if metadati[&quot;stato&quot;] == &quot;produzione&quot; and not metadati.get(&quot;strumenti&quot;):
+    raise ValueError(&quot;Un agente in produzione deve dichiarare strumenti!&quot;)</code></pre>
+<p>Nota l'uso di <code>yaml.safe_load</code> invece di <code>yaml.load</code>: questa è una scelta di sicurezza deliberata. <code>yaml.load</code> senza restrizioni può, in alcune circostanze, eseguire codice arbitrario se il file YAML contiene costrutti malevoli — un rischio reale se il sistema dovesse mai elaborare frontmatter provenienti da fonti non completamente fidate. <code>safe_load</code> si limita a interpretare strutture dati semplici (stringhe, numeri, liste, oggetti), eliminando questo rischio.</p>
+<hr>
+<h3 id="4-convenzioni-di-naming-per-un-sistema-coerente">4. Convenzioni di naming per un sistema coerente</h3>
+<p>Quando un intero sistema multi-agente (Lezione 5.4) adotta il frontmatter come standard, diventa essenziale stabilire <strong>convenzioni condivise</strong> su quali campi usare e con quali nomi — esattamente il problema di coerenza terminologica identificato nella Lezione 5.4, qui risolto a livello di metadati invece che di contenuto dei messaggi.</p>
+<pre><code># CONVENZIONE CONSIGLIATA per un sistema di agenti
+
+---
+id: &quot;identificativo-univoco-kebab-case&quot;    # sempre minuscolo, trattini
+versione: &quot;1.0.0&quot;                           # semantic versioning (Lezione 8.4)
+tipo: &quot;agente&quot; | &quot;skill&quot; | &quot;schema&quot; | &quot;handoff&quot;  # categoria dell'artefatto
+modello: &quot;claude-sonnet-4-6&quot;                 # solo se rilevante
+strumenti: []                                # sempre una lista, anche se vuota
+prerequisiti: []                             # dipendenze da altri artefatti
+owner: &quot;nome-team-o-persona&quot;
+stato: &quot;bozza&quot; | &quot;revisione&quot; | &quot;produzione&quot;  # ciclo di vita (Lezione 8.4)
+data_modifica: &quot;2026-06-19&quot;
+---</code></pre>
+<p>Questa convenzione — chiavi sempre in minuscolo, valori di stato vincolati a un insieme fisso di opzioni, versionamento semantico — non è arbitraria: è precisamente il tipo di disciplina che permette a strumenti automatici di validare l'intero sistema (ad esempio, rifiutando un file che dichiara uno <code>stato</code> non previsto tra le opzioni valide), e che renderà possibile, nella Lezione 6.5, costruire contratti formali che si basano esattamente su questi stessi principi di struttura prevedibile.</p>
+<blockquote><strong>Nota di trasparenza pratica:</strong> osserva che il frontmatter di questa stessa lezione, che puoi vedere in cima a questo file, segue esattamente questo tipo di convenzione — <code>id</code>, <code>versione</code>, <code>stato</code>, <code>prerequisiti</code>. Il corso che stai studiando è stato costruito, fin dall'inizio, secondo i principi che ti sta insegnando.</blockquote>
+<hr>
+<h3 id="esempio-pratico-validare-un-intero-catalogo-di-agenti">Esempio Pratico: Validare un Intero Catalogo di Agenti</h3>
+<p>Estendiamo il parser della Sezione 3 per costruire uno strumento che verifica automaticamente la coerenza di tutti gli agenti di un sistema, leggendo i loro frontmatter:</p>
+<pre><code>import os
+
+def valida_catalogo_agenti(cartella: str) -&gt; list[str]:
+    &quot;&quot;&quot;
+    Scansiona tutti i file .md in una cartella e verifica
+    che ogni agente dichiarato 'produzione' rispetti
+    le convenzioni minime di sistema.
+    &quot;&quot;&quot;
+    problemi = []
+
+    for nome_file in os.listdir(cartella):
+        if not nome_file.endswith(&quot;.md&quot;):
+            continue
+
+        percorso = os.path.join(cartella, nome_file)
+        metadati, _ = estrai_frontmatter(percorso)
+
+        if metadati.get(&quot;stato&quot;) == &quot;produzione&quot;:
+            if not metadati.get(&quot;strumenti&quot;):
+                problemi.append(f&quot;{nome_file}: produzione senza strumenti dichiarati&quot;)
+            if not metadati.get(&quot;owner&quot;):
+                problemi.append(f&quot;{nome_file}: produzione senza owner dichiarato&quot;)
+            if not metadati.get(&quot;versione&quot;):
+                problemi.append(f&quot;{nome_file}: produzione senza versione dichiarata&quot;)
+
+    return problemi
+
+
+problemi_trovati = valida_catalogo_agenti(&quot;agenti/&quot;)
+if problemi_trovati:
+    print(&quot;Problemi di coerenza trovati nel catalogo:&quot;)
+    for p in problemi_trovati:
+        print(f&quot;  - {p}&quot;)
+else:
+    print(&quot;Catalogo coerente: nessun problema trovato.&quot;)</code></pre>
+<p>Questo script, per quanto semplice, rappresenta un concetto che diventerà centrale nel resto del capitolo: la possibilità di <strong>validare automaticamente</strong> l'intero sistema, invece di affidarsi alla disciplina manuale di chi scrive ogni singolo agente — un principio di qualità ingegneristica che, nella Lezione 6.5, estenderemo dai semplici metadati ai contratti completi di input e output.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li><strong>YAML</strong> rappresenta dati strutturati con una sintassi leggibile, basata su indentazione (sempre spazi, mai tab) invece di parentesi.</li><li>Il <strong>frontmatter</strong> — un blocco YAML all'inizio di un file Markdown — risolve il problema di costruire documenti che siano contemporaneamente leggibili da umani e interpretabili automaticamente da programmi.</li><li>Un parser di frontmatter, implementabile con poche righe di Python usando <code>yaml.safe_load</code> (per ragioni di sicurezza), estrae metadati e contenuto separatamente, permettendo a un sistema di &quot;leggere&quot; gli artefatti che lo compongono.</li><li><strong>Convenzioni di naming condivise</strong> per i metadati (chiavi standard, valori vincolati per i campi di stato, versionamento semantico) sono ciò che rende possibile costruire strumenti automatici di validazione su un intero sistema multi-agente.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché l'uso di <code>yaml.safe_load</code> invece di <code>yaml.load</code> è una scelta di sicurezza rilevante, e non solo uno stile di codifica preferibile? In quale scenario concreto questa scelta farebbe la differenza?</li></ol>
+<ol><li>Immagina che due agenti diversi del tuo sistema usino, nei rispettivi frontmatter, rispettivamente i campi <code>responsabile</code> e <code>owner</code> per indicare la stessa informazione (chi è responsabile dell'agente). Quale problema, già descritto in una lezione precedente, si manifesterebbe quando provi a costruire uno script di validazione automatica come quello della Sezione finale?</li></ol>
+<ol><li>Il frontmatter di questa stessa lezione include il campo <code>prerequisiti: [&quot;05-05&quot;, &quot;01-05&quot;]</code>. In che modo un orchestratore (Lezione 5.3) o un sistema di gestione del corso potrebbe usare questa informazione in modo automatico, senza che un umano debba leggerla manualmente?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 1.5 (Le API) — qui approfondiamo YAML, introdotto lì in contrapposizione a JSON. Lezione 5.4 (Single vs Multi-Agent) — il problema di coerenza terminologica trova qui una prima soluzione strutturale a livello di metadati.</p>
+<p><strong>Porta a:</strong> Lezione 6.2 (L'Agent Package) — il frontmatter qui padroneggiato è il formato esatto con cui descriveremo ogni file della struttura di un agente professionale.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 6.3 (Agent Card) — l'Agent Card è, essenzialmente, un frontmatter strutturato secondo uno standard ancora più preciso e completo. Lezione 8.4 (Governance e Versioning) — il campo <code>stato</code> e il versionamento semantico qui introdotti diventeranno il fondamento del ciclo di vita formale degli artefatti agentivi.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="05-05-gestione-degli-errori-robustezza-e-osservabilita-negli-agenti.html">← 05-05 Gestione degli Errori e Osservabilità</a>
+        <a class="primary-action" href="06-02-l-agent-package-struttura-di-file-e-directory-di-un-agente-professionale.html">06-02 L'Agent Package →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

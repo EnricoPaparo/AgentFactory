@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LangGraph: costruire workflow come grafi orientati con stato | AgentFactory</title>
+  <meta name="description" content="Dal diagramma su carta al codice funzionante: lo strumento standard per workflow agentivi">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-07-workflow-multi-agente">Workflow Multi-Agente: Design e Implementazione</a><span>/</span><strong>07-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 07-02</p>
+        <h1>LangGraph: costruire workflow come grafi orientati con stato</h1>
+        <p class="lesson-subtitle">Dal diagramma su carta al codice funzionante: lo strumento standard per workflow agentivi</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>07 · Workflow Multi-Agente: Design e Implementazione</strong></div><div><span>Durata</span><strong>80 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>LangGraph</span><span>StateGraph</span><span>nodo LangGraph</span><span>arco condizionale</span><span>checkpointing</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare quando LangGraph offre un vantaggio rispetto al codice Python diretto</li><li>Implementare un StateGraph completo con nodi e archi condizionali</li><li>Costruire nodi paralleli per l'esecuzione simultanea di agenti</li><li>Configurare il checkpointing per la persistenza dello stato tra esecuzioni</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo progettato un workflow interamente su &quot;carta&quot;: diagrammi, principi di posizionamento dei checkpoint, vocabolario di nodi e archi. Questa lezione trasforma quel design in codice eseguibile, usando <strong>LangGraph</strong>, il framework oggi più diffuso per costruire esattamente questo tipo di sistema.</p>
+<p>È importante affrontare LangGraph con la giusta prospettiva: non è uno strumento che introduce concetti nuovi rispetto a quanto già costruito nel corso — è un framework che <strong>formalizza e rende robusta</strong> l'implementazione di pattern che, fino a questa lezione, abbiamo scritto a mano con cicli <code>for</code> e funzioni Python (Lezioni 5.1, 5.3, 5.4). Tutto quello che LangGraph fa, lo hai già fatto tu stesso, in forma più semplice, nelle lezioni precedenti — qui ne vediamo la versione professionale e scalabile.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare con precisione quando LangGraph offre un vantaggio concreto rispetto al codice Python diretto delle lezioni precedenti</li><li>Implementare un <code>StateGraph</code> completo, con nodi e archi condizionali, per un workflow reale</li><li>Costruire nodi paralleli per l'esecuzione simultanea di più agenti</li><li>Configurare il checkpointing per garantire la persistenza dello stato tra esecuzioni diverse</li></ul>
+<hr>
+<h3 id="1-perche-langgraph-e-non-solo-cicli-python">1. Perché LangGraph, e non solo cicli Python</h3>
+<p>Negli esempi del Capitolo 5 (in particolare la Lezione 5.4), abbiamo costruito pipeline con cicli <code>for</code> e chiamate di funzione sequenziali. Questo approccio funziona bene per workflow semplici, ma incontra limiti concreti quando il grafo progettato nella Lezione 7.1 diventa più complesso:</p>
+<pre><code>LIMITI DEL CODICE PYTHON &quot;FATTO A MANO&quot;
+
+- Gestire archi condizionali multipli (Sezione 2 della
+  Lezione 7.1) con semplici if/else diventa rapidamente
+  illeggibile quando le condizioni si moltiplicano
+
+- Implementare cicli controllati (tornare a un nodo
+  precedente, come nel checkpoint &quot;Ambiguità rilevata?&quot;)
+  richiede di gestire manualmente la logica di iterazione,
+  con rischio di loop infiniti se non si presta attenzione
+
+- La PERSISTENZA dello stato tra un'esecuzione e la
+  successiva (es. un workflow che si interrompe per
+  attendere revisione umana, e deve poter RIPRENDERE
+  esattamente da dove si era fermato) richiede di
+  implementare manualmente serializzazione, salvataggio,
+  e ripristino dello stato</code></pre>
+<p>LangGraph risolve questi tre problemi fornendo un'API dedicata per dichiarare nodi, archi (anche condizionali e ciclici), e un meccanismo di persistenza dello stato — il <strong>checkpointing</strong>, che approfondiremo nella Sezione 4 — pronto all'uso, senza doverlo implementare da zero.</p>
+<hr>
+<h3 id="2-il-concetto-di-stategraph">2. Il concetto di StateGraph</h3>
+<p>Un <code>StateGraph</code> è, letteralmente, l'implementazione tecnica del grafo progettato nella Lezione 7.1: un insieme di nodi, ciascuno dei quali legge e scrive su uno <strong>stato condiviso</strong>, esattamente come il <code>StatoWorkflowRequisiti</code> definito in quella lezione.</p>
+<pre><code>from langgraph.graph import StateGraph, END
+from pydantic import BaseModel
+from typing import Optional
+
+class StatoWorkflowRequisiti(BaseModel):
+    &quot;&quot;&quot;Lo stesso stato definito nella Lezione 7.1.&quot;&quot;&quot;
+    cartella_input: str
+    testo_estratto: Optional[str] = None
+    requisiti_identificati: Optional[dict] = None
+    ambiguita_rilevate: list[str] = []
+    handoff_pronto: bool = False
+
+
+def nodo_estrazione(stato: StatoWorkflowRequisiti) -&gt; dict:
+    &quot;&quot;&quot;
+    Un NODO del grafo: riceve lo stato attuale, esegue
+    il proprio lavoro (qui useremmo l'agente di estrazione,
+    Lezione 5.1), e restituisce gli AGGIORNAMENTI allo stato.
+    &quot;&quot;&quot;
+    testo = f&quot;Testo estratto dalla cartella {stato.cartella_input}&quot;
+    return {&quot;testo_estratto&quot;: testo}
+
+
+def nodo_analisi_requisiti(stato: StatoWorkflowRequisiti) -&gt; dict:
+    &quot;&quot;&quot;Un secondo nodo, che usa l'output del nodo precedente.&quot;&quot;&quot;
+    requisiti = {&quot;funzionali&quot;: [&quot;upload multi-formato&quot;]}
+    ambiguita = [&quot;formato output non specificato chiaramente&quot;]
+    return {
+        &quot;requisiti_identificati&quot;: requisiti,
+        &quot;ambiguita_rilevate&quot;: ambiguita
+    }
+
+
+def decidi_se_richiedere_chiarimento(stato: StatoWorkflowRequisiti) -&gt; str:
+    &quot;&quot;&quot;
+    Una FUNZIONE DI ROUTING: decide quale arco seguire,
+    implementando il checkpoint &quot;Ambiguità rilevata?&quot;
+    della Lezione 7.1.
+    &quot;&quot;&quot;
+    if stato.ambiguita_rilevate:
+        return &quot;richiedi_chiarimento&quot;
+    return &quot;costruisci_handoff&quot;
+
+
+# Costruzione del grafo
+grafo = StateGraph(StatoWorkflowRequisiti)
+
+grafo.add_node(&quot;estrazione&quot;, nodo_estrazione)
+grafo.add_node(&quot;analisi&quot;, nodo_analisi_requisiti)
+grafo.add_node(&quot;richiedi_chiarimento&quot;, lambda s: {&quot;handoff_pronto&quot;: False})
+grafo.add_node(&quot;costruisci_handoff&quot;, lambda s: {&quot;handoff_pronto&quot;: True})
+
+grafo.set_entry_point(&quot;estrazione&quot;)
+grafo.add_edge(&quot;estrazione&quot;, &quot;analisi&quot;)
+
+# ARCO CONDIZIONALE: implementa il checkpoint della Lezione 7.1
+grafo.add_conditional_edges(
+    &quot;analisi&quot;,
+    decidi_se_richiedere_chiarimento,
+    {
+        &quot;richiedi_chiarimento&quot;: &quot;richiedi_chiarimento&quot;,
+        &quot;costruisci_handoff&quot;: &quot;costruisci_handoff&quot;
+    }
+)
+
+grafo.add_edge(&quot;richiedi_chiarimento&quot;, END)
+grafo.add_edge(&quot;costruisci_handoff&quot;, END)
+
+workflow_compilato = grafo.compile()
+
+# Esecuzione
+risultato = workflow_compilato.invoke(
+    StatoWorkflowRequisiti(cartella_input=&quot;documenti_cliente_X/&quot;)
+)</code></pre>
+<p>Confronta questo codice con il diagramma della Lezione 7.1: <code>add_node</code> corrisponde esattamente ai nodi disegnati, <code>add_conditional_edges</code> implementa precisamente il checkpoint &quot;Ambiguità rilevata?&quot; con la sua diramazione condizionale. <strong>Il design ha preceduto l'implementazione</strong>, e l'implementazione la rispetta fedelmente — questo è precisamente il valore della disciplina di progettazione insegnata nella lezione precedente.</p>
+<hr>
+<h3 id="3-nodi-paralleli-eseguire-piu-agenti-contemporaneamente">3. Nodi paralleli: eseguire più agenti contemporaneamente</h3>
+<p>Un vantaggio significativo di LangGraph, difficile da replicare correttamente a mano senza introdurre bug di concorrenza, è l'esecuzione di <strong>nodi paralleli</strong>: più agenti che lavorano contemporaneamente su parti indipendenti dello stato, i cui risultati vengono poi raccolti insieme.</p>
+<pre><code>def nodo_estrazione_pdf(stato: StatoWorkflowRequisiti) -&gt; dict:
+    return {&quot;testo_da_pdf&quot;: &quot;contenuto estratto dai PDF&quot;}
+
+def nodo_estrazione_audio(stato: StatoWorkflowRequisiti) -&gt; dict:
+    return {&quot;testo_da_audio&quot;: &quot;trascrizione dei file audio&quot;}
+
+def nodo_estrazione_immagini(stato: StatoWorkflowRequisiti) -&gt; dict:
+    return {&quot;testo_da_immagini&quot;: &quot;descrizione delle immagini&quot;}
+
+# Tutti e tre questi nodi possono partire dallo stesso punto
+# del grafo ed essere eseguiti IN PARALLELO, perché operano
+# su parti indipendenti dello stato (non c'è dipendenza
+# tra l'estrazione PDF e l'estrazione audio)
+
+grafo.add_edge(&quot;inizio&quot;, &quot;estrazione_pdf&quot;)
+grafo.add_edge(&quot;inizio&quot;, &quot;estrazione_audio&quot;)
+grafo.add_edge(&quot;inizio&quot;, &quot;estrazione_immagini&quot;)
+
+# Un nodo successivo &quot;unisce&quot; i risultati solo dopo che
+# TUTTI i nodi paralleli hanno completato il proprio lavoro
+grafo.add_edge(&quot;estrazione_pdf&quot;, &quot;unisci_risultati&quot;)
+grafo.add_edge(&quot;estrazione_audio&quot;, &quot;unisci_risultati&quot;)
+grafo.add_edge(&quot;estrazione_immagini&quot;, &quot;unisci_risultati&quot;)</code></pre>
+<p>Questo pattern è esattamente ciò che serve per il tuo caso d'uso: una cartella con file misti (PDF, immagini, audio) può essere elaborata con <strong>tre estrazioni parallele indipendenti</strong>, invece di un'elaborazione sequenziale file per file — un guadagno di tempo significativo quando la cartella contiene molti file di tipi diversi.</p>
+<hr>
+<h3 id="4-persistenza-dello-stato-il-checkpointing-di-langgraph">4. Persistenza dello stato: il checkpointing di LangGraph</h3>
+<p>Torniamo a un limite identificato nella Sezione 1: cosa succede se il workflow deve <strong>fermarsi</strong> (ad esempio, al checkpoint di revisione umana che affronteremo nella Lezione 7.4) e riprendere solo dopo che un umano ha fornito un feedback, potenzialmente ore o giorni dopo?</p>
+<pre><code>from langgraph.checkpoint.memory import MemorySaver
+
+memoria_checkpoint = MemorySaver()
+workflow_compilato = grafo.compile(checkpointer=memoria_checkpoint)
+
+# Ogni esecuzione è associata a un thread_id univoco,
+# che permette di RIPRENDERE esattamente da dove si era
+# interrotta, anche in un processo completamente separato
+configurazione = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;progetto-cliente-X-2026&quot;}}
+
+# Prima esecuzione: il workflow si ferma al checkpoint umano
+risultato_parziale = workflow_compilato.invoke(
+    StatoWorkflowRequisiti(cartella_input=&quot;documenti_cliente_X/&quot;),
+    config=configurazione
+)
+
+# ... giorni dopo, un umano ha fornito il proprio feedback ...
+
+# Il workflow RIPRENDE esattamente dallo stato salvato,
+# senza dover ripetere l'estrazione e l'analisi già completate
+risultato_finale = workflow_compilato.invoke(
+    None,  # nessun nuovo input: riprende dal checkpoint salvato
+    config=configurazione
+)</code></pre>
+<p>Questo meccanismo di persistenza è precisamente ciò che rende possibile, in modo robusto e senza dover implementare manualmente serializzazione e ripristino, il pattern di <strong>handoff asincrono</strong> introdotto nella Lezione 6.6: il workflow può fermarsi per un tempo arbitrariamente lungo, in attesa di un intervento esterno, senza perdere il lavoro già svolto.</p>
+<hr>
+<h3 id="esempio-pratico-tracciare-l-esecuzione-del-grafo-completo">Esempio Pratico: Tracciare l'Esecuzione del Grafo Completo</h3>
+<p>Riprendendo il codice della Sezione 2, seguiamo l'esecuzione concettuale per il caso in cui un'ambiguità viene effettivamente rilevata:</p>
+<pre><code>1. ENTRY POINT: &quot;estrazione&quot;
+   nodo_estrazione() viene eseguito
+   → stato.testo_estratto = &quot;Testo estratto...&quot;
+
+2. ARCO INCONDIZIONATO: estrazione → analisi
+   nodo_analisi_requisiti() viene eseguito
+   → stato.requisiti_identificati = {...}
+   → stato.ambiguita_rilevate = [&quot;formato output...&quot;]
+
+3. ARCO CONDIZIONALE: analisi → ?
+   decidi_se_richiedere_chiarimento(stato) viene chiamata
+   → stato.ambiguita_rilevate NON è vuota
+   → restituisce &quot;richiedi_chiarimento&quot;
+
+4. Il grafo segue l'arco verso il nodo &quot;richiedi_chiarimento&quot;
+   → stato.handoff_pronto = False
+
+5. ARCO verso END: il grafo termina questa esecuzione,
+   con un risultato che indica che è necessario un
+   chiarimento PRIMA di poter procedere</code></pre>
+<p>Questa traccia rende esplicito un punto importante: il <strong>codice del grafo non decide direttamente</strong> se procedere o richiedere chiarimento — quella decisione è interamente delegata alla funzione <code>decidi_se_richiedere_chiarimento</code>, che a sua volta dipende dal lavoro svolto dal nodo di analisi. Il grafo definisce la <strong>struttura delle possibilità</strong>; il comportamento effettivo emerge dall'interazione tra stato e logica di routing.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li><strong>LangGraph</strong> non introduce concetti nuovi rispetto al Capitolo 5, ma fornisce un'implementazione robusta e leggibile per pattern (cicli, archi condizionali, persistenza) che diventano difficili da gestire correttamente a mano quando il workflow cresce in complessità.</li><li>Un <strong>StateGraph</strong> dichiara nodi (funzioni che leggono e scrivono sullo stato) e archi (incondizionati o condizionali tramite funzioni di routing dedicate), implementando fedelmente il design concettuale della Lezione 7.1.</li><li>I <strong>nodi paralleli</strong> permettono di eseguire più agenti contemporaneamente su parti indipendenti dello stato, un guadagno significativo per casi come l'elaborazione di cartelle con file di tipo misto.</li><li>Il <strong>checkpointing</strong> garantisce la persistenza dello stato tra esecuzioni separate, rendendo possibile, in modo robusto, l'interruzione del workflow per un intervento umano che potrebbe avvenire molto tempo dopo.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Riprendi il codice della Sezione 2. Se la funzione <code>decidi_se_richiedere_chiarimento</code> contenesse un bug che restituisce sempre <code>&quot;richiedi_chiarimento&quot;</code>, indipendentemente dallo stato, quale conseguenza avrebbe sul comportamento osservabile del workflow?</li></ol>
+<ol><li>Spiega perché i tre nodi di estrazione paralleli della Sezione 3 (PDF, audio, immagini) possono essere eseguiti simultaneamente, mentre i nodi &quot;estrazione&quot; e &quot;analisi&quot; della Sezione 2 non potrebbero esserlo. Cosa li differenzia, in termini di dipendenza dei dati?</li></ol>
+<ol><li>Nel meccanismo di checkpointing della Sezione 4, perché è necessario un <code>thread_id</code> univoco per ogni esecuzione, invece di un singolo checkpoint condiviso per tutte le esecuzioni del workflow?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 7.1 (Progettare un Workflow Agentivo) — questa lezione implementa fedelmente il grafo progettato concettualmente in quella lezione. Lezione 5.4 (Single vs Multi-Agent) — l'architettura a grafo introdotta lì trova qui un'implementazione tecnica completa.</p>
+<p><strong>Porta a:</strong> Lezione 7.3 (Il Layer di Review) — vedremo come implementare un nodo di revisione come parte specifica e formalizzata del grafo LangGraph.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 7.4 (Human-in-the-Loop) — il checkpointing qui introdotto è il meccanismo tecnico esatto che rende possibile l'interruzione del workflow per attesa di feedback umano. Lezione 8.3 (Riassorbimento della Conoscenza) — la persistenza dello stato tra esecuzioni, qui vista per un singolo workflow, anticipa il problema più ampio di come un sistema accumula esperienza nel tempo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="07-01-progettare-un-workflow-agentivo-dal-problema-al-grafo.html">← 07-01 Progettare un Workflow Agentivo</a>
+        <a class="primary-action" href="07-03-il-layer-di-review-agenti-critici-e-quality-assurance-nel-workflow.html">07-03 Il Layer di Review →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

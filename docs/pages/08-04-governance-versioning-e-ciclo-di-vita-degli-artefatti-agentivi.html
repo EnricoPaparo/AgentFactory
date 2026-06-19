@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Governance, Versioning e Ciclo di Vita degli Artefatti Agentivi | AgentFactory</title>
+  <meta name="description" content="Mettere ordine in tutto quello che abbiamo costruito: la disciplina che tiene insieme un sistema maturo">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">Sistemi Agentici che si Auto-Migliorano</a><span>/</span><strong>08-04</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 08-04</p>
+        <h1>Governance, Versioning e Ciclo di Vita degli Artefatti Agentivi</h1>
+        <p class="lesson-subtitle">Mettere ordine in tutto quello che abbiamo costruito: la disciplina che tiene insieme un sistema maturo</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>08 · Sistemi Agentici che si Auto-Migliorano</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>governance</span><span>ciclo di vita</span><span>change management</span><span>audit trail</span><span>semantic versioning</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Elencare e classificare tutti gli artefatti di un sistema agentivo maturo</li><li>Implementare un audit trail per tracciare modifiche agli artefatti</li><li>Applicare il semantic versioning in modo coerente a tutto il sistema</li><li>Progettare un processo di change management per un team che cresce</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>In ogni lezione di questo capitolo, e in buona parte del Capitolo 6, abbiamo rimandato qui — alla Lezione 8.4 — la trattazione formale e completa della governance. Il versionamento dei prompt (6.4), il ciclo di vita di un'Agent Card (6.3), la disciplina necessaria per i prompt auto-evolutivi (8.2), la revisione obbligatoria prima di integrare conoscenza riassorbita (8.3): tutti questi fili si raccolgono ora in un'unica trattazione organica.</p>
+<p>Questa lezione non introduce un singolo concetto tecnico nuovo e isolato — fa qualcosa di diverso e altrettanto importante: <strong>sistematizza</strong> la disciplina che, applicata con costanza a ogni artefatto del sistema, è ciò che separa un progetto agentivo che funziona per una demo da un sistema che un'organizzazione può mantenere, far crescere, e di cui può fidarsi nel tempo.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Elencare e classificare tutti gli artefatti di un sistema agentivo maturo, riconoscendone le interdipendenze</li><li>Implementare un audit trail che traccia chi ha modificato cosa, quando, e perché</li><li>Applicare il semantic versioning in modo coerente a tutti gli artefatti del sistema, non solo al codice</li><li>Progettare un processo di change management adatto a un team che cresce nel tempo</li></ul>
+<hr>
+<h3 id="1-mappare-tutti-gli-artefatti-di-un-sistema-agentivo">1. Mappare tutti gli artefatti di un sistema agentivo</h3>
+<p>Prima di poter governare qualcosa, serve un inventario completo. Ripercorriamo, in chiusura del corso, ogni tipo di artefatto costruito nei capitoli precedenti:</p>
+<pre><code>ARTEFATTI DI UN SISTEMA AGENTIVO MATURO
+
+agent.yaml          (Lezione 6.2) — configurazione interna
+agent_card.yaml      (Lezione 6.3) — interfaccia pubblica
+prompts/*.md         (Lezione 6.4) — istruzioni versionate
+schemas/*.json        (Lezione 6.5) — contratti di input/output
+skills/*.md           (Lezione 6.7) — competenze condivise
+handoff (runtime)      (Lezione 6.6) — documenti di trasferimento
+evals/*.yaml           (Lezione 7.5) — casi di test
+policy di escalation   (Lezione 7.4) — regole di routing umano
+episodi di memoria      (Lezione 8.3) — log strutturati di esecuzione
+regole riassorbite       (Lezione 8.3) — conoscenza sintetizzata</code></pre>
+<p>Ogni riga di questo elenco è un tipo di file o dato che <strong>cambia nel tempo</strong>, ha un proprietario, e influenza il comportamento del sistema. La governance è precisamente la disciplina che gestisce questi cambiamenti in modo tracciabile, sicuro, e reversibile.</p>
+<hr>
+<h3 id="2-il-ciclo-di-vita-di-un-artefatto">2. Il ciclo di vita di un artefatto</h3>
+<p>Indipendentemente dal tipo specifico — un prompt, una skill, uno schema — ogni artefatto segue lo stesso ciclo di vita generale, che formalizza con precisione il campo <code>stato</code> introdotto fin dalla Lezione 6.1.</p>
+<pre><code>   BOZZA
+     │  (un membro del team propone una modifica
+     │   o un nuovo artefatto)
+     ▼
+  REVISIONE
+     │  (un collega, o per modifiche critiche un
+     │   processo automatico come il regression
+     │   testing della Lezione 7.5, verifica la
+     │   proposta)
+     ▼
+ APPROVAZIONE
+     │  (la modifica viene formalmente accettata,
+     │   con un nuovo numero di versione)
+     ▼
+   DEPLOY
+     │  (l'artefatto entra effettivamente in uso
+     │   nel sistema in produzione)
+     ▼
+MONITORAGGIO
+     │  (le metriche della Lezione 7.5 osservano
+     │   il comportamento dell'artefatto in uso reale)
+     ▼
+AGGIORNAMENTO
+     (un nuovo ciclo inizia, tornando a BOZZA,
+      eventualmente innescato dal riassorbimento
+      della conoscenza, Lezione 8.3)</code></pre>
+<p>Questo ciclo si applica identicamente a un prompt (Lezione 6.4), a una skill (Lezione 6.7), o a una regola sintetizzata dall'agente archivista (Lezione 8.3) — è precisamente l'uniformità di questo processo, applicato senza eccezioni a ogni tipo di artefatto, che rende un sistema governabile su scala, invece di richiedere processi diversi e scoordinati per ogni categoria di componente.</p>
+<hr>
+<h3 id="3-implementazione-pratica-un-audit-trail">3. Implementazione pratica: un Audit Trail</h3>
+<p>Un <strong>audit trail</strong> registra, per ogni modifica a un artefatto, chi l'ha proposta, quando, e perché — informazione indispensabile quando, mesi dopo, qualcuno deve capire perché il sistema si comporta in un certo modo, o deve fare rollback a una versione precedente.</p>
+<pre><code>from pydantic import BaseModel
+from datetime import datetime
+
+class VoceAuditTrail(BaseModel):
+    &quot;&quot;&quot;
+    Una singola voce dell'audit trail, registrata per
+    ogni modifica a un artefatto del sistema.
+    &quot;&quot;&quot;
+    artefatto_id: str  # es. &quot;prompts/system-analista-vendite&quot;
+    versione_precedente: str
+    versione_nuova: str
+    autore: str
+    timestamp: datetime
+    motivazione: str
+    fonte_modifica: str  # &quot;umano&quot; | &quot;apo-automatico&quot; (Lezione 8.2)
+                          # | &quot;riassorbimento&quot; (Lezione 8.3)
+    approvato_da: str | None  # presente se la modifica ha
+                                # richiesto revisione esplicita
+
+
+def registra_modifica(artefatto_id: str, versione_precedente: str,
+                        versione_nuova: str, autore: str,
+                        motivazione: str, fonte: str) -&gt; VoceAuditTrail:
+    &quot;&quot;&quot;
+    Ogni volta che un artefatto viene modificato — un prompt
+    riscritto a mano, una variante APO adottata (Lezione 8.2),
+    una regola riassorbita integrata (Lezione 8.3) — questa
+    funzione registra il cambiamento in modo permanente e
+    interrogabile.
+    &quot;&quot;&quot;
+    voce = VoceAuditTrail(
+        artefatto_id=artefatto_id,
+        versione_precedente=versione_precedente,
+        versione_nuova=versione_nuova,
+        autore=autore,
+        timestamp=datetime.now(),
+        motivazione=motivazione,
+        fonte_modifica=fonte,
+        approvato_da=None  # da popolare se richiesta revisione
+    )
+    salva_audit_trail(voce)  # persistenza esterna, Lezione 4.6
+    return voce
+
+
+# Esempio: traccia di una modifica proposta dal sistema APO
+registra_modifica(
+    artefatto_id=&quot;prompts/system-analista-vendite&quot;,
+    versione_precedente=&quot;2.1.0&quot;,
+    versione_nuova=&quot;2.2.0&quot;,
+    autore=&quot;sistema-apo-automatico&quot;,
+    motivazione=&quot;Corretta gestione del caso limite: valore &quot;
+                &quot;precedente uguale a zero (5 casi di test &quot;
+                &quot;falliti risolti)&quot;,
+    fonte=&quot;apo-automatico&quot;
+)</code></pre>
+<p>Notare il campo <code>fonte_modifica</code>: distinguere esplicitamente se una modifica è stata proposta da un umano, da un sistema di ottimizzazione automatica (Lezione 8.2), o da un processo di riassorbimento della conoscenza (Lezione 8.3) è precisamente ciò che permette, in caso di problemi futuri, di capire rapidamente <strong>quale processo</strong> ha introdotto un determinato comportamento — un'informazione che, senza un audit trail strutturato, andrebbe persa nel tempo.</p>
+<hr>
+<h3 id="4-semantic-versioning-applicato-a-tutti-gli-artefatti">4. Semantic Versioning applicato a tutti gli artefatti</h3>
+<p>Il <strong>semantic versioning</strong>, già menzionato più volte nel corso (Lezioni 6.1, 6.3), segue una convenzione precisa: <code>MAGGIORE.MINORE.PATCH</code> (es. <code>2.1.0</code>).</p>
+<pre><code>PATCH (es. 2.1.0 → 2.1.1)
+  Correzione che non cambia il comportamento osservabile
+  dall'esterno — es. una correzione di un errore di
+  battitura nel prompt, che non altera la logica
+
+MINORE (es. 2.1.0 → 2.2.0)
+  Aggiunta di una capacità, senza rompere la compatibilità
+  con chi già usa l'artefatto — es. l'Agente Analista
+  Vendite ora gestisce anche un nuovo formato di input,
+  oltre a quelli già supportati
+
+MAGGIORE (es. 2.1.0 → 3.0.0)
+  Cambiamento che ROMPE la compatibilità con l'interfaccia
+  pubblica dichiarata (Lezione 6.3) — es. il campo
+  &quot;trend&quot; dello schema di output (Lezione 6.5) viene
+  rinominato, richiedendo a tutti gli agenti a valle di
+  aggiornare il proprio codice</code></pre>
+<blockquote><strong>Perché questa disciplina applicata uniformemente conta:</strong> se un orchestratore (Lezione 5.3) o un sistema di discovery (Lezione 6.3) osserva che un agente è passato da <code>2.1.0</code> a <code>3.0.0</code>, può <strong>automaticamente</strong> sapere che potrebbe essere necessaria una verifica di compatibilità, senza dover leggere manualmente il changelog. Questa è precisamente la stessa logica che useremo, applicata in modo identico, sia per i prompt (Lezione 6.4) sia per le skill (Lezione 6.7) sia per i contratti (Lezione 6.5) — un'unica convenzione, applicata a tutto.</blockquote>
+<hr>
+<h3 id="5-change-management-per-un-team-che-cresce">5. Change Management per un team che cresce</h3>
+<p>L'ultimo elemento di governance riguarda il <strong>processo organizzativo</strong>, non solo tecnico: come si gestiscono le modifiche quando il sistema è mantenuto da più persone, o più team, contemporaneamente?</p>
+<pre><code>PRINCIPI DI CHANGE MANAGEMENT
+
+1. Ogni artefatto critico (in produzione, Lezione 6.1)
+   ha un OWNER dichiarato, responsabile dell'approvazione
+   delle modifiche che lo riguardano
+
+2. Le modifiche AUTOMATICHE (APO, Lezione 8.2; riassorbimento,
+   Lezione 8.3) non bypassano mai completamente la revisione
+   umana per gli artefatti più critici — solo per quelli
+   esplicitamente marcati come a basso rischio
+
+3. Esiste un canale di COMUNICAZIONE delle modifiche
+   maggiori (MAGGIORE nel semantic versioning) a tutti i
+   team che dipendono dall'artefatto modificato — non solo
+   un commit silenzioso in un repository
+
+4. Esiste sempre un percorso di ROLLBACK rapido e testato,
+   non solo teoricamente possibile (riprendendo
+   esplicitamente la necessità di versionamento rigoroso
+   discussa nella Lezione 8.2)</code></pre>
+<p>Questi principi non sono puramente tecnici di per sé — sono organizzativi, ma <strong>dipendono</strong> dall'infrastruttura tecnica costruita in questo capitolo (audit trail, versionamento, test suite) per essere effettivamente applicabili, non solo dichiarati su carta.</p>
+<hr>
+<h3 id="esempio-pratico-diagnosticare-un-problema-usando-l-audit-trail">Esempio Pratico: Diagnosticare un Problema Usando l'Audit Trail</h3>
+<p>Immagina che, due settimane dopo una modifica automatica (APO, Lezione 8.2) al prompt dell'Agente Analista, il tasso di escalation a revisione umana (Lezione 7.4) aumenti inspiegabilmente del 15%. Senza un audit trail, diagnosticare la causa richiederebbe di esaminare manualmente i log di centinaia di esecuzioni.</p>
+<p>Con l'audit trail costruito in questa lezione, la diagnosi diventa diretta:</p>
+<pre><code>storico_modifiche = interroga_audit_trail(
+    artefatto_id=&quot;prompts/system-analista-vendite&quot;,
+    intervallo_temporale=&quot;ultime_3_settimane&quot;
+)
+
+# Risultato:
+# [VoceAuditTrail(versione_nuova=&quot;2.2.0&quot;, fonte_modifica=&quot;apo-automatico&quot;,
+#                  timestamp=&quot;2026-06-05&quot;, motivazione=&quot;...&quot;)]</code></pre>
+<p>L'audit trail rivela immediatamente: la modifica <code>2.1.0 → 2.2.0</code>, proposta dal sistema APO due settimane fa, coincide temporalmente con l'inizio dell'aumento delle escalation. Questo non prova automaticamente una relazione causale, ma fornisce <strong>immediatamente</strong> il candidato più probabile da investigare — esattamente il tipo di diagnosi rapida che, senza questa infrastruttura, richiederebbe ore di indagine manuale nei log grezzi.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un sistema agentivo maturo ha numerosi tipi di <strong>artefatti</strong> (agent.yaml, Agent Card, prompt, schemi, skill, evals, policy, episodi di memoria), ciascuno soggetto allo stesso ciclo di vita.</li><li>Il <strong>ciclo di vita</strong> — bozza, revisione, approvazione, deploy, monitoraggio, aggiornamento — si applica uniformemente a ogni tipo di artefatto, rendendo il sistema governabile su scala.</li><li>Un <strong>audit trail</strong> registra chi ha modificato cosa, quando, perché, e attraverso quale fonte (umano, APO automatico, riassorbimento), permettendo diagnosi rapide di problemi futuri.</li><li>Il <strong>semantic versioning</strong>, applicato uniformemente a tutti gli artefatti, comunica automaticamente il livello di rischio di una modifica (patch, minore, maggiore) a chiunque dipenda da quell'artefatto.</li><li>Il <strong>change management</strong> organizzativo (owner dichiarati, comunicazione delle modifiche maggiori, percorsi di rollback testati) dipende dall'infrastruttura tecnica costruita in questa lezione per essere effettivamente applicabile.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Riprendi l'elenco degli artefatti della Sezione 1. Scegli due artefatti diversi e spiega come una modifica all'uno potrebbe richiedere, per coerenza, una modifica anche all'altro (un esempio di interdipendenza tra artefatti).</li></ol>
+<ol><li>Nel codice della Sezione 3, perché il campo <code>fonte_modifica</code> è importante quanto il campo <code>autore</code>, anche se concettualmente simile? Cosa distingue le informazioni che forniscono?</li></ol>
+<ol><li>Spiega perché una modifica che cambia il formato dello schema di output di un agente (Lezione 6.5) dovrebbe sempre corrispondere a un incremento MAGGIORE nel semantic versioning, collegando la tua risposta al concetto di &quot;contratto di servizio&quot; introdotto nella Lezione 6.3.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> L'intero Capitolo 6 (artefatti) e Capitolo 8 (i meccanismi di auto-modifica che rendono la governance necessaria, non opzionale) — questa lezione sistematizza principi distribuiti in molte lezioni precedenti.</p>
+<p><strong>Porta a:</strong> Lezione 8.5 (Progetto Finale) — la disciplina di governance qui costruita è parte integrante di un sistema professionale completo, e sarà applicata nel progetto che chiude il corso.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Qualsiasi sistema agentivo che costruirai dopo questo corso — la governance non è un capitolo da &quot;finire e archiviare&quot;, ma una disciplina continua che accompagna ogni sistema agentivo per tutta la sua vita operativa.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="08-03-riassorbimento-della-conoscenza-la-knowledge-base-che-cresce-con-l-uso.html">← 08-03 Riassorbimento della Conoscenza</a>
+        <a class="primary-action" href="08-05-progetto-finale-costruzione-di-un-workflow-agentivo-supervisionato-e-auto-evolutivo.html">08-05 Progetto Finale →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

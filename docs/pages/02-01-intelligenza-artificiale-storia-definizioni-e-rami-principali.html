@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligenza Artificiale: storia, definizioni e rami principali | AgentFactory</title>
+  <meta name="description" content="Demistificare la parola più abusata e meno capita della tecnologia contemporanea">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-02-intelligenza-artificiale">L'Intelligenza Artificiale: Cosa È Davvero</a><span>/</span><strong>02-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 02-01</p>
+        <h1>Intelligenza Artificiale: storia, definizioni e rami principali</h1>
+        <p class="lesson-subtitle">Demistificare la parola più abusata e meno capita della tecnologia contemporanea</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>02 · L'Intelligenza Artificiale: Cosa È Davvero</strong></div><div><span>Durata</span><strong>50 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>intelligenza artificiale</span><span>machine learning</span><span>deep learning</span><span>NLP</span><span>computer vision</span><span>AGI</span><span>AI ristretta</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Dare una definizione operativa di AI, priva di misticismo</li><li>Distinguere AI a regole esplicite da Machine Learning</li><li>Posizionare correttamente ML, Deep Learning, NLP e Computer Vision l'uno rispetto all'altro</li><li>Spiegare la differenza tra AI ristretta e AI generale, e collocare onestamente lo stato dell'arte</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 1 avendo capito come due programmi si parlano attraverso un'API. Ora dobbiamo iniziare a capire cosa c'è, esattamente, dall'altra parte di una chiamata API a un servizio come Claude o ChatGPT. La risposta a questa domanda richiede di partire da molto lontano, perché la parola &quot;intelligenza artificiale&quot; viene usata oggi per descrivere cose profondamente diverse tra loro — e questa confusione produce aspettative sbagliate, paure ingiustificate, ed errori di progettazione quando si costruiscono sistemi reali.</p>
+<p>Questa lezione ha un obiettivo preciso: darti una mappa del territorio, sobria e onesta, prima di addentrarci nei dettagli tecnici. Senza questa mappa, rischi di confondere &quot;AI&quot; con &quot;ChatGPT&quot;, oppure di credere che un chatbot moderno sia concettualmente vicino a un'intelligenza generale paragonabile alla nostra. Nessuna delle due cose è vera, e capire perché è il primo passo per usare questi sistemi con competenza reale.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Dare una definizione operativa di intelligenza artificiale, priva di misticismo</li><li>Distinguere l'AI a regole esplicite dal Machine Learning</li><li>Posizionare correttamente Machine Learning, Deep Learning, NLP e Computer Vision l'uno rispetto all'altro</li><li>Spiegare la differenza tra AI ristretta e AI generale, e collocare onestamente lo stato dell'arte attuale</li></ul>
+<hr>
+<h3 id="1-cos-e-l-intelligenza-artificiale-una-definizione-operativa">1. Cos'è l'intelligenza artificiale — una definizione operativa</h3>
+<p>Definire &quot;intelligenza artificiale&quot; in modo filosoficamente rigoroso è un problema che divide ricercatori e filosofi da decenni, e non lo risolveremo qui. Ci serve invece una <strong>definizione operativa</strong>, utile a orientarci nel resto del corso:</p>
+<blockquote><strong>Intelligenza Artificiale</strong> è il campo dell'informatica che si occupa di costruire sistemi capaci di svolgere compiti che, se eseguiti da un essere umano, richiederebbero quella che chiamiamo &quot;intelligenza&quot; — riconoscere immagini, comprendere il linguaggio, prendere decisioni, pianificare azioni.</blockquote>
+<p>Nota cosa questa definizione <strong>non dice</strong>: non dice che il sistema &quot;pensa&quot;, non dice che il sistema &quot;capisce&quot; nel senso in cui un umano capisce, non dice nulla sulla coscienza o sull'esperienza soggettiva. È una definizione basata sul comportamento osservabile (cosa il sistema riesce a fare), non sui meccanismi interni o su ipotetici stati mentali.</p>
+<p>Questa cautela non è pignoleria accademica: è una protezione contro uno degli errori più comuni e più costosi nell'uso pratico dell'AI, che è attribuire comprensione, intenzionalità o coscienza a sistemi che, internamente, eseguono operazioni matematiche su numeri. Torneremo su questo punto con grande precisione quando arriveremo a parlare degli LLM nel Capitolo 3.</p>
+<hr>
+<h3 id="2-ai-a-regole-esplicite-vs-machine-learning-la-grande-biforcazione">2. AI a regole esplicite vs Machine Learning: la grande biforcazione</h3>
+<p>Storicamente, esistono due approcci radicalmente diversi per costruire un sistema &quot;intelligente&quot;. Capire questa biforcazione è essenziale per capire perché il Machine Learning ha &quot;vinto&quot; la corsa che ha portato agli LLM.</p>
+<h4 id="l-approccio-a-regole-esplicite-ai-simbolica">L'approccio a regole esplicite (AI simbolica)</h4>
+<p>Nei primi decenni dell'informatica (anni '50–'80), il modo dominante di costruire un sistema intelligente era scrivere <strong>regole esplicite</strong>, decise da un programmatore umano:</p>
+<pre><code>SE temperatura &gt; 38°C E tosse = vero
+ALLORA probabilità_influenza = alta
+
+SE pioggia = vero
+ALLORA suggerisci_ombrello = vero</code></pre>
+<p>Questo approccio funziona bene per problemi ben definiti e limitati, ma si scontra con un muro evidente: il mondo reale è troppo complesso, ambiguo e pieno di eccezioni per essere descritto interamente con regole scritte a mano. Nessun programmatore può scrivere manualmente tutte le regole necessarie per, ad esempio, riconoscere un volto in una fotografia in qualsiasi condizione di luce, angolazione, espressione.</p>
+<h4 id="l-approccio-machine-learning">L'approccio Machine Learning</h4>
+<p>Il <strong>Machine Learning</strong> rovescia il problema: invece di scrivere le regole, si forniscono al sistema moltissimi <strong>esempi</strong> (dati), e si lascia che il sistema <strong>scopra da solo</strong> i pattern che permettono di distinguere, classificare, prevedere.</p>
+<pre><code>APPROCCIO A REGOLE               APPROCCIO MACHINE LEARNING
+
+Umano scrive le regole           Umano fornisce esempi
+       │                                  │
+       ▼                                  ▼
+Sistema applica le regole        Sistema &quot;impara&quot; i pattern
+       │                                  │
+       ▼                                  ▼
+   Risultato                          Risultato</code></pre>
+<p>Questa svolta — dal &quot;programmare regole&quot; al &quot;fornire esempi e lasciare che il sistema impari&quot; — è la base concettuale di tutta l'AI moderna, inclusi i modelli linguistici che useremo per costruire i nostri agenti. Approfondiremo esattamente come funziona questo &quot;apprendere dai dati&quot; nella prossima lezione.</p>
+<hr>
+<h3 id="3-i-grandi-rami-dell-ai-una-mappa-di-posizionamento">3. I grandi rami dell'AI: una mappa di posizionamento</h3>
+<p>Il termine &quot;Intelligenza Artificiale&quot; è un cappello molto ampio, sotto il quale vivono discipline con scopi diversi. Vediamo come si posizionano l'una rispetto all'altra, perché capirlo evita confusioni terminologiche che altrimenti si trascinano per tutto il corso.</p>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│              INTELLIGENZA ARTIFICIALE                │
+│        (il campo più ampio: sistemi che svolgono     │
+│         compiti &quot;intelligenti&quot;)                       │
+│                                                         │
+│   ┌─────────────────────────────────────────────┐    │
+│   │           MACHINE LEARNING                    │    │
+│   │   (sistemi che imparano dai dati invece di    │    │
+│   │    seguire regole scritte a mano)             │    │
+│   │                                                 │    │
+│   │     ┌───────────────────────────────────┐     │    │
+│   │     │        DEEP LEARNING               │     │    │
+│   │     │  (Machine Learning con reti neurali│     │    │
+│   │     │   a molti strati)                  │     │    │
+│   │     └───────────────────────────────────┘     │    │
+│   └─────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────┘
+
+         APPLICAZIONI TRASVERSALI (usano Deep Learning):
+
+   NLP                          COMPUTER VISION
+   (comprensione e              (comprensione e
+   generazione di               interpretazione
+   linguaggio)                  di immagini/video)</code></pre>
+<ul><li><strong>Machine Learning</strong> è un sottoinsieme dell'AI: l'approccio &quot;impara dai dati&quot; descritto sopra</li><li><strong>Deep Learning</strong> è un sottoinsieme del Machine Learning: usa specificamente le <strong>reti neurali artificiali</strong>, strutture a più strati che vedremo in dettaglio nella Lezione 2.3</li><li><strong>NLP</strong> (Natural Language Processing) è l'area applicativa che si occupa di linguaggio: comprenderlo, generarlo, tradurlo. Oggi è dominata dal Deep Learning, ma esisteva (con risultati molto più limitati) anche prima</li><li><strong>Computer Vision</strong> è l'area applicativa che si occupa di immagini e video: riconoscimento di oggetti, volti, scene</li></ul>
+<p>I modelli linguistici di grandi dimensioni che studieremo nel Capitolo 3 — Claude, GPT, e simili — sono il punto di incontro tra Deep Learning e NLP: usano reti neurali profonde, applicate specificamente al linguaggio.</p>
+<hr>
+<h3 id="4-cosa-significa-addestrare-un-modello-anteprima-concettuale">4. Cosa significa &quot;addestrare&quot; un modello — anteprima concettuale</h3>
+<p>Useremo spesso, da qui in avanti, il verbo &quot;addestrare&quot; (in inglese, <em>training</em>). Anticipiamo qui un'intuizione che approfondiremo nella prossima lezione: addestrare un modello significa esporlo a una grande quantità di esempi e, attraverso un processo matematico iterativo, aggiustare progressivamente i suoi parametri interni finché non diventa bravo a svolgere il compito per cui è stato esposto a quegli esempi.</p>
+<blockquote><strong>Analogia concreta:</strong> pensa a come impari a riconoscere se un frutto è maturo. Nessuno ti ha dato una formula matematica precisa basata sul colore esatto in nanometri di lunghezza d'onda. Hai visto centinaia di frutti, alcuni maturi e altri no, qualcuno ti ha corretto quando sbagliavi, e gradualmente il tuo cervello ha costruito un modello intuitivo. Il Machine Learning fa, con la matematica, qualcosa di analogo — su scala molto più ampia e con un processo molto più meccanico e privo di comprensione nel senso umano.</blockquote>
+<hr>
+<h3 id="5-ai-ristretta-vs-ai-generale-dove-siamo-davvero">5. AI ristretta vs AI generale: dove siamo davvero</h3>
+<p>Una distinzione cruciale, spesso fonte di equivoci nella discussione pubblica sull'AI:</p>
+<ul><li><strong>AI ristretta (Narrow AI)</strong>: un sistema progettato e addestrato per svolgere un compito specifico, o un insieme limitato di compiti. Un sistema che gioca a scacchi a livello sovrumano non sa fare altro che giocare a scacchi. Un sistema che riconosce volti non sa guidare un'auto.</li><li><strong>AI generale (AGI — Artificial General Intelligence)</strong>: un sistema ipotetico capace di apprendere e svolgere <em>qualsiasi</em> compito intellettuale che un umano può svolgere, con la stessa flessibilità e capacità di adattamento a situazioni nuove e mai viste.</li></ul>
+<p>Ad oggi, <strong>tutti i sistemi di AI esistenti, inclusi i modelli linguistici più avanzati come Claude o GPT, sono AI ristretta</strong> — per quanto la loro ristrettezza sia diventata sorprendentemente ampia (un singolo modello linguistico può scrivere codice, tradurre lingue, riassumere testi, ragionare su problemi matematici). Questa ampiezza ha portato alcuni a parlare di &quot;AI generale emergente&quot;, ma è una posizione dibattuta, non un fatto consolidato.</p>
+<p>Per il nostro corso, la posizione corretta e onesta è: stiamo per imparare a costruire sistemi sofisticati, utili, capaci di automatizzare compiti complessi — ma stiamo lavorando con strumenti che hanno limiti precisi e prevedibili, non con un'intelligenza paragonabile alla nostra. Mantenere questa cornice mentale è ciò che, paradossalmente, ci permetterà di costruire sistemi più affidabili: progetteremo supervisione, controlli e correzioni proprio perché sappiamo che il sistema può sbagliare in modi specifici.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-i-rami-dell-ai-nella-vita-quotidiana">Esempio Pratico: Riconoscere i Rami dell'AI nella Vita Quotidiana</h3>
+<p>Prova a classificare questi sistemi che probabilmente usi già, usando la mappa della Sezione 3:</p>
+<div class="table-wrap"><table><thead><tr><th>Sistema</th><th>Ramo principale</th><th>Perché</th></tr></thead><tbody><tr><td>Filtro antispam della tua email</td><td>Machine Learning (classico)</td><td>Impara a distinguere spam da non-spam da esempi etichettati</td></tr><tr><td>Riconoscimento del tuo volto per sbloccare il telefono</td><td>Computer Vision (Deep Learning)</td><td>Interpreta un'immagine per identificare un pattern specifico</td></tr><tr><td>Traduzione automatica di una pagina web</td><td>NLP (Deep Learning)</td><td>Comprende e genera linguaggio in un'altra lingua</td></tr><tr><td>Suggerimenti di prossima parola mentre scrivi un messaggio</td><td>NLP (Deep Learning, versione semplificata)</td><td>Prevede testo basandosi su pattern linguistici</td></tr><tr><td>Un assistente come Claude che risponde a domande complesse</td><td>NLP + Deep Learning, su scala molto più ampia</td><td>Lo stesso principio dei precedenti, ma con architetture e scala radicalmente superiori (Capitolo 3)</td></tr></tbody></table></div>
+<p>Questo esercizio di classificazione non è fine a se stesso: ti abitua a guardare un sistema AI e chiederti &quot;che tipo di problema sta risolvendo, e con quale approccio?&quot; — una domanda che farai costantemente quando progetterai agenti e dovrai scegliere quale strumento o modello usare per quale compito.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>L'<strong>intelligenza artificiale</strong> si definisce meglio in base al comportamento osservabile (cosa un sistema riesce a fare) che in base a ipotetici stati mentali interni.</li><li>Storicamente si è passati dall'<strong>AI a regole esplicite</strong> (scritte da un programmatore) al <strong>Machine Learning</strong> (pattern scoperti dai dati): è la svolta che rende possibile tutta l'AI moderna.</li><li><strong>Machine Learning ⊃ Deep Learning</strong>, e <strong>NLP</strong> e <strong>Computer Vision</strong> sono aree applicative che oggi si appoggiano principalmente sul Deep Learning.</li><li>Tutti i sistemi AI esistenti, inclusi i modelli linguistici più avanzati, sono <strong>AI ristretta</strong>: capace di compiti specifici, anche molto ampi, ma non equivalente a un'intelligenza generale.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Un sistema che calcola automaticamente le tasse seguendo le regole fiscali scritte da un programmatore è &quot;intelligenza artificiale&quot; secondo la definizione operativa data in questa lezione? Perché sì o perché no?</li></ol>
+<ol><li>Spiega con parole tue perché un sistema di AI ristretta estremamente capace in molti compiti diversi (come un moderno modello linguistico) non equivale automaticamente a un'AI generale. Cosa manca, concettualmente?</li></ol>
+<ol><li>Prova a collocare, nella mappa della Sezione 3, un sistema che genera immagini a partire da una descrizione testuale (es. &quot;un gatto astronauta su Marte&quot;). Quali rami dell'AI deve necessariamente combinare?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Capitolo 1 — abbiamo capito come due sistemi comunicano (API); ora iniziamo a capire cosa può esserci, concettualmente, dall'altra parte di quella comunicazione.</p>
+<p><strong>Porta a:</strong> Lezione 2.2 (Machine Learning) — approfondiremo nel dettaglio il meccanismo di &quot;apprendimento dai dati&quot; solo accennato qui.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 3.1 (Cos'è un LLM) — vedremo come gli LLM si posizionano esattamente all'intersezione di Deep Learning e NLP descritta in questa lezione. Lezione 3.5 (Limiti degli LLM) — la distinzione AI ristretta/generale tornerà per inquadrare con precisione cosa un modello linguistico può e non può fare.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="01-05-le-api-il-linguaggio-universale-tra-sistemi.html">← 01-05 Le API</a>
+        <a class="primary-action" href="02-02-machine-learning-come-una-macchina-impara-dai-dati.html">02-02 Machine Learning →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Training, Fine-tuning e RLHF: come si costruisce un assistente AI | AgentFactory</title>
+  <meta name="description" content="Dal modello che completa testo all'assistente che risponde utilmente: il percorso in tre fasi">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-03-llm">I Modelli Linguistici di Grandi Dimensioni (LLM)</a><span>/</span><strong>03-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 03-02</p>
+        <h1>Training, Fine-tuning e RLHF: come si costruisce un assistente AI</h1>
+        <p class="lesson-subtitle">Dal modello che completa testo all'assistente che risponde utilmente: il percorso in tre fasi</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>03 · I Modelli Linguistici di Grandi Dimensioni (LLM)</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>pre-training</span><span>fine-tuning</span><span>RLHF</span><span>modello base</span><span>modello istruito</span><span>reward model</span><span>costi computazionali</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere le fasi di pre-training, fine-tuning e RLHF</li><li>Spiegare perché un modello base non è ancora un assistente utile</li><li>Descrivere come RLHF usa il feedback umano per modellare il comportamento</li><li>Comprendere perché pochissimi soggetti al mondo possono addestrare un LLM da zero</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo capito cosa fa un LLM al livello più elementare: prevede il token successivo. Ma se ti fossi mai chiesto perché Claude risponde in modo utile, educato, e si attiene a delle istruzioni — invece di limitarsi a &quot;completare&quot; il tuo messaggio in modo grammaticalmente plausibile ma potenzialmente inutile o bizzarro — la risposta sta in questa lezione.</p>
+<p>Un modello che ha solo imparato a prevedere il token successivo da enormi quantità di testo grezzo di Internet non è, di per sé, un buon assistente. Potrebbe completare &quot;Come faccio a...&quot; con qualsiasi continuazione statisticamente plausibile trovata nei suoi dati di addestramento — non necessariamente la più utile, la più sicura, o la più pertinente al tuo reale bisogno. Questa lezione descrive il percorso, in più fasi distinte, attraverso cui un modello grezzo diventa un assistente affidabile.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere le fasi di pre-training, fine-tuning e RLHF</li><li>Spiegare perché un modello base non è ancora, di per sé, un assistente utile</li><li>Descrivere come RLHF usa il feedback umano per modellare il comportamento del modello</li><li>Comprendere perché pochissimi soggetti al mondo hanno le risorse per addestrare un LLM da zero</li></ul>
+<hr>
+<h3 id="1-pre-training-imparare-la-lingua-e-il-mondo-da-internet">1. Pre-training: imparare la lingua e il mondo da Internet</h3>
+<p>La prima fase, e di gran lunga la più costosa in termini computazionali, si chiama <strong>pre-training</strong> (pre-addestramento). In questa fase, il modello viene esposto a quantità di testo straordinariamente grandi — tipicamente una porzione enorme e filtrata di Internet, libri, articoli, codice sorgente — e addestrato, esattamente come descritto nella lezione precedente, sul compito di prevedere il token successivo.</p>
+<pre><code>PRE-TRAINING
+
+Input: trilioni di parole di testo grezzo
+       (siti web, libri, articoli, codice, ...)
+
+Compito: prevedi il token successivo
+
+Risultato: un MODELLO BASE — capace di completare
+           testo in modo fluente e statisticamente
+           plausibile, ma SENZA alcuna nozione
+           specifica di &quot;essere un assistente utile&quot;</code></pre>
+<p>Il modello base che emerge da questa fase ha già assorbito, come visto nella Lezione 3.1, una quantità impressionante di conoscenza implicita su grammatica, fatti, logica, stili di scrittura. Ma se gli chiedi &quot;Come si prepara una buona pasta al pomodoro?&quot;, un modello base potrebbe rispondere in modi imprevedibili: potrebbe continuare con un'altra domanda simile (perché nei suoi dati di addestramento, sequenze di domande simili erano comuni, ad esempio in forum o FAQ), invece di fornire direttamente la ricetta che ti aspetteresti da un assistente.</p>
+<blockquote><strong>Perché questa fase è così costosa:</strong> il pre-training di un modello allo stato dell'arte richiede migliaia di GPU specializzate, in funzione per settimane o mesi, con costi che si misurano in decine o centinaia di milioni di dollari. Questo è il motivo concreto per cui, ad oggi, solo un numero molto ridotto di organizzazioni al mondo (Anthropic, OpenAI, Google, Meta, e poche altre) ha le risorse per addestrare un modello da zero in questa fase.</blockquote>
+<hr>
+<h3 id="2-fine-tuning-specializzare-il-modello-per-un-compito-o-un-comportamento">2. Fine-tuning: specializzare il modello per un compito o un comportamento</h3>
+<p>La seconda fase, chiamata <strong>fine-tuning</strong> (messa a punto), parte dal modello base già addestrato e lo <strong>adatta ulteriormente</strong>, esponendolo a una quantità molto più piccola e curata di esempi specifici, tipicamente nel formato di conversazioni: domanda dell'utente, risposta ideale dell'assistente.</p>
+<pre><code>FINE-TUNING (supervisionato — riusa il concetto
+             dell'apprendimento supervisionato, Lezione 2.2)
+
+Input: un set curato e relativamente piccolo
+       di esempi: {domanda utente → risposta ideale}
+
+Esempio:
+  Domanda: &quot;Come si prepara una buona pasta al pomodoro?&quot;
+  Risposta ideale: &quot;Ecco una ricetta semplice: 1. Soffriggi
+                     aglio in olio d'oliva... [risposta
+                     diretta e utile]&quot;
+
+Risultato: un MODELLO ISTRUITO (instruct model) —
+           ha imparato il COMPORTAMENTO di rispondere
+           utilmente a domande, non solo di completare
+           testo plausibile</code></pre>
+<p>Questa fase costa una piccola frazione del pre-training — non servono trilioni di esempi, ma decine o centinaia di migliaia di esempi di alta qualità sono sufficienti per &quot;orientare&quot; il comportamento del modello verso quello di un assistente che risponde, segue istruzioni, mantiene un tono appropriato.</p>
+<p>Il fine-tuning può anche essere usato, oltre che per insegnare il comportamento generale di assistente, per <strong>specializzare</strong> un modello su un compito specifico (es. rispondere solo su argomenti legali, o solo in un certo stile), anche se nei modelli generalisti più moderni questa specializzazione avviene spesso tramite altre tecniche (come il prompting che vedremo nella Lezione 3.4) piuttosto che tramite fine-tuning dedicato.</p>
+<hr>
+<h3 id="3-rlhf-insegnare-al-modello-cosa-significa-una-buona-risposta">3. RLHF: insegnare al modello cosa significa &quot;una buona risposta&quot;</h3>
+<p>La terza fase, e probabilmente la più sottile dal punto di vista concettuale, si chiama <strong>RLHF</strong> — Reinforcement Learning from Human Feedback, apprendimento per rinforzo dal feedback umano. Riprende direttamente il paradigma dell'apprendimento per rinforzo descritto nella Lezione 2.2 (agente, ambiente, ricompensa), applicandolo in un modo specifico e ingegnoso.</p>
+<p>Il problema che RLHF risolve è questo: anche dopo il fine-tuning supervisionato, può essere difficile definire in anticipo, per ogni possibile domanda, qual è &quot;la&quot; risposta ideale da fornire come esempio. Spesso, è più facile per un valutatore umano <strong>confrontare due risposte diverse</strong> e dire quale preferisce, piuttosto che scrivere da zero la risposta perfetta per ogni possibile domanda.</p>
+<pre><code>PROCESSO RLHF (semplificato)
+
+1. Il modello (già fine-tuned) genera DUE risposte
+   diverse alla stessa domanda
+
+2. Un valutatore umano confronta le due risposte
+   e indica quale preferisce (es. più utile, più sicura,
+   meglio strutturata)
+
+3. Questi confronti vengono usati per addestrare un
+   secondo modello, chiamato REWARD MODEL, che imparA
+   a PREVEDERE quale tipo di risposta un umano
+   preferirebbe, senza dover chiedere a un umano ogni volta
+
+4. Il modello principale viene poi ulteriormente
+   addestrato usando il reward model come &quot;giudice
+   automatico&quot;: genera risposte, il reward model le
+   valuta, e i pesi del modello principale vengono
+   aggiustati per produrre risposte che il reward model
+   valuta positivamente
+
+   (questo è, letteralmente, l'apprendimento per
+    rinforzo descritto nella Lezione 2.2: agente = il
+    modello principale, ambiente = il compito di
+    rispondere, ricompensa = il punteggio del reward model)</code></pre>
+<blockquote><strong>Perché questo passo è cruciale:</strong> RLHF è il meccanismo principale attraverso cui un modello viene orientato verso comportamenti difficili da specificare con semplici esempi scritti a mano — essere utile ma non dannoso, essere onesto sui propri limiti, evitare contenuti pericolosi, mantenere un tono appropriato in situazioni delicate. Questi sono giudizi sottili, spesso dipendenti dal contesto, che si prestano meglio a essere insegnati tramite preferenze comparative (questa risposta è migliore di quella) piuttosto che tramite regole esplicite scritte a priori.</blockquote>
+<hr>
+<h3 id="4-modello-base-vs-modello-istruito-una-differenza-pratica-enorme">4. Modello base vs modello istruito: una differenza pratica enorme</h3>
+<p>Riassumendo le fasi precedenti in una distinzione pratica:</p>
+<pre><code>MODELLO BASE                          MODELLO ISTRUITO
+(solo pre-training)                   (pre-training + fine-tuning + RLHF)
+
+- Completa testo in modo              - Risponde utilmente a domande
+  statisticamente plausibile           e istruzioni
+- Non &quot;sa&quot; di dover comportarsi        - Segue un comportamento
+  come un assistente                    da assistente: utile,
+                                         onesto, sicuro
+- Utile principalmente per             - È quello che incontri
+  ricerca o casi d'uso molto            quando usi Claude.ai,
+  specifici                             ChatGPT, o le rispettive API
+                                         in modalità conversazionale</code></pre>
+<p>Quando interagisci con Claude tramite Claude.ai o tramite l'API in modalità messaggi (come visto nell'esempio della Lezione 1.5), stai sempre interagendo con un modello istruito, che ha attraversato tutte e tre le fasi descritte in questa lezione.</p>
+<hr>
+<h3 id="5-perche-questi-costi-limitano-chi-puo-fare-cosa">5. Perché questi costi limitano chi può fare cosa</h3>
+<p>Vale la pena essere espliciti su un punto con implicazioni pratiche dirette per chi costruisce sistemi AI (cioè, per il percorso che faremo da qui in avanti in questo corso):</p>
+<ul><li><strong>Pre-addestrare un modello da zero</strong>: richiede risorse alla portata di pochissime organizzazioni al mondo. Non è qualcosa che faremo, né che la maggior parte delle aziende che costruiscono prodotti AI fa</li><li><strong>Fare fine-tuning su un modello esistente</strong>: è molto più accessibile, e alcuni provider offrono questa possibilità anche a aziende di dimensioni medie, per specializzare un modello su un dominio specifico</li><li><strong>Usare un modello già istruito tramite API, con prompting e strumenti</strong>: è l'approccio accessibile a chiunque, incluso il nostro percorso di costruzione di agenti</li></ul>
+<p>Questo terzo livello — usare un modello già pronto, eccellente, addestrato da altri, e costruire attorno a esso logica, strumenti, memoria, orchestrazione — è esattamente l'approccio che adotteremo a partire dal Capitolo 4. Non dovremo mai preoccuparci di addestrare nulla da zero: il nostro lavoro sarà costruire sistemi intelligenti <strong>attorno</strong> a modelli già eccellenti, sfruttandone le capacità tramite le tecniche che vedremo nei capitoli successivi.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-il-comportamento-di-un-modello-istruito">Esempio Pratico: Riconoscere il Comportamento di un Modello Istruito</h3>
+<p>La prossima volta che usi un'interfaccia come Claude.ai, osserva consapevolmente questi comportamenti, e collegali a quanto visto in questa lezione:</p>
+<ol><li><strong>Segue istruzioni dirette</strong> (&quot;scrivi in stile formale&quot;, &quot;rispondi in tre punti&quot;) — comportamento appreso primariamente nel fine-tuning supervisionato</li><li><strong>Evita contenuti dannosi anche se richiesti in modo ambiguo o indiretto</strong> — comportamento rifinito primariamente tramite RLHF, dove valutatori umani hanno costantemente preferito risposte sicure a risposte pericolose, anche in casi limite</li><li><strong>Ammette di non sapere qualcosa, invece di inventare una risposta plausibile ma falsa</strong> — quando questo accade (non sempre, come vedremo nella Lezione 3.5), è spesso il risultato di RLHF che ha premiato l'onestà sui propri limiti rispetto a risposte sicure di sé ma infondate</li></ol>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il <strong>pre-training</strong> espone il modello a quantità enormi di testo grezzo, producendo un <strong>modello base</strong> capace di completare testo plausibile ma non orientato a comportarsi come un assistente.</li><li>Il <strong>fine-tuning</strong> supervisionato usa un set più piccolo e curato di esempi {domanda → risposta ideale} per insegnare al modello il comportamento di un assistente, producendo un <strong>modello istruito</strong>.</li><li><strong>RLHF</strong> usa confronti tra risposte, valutati da umani, per addestrare un <strong>reward model</strong> che impara le preferenze umane, e poi usa questo reward model per affinare ulteriormente il comportamento del modello principale tramite apprendimento per rinforzo.</li><li>Pre-addestrare un modello da zero richiede risorse alla portata di pochissime organizzazioni; usare un modello già istruito tramite API, costruendoci sopra logica e strumenti, è l'approccio accessibile che useremo in questo corso.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché pensi che sia più facile, per un valutatore umano, scegliere quale tra due risposte preferisce, piuttosto che scrivere da zero &quot;la&quot; risposta perfetta per ogni domanda possibile? Cosa rende il confronto più gestibile della generazione?</li></ol>
+<ol><li>Un modello base, esposto solo al pre-training, potrebbe in teoria &quot;sapere&quot; la stessa quantità di fatti di un modello istruito. Cosa cambia, allora, concretamente, nel modo in cui risponderebbero alla stessa domanda?</li></ol>
+<ol><li>Rileggi la definizione di apprendimento per rinforzo data nella Lezione 2.2 (agente, ambiente, ricompensa). Identifica esplicitamente questi tre elementi nel processo RLHF descritto in questa lezione.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 3.1 — qui vediamo come il &quot;semplice&quot; compito di prevedere il token successivo, dopo il pre-training, viene ulteriormente plasmato in un comportamento utile e sicuro.</p>
+<p><strong>Porta a:</strong> Lezione 3.3 (Anatomia di un prodotto AI) — vedremo come un modello istruito come quello descritto qui viene integrato in un prodotto completo come Claude.ai.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 2.2 (Machine Learning) — RLHF è un'applicazione diretta e concreta dell'apprendimento per rinforzo descritto lì in astratto. Lezione 8.1 (Self-Reflection) — il principio di usare un modello &quot;giudice&quot; per valutare risposte, centrale nel reward model di RLHF, ritornerà in una forma adattata quando un agente valuterà i propri stessi output.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="03-01-cos-e-un-llm-previsione-del-token-successivo-come-intelligenza-emergente.html">← 03-01 Cos'è un LLM</a>
+        <a class="primary-action" href="03-03-il-portale-chatgpt-e-i-suoi-equivalenti-anatomia-di-un-prodotto-ai.html">03-03 Anatomia di un prodotto AI →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

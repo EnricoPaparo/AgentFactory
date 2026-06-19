@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cos'è un Agente AI: definizione, componenti e loop agentivo | AgentFactory</title>
+  <meta name="description" content="Il momento di assemblaggio: tutto il Capitolo 4 diventa un unico sistema funzionante">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-05-agenti-architettura">Agenti AI: Architettura e Ragionamento</a><span>/</span><strong>05-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 05-01</p>
+        <h1>Cos'è un Agente AI: definizione, componenti e loop agentivo</h1>
+        <p class="lesson-subtitle">Il momento di assemblaggio: tutto il Capitolo 4 diventa un unico sistema funzionante</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>05 · Agenti AI: Architettura e Ragionamento</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>agente</span><span>loop agentivo</span><span>observe-think-act</span><span>sistema reattivo</span><span>sistema agentivo</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Dare una definizione operativa e precisa di agente AI</li><li>Identificare i quattro componenti di un agente in un sistema reale</li><li>Implementare un loop agentivo minimo funzionante</li><li>Distinguere un sistema reattivo da un sistema agentivo con esempi concreti</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Siamo arrivati al momento per cui tutto il corso si è preparato. Nel Capitolo 4 abbiamo costruito, uno per uno, ogni componente necessario: la chiamata a un modello (4.1), output che il programma può usare con fiducia (4.2), accesso a informazioni esterne (4.3), capacità di eseguire azioni reali (4.4), standardizzazione delle connessioni (4.5), e gestione della memoria (4.6). Questa lezione li assembla, per la prima volta, in un <strong>agente</strong>.</p>
+<p>È importante affrontare questa lezione senza eccessiva soggezione verso la parola &quot;agente&quot; — un termine usato spesso con un'aura di mistero che non gli appartiene. Vedremo che un agente è precisamente la combinazione, organizzata secondo un pattern preciso e ripetibile, di componenti che già conosci. Niente di magico: solo un'architettura specifica, con un nome specifico, perché risolve un problema specifico.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Dare una definizione operativa e precisa di agente AI, priva di vaghezza</li><li>Identificare i quattro componenti di un agente in un sistema reale</li><li>Implementare un loop agentivo minimo, completo e funzionante</li><li>Distinguere un sistema reattivo da un sistema agentivo con esempi concreti</li></ul>
+<hr>
+<h3 id="1-definizione-operativa-percepisce-ragiona-agisce-osserva">1. Definizione operativa: percepisce, ragiona, agisce, osserva</h3>
+<p>Un <strong>agente AI</strong> è un sistema che, per raggiungere un obiettivo, esegue ripetutamente un ciclo di quattro fasi:</p>
+<pre><code>PERCEPISCE  →  RAGIONA  →  AGISCE  →  OSSERVA IL RISULTATO
+    ▲                                          │
+    └──────────────────────────────────────────┘
+              (e ricomincia, se necessario)</code></pre>
+<ul><li><strong>Percepisce</strong>: riceve informazioni sullo stato attuale — la richiesta dell'utente, il risultato di un'azione precedente, dati recuperati da uno strumento</li><li><strong>Ragiona</strong>: usando il modello linguistico (Capitolo 3), decide cosa fare, basandosi su ciò che ha percepito e sull'obiettivo da raggiungere</li><li><strong>Agisce</strong>: esegue effettivamente qualcosa — tipicamente tramite il Function Calling visto nella Lezione 4.4 — che modifica lo stato del mondo o recupera nuova informazione</li><li><strong>Osserva il risultato</strong>: percepisce l'effetto della propria azione, e usa questa nuova informazione per decidere il passo successivo</li></ul>
+<p>La caratteristica che distingue radicalmente un agente da una singola chiamata API (come quelle viste nella Lezione 4.1) è precisamente questo: <strong>il ciclo si ripete</strong>, un numero di volte non necessariamente prevedibile in anticipo, fino a quando l'obiettivo è stato raggiunto o si decide di interrompere il processo.</p>
+<blockquote><strong>Perché questo richiede memoria (Lezione 4.6):</strong> ogni iterazione del ciclo deve &quot;ricordare&quot; cosa è successo nelle iterazioni precedenti, altrimenti l'agente ripeterebbe all'infinito le stesse azioni, incapace di fare progressi. La memoria in-context, descritta nella lezione precedente, è precisamente il meccanismo che rende possibile questa continuità.</blockquote>
+<hr>
+<h3 id="2-i-quattro-componenti-di-un-agente">2. I quattro componenti di un agente</h3>
+<p>Scomponiamo la definizione operativa in componenti tecnici concreti, ciascuno dei quali corrisponde direttamente a qualcosa già costruito nel Capitolo 4:</p>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│                      AGENTE                            │
+│                                                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐  │
+│  │  LLM CORE     │  │   MEMORIA     │  │  STRUMENTI     │  │
+│  │ (Capitolo 3)  │  │ (Lezione 4.6) │  │ (Lezione 4.4)  │  │
+│  │               │  │               │  │                │  │
+│  │ Il &quot;motore di │  │ Cosa l'agente │  │ Cosa l'agente  │  │
+│  │ ragionamento&quot; │  │ ricorda dei   │  │ può FARE nel   │  │
+│  │ che decide    │  │ passi         │  │ mondo reale    │  │
+│  │ il prossimo   │  │ precedenti    │  │                │  │
+│  │ passo         │  │               │  │                │  │
+│  └─────────────┘  └─────────────┘  └──────────────┘  │
+│                                                          │
+│              ┌─────────────────┐                       │
+│              │     OBIETTIVO      │                       │
+│              │  Cosa l'agente sta │                       │
+│              │  cercando di        │                       │
+│              │  raggiungere        │                       │
+│              └─────────────────┘                       │
+└─────────────────────────────────────────────────────┘</code></pre>
+<p>Nessuno di questi quattro componenti è nuovo: li hai già costruiti, separatamente, nelle lezioni precedenti. Ciò che rende il sistema un &quot;agente&quot; è <strong>l'organizzazione</strong> di questi componenti secondo il loop descritto nella Sezione 1, con un obiettivo che persiste attraverso multiple iterazioni.</p>
+<hr>
+<h3 id="3-sistema-reattivo-vs-sistema-agentivo-la-differenza-che-conta-davvero">3. Sistema reattivo vs sistema agentivo: la differenza che conta davvero</h3>
+<p>È utile, a questo punto, tracciare un confine preciso tra due categorie di sistemi che useremo costantemente nel resto del corso.</p>
+<pre><code>SISTEMA REATTIVO                       SISTEMA AGENTIVO
+
+Riceve un input                        Riceve un obiettivo
+       │                                       │
+       ▼                                       ▼
+Produce UNA risposta                   Esegue MULTIPLI passi,
+       │                                decidendo autonomamente
+       ▼                                quanti e quali, finché
+       FINE                            l'obiettivo non è
+                                        raggiunto (o si rinuncia)
+                                               │
+                                               ▼
+                                              FINE
+
+Esempio: la funzione                   Esempio: un sistema che,
+chiedi_a_claude() della                dato &quot;prenota un viaggio
+Lezione 4.1 — una                      a Roma per il weekend&quot;,
+domanda, una risposta,                 cerca voli, confronta prezzi,
+nessuna iterazione                     verifica disponibilità
+                                        hotel, e propone un'opzione
+                                        completa — un numero di
+                                        passi non fissato in anticipo</code></pre>
+<p>Tutto ciò che abbiamo costruito nel Capitolo 4 — inclusa la singola chiamata con Function Calling della Lezione 4.4 — era, tecnicamente, ancora un sistema reattivo: una domanda, eventualmente uno strumento usato una volta, una risposta. Un <strong>agente</strong>, nel senso pieno che useremo da questa lezione in avanti, è un sistema che può eseguire <strong>una sequenza non predeterminata di passi</strong>, decidendo autonomamente, a ogni iterazione, se ha bisogno di fare qualcos'altro prima di poter rispondere.</p>
+<hr>
+<h3 id="4-implementazione-pratica-un-loop-agentivo-minimo">4. Implementazione pratica: un loop agentivo minimo</h3>
+<p>Vediamo ora, concretamente, come si implementa il ciclo descritto nella Sezione 1, estendendo direttamente il codice di Function Calling costruito nella Lezione 4.4. La differenza chiave rispetto a quel codice: invece di gestire <strong>una singola</strong> possibile chiamata di strumento, costruiamo un <strong>ciclo</strong> che continua fino a quando il modello decide di non aver più bisogno di strumenti.</p>
+<pre><code>import anthropic
+import json
+
+def cerca_sul_web(query: str) -&gt; dict:
+    &quot;&quot;&quot;Strumento di esempio (implementazione reale omessa).&quot;&quot;&quot;
+    return {&quot;risultati&quot;: f&quot;Informazioni trovate su: {query}&quot;}
+
+def calcola(espressione: str) -&gt; dict:
+    &quot;&quot;&quot;Strumento di esempio per calcoli precisi.&quot;&quot;&quot;
+    try:
+        return {&quot;risultato&quot;: eval(espressione)}
+    except Exception as e:
+        return {&quot;errore&quot;: str(e)}
+
+STRUMENTI_DISPONIBILI = {
+    &quot;cerca_sul_web&quot;: cerca_sul_web,
+    &quot;calcola&quot;: calcola,
+}
+
+DEFINIZIONI_STRUMENTI = [
+    {
+        &quot;name&quot;: &quot;cerca_sul_web&quot;,
+        &quot;description&quot;: &quot;Cerca informazioni aggiornate sul web.&quot;,
+        &quot;input_schema&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {&quot;query&quot;: {&quot;type&quot;: &quot;string&quot;}},
+            &quot;required&quot;: [&quot;query&quot;]
+        }
+    },
+    {
+        &quot;name&quot;: &quot;calcola&quot;,
+        &quot;description&quot;: &quot;Esegue un calcolo matematico preciso.&quot;,
+        &quot;input_schema&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {&quot;espressione&quot;: {&quot;type&quot;: &quot;string&quot;}},
+            &quot;required&quot;: [&quot;espressione&quot;]
+        }
+    }
+]
+
+
+def esegui_agente(obiettivo: str, max_iterazioni: int = 5) -&gt; str:
+    &quot;&quot;&quot;
+    Il LOOP AGENTIVO: ripete Observe-Think-Act finché il modello
+    non produce una risposta finale, o si raggiunge il limite
+    di sicurezza max_iterazioni.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    # MEMORIA: la cronologia che si accumula a ogni iterazione
+    messaggi = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo}]
+
+    for iterazione in range(max_iterazioni):
+
+        # RAGIONA: il modello decide il prossimo passo
+        risposta = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;,
+            max_tokens=1024,
+            tools=DEFINIZIONI_STRUMENTI,
+            messages=messaggi
+        )
+
+        messaggi.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: risposta.content})
+
+        # Se il modello non richiede strumenti, ha finito: AGISCE
+        # restituendo direttamente la risposta finale
+        if risposta.stop_reason != &quot;tool_use&quot;:
+            return risposta.content[0].text
+
+        # AGISCE: esegue gli strumenti richiesti dal modello
+        risultati_strumenti = []
+        for blocco in risposta.content:
+            if blocco.type == &quot;tool_use&quot;:
+                funzione = STRUMENTI_DISPONIBILI[blocco.name]
+                risultato = funzione(**blocco.input)
+
+                # OSSERVA: il risultato diventa parte della memoria,
+                # disponibile per la prossima iterazione del ciclo
+                risultati_strumenti.append({
+                    &quot;type&quot;: &quot;tool_result&quot;,
+                    &quot;tool_use_id&quot;: blocco.id,
+                    &quot;content&quot;: json.dumps(risultato)
+                })
+
+        messaggi.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: risultati_strumenti})
+
+    return &quot;Limite di iterazioni raggiunto senza una risposta finale.&quot;
+
+
+# Utilizzo:
+risultato = esegui_agente(
+    &quot;Quanto fa 47 al quadrato, e poi cerca informazioni sul &quot;
+    &quot;numero risultante se è un numero significativo in qualche contesto?&quot;
+)
+print(risultato)</code></pre>
+<p>Osserva con attenzione la struttura del <code>for</code>: a ogni iterazione, la lista <code>messaggi</code> cresce, accumulando sia le richieste di strumenti del modello sia i risultati ottenuti — è la <strong>memoria in-context</strong> della Lezione 4.6 applicata esplicitamente al contesto di un agente. Il ciclo termina naturalmente quando il modello, avendo ricevuto abbastanza informazioni, decide di non richiedere più strumenti e produce una risposta finale.</p>
+<h4 id="perche-esiste-max-iterazioni">Perché esiste <code>max_iterazioni</code></h4>
+<p>Nota il parametro <code>max_iterazioni</code>, con un valore predefinito di sicurezza. Senza questo limite, un agente che entrasse in un ciclo problematico (ad esempio, richiedendo ripetutamente lo stesso strumento senza mai arrivare a una conclusione) continuerebbe a eseguire chiamate API all'infinito, con costi crescenti senza controllo. Questo è un primo, semplice esempio di un tema che approfondiremo con rigore nella Lezione 5.5: la robustezza di un agente richiede meccanismi espliciti di protezione contro comportamenti imprevisti.</p>
+<hr>
+<h3 id="5-esempi-concreti-di-agenti">5. Esempi concreti di agenti</h3>
+<p>Per consolidare la definizione, alcuni esempi di agenti reali, descritti in termini dei componenti visti in questa lezione:</p>
+<ul><li><strong>Un agente di ricerca</strong>: obiettivo = rispondere a una domanda complessa; strumenti = motore di ricerca web, lettore di pagine; memoria = i risultati di ricerca già consultati nel ciclo corrente; il loop continua finché non ha raccolto informazioni sufficienti per una risposta completa</li><li><strong>Un agente di codice</strong> (come quello dietro strumenti di sviluppo assistito): obiettivo = risolvere un problema di programmazione; strumenti = lettura/scrittura di file, esecuzione di codice, ricerca nella documentazione; il loop continua attraverso tentativi, errori, e correzioni, fino a un risultato funzionante</li><li><strong>Un agente di customer service</strong>: obiettivo = risolvere la richiesta di un cliente; strumenti = accesso al database ordini, sistema di rimborsi, knowledge base aziendale (RAG, Lezione 4.3); il loop continua raccogliendo informazioni necessarie prima di poter fornire una risposta o eseguire un'azione risolutiva</li></ul>
+<hr>
+<h3 id="esempio-pratico-tracciare-un-esecuzione-passo-per-passo">Esempio Pratico: Tracciare un'Esecuzione Passo per Passo</h3>
+<p>Seguiamo concettualmente cosa accadrebbe eseguendo <code>esegui_agente(&quot;Quanto fa 47 al quadrato, e poi cerca informazioni...&quot;)</code> con il codice della Sezione 4:</p>
+<pre><code>ITERAZIONE 1:
+  RAGIONA: il modello vede l'obiettivo, decide di usare
+           lo strumento &quot;calcola&quot; con espressione &quot;47**2&quot;
+  AGISCE:  il programma esegue calcola(&quot;47**2&quot;) → {&quot;risultato&quot;: 2209}
+  OSSERVA: il risultato (2209) viene aggiunto alla memoria
+
+ITERAZIONE 2:
+  RAGIONA: il modello vede che ora conosce il risultato (2209),
+           decide di usare &quot;cerca_sul_web&quot; con query &quot;2209&quot;
+  AGISCE:  il programma esegue cerca_sul_web(&quot;2209&quot;) →
+           {&quot;risultati&quot;: &quot;Informazioni trovate su: 2209&quot;}
+  OSSERVA: il risultato della ricerca viene aggiunto alla memoria
+
+ITERAZIONE 3:
+  RAGIONA: il modello ha ora sia il calcolo sia i risultati
+           della ricerca; decide che ha informazioni sufficienti
+  → stop_reason NON è più &quot;tool_use&quot;
+  → restituisce la risposta finale, basata su entrambi i risultati</code></pre>
+<p>Questa traccia rende tangibile cosa significa, in pratica, &quot;un numero non predeterminato di passi&quot;: il programmatore non ha scritto &quot;prima calcola, poi cerca&quot; — è stato il <strong>modello stesso</strong>, nel ruolo di &quot;ragiona&quot; del ciclo, a decidere autonomamente questa sequenza, basandosi sulla descrizione degli strumenti disponibili e sull'obiettivo fornito.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un <strong>agente AI</strong> è un sistema che esegue ripetutamente un ciclo <strong>percepisce → ragiona → agisce → osserva</strong>, fino al raggiungimento di un obiettivo o a un limite di sicurezza.</li><li>I quattro componenti di un agente — <strong>LLM core</strong>, <strong>memoria</strong>, <strong>strumenti</strong>, <strong>obiettivo</strong> — corrispondono direttamente a concetti già costruiti nel Capitolo 4: nessun componente è nuovo, è nuova l'organizzazione.</li><li>Un <strong>sistema reattivo</strong> produce una risposta per un input; un <strong>sistema agentivo</strong> esegue un numero di passi non predeterminato, deciso autonomamente in base al progresso verso l'obiettivo.</li><li>Il <strong>loop agentivo minimo</strong> si implementa estendendo il Function Calling della Lezione 4.4 con un ciclo che accumula memoria a ogni iterazione, terminando quando il modello non richiede più strumenti.</li><li>Un limite massimo di iterazioni (<code>max_iterazioni</code>) è un primo, essenziale meccanismo di sicurezza contro comportamenti imprevisti — tema che approfondiremo nella Lezione 5.5.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Nel codice della Sezione 4, identifica esattamente la riga (o le righe) che corrispondono a ciascuna delle quattro fasi del loop agentivo: percepisce, ragiona, agisce, osserva.</li></ol>
+<ol><li>Perché un sistema reattivo come la funzione <code>chiedi_a_claude()</code> della Lezione 4.1, anche se arricchita con Function Calling come nella Lezione 4.4, non sarebbe ancora sufficiente per un compito come &quot;pianifica un viaggio di una settimana, confrontando prezzi di voli e hotel da più fonti&quot;?</li></ol>
+<ol><li>Immagina di rimuovere completamente il parametro <code>max_iterazioni</code> dal codice della Sezione 4. Descrivi un possibile scenario, anche ipotetico, in cui questa assenza causerebbe un problema concreto.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> L'intero Capitolo 4 — questa lezione assembla, per la prima volta, tutti i componenti infrastrutturali costruiti separatamente (API, output strutturati, RAG, Function Calling, MCP, memoria) in un singolo sistema funzionante.</p>
+<p><strong>Porta a:</strong> Lezione 5.2 (ReAct e Chain-of-Thought) — vedremo come rendere più esplicito e affidabile il &quot;ragiona&quot; del ciclo, facendo sì che il modello esponga il proprio ragionamento prima di agire.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 5.5 (Gestione degli Errori) — il limite <code>max_iterazioni</code> qui introdotto come precauzione semplice diventerà parte di una strategia di robustezza molto più articolata. Lezione 6.2 (L'Agent Package) — i quattro componenti descritti in questa lezione (LLM core, memoria, strumenti, obiettivo) diventeranno cartelle e file espliciti in un agente professionale strutturato.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="04-06-memory-nei-sistemi-ai-breve-e-lungo-termine.html">← 04-06 Memory nei sistemi AI</a>
+        <a class="primary-action" href="05-02-react-chain-of-thought-e-pattern-di-ragionamento-agentivo.html">05-02 ReAct, CoT e Pattern di Ragionamento →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

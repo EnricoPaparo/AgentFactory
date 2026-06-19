@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestione degli Errori, Robustezza e Osservabilità negli Agenti | AgentFactory</title>
+  <meta name="description" content="Chiudere il capitolo con maturità ingegneristica: cosa serve prima di andare in produzione">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-05-agenti-architettura">Agenti AI: Architettura e Ragionamento</a><span>/</span><strong>05-05</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 05-05</p>
+        <h1>Gestione degli Errori, Robustezza e Osservabilità negli Agenti</h1>
+        <p class="lesson-subtitle">Chiudere il capitolo con maturità ingegneristica: cosa serve prima di andare in produzione</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>05 · Agenti AI: Architettura e Ragionamento</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>retry</span><span>fallback</span><span>circuit breaker</span><span>graceful degradation</span><span>logging</span><span>tracing</span><span>osservabilità</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Classificare i tipi di errore tipici di un sistema agentivo</li><li>Implementare retry, fallback e circuit breaker in un agente</li><li>Spiegare il principio di graceful degradation con un esempio concreto</li><li>Progettare un sistema minimo di logging per l'osservabilità di un agente</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 5 con la lezione che separa un prototipo interessante da un sistema pronto per l'uso reale. Negli esempi delle lezioni precedenti, abbiamo costruito agenti che <strong>funzionano quando tutto va bene</strong>: il modello risponde correttamente, gli strumenti restituiscono i dati attesi, le chiamate API non falliscono. Ma un sistema in produzione deve gestire anche tutto ciò che, prima o poi, <strong>non va bene</strong> — ed è precisamente questa capacità di gestire i fallimenti, in modo controllato e prevedibile, che distingue un'architettura matura da un esperimento fragile.</p>
+<p>Questa lezione raccoglie e formalizza precauzioni che abbiamo già introdotto in forma semplice — il <code>max_iterazioni</code> della Lezione 5.1, l'exponential backoff della Lezione 4.1 — e le organizza in una strategia coerente di robustezza, completando così tutta l'architettura concettuale necessaria prima di affrontare, nel Capitolo 6, come impacchettare un agente in modo professionale.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Classificare i tipi di errore tipici di un sistema agentivo: errori di strumento, loop, allucinazioni, errori di piano</li><li>Implementare pattern di retry, fallback e circuit breaker in un agente reale</li><li>Spiegare il principio di graceful degradation con un esempio concreto applicato a un agente</li><li>Progettare un sistema minimo di logging per rendere osservabile il comportamento di un agente</li></ul>
+<hr>
+<h3 id="1-classificare-i-tipi-di-errore-in-un-sistema-agentivo">1. Classificare i tipi di errore in un sistema agentivo</h3>
+<p>Non tutti gli errori che un agente può incontrare sono della stessa natura, e ciascun tipo richiede una strategia di gestione diversa.</p>
+<pre><code>ERRORI DI STRUMENTO
+  Una chiamata a uno strumento esterno (Lezione 4.4) fallisce:
+  timeout di rete, API esterna non disponibile, parametri
+  non validi. È l'equivalente, nel mondo agentivo, degli
+  errori HTTP visti nella Lezione 4.1 (429, 500, ecc.)
+
+LOOP
+  L'agente ripete la stessa azione, o un piccolo ciclo di
+  azioni, senza fare progressi verso l'obiettivo (problema
+  già identificato nella Lezione 5.2)
+
+ALLUCINAZIONI
+  Il modello genera, nel proprio PENSIERO (Lezione 5.2) o
+  nella risposta finale, informazioni inventate o non
+  supportate dai dati effettivamente raccolti — il limite
+  strutturale visto nella Lezione 3.5, qui nel contesto
+  specifico di un processo agentivo multi-passo
+
+ERRORI DI PIANO
+  L'agente (o l'orchestratore, Lezione 5.3) scompone il
+  problema in modo inadeguato fin dall'inizio: anche se
+  ogni singolo passo viene eseguito correttamente, la
+  STRATEGIA complessiva non porta al risultato desiderato</code></pre>
+<p>Questa classificazione conta perché la soluzione tecnica appropriata è diversa per ciascun caso: un errore di strumento si gestisce con retry; un loop si gestisce con limiti e rilevamento di pattern ripetitivi; un'allucinazione si gestisce con verifica e ancoraggio ai dati (lo stesso principio del RAG, Lezione 4.3); un errore di piano richiede spesso intervento umano (Lezione 7.4) o un meccanismo di revisione del piano stesso.</p>
+<hr>
+<h3 id="2-retry-e-fallback-la-prima-linea-di-difesa">2. Retry e Fallback: la prima linea di difesa</h3>
+<p>Per gli <strong>errori di strumento</strong>, la strategia più diretta — già introdotta in forma semplice nella Lezione 4.1 con l'exponential backoff — è il <strong>retry</strong>: ritentare l'operazione fallita, eventualmente con un'attesa crescente tra i tentativi.</p>
+<p>Quando il retry esaurisce i propri tentativi senza successo, entra in gioco il <strong>fallback</strong>: una strategia alternativa che permette al sistema di continuare a funzionare, anche con informazioni o capacità ridotte, invece di fallire completamente.</p>
+<pre><code>import time
+
+def chiama_strumento_con_resilienza(funzione_strumento, parametri,
+                                      tentativi_massimi=3,
+                                      funzione_fallback=None):
+    &quot;&quot;&quot;
+    Esegue uno strumento con retry automatico e fallback opzionale.
+    &quot;&quot;&quot;
+    for tentativo in range(tentativi_massimi):
+        try:
+            return funzione_strumento(**parametri)
+        except Exception as errore:
+            attesa = 2 ** tentativo
+            print(f&quot;[RETRY] Tentativo {tentativo + 1} fallito: {errore}. &quot;
+                  f&quot;Riprovo in {attesa}s...&quot;)
+            time.sleep(attesa)
+
+    # Tutti i tentativi sono falliti: FALLBACK
+    if funzione_fallback:
+        print(&quot;[FALLBACK] Uso strategia alternativa.&quot;)
+        return funzione_fallback(**parametri)
+
+    # Nessun fallback disponibile: fallimento esplicito
+    raise RuntimeError(
+        f&quot;Strumento fallito dopo {tentativi_massimi} tentativi, &quot;
+        f&quot;nessun fallback disponibile.&quot;
+    )
+
+
+# Esempio di utilizzo con un fallback concreto:
+def cerca_prezzo_aggiornato(prodotto: str) -&gt; dict:
+    &quot;&quot;&quot;Strumento primario: ricerca in tempo reale.&quot;&quot;&quot;
+    # In un caso reale, qui ci sarebbe una chiamata API esterna
+    raise ConnectionError(&quot;Servizio prezzi non disponibile&quot;)
+
+def usa_prezzo_da_cache(prodotto: str) -&gt; dict:
+    &quot;&quot;&quot;Fallback: usa un'ultima copia salvata, anche se non recentissima.&quot;&quot;&quot;
+    return {&quot;prezzo&quot;: 49.99, &quot;fonte&quot;: &quot;cache locale&quot;, &quot;aggiornato&quot;: False}
+
+risultato = chiama_strumento_con_resilienza(
+    cerca_prezzo_aggiornato,
+    {&quot;prodotto&quot;: &quot;Prodotto X&quot;},
+    funzione_fallback=usa_prezzo_da_cache
+)</code></pre>
+<p>Nota che il fallback restituisce un risultato <strong>esplicitamente marcato</strong> come proveniente da una fonte diversa (<code>&quot;fonte&quot;: &quot;cache locale&quot;, &quot;aggiornato&quot;: False</code>) — questa trasparenza è essenziale: l'agente (e, in ultima analisi, l'utente) deve poter sapere che l'informazione ricevuta è un compromesso, non il dato primario richiesto in origine.</p>
+<hr>
+<h3 id="3-il-circuit-breaker-prevenire-il-sovraccarico-di-un-servizio-in-difficolta">3. Il Circuit Breaker: prevenire il sovraccarico di un servizio in difficoltà</h3>
+<p>Un pattern più sofisticato, mutuato dall'ingegneria del software tradizionale, è il <strong>circuit breaker</strong> (interruttore di circuito): se uno strumento fallisce ripetutamente in un breve periodo, il sistema &quot;apre il circuito&quot; e <strong>smette temporaneamente di tentare quella chiamata</strong>, invece di continuare a provare (e fallire) ripetutamente, sovraccaricando inutilmente un servizio già in difficoltà.</p>
+<pre><code>STATO CHIUSO (normale)
+  Le chiamate allo strumento procedono normalmente
+         │
+         ▼ (troppi fallimenti consecutivi)
+STATO APERTO
+  Le chiamate vengono BLOCCATE immediatamente,
+  senza nemmeno tentare — si usa subito il fallback
+  o si segnala un errore, per un periodo di &quot;raffreddamento&quot;
+         │
+         ▼ (dopo il periodo di raffreddamento)
+STATO SEMI-APERTO
+  Si tenta UNA chiamata di prova
+         │
+    ┌────┴────┐
+    ▼         ▼
+ successo   fallimento
+    │         │
+    ▼         ▼
+ CHIUSO    APERTO
+(torna     (resta bloccato,
+normale)    nuovo raffreddamento)</code></pre>
+<p>Questo pattern è particolarmente importante in sistemi multi-agente (Lezione 5.4) dove un singolo strumento può essere chiamato da più agenti contemporaneamente: senza un circuit breaker, un servizio esterno in difficoltà potrebbe essere sommerso da tentativi di retry provenienti da ogni agente, aggravando ulteriormente il problema invece di lasciarlo recuperare.</p>
+<hr>
+<h3 id="4-graceful-degradation-fallire-in-modo-controllato">4. Graceful Degradation: fallire in modo controllato</h3>
+<p>Il principio di <strong>graceful degradation</strong> (degradazione controllata), già menzionato nella Lezione 4.2 a proposito degli output parser, va ora generalizzato a livello di intero sistema agentivo: quando una componente fallisce e nessun fallback è in grado di sostituirla completamente, il sistema deve <strong>comunicare chiaramente i propri limiti</strong>, invece di produrre un risultato silenziosamente incompleto o, peggio, inventato.</p>
+<pre><code>def agente_con_degradazione_controllata(domanda: str) -&gt; dict:
+    &quot;&quot;&quot;
+    Un agente che, in caso di fallimento di componenti critiche,
+    comunica esplicitamente i propri limiti invece di
+    'fingere' un risultato completo.
+    &quot;&quot;&quot;
+    risultato = {&quot;risposta&quot;: None, &quot;limitazioni&quot;: [], &quot;completo&quot;: True}
+
+    try:
+        dati_realtime = cerca_dati_in_tempo_reale(domanda)
+    except Exception:
+        risultato[&quot;limitazioni&quot;].append(
+            &quot;Dati in tempo reale non disponibili: la risposta &quot;
+            &quot;potrebbe basarsi su informazioni non aggiornate.&quot;
+        )
+        dati_realtime = None
+        risultato[&quot;completo&quot;] = False
+
+    risultato[&quot;risposta&quot;] = genera_risposta(domanda, dati_realtime)
+    return risultato</code></pre>
+<p>Questo approccio — restituire sempre, insieme alla risposta, un'indicazione esplicita di eventuali limitazioni — è precisamente il tipo di onestà sui propri limiti che, ricordando la Lezione 3.2 (RLHF), un buon assistente AI dovrebbe avere anche a livello di singola risposta testuale; qui lo applichiamo a livello di <strong>architettura del sistema</strong>, rendendolo un comportamento garantito dal codice, non solo sperato dal comportamento del modello.</p>
+<hr>
+<h3 id="5-logging-e-tracing-rendere-visibile-cosa-sta-facendo-un-agente">5. Logging e Tracing: rendere visibile cosa sta facendo un agente</h3>
+<p>Tutta la gestione degli errori descritta finora è inutile se non si ha <strong>visibilità</strong> su cosa è effettivamente accaduto durante l'esecuzione di un agente. Il <strong>logging</strong> (registrazione di eventi) e il <strong>tracing</strong> (tracciamento dettagliato dell'intero percorso di esecuzione) sono le pratiche che rendono questa visibilità possibile.</p>
+<pre><code>import logging
+import json
+from datetime import datetime
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(&quot;agente&quot;)
+
+def esegui_agente_osservabile(obiettivo: str, max_iterazioni: int = 5) -&gt; str:
+    &quot;&quot;&quot;
+    Estende il loop agentivo della Lezione 5.1 con logging
+    strutturato a ogni fase del ciclo.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+    messaggi = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo}]
+
+    logger.info(json.dumps({
+        &quot;evento&quot;: &quot;inizio_esecuzione&quot;,
+        &quot;obiettivo&quot;: obiettivo,
+        &quot;timestamp&quot;: datetime.now().isoformat()
+    }))
+
+    for iterazione in range(max_iterazioni):
+        risposta = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;, max_tokens=1024,
+            tools=DEFINIZIONI_STRUMENTI, messages=messaggi
+        )
+
+        logger.info(json.dumps({
+            &quot;evento&quot;: &quot;iterazione_completata&quot;,
+            &quot;numero_iterazione&quot;: iterazione,
+            &quot;stop_reason&quot;: risposta.stop_reason,
+            &quot;token_usati&quot;: risposta.usage.output_tokens
+        }))
+
+        messaggi.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: risposta.content})
+
+        if risposta.stop_reason != &quot;tool_use&quot;:
+            logger.info(json.dumps({&quot;evento&quot;: &quot;esecuzione_completata&quot;}))
+            return risposta.content[0].text
+
+        # ... gestione strumenti come nella Lezione 5.1 ...
+
+    logger.warning(json.dumps({
+        &quot;evento&quot;: &quot;limite_iterazioni_raggiunto&quot;,
+        &quot;obiettivo&quot;: obiettivo
+    }))
+    return &quot;Limite di iterazioni raggiunto.&quot;</code></pre>
+<p>Nota la scelta di registrare i log in <strong>formato strutturato</strong> (JSON), riprendendo direttamente il principio della Lezione 4.2: un log strutturato può essere interrogato, filtrato, e analizzato automaticamente — ad esempio, per scoprire quante esecuzioni raggiungono il limite di iterazioni, o qual è il consumo medio di token per tipo di richiesta — invece di restare testo grezzo difficile da analizzare su larga scala.</p>
+<blockquote><strong>Perché questo conta enormemente nel Capitolo 7:</strong> quando parleremo di valutazione dei workflow nella Lezione 7.5, questi stessi log strutturati saranno la materia prima su cui costruire metriche, dashboard, e test di regressione. L'osservabilità non è un accessorio: è l'infrastruttura di dati su cui si basa ogni miglioramento futuro del sistema.</blockquote>
+<hr>
+<h3 id="esempio-pratico-diagnosticare-un-problema-da-un-log">Esempio Pratico: Diagnosticare un Problema da un Log</h3>
+<p>Immagina di osservare questa sequenza di log, prodotta da un agente in produzione:</p>
+<pre><code>{&quot;evento&quot;: &quot;iterazione_completata&quot;, &quot;numero_iterazione&quot;: 0, &quot;stop_reason&quot;: &quot;tool_use&quot;}
+{&quot;evento&quot;: &quot;iterazione_completata&quot;, &quot;numero_iterazione&quot;: 1, &quot;stop_reason&quot;: &quot;tool_use&quot;}
+{&quot;evento&quot;: &quot;iterazione_completata&quot;, &quot;numero_iterazione&quot;: 2, &quot;stop_reason&quot;: &quot;tool_use&quot;}
+{&quot;evento&quot;: &quot;iterazione_completata&quot;, &quot;numero_iterazione&quot;: 3, &quot;stop_reason&quot;: &quot;tool_use&quot;}
+{&quot;evento&quot;: &quot;limite_iterazioni_raggiunto&quot;}</code></pre>
+<p>Cosa puoi dedurre, solo da questi log, senza nemmeno guardare il contenuto specifico delle chiamate? Il fatto che <strong>ogni singola iterazione</strong> abbia richiesto uno strumento (<code>stop_reason: tool_use</code>), senza mai arrivare a una risposta finale, è un segnale fortemente indicativo del problema di <strong>loop</strong> descritto nella Sezione 1 — l'agente non sta convergendo verso una conclusione. Questo tipo di diagnosi rapida, possibile solo grazie alla strutturazione dei log, è esattamente il valore pratico dell'osservabilità: identificare la categoria del problema prima ancora di analizzarne i dettagli specifici.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>I sistemi agentivi incontrano quattro categorie distinte di errore: <strong>errori di strumento</strong>, <strong>loop</strong>, <strong>allucinazioni</strong>, <strong>errori di piano</strong>, ciascuna con una strategia di gestione appropriata diversa.</li><li><strong>Retry</strong> (ritentare con attesa crescente) e <strong>fallback</strong> (strategia alternativa esplicitamente marcata come tale) sono la prima linea di difesa contro errori di strumento temporanei.</li><li>Il <strong>circuit breaker</strong> previene il sovraccarico di un servizio già in difficoltà, bloccando temporaneamente le chiamate dopo fallimenti ripetuti.</li><li>La <strong>graceful degradation</strong> richiede che un sistema comunichi esplicitamente i propri limiti quando una componente fallisce, invece di produrre un risultato silenziosamente incompleto.</li><li><strong>Logging strutturato</strong> e <strong>tracing</strong> rendono osservabile il comportamento di un agente, permettendo diagnosi rapide e fornendo la base dati per la valutazione e il miglioramento futuro del sistema.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Un agente multi-agente (Lezione 5.4) ha un nodo che chiama frequentemente un servizio esterno ora in down per manutenzione programmata. Spiega perché un circuit breaker sarebbe preferibile al solo retry con backoff in questo scenario specifico.</li></ol>
+<ol><li>Riprendi l'esempio di codice della Sezione 4 (<code>agente_con_degradazione_controllata</code>). Perché restituire un dizionario con il campo <code>&quot;limitazioni&quot;</code> è una scelta migliore, dal punto di vista dell'utente finale, rispetto a fallire silenziosamente e mostrare comunque solo <code>risultato[&quot;risposta&quot;]</code>?</li></ol>
+<ol><li>Nell'esempio pratico della Sezione finale, i log mostrano 4 iterazioni che richiedono sempre uno strumento. Quale altra informazione, se fosse presente nei log, ti aiuterebbe a distinguere un loop &quot;innocuo&quot; (l'agente sta semplicemente eseguendo un compito che richiede molti passi legittimi) da un loop &quot;problematico&quot; (l'agente è bloccato, senza progresso reale)?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 4.1 (exponential backoff), Lezione 5.1 (max_iterazioni), Lezione 5.2 (problema del loop) — questa lezione raccoglie e sistematizza precauzioni introdotte in forma semplice nelle lezioni precedenti.</p>
+<p><strong>Porta a:</strong> Capitolo 6 (L'Agent Package) — un agente robusto, con gestione degli errori e logging ben progettati, è precisamente ciò che merita di essere impacchettato secondo gli standard professionali che vedremo in quel capitolo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 7.5 (Valutazione dei Workflow) — i log strutturati qui introdotti sono la materia prima per le metriche e i test di regressione di quella lezione. Lezione 8.1 (Self-Reflection) — il principio di un agente che riconosce e comunica i propri limiti, qui applicato a livello di gestione degli errori, anticipa il concetto più ampio di un agente che valuta criticamente il proprio stesso comportamento.</p>
+<hr>
+<p><strong>CHIUSURA DEL CAPITOLO 5.</strong> Con questa lezione si conclude l'intera architettura concettuale degli agenti: cosa sono (5.1), come ragionano in modo osservabile (5.2), come si coordinano tramite un orchestratore (5.3), quali topologie può assumere un sistema multi-agente (5.4), e come si rendono robusti e osservabili (5.5). Il Capitolo 6 affronta ora la dimensione che trasforma questi pattern architetturali in pratica professionale: come impacchettare un agente in file, contratti e artefatti strutturati, pronti per essere mantenuti, versionati, e fatti evolvere nel tempo da un team, non solo da un singolo script.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="05-04-agenti-single-vs-multi-agent-quando-un-agente-non-basta.html">← 05-04 Single vs Multi-Agent</a>
+        <a class="primary-action" href="06-01-yaml-e-frontmatter-il-linguaggio-dei-metadati-strutturati.html">06-01 YAML e Frontmatter →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Application: quando il browser diventa un'interfaccia | AgentFactory</title>
+  <meta name="description" content="Il frontend si emancipa: dal documento da leggere all'applicazione con cui interagire">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-01-il-web">Il Web come lo Conosciamo</a><span>/</span><strong>01-04</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 01-04</p>
+        <h1>Web Application: quando il browser diventa un'interfaccia</h1>
+        <p class="lesson-subtitle">Il frontend si emancipa: dal documento da leggere all'applicazione con cui interagire</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>01 · Il Web come lo Conosciamo</strong></div><div><span>Durata</span><strong>50 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>web application</span><span>SPA</span><span>frontend</span><span>backend</span><span>stato applicazione</span><span>JavaScript</span><span>rendering lato client</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere 'consultare' un sito da 'usare' un'applicazione</li><li>Spiegare cosa è una Single Page Application e perché è diversa da un sito dinamico classico</li><li>Descrivere frontend e backend come due sistemi distinti che comunicano via API</li><li>Comprendere il concetto di stato dell'applicazione lato client</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nelle ultime due lezioni abbiamo visto il server evolversi: da semplice fotocopiatrice di file fissi (sito statico) a sarto che costruisce ogni risposta su misura (sito dinamico). Ma in entrambi i casi, il browser aveva un ruolo passivo: riceveva HTML completo, lo mostrava, e basta. Ogni interazione significativa (un clic su un link, l'invio di un modulo) generava una richiesta completamente nuova, con una pagina interamente ricaricata.</p>
+<p>Questa lezione descrive il passo successivo: cosa succede quando anche il browser inizia a &quot;fare cose&quot; — non solo a mostrare, ma a elaborare, decidere, ricordare. È il momento in cui un sito web diventa una <strong>Web Application</strong>, e in cui ChatGPT, Claude.ai, Gmail, Notion smettono di essere &quot;pagine&quot; e diventano strumenti con cui si lavora per minuti o ore senza mai vedere un ricaricamento completo della pagina.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere concettualmente &quot;consultare&quot; un sito da &quot;usare&quot; un'applicazione</li><li>Spiegare cosa è una Single Page Application e perché è diversa da un sito dinamico classico</li><li>Descrivere frontend e backend come due sistemi distinti che comunicano attraverso API</li><li>Comprendere il concetto di stato dell'applicazione mantenuto lato client</li></ul>
+<hr>
+<h3 id="1-consultare-un-sito-vs-usare-un-applicazione">1. Consultare un sito vs usare un'applicazione</h3>
+<p>Pensa alla differenza tra leggere un articolo di un blog e usare un foglio di calcolo online come Google Sheets.</p>
+<p>Quando leggi l'articolo, l'interazione è minima: scorri, eventualmente clicchi un link che ti porta a un'altra pagina (e l'intera pagina si ricarica). Il sito ti <em>mostra</em> qualcosa.</p>
+<p>Quando usi un foglio di calcolo online, l'interazione è continua e densa: clicchi celle, digiti formule, vedi risultati aggiornarsi istantaneamente, sposti colonne — e in nessun momento la pagina &quot;si ricarica&quot; nel senso classico. Il browser, in questo caso, non sta semplicemente mostrando un documento: sta facendo girare un <strong>programma</strong>.</p>
+<p>Questa è la distinzione fondamentale: un sito è un insieme di <strong>documenti</strong> da consultare; una web application è un <strong>programma</strong> con cui interagire, che vive (in buona parte) dentro il browser stesso.</p>
+<hr>
+<h3 id="2-la-single-page-application-spa">2. La Single Page Application (SPA)</h3>
+<p>Il modello architetturale più comune per le web application moderne si chiama <strong>SPA — Single Page Application</strong>, &quot;applicazione a pagina singola&quot;.</p>
+<p>Il nome descrive bene il principio: il browser carica <strong>una sola volta</strong> una pagina HTML scheletro, quasi vuota, insieme a un grande blocco di codice JavaScript. Da quel momento in poi, tutte le interazioni — cambiare sezione, aprire un menu, visualizzare nuovi dati — vengono gestite <em>dal JavaScript stesso</em>, senza più richiedere al server una pagina HTML completamente nuova.</p>
+<pre><code>SITO DINAMICO CLASSICO              SINGLE PAGE APPLICATION
+
+Clic su un link                     Clic su un link
+       │                                   │
+       ▼                                   ▼
+Richiesta HTTP per                  JavaScript intercetta il clic
+una NUOVA pagina HTML                       │
+       │                                   ▼
+       ▼                            Richiesta solo per i DATI
+Browser scarta tutto e              necessari (spesso JSON)
+ricarica da zero                            │
+       │                                   ▼
+       ▼                            JavaScript aggiorna SOLO
+Nuova pagina mostrata                la parte di pagina che
+                                     deve cambiare</code></pre>
+<p>Quando usi Gmail e clicchi su un'email diversa, non stai generando una richiesta per una pagina HTML completa: il JavaScript già presente nel browser richiede solo il contenuto di quella email (tipicamente in formato JSON, come vedremo nella prossima lezione) e aggiorna esclusivamente la porzione di schermo necessaria. Il resto dell'interfaccia — la barra laterale, l'intestazione, i menu — resta esattamente com'era, senza nessun lampo di ricaricamento.</p>
+<blockquote><strong>Perché questo è rilevante per il corso:</strong> l'interfaccia di ChatGPT o di Claude.ai funziona esattamente così. Quando scrivi un messaggio e premi invio, il browser non ricarica la pagina: il JavaScript invia i tuoi dati a un'API, riceve la risposta (spesso pezzo per pezzo, come vedremo parlando di streaming nella Lezione 4.1), e aggiorna dinamicamente solo l'area della conversazione.</blockquote>
+<hr>
+<h3 id="3-frontend-e-backend-come-sistemi-distinti">3. Frontend e Backend come sistemi distinti</h3>
+<p>Nei siti dinamici classici (Lezione 1.3), backend e generazione dell'HTML erano strettamente accoppiati: il server costruiva l'HTML finale e lo mandava già pronto.</p>
+<p>Nelle web application moderne, questo accoppiamento si rompe. <strong>Frontend</strong> e <strong>backend</strong> diventano due sistemi distinti, spesso scritti in linguaggi diversi, sviluppati da team diversi, e che comunicano esclusivamente attraverso API (il tema della prossima lezione).</p>
+<pre><code>┌─────────────────┐         richieste API          ┌─────────────────┐
+│    FRONTEND      │ ◄─────────────────────────────►│     BACKEND      │
+│  (nel browser)   │      (tipicamente JSON)         │  (sul server)    │
+│                  │                                  │                  │
+│  - HTML/CSS      │                                  │  - Logica        │
+│  - JavaScript    │                                  │  - Database      │
+│  - Stato locale  │                                  │  - Autenticazione│
+└─────────────────┘                                  └─────────────────┘</code></pre>
+<p>Il frontend ha la responsabilità di: mostrare l'interfaccia, gestire le interazioni dell'utente, mantenere uno stato locale (vedremo cosa significa nel prossimo paragrafo), e comunicare con il backend quando ha bisogno di dati o deve salvare qualcosa.</p>
+<p>Il backend ha la responsabilità di: applicare le regole di business, parlare con database e altri sistemi, garantire sicurezza e autenticazione, e rispondere alle richieste del frontend con i dati richiesti.</p>
+<p>Questa separazione netta è esattamente l'architettura che useremo per costruire sistemi AI: un frontend (interfaccia di chat, dashboard) che parla con un backend (che a sua volta orchestra chiamate a modelli AI, database vettoriali, strumenti esterni). Il pattern è identico; cambia solo cosa fa il backend internamente.</p>
+<hr>
+<h3 id="4-il-concetto-di-stato-dell-applicazione">4. Il concetto di &quot;stato dell'applicazione&quot;</h3>
+<p>Avevamo già incontrato il concetto di <strong>stato</strong> nella Lezione 1.3, parlando di come un sito dinamico &quot;ricorda&quot; chi sei tramite i cookie. Nelle web application, lo stato si arricchisce di un livello ulteriore: lo <strong>stato dell'applicazione mantenuto nel browser</strong>, indipendentemente dal server.</p>
+<p>Pensa a un'interfaccia di chat come quella di Claude.ai. Mentre scrivi un messaggio ma non l'hai ancora inviato, quel testo esiste <em>solo</em> nel tuo browser: il server non ne sa nulla. Se hai aperto un menu a tendina, se hai selezionato una scheda diversa, se hai scorso fino a un certo punto della conversazione — tutto questo è stato locale, gestito interamente da JavaScript, senza alcuna comunicazione con il server.</p>
+<pre><code>STATO LOCALE (nel browser)              STATO REMOTO (sul server)
+
+- Testo non ancora inviato              - Conversazioni salvate
+- Menu apert/chiuso                     - Account utente
+- Scroll position                       - Preferenze persistenti
+- Selezioni temporanee                  - Cronologia dei messaggi
+       │                                        │
+       └──────────── sincronizzazione ──────────┘
+              (avviene tramite chiamate API,
+               solo quando necessario)</code></pre>
+<p>Capire questa distinzione è importante perché la maggior parte dei problemi di progettazione nelle applicazioni moderne — incluse le interfacce per sistemi AI — riguarda esattamente questo: cosa deve vivere temporaneamente nel browser, e cosa deve invece essere salvato in modo persistente sul server. Un messaggio che stai ancora scrivendo non ha bisogno di essere salvato a ogni lettera digitata; una volta inviato, invece, deve diventare stato remoto, persistente, recuperabile in futuro.</p>
+<hr>
+<h3 id="5-esempi-concreti-di-web-application">5. Esempi concreti di Web Application</h3>
+<ul><li><strong>Google Maps:</strong> ti muovi sulla mappa, zoomi, cerchi indirizzi — tutto avviene senza mai ricaricare la pagina. Solo i dati della mappa (le &quot;tile&quot; geografiche) vengono richiesti al volo.</li><li><strong>Notion:</strong> ogni blocco di testo, ogni pagina, ogni database è gestito interamente da JavaScript nel browser; il salvataggio sul server avviene in background, spesso impercettibile.</li><li><strong>Figma:</strong> un intero software di design professionale che gira nel browser, con uno stato applicativo complesso (livelli, selezioni, strumenti attivi) mantenuto interamente lato client.</li><li><strong>Claude.ai / ChatGPT:</strong> l'interfaccia di chat che useremo come riferimento concettuale per tutto il resto del corso. Il messaggio che scrivi è stato locale; la cronologia salvata è stato remoto; l'invio del messaggio è una chiamata API che attraversa esattamente i meccanismi HTTP descritti nella Lezione 1.1.</li></ul>
+<hr>
+<h3 id="esempio-pratico-vedere-una-spa-in-azione">Esempio Pratico: Vedere una SPA in Azione</h3>
+<ol><li>Apri una qualsiasi applicazione web moderna (Gmail, Notion, o anche Claude.ai)</li><li>Apri gli strumenti sviluppatore (F12) → tab <strong>Network</strong></li><li>Filtra per <strong>Doc</strong> (documenti HTML): osserva che, dopo il caricamento iniziale, non compaiono più richieste di tipo documento anche se navighi tra sezioni diverse dell'app</li><li>Ora filtra per <strong>Fetch/XHR</strong> (le chiamate API): osserva che invece queste continuano ad apparire ogni volta che l'interfaccia mostra nuovi dati</li></ol>
+<p>Questo conferma empiricamente quanto descritto: la pagina HTML viene caricata una volta sola; tutto il resto dell'interazione passa attraverso chiamate API che restituiscono solo dati, non pagine intere.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Una <strong>Web Application</strong> trasforma il browser da semplice visualizzatore di documenti a ambiente di esecuzione di un programma interattivo.</li><li>La <strong>Single Page Application (SPA)</strong> carica l'HTML una sola volta e gestisce tutte le interazioni successive tramite JavaScript, richiedendo solo dati (non pagine intere) al server.</li><li><strong>Frontend</strong> e <strong>backend</strong> diventano sistemi distinti che comunicano tramite API: il frontend gestisce interfaccia e interazione, il backend gestisce logica, dati e sicurezza.</li><li>Lo <strong>stato dell'applicazione</strong> si divide tra stato locale (temporaneo, nel browser) e stato remoto (persistente, sul server), sincronizzati tramite chiamate API quando necessario.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Quando scrivi un messaggio in un'interfaccia di chat AI ma non l'hai ancora inviato, quel testo è stato locale o remoto? Cosa succederebbe, dal punto di vista dello stato, se chiudessi la scheda del browser in quel momento?</li></ol>
+<ol><li>Perché pensi che separare frontend e backend in sistemi distinti (invece di tenerli accoppiati come nei siti dinamici classici) renda più facile, in seguito, costruire anche un'app mobile che usa lo stesso backend?</li></ol>
+<ol><li>Identifica, in un'applicazione che usi regolarmente, un elemento di stato locale e un elemento di stato remoto. Come fai a distinguerli?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 1.3 — qui il backend &quot;costruiva&quot; l'HTML; ora il frontend si emancipa e costruisce l'interfaccia da solo, comunicando con il backend solo per i dati.</p>
+<p><strong>Porta a:</strong> Lezione 1.5 (Le API) — abbiamo accennato più volte a &quot;chiamate API che restituiscono dati&quot;: è il momento di trattare questo meccanismo in profondità, capendo esattamente come è strutturata una richiesta e una risposta API.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 3.3 (Anatomia di un prodotto AI) — vedremo che ChatGPT e Claude.ai sono Web Application costruite esattamente secondo questo modello, con un frontend che gestisce la conversazione e un backend che orchestra le chiamate al modello AI sottostante.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="01-03-siti-web-dinamici-server-database-e-la-nascita-della-logica.html">← 01-03 Siti Web Dinamici</a>
+        <a class="primary-action" href="01-05-le-api-il-linguaggio-universale-tra-sistemi.html">01-05 Le API →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

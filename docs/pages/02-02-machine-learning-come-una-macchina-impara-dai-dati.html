@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Machine Learning: come una macchina impara dai dati | AgentFactory</title>
+  <meta name="description" content="Il meccanismo concreto dietro la parola 'apprendimento': dati, pattern, previsione">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-02-intelligenza-artificiale">L'Intelligenza Artificiale: Cosa È Davvero</a><span>/</span><strong>02-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 02-02</p>
+        <h1>Machine Learning: come una macchina impara dai dati</h1>
+        <p class="lesson-subtitle">Il meccanismo concreto dietro la parola 'apprendimento': dati, pattern, previsione</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>02 · L'Intelligenza Artificiale: Cosa È Davvero</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>machine learning</span><span>apprendimento supervisionato</span><span>apprendimento non supervisionato</span><span>apprendimento per rinforzo</span><span>modello</span><span>training</span><span>validation</span><span>test</span><span>overfitting</span><span>underfitting</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il paradigma dati → pattern → previsione con parole proprie</li><li>Distinguere apprendimento supervisionato, non supervisionato e per rinforzo</li><li>Descrivere un modello come funzione matematica ottimizzata, senza misticismo</li><li>Riconoscere e spiegare overfitting e underfitting con esempi concreti</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo introdotto il Machine Learning come l'approccio che &quot;impara dai dati invece di seguire regole scritte a mano&quot;, usando l'analogia del riconoscere un frutto maturo. È un'ottima intuizione di partenza, ma resta vaga: cosa significa esattamente &quot;imparare&quot;, quando il soggetto che imparare non ha un cervello biologico ma solo numeri e operazioni matematiche?</p>
+<p>Questa lezione rende quell'intuizione concreta e precisa. Non serviranno formule complesse — l'obiettivo non è che tu sappia implementare un algoritmo di Machine Learning, ma che tu capisca con chiarezza cosa succede &quot;sotto il cofano&quot; quando un sistema viene addestrato. Questa comprensione è il prerequisito diretto per capire, nella Lezione 2.3, come funzionano le reti neurali, e in ultima analisi per capire perché i modelli linguistici a volte sbagliano in modi specifici e prevedibili.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare il paradigma &quot;dati → pattern → previsione&quot; con parole proprie</li><li>Distinguere apprendimento supervisionato, non supervisionato e per rinforzo</li><li>Descrivere un modello come funzione matematica ottimizzata, senza misticismo</li><li>Riconoscere e spiegare i concetti di overfitting e underfitting con esempi concreti</li></ul>
+<hr>
+<h3 id="1-il-paradigma-dell-apprendimento-dati-pattern-previsione">1. Il paradigma dell'apprendimento: dati → pattern → previsione</h3>
+<p>Il Machine Learning si fonda su uno schema concettuale ricorrente, applicabile a problemi molto diversi tra loro:</p>
+<pre><code>DATI                    PATTERN                  PREVISIONE
+(esempi passati)    →   (regolarità scoperte)  →  (su casi nuovi)
+
+Migliaia di email      Il sistema scopre che      Una nuova email con
+etichettate come        certe parole/combinazioni  quelle caratteristiche
+&quot;spam&quot; o &quot;non spam&quot;     ricorrono nello spam       viene classificata
+                                                     come probabile spam</code></pre>
+<p>Il punto fondamentale è questo: nessuno ha detto esplicitamente al sistema &quot;se contiene la parola X, è spam&quot;. Il sistema ha <strong>osservato</strong> migliaia di esempi già classificati da umani, e ha <strong>dedotto statisticamente</strong> quali caratteristiche tendono ad associarsi a quale categoria.</p>
+<p>Questo significa anche che il sistema non &quot;capisce&quot; cosa sia lo spam nel senso in cui lo capisci tu (un tentativo di truffa, una comunicazione indesiderata): ha trovato correlazioni statistiche tra caratteristiche del testo e l'etichetta che gli è stata fornita. Questa distinzione — <em>correlazione statistica scoperta</em> vs <em>comprensione semantica</em> — è una delle idee più importanti di questo intero capitolo, e tornerà con forza quando parleremo delle allucinazioni degli LLM nella Lezione 3.5.</p>
+<hr>
+<h3 id="2-le-tre-grandi-famiglie-di-apprendimento">2. Le tre grandi famiglie di apprendimento</h3>
+<p>Non tutto il Machine Learning funziona allo stesso modo. Esistono tre paradigmi principali, distinti dal tipo di dati disponibili e dal tipo di feedback che il sistema riceve durante l'addestramento.</p>
+<h4 id="2-1-apprendimento-supervisionato">2.1 Apprendimento Supervisionato</h4>
+<p>Il sistema riceve esempi <strong>già etichettati</strong> con la risposta corretta. È come uno studente che si esercita con un libro di esercizi che ha anche le soluzioni in fondo: per ogni domanda, sa qual è la risposta giusta, e può correggersi.</p>
+<pre><code>INPUT                          OUTPUT CORRETTO (etichetta)
+Foto di un gatto         →     &quot;gatto&quot;
+Foto di un cane           →     &quot;cane&quot;
+Email con certo testo     →     &quot;spam&quot;
+Email con altro testo     →     &quot;non spam&quot;</code></pre>
+<p>Il sistema impara, esempio dopo esempio, ad associare input a output corretti. È il paradigma più comune e più facile da capire, ed è anche la base concettuale dell'addestramento iniziale dei modelli linguistici (lo vedremo nella Lezione 3.2 parlando di fine-tuning supervisionato).</p>
+<h4 id="2-2-apprendimento-non-supervisionato">2.2 Apprendimento Non Supervisionato</h4>
+<p>Il sistema riceve dati <strong>senza etichette</strong>, e il suo compito è trovare strutture, raggruppamenti o pattern nascosti, senza che nessuno gli dica cosa cercare esattamente.</p>
+<pre><code>INPUT (senza etichette)
+Migliaia di clienti di un negozio, con dati su
+cosa comprano, quanto spendono, quando visitano
+
+           ↓ (il sistema scopre da solo...)
+
+OUTPUT: gruppi naturali di clienti simili tra loro
+(&quot;acquirenti occasionali&quot;, &quot;clienti fedeli ad alta spesa&quot;, ecc.)
+— categorie che nessun umano aveva definito in anticipo</code></pre>
+<blockquote><strong>Analogia concreta:</strong> è come dare a qualcuno una scatola di Lego mischiati di mille set diversi, senza istruzioni, e chiedergli di raggrupparli in modo sensato. Non c'è una &quot;risposta corretta&quot; predefinita — la persona troverà criteri di raggruppamento (per colore, per forma, per dimensione) basandosi sulle regolarità che osserva.</blockquote>
+<h4 id="2-3-apprendimento-per-rinforzo">2.3 Apprendimento per Rinforzo</h4>
+<p>Il sistema non riceve esempi etichettati né dati grezzi da raggruppare: interagisce con un <strong>ambiente</strong>, compie <strong>azioni</strong>, e riceve un segnale di <strong>ricompensa o penalità</strong> in base al risultato. Impara, per tentativi ed errori, quali azioni massimizzano la ricompensa nel tempo.</p>
+<pre><code>        ┌─────────────────────────────┐
+        │           AMBIENTE            │
+        └─────────────────────────────┘
+              │                    ▲
+        azione│                    │ricompensa/penalità
+              ▼                    │
+        ┌─────────────────────────────┐
+        │            AGENTE              │
+        │   (sta imparando a comportarsi) │
+        └─────────────────────────────┘</code></pre>
+<p>Questo è il paradigma con cui si addestrano sistemi che giocano a scacchi o ai videogiochi a livello sovrumano: il sistema gioca milioni di partite, riceve &quot;vittoria&quot; o &quot;sconfitta&quot; come segnale, e affina progressivamente la propria strategia. È anche, sorprendentemente, un ingrediente cruciale nella costruzione degli assistenti AI moderni: la tecnica RLHF che vedremo nella Lezione 3.2 (Reinforcement Learning from Human Feedback) usa esattamente questo principio, con la valutazione umana nel ruolo di &quot;ricompensa&quot;.</p>
+<blockquote>Nota terminologica importante: la parola &quot;agente&quot; qui, nel contesto dell'apprendimento per rinforzo, ha un significato tecnico specifico (l'entità che agisce nell'ambiente) leggermente diverso, ma concettualmente affine, a &quot;agente AI&quot; nel senso che useremo dal Capitolo 5 in poi (un sistema che persegue un obiettivo attraverso azioni). Non è una coincidenza terminologica: l'idea di un sistema che agisce, osserva il risultato, e si adatta è il filo conduttore di entrambi i concetti.</blockquote>
+<hr>
+<h3 id="3-cos-e-un-modello-una-funzione-matematica-ottimizzata">3. Cos'è un modello: una funzione matematica ottimizzata</h3>
+<p>Useremo la parola &quot;modello&quot; costantemente da qui in avanti. È importante demistificarla subito.</p>
+<p>Un <strong>modello</strong>, in Machine Learning, è semplicemente una <strong>funzione matematica</strong> — un meccanismo che trasforma un input in un output — i cui <strong>parametri interni</strong> (i numeri che determinano esattamente come avviene questa trasformazione) sono stati aggiustati durante il processo di addestramento, invece di essere scritti a mano da un programmatore.</p>
+<pre><code>INPUT  →  [ FUNZIONE CON PARAMETRI REGOLABILI ]  →  OUTPUT
+
+Prima dell'addestramento: i parametri sono casuali,
+l'output è essenzialmente spazzatura
+
+Durante l'addestramento: i parametri vengono aggiustati
+ripetutamente per ridurre la differenza tra l'output prodotto
+e l'output desiderato (nell'apprendimento supervisionato)
+
+Dopo l'addestramento: i parametri sono &quot;stabili&quot;, il modello
+produce output utili su input mai visti prima</code></pre>
+<p>Quando, nel Capitolo 3, sentirai parlare di modelli con &quot;miliardi di parametri&quot;, ora sai esattamente cosa significa: un numero enorme di questi valori numerici regolabili, tutti aggiustati durante un processo di addestramento su quantità di dati altrettanto enormi.</p>
+<hr>
+<h3 id="4-il-ciclo-di-vita-di-un-modello-training-validation-test">4. Il ciclo di vita di un modello: training, validation, test</h3>
+<p>Un modello non viene addestrato e poi semplicemente &quot;usato&quot;: esiste un protocollo rigoroso per verificare che funzioni davvero bene, non solo sui dati che ha già visto. I dati disponibili vengono tipicamente divisi in tre insiemi distinti:</p>
+<ul><li><strong>Training set</strong> (insieme di addestramento): i dati su cui il modello effettivamente si allena, aggiustando i propri parametri</li><li><strong>Validation set</strong> (insieme di validazione): dati mai usati per l'addestramento, usati per controllare periodicamente come sta andando l'apprendimento e per scegliere tra diverse configurazioni del modello</li><li><strong>Test set</strong> (insieme di test): dati completamente nuovi, usati solo alla fine, per misurare onestamente quanto bene il modello generalizza a situazioni che non ha mai incontrato in nessuna fase precedente</li></ul>
+<p>Questa separazione rigorosa serve a evitare un'illusione pericolosa: un modello può sembrare eccellente se lo valutiamo sugli stessi dati con cui si è allenato (avrebbe &quot;memorizzato&quot; le risposte), ma fallire completamente su dati nuovi. Il vero obiettivo del Machine Learning non è mai &quot;essere bravo sui dati di addestramento&quot;: è <strong>generalizzare</strong>, cioè essere bravo su casi nuovi, mai visti.</p>
+<hr>
+<h3 id="5-overfitting-e-underfitting">5. Overfitting e Underfitting</h3>
+<p>Questi due concetti descrivono i due modi opposti in cui un modello può fallire nel proprio compito.</p>
+<h4 id="overfitting-sovra-adattamento">Overfitting (sovra-adattamento)</h4>
+<p>Il modello impara i dati di addestramento <strong>troppo bene</strong> — al punto da memorizzarne anche il rumore casuale e le peculiarità irrilevanti, perdendo la capacità di generalizzare.</p>
+<blockquote><strong>Analogia concreta:</strong> uno studente che, preparandosi per un esame, memorizza parola per parola le risposte di un set specifico di esercizi svolti in classe, senza capire il principio sottostante. Risponderà perfettamente se l'esame contiene esattamente quegli esercizi, ma fallirà miseramente davanti a un esercizio leggermente diverso che richiede lo stesso principio applicato in un contesto nuovo.</blockquote>
+<h4 id="underfitting-sotto-adattamento">Underfitting (sotto-adattamento)</h4>
+<p>Il modello è <strong>troppo semplice</strong> per cogliere i pattern reali presenti nei dati, e quindi va male sia sui dati di addestramento sia su quelli nuovi.</p>
+<blockquote><strong>Analogia concreta:</strong> lo stesso studente che, invece di studiare il programma, ha imparato solo una regola generica e vaga (&quot;in matematica, di solito bisogna sommare i numeri&quot;). Andrà male su tutto, perché non ha colto nessuna struttura specifica utile.</blockquote>
+<pre><code>       UNDERFITTING          GIUSTO EQUILIBRIO         OVERFITTING
+
+  Errore  alto su tutto    Errore basso ovunque    Errore quasi nullo
+  sui dati di training      (training e test)        su training,
+  E sui dati di test                                 alto su test</code></pre>
+<p>Trovare il giusto equilibrio tra questi due estremi è uno dei compiti centrali di chi addestra modelli di Machine Learning — e, come vedremo, è una delle ragioni per cui addestrare un Large Language Model allo stato dell'arte richiede risorse computazionali e competenze estremamente specializzate.</p>
+<hr>
+<h3 id="esempio-pratico-classificare-un-problema-secondo-il-paradigma-giusto">Esempio Pratico: Classificare un Problema secondo il Paradigma Giusto</h3>
+<p>Prova a determinare quale dei tre paradigmi di apprendimento (supervisionato, non supervisionato, per rinforzo) sarebbe più adatto per ciascuno di questi scenari, e perché:</p>
+<ol><li>Un sistema che deve prevedere il prezzo di una casa in base a metratura, posizione e numero di stanze, avendo a disposizione migliaia di vendite passate con il prezzo finale noto</li><li>Un sistema che deve scoprire segmenti naturali di pazienti in un grande archivio di dati medici anonimizzati, senza alcuna categoria predefinita</li><li>Un sistema che deve imparare a far muovere un robot in modo da camminare senza cadere, attraverso migliaia di tentativi in un ambiente simulato</li></ol>
+<p>(Suggerimento: il primo caso ha un output numerico noto per ogni esempio passato; il secondo non ha etichette di alcun tipo; il terzo non ha &quot;esempi&quot; nel senso classico, ma un ambiente con cui interagire e un segnale di successo/fallimento.)</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il Machine Learning segue il paradigma <strong>dati → pattern → previsione</strong>: il sistema scopre correlazioni statistiche nei dati, non comprende il significato nel senso umano.</li><li>Le tre grandi famiglie sono l'<strong>apprendimento supervisionato</strong> (con etichette corrette), il <strong>non supervisionato</strong> (senza etichette, si cercano strutture nascoste), e il <strong>per rinforzo</strong> (apprendimento per tentativi, errori e ricompense).</li><li>Un <strong>modello</strong> è una funzione matematica con parametri regolabili, aggiustati durante l'addestramento invece di essere scritti a mano.</li><li>Il ciclo di vita rigoroso <strong>training/validation/test</strong> serve a garantire che il modello <strong>generalizzi</strong>, non che memorizzi semplicemente i dati visti.</li><li><strong>Overfitting</strong> (troppo specifico, non generalizza) e <strong>underfitting</strong> (troppo generico, non cattura i pattern reali) sono i due modi opposti in cui un modello può fallire.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché un modello con un punteggio perfetto sui dati di addestramento non è necessariamente un buon modello? Cosa dovresti controllare prima di trarre conclusioni?</li></ol>
+<ol><li>Riprendi l'analogia dello studente che memorizza le risposte (overfitting). Cosa dovrebbe fare, concretamente, per evitare questo problema e imparare davvero il principio sottostante? Come si traduce questa intuizione in una possibile strategia per chi addestra un modello?</li></ol>
+<ol><li>Nella Lezione 2.1 abbiamo detto che il Machine Learning &quot;scopre pattern&quot; invece di seguire regole scritte. Alla luce di questa lezione, in che modo l'apprendimento supervisionato è comunque guidato dall'uomo, anche se non tramite regole esplicite?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 2.1 — qui rendiamo concreto il meccanismo di &quot;apprendimento dai dati&quot; solo accennato in precedenza.</p>
+<p><strong>Porta a:</strong> Lezione 2.3 (Reti Neurali e Deep Learning) — vedremo la struttura specifica di funzione matematica (la rete neurale) che rende possibile l'apprendimento su problemi estremamente complessi come il linguaggio.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 3.2 (Training, Fine-tuning e RLHF) — il pre-training di un LLM è essenzialmente apprendimento supervisionato su scala massiccia, e RLHF è una forma diretta di apprendimento per rinforzo. Lezione 3.5 (Limiti degli LLM) — la distinzione tra &quot;correlazione statistica scoperta&quot; e &quot;comprensione semantica&quot; introdotta qui sarà la chiave per capire perché i modelli linguistici allucinano.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="02-01-intelligenza-artificiale-storia-definizioni-e-rami-principali.html">← 02-01 AI: storia, definizioni e rami principali</a>
+        <a class="primary-action" href="02-03-reti-neurali-e-deep-learning-il-cervello-artificiale-spiegato-bene.html">02-03 Reti Neurali e Deep Learning →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

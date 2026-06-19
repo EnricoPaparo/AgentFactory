@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory nei sistemi AI: breve e lungo termine | AgentFactory</title>
+  <meta name="description" content="L'ultimo mattone prima degli agenti: come un sistema 'ricorda' nel tempo">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-06</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 04-06</p>
+        <h1>Memory nei sistemi AI: breve e lungo termine</h1>
+        <p class="lesson-subtitle">L'ultimo mattone prima degli agenti: come un sistema 'ricorda' nel tempo</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>memoria in-context</span><span>memoria esterna</span><span>memoria episodica</span><span>memoria semantica</span><span>summarization</span><span>sliding window</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere i quattro tipi di memoria in un sistema AI</li><li>Spiegare come si implementa memoria persistente oltre il context window</li><li>Descrivere tecniche di compressione della cronologia conversazionale</li><li>Valutare quando la memoria aggiunge valore e quando introduce rischi</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 4 — e con esso l'intera infrastruttura tecnica necessaria prima di poter parlare seriamente di agenti — affrontando un problema che abbiamo incontrato, in forme diverse, fin dall'inizio del corso: la <strong>memoria</strong>. L'avevamo vista nella Lezione 1.3 a proposito dei cookie nei siti dinamici, nella Lezione 3.3 a proposito dei turni conversazionali e del context window, e nella Lezione 3.5 come limite strutturale: il modello, di per sé, non ha memoria persistente tra le chiamate.</p>
+<p>Questa lezione sistematizza tutto questo in un quadro coerente, e introduce le tecniche concrete con cui i sistemi AI costruiscono qualcosa che si comporta come memoria, pur partendo da un modello fondamentalmente stateless. È l'ultimo passaggio infrastrutturale prima del Capitolo 5: un agente che non ricorda nulla di ciò che ha fatto nei passi precedenti del proprio compito non potrebbe svolgere alcun compito che richieda più di un singolo passaggio — e vedremo che quasi nessun compito interessante si risolve in un solo passaggio.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere i quattro tipi di memoria rilevanti in un sistema AI: in-context, esterna, episodica, semantica</li><li>Spiegare come si implementa memoria persistente che va oltre i limiti del context window</li><li>Descrivere tecniche di compressione e riassunto della cronologia conversazionale</li><li>Valutare quando la memoria aggiunge valore concreto e quando introduce rischi di coerenza o privacy</li></ul>
+<hr>
+<h3 id="1-i-quattro-tipi-di-memoria-in-un-sistema-ai">1. I quattro tipi di memoria in un sistema AI</h3>
+<p>Il termine &quot;memoria&quot;, applicato ai sistemi AI, copre in realtà concetti tecnicamente distinti, ciascuno con uno scopo e un'implementazione diversa. Distinguerli con precisione è essenziale per progettare correttamente un sistema.</p>
+<pre><code>┌────────────────────────────────────────────────────────┐
+│  MEMORIA IN-CONTEXT                                       │
+│  La cronologia della conversazione corrente, rinviata      │
+│  a ogni chiamata (Lezione 3.3). Esiste solo durante         │
+│  la sessione attiva, limitata dal context window.          │
+├────────────────────────────────────────────────────────┤
+│  MEMORIA ESTERNA (persistente)                             │
+│  Dati salvati in un database o file, che sopravvivono       │
+│  oltre la singola sessione. Es: preferenze utente,           │
+│  cronologia di conversazioni passate, salvate per essere     │
+│  recuperate in futuro.                                       │
+├────────────────────────────────────────────────────────┤
+│  MEMORIA EPISODICA                                           │
+│  Il ricordo di EVENTI specifici: &quot;la settimana scorsa        │
+│  l'utente ha chiesto X e la risposta è stata Y&quot;.              │
+│  Riguarda esperienze passate, concrete e situate nel tempo.   │
+├────────────────────────────────────────────────────────┤
+│  MEMORIA SEMANTICA                                            │
+│  Conoscenza GENERALE accumulata, non legata a un evento       │
+│  specifico: &quot;l'utente preferisce risposte concise&quot;,            │
+│  &quot;l'utente lavora nel settore finanziario&quot;. Fatti distillati   │
+│  da molte interazioni, non il ricordo di una singola di esse.  │
+└────────────────────────────────────────────────────────┘</code></pre>
+<blockquote><strong>Un parallelo utile con la memoria umana:</strong> la memoria episodica umana è quella che ti permette di ricordare &quot;ieri ho cenato in quel ristorante e il servizio è stato lento&quot; — un evento specifico. La memoria semantica è quella che ti fa sapere, in generale, &quot;i ristoranti affollati il sabato sera tendono ad avere servizio più lento&quot; — una conoscenza generale, distillata da molte esperienze, senza che tu debba ricordare ogni singola cena che ha contribuito a formarla. I sistemi AI distinguono questi stessi due tipi di &quot;ricordo&quot; per ragioni progettuali molto simili a quelle umane.</blockquote>
+<hr>
+<h3 id="2-il-problema-del-context-window-ripreso-e-risolto-in-pratica">2. Il problema del context window, ripreso e risolto in pratica</h3>
+<p>Avevamo descritto, nella Lezione 3.3, il limite tecnico del context window: superata una certa lunghezza di conversazione, semplicemente non c'è più spazio per inviare tutta la cronologia al modello. Questa lezione affronta concretamente come si gestisce questo limite in un sistema reale.</p>
+<h4 id="strategia-1-sliding-window-finestra-scorrevole">Strategia 1: Sliding Window (finestra scorrevole)</h4>
+<p>La strategia più semplice consiste nel mantenere solo gli <strong>ultimi N messaggi</strong> della conversazione, scartando progressivamente quelli più vecchi.</p>
+<pre><code>Conversazione con 50 messaggi totali
+
+Sliding window di 10 messaggi:
+[messaggi 41-50] → questi vengono inviati al modello
+[messaggi 1-40]  → scartati, non più disponibili
+                    al modello in questa chiamata</code></pre>
+<p>Questa strategia è semplice da implementare, ma ha un limite evidente: se l'utente fa riferimento a qualcosa detto molto all'inizio della conversazione (oltre la finestra), il modello non avrà più alcuna informazione su quel contenuto, e potrebbe rispondere in modo incoerente o chiedere nuovamente informazioni già fornite.</p>
+<h4 id="strategia-2-summarization-progressiva-riassunto-progressivo">Strategia 2: Summarization progressiva (riassunto progressivo)</h4>
+<p>Una strategia più sofisticata consiste nell'usare il modello stesso (con una chiamata API dedicata, come visto nella Lezione 4.1) per <strong>riassumere periodicamente</strong> la parte più vecchia della conversazione, mantenendo nel contesto un riassunto compatto invece della cronologia integrale.</p>
+<pre><code>1. La conversazione raggiunge una certa lunghezza
+
+2. Si invia al modello una richiesta dedicata:
+   &quot;Riassumi i punti chiave di questa conversazione
+    in massimo 200 parole&quot;
+
+3. Il riassunto generato SOSTITUISCE i messaggi
+   più vecchi nel contesto inviato nelle chiamate
+   successive
+
+4. Il contesto inviato al modello diventa:
+   [Riassunto compatto dei primi 40 messaggi]
+   + [ultimi 10 messaggi originali, non riassunti]</code></pre>
+<p>Questa tecnica permette di &quot;comprimere&quot; informazioni che altrimenti occuperebbero molto spazio nel context window, preservando i punti essenziali a un costo (in token) molto inferiore. Il compromesso, naturalmente, è che un riassunto perde inevitabilmente alcuni dettagli specifici della conversazione originale.</p>
+<h4 id="strategia-3-memoria-esterna-con-recupero-selettivo">Strategia 3: Memoria esterna con recupero selettivo</h4>
+<p>Una terza strategia, concettualmente più vicina a RAG (Lezione 4.3), consiste nel salvare l'intera cronologia in una memoria esterna persistente (un database, eventualmente con embedding per la ricerca semantica), e <strong>recuperare solo le porzioni rilevanti</strong> per la domanda attuale, invece di mantenere tutto nel context window in ogni momento.</p>
+<pre><code>Cronologia completa salvata esternamente
+(es. in un vector database, Lezione 4.3)
+              │
+              ▼
+Domanda attuale dell'utente
+              │
+              ▼
+Ricerca per similarità semantica: quali porzioni
+della cronologia passata sono effettivamente
+rilevanti per QUESTA domanda specifica?
+              │
+              ▼
+Solo queste porzioni rilevanti vengono incluse
+nel contesto inviato al modello</code></pre>
+<p>Questa è, in sostanza, l'applicazione del principio RAG non a documenti esterni generici, ma alla <strong>cronologia stessa della conversazione</strong> — un'idea che ritroveremo, formalizzata con maggiore rigore, quando parleremo di memoria episodica degli agenti nel Capitolo 8.</p>
+<hr>
+<h3 id="3-memoria-persistente-tra-sessioni-diverse">3. Memoria persistente tra sessioni diverse</h3>
+<p>Tutto quanto descritto finora riguarda la gestione della memoria <strong>all'interno di una singola sessione</strong> di conversazione. Ma molti sistemi AI reali — incluso, presumibilmente, qualsiasi prodotto che usi regolarmente — mantengono memoria anche <strong>tra sessioni diverse</strong>: l'assistente &quot;ricorda&quot; qualcosa che hai detto settimane prima, in una conversazione completamente diversa.</p>
+<p>Questo richiede necessariamente una <strong>memoria esterna</strong> (Sezione 1), salvata in un database che sopravvive alla chiusura della sessione attiva. Il flusso tipico è:</p>
+<pre><code>1. Durante una conversazione, alcune informazioni
+   ritenute rilevanti vengono ESTRATTE e salvate
+   esternamente (es. &quot;l'utente lavora come avvocato&quot;,
+   &quot;l'utente preferisce risposte concise&quot;)
+
+2. In una conversazione FUTURA, completamente nuova,
+   queste informazioni salvate vengono recuperate
+   e inserite nel contesto iniziale, PRIMA che
+   l'utente scriva il primo messaggio
+
+3. Il modello, fin dal primo turno della nuova
+   conversazione, ha già accesso a queste
+   informazioni di sfondo, pur non avendo mai
+   &quot;visto&quot; la conversazione originale in cui
+   sono state raccolte</code></pre>
+<p>Questo meccanismo — qui descritto in modo semplificato — è precisamente il principio su cui si basano i sistemi di memoria a lungo termine dei prodotti AI più avanzati, ed è anche un'anticipazione diretta e dichiarata del problema del <strong>riassorbimento della conoscenza</strong> che affronteremo formalmente nella Lezione 8.3, parlando di sistemi che migliorano accumulando esperienza nel tempo.</p>
+<hr>
+<h3 id="4-quando-la-memoria-e-utile-e-quando-diventa-un-problema">4. Quando la memoria è utile, e quando diventa un problema</h3>
+<p>Seguendo lo spirito di valutazione equilibrata di questo corso, è importante riconoscere che la memoria persistente non è automaticamente un beneficio in ogni circostanza.</p>
+<p><strong>Benefici concreti:</strong></p>
+<ul><li>Evita di dover ripetere informazioni già fornite, migliorando l'esperienza dell'utente</li><li>Permette personalizzazione progressiva del comportamento del sistema</li><li>Consente compiti che si estendono naturalmente su più sessioni (es. un progetto di scrittura seguito nel tempo)</li></ul>
+<p><strong>Rischi concreti:</strong></p>
+<ul><li><strong>Coerenza</strong>: se la memoria salvata diventa obsoleta (es. &quot;l'utente lavora come avvocato&quot; non è più vero, ma il sistema continua a usare questa informazione), il comportamento del sistema può diventare inappropriato o fuorviante</li><li><strong>Privacy</strong>: salvare informazioni personali su un utente, anche con buone intenzioni, comporta responsabilità significative sulla gestione, sicurezza, e cancellabilità di quei dati</li><li><strong>Costo e complessità</strong>: ogni meccanismo di memoria aggiunge un livello di infrastruttura (database, logica di estrazione, logica di recupero) che deve essere progettato, mantenuto, e monitorato</li></ul>
+<blockquote><strong>Perché questa valutazione equilibrata conta per il resto del corso:</strong> quando, nella Lezione 6.3, parleremo di Agent Card e di come un agente dichiara le proprie capacità, e quando, nel Capitolo 8, parleremo di sistemi che accumulano conoscenza nel tempo, questa stessa tensione tra beneficio e rischio tornerà costantemente. La memoria non è &quot;sempre meglio averne di più&quot; — è una risorsa progettuale che richiede scelte deliberate su cosa salvare, per quanto tempo, e con quali garanzie di correttezza e sicurezza.</blockquote>
+<hr>
+<h3 id="esempio-pratico-progettare-la-memoria-per-un-caso-d-uso-specifico">Esempio Pratico: Progettare la Memoria per un Caso d'Uso Specifico</h3>
+<p>Immagina di dover progettare la memoria per un assistente AI di supporto allo studio, usato dallo stesso studente nel corso di un intero anno scolastico. Applichiamo le distinzioni di questa lezione:</p>
+<pre><code>MEMORIA IN-CONTEXT (durante una singola sessione di studio):
+La cronologia della sessione corrente — le domande fatte
+e le spiegazioni fornite in QUESTA specifica sessione
+
+MEMORIA EPISODICA (eventi specifici nel tempo):
+&quot;Il 15 marzo, lo studente ha avuto difficoltà con le
+equazioni di secondo grado e abbiamo rivisto l'argomento
+insieme per 20 minuti&quot;
+
+MEMORIA SEMANTICA (conoscenza generale accumulata):
+&quot;Lo studente tende ad avere difficoltà con argomenti di
+algebra, ma è molto a suo agio con la geometria&quot;
+(questa conoscenza generale emerge da MOLTI episodi
+specifici nel tempo, distillati in un pattern generale)
+
+MEMORIA ESTERNA (infrastruttura):
+Un database che salva sia gli episodi specifici sia
+le sintesi semantiche, recuperabile a ogni nuova sessione,
+anche mesi dopo</code></pre>
+<p>Questo esercizio di progettazione — distinguere chiaramente cosa salvare, a quale livello di dettaglio, e con quale scopo — è precisamente il tipo di pensiero architetturale che applicherai costruendo agenti reali, a partire dal prossimo capitolo.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un sistema AI distingue tipicamente quattro tipi di memoria: <strong>in-context</strong> (cronologia della sessione attiva), <strong>esterna</strong> (persistente oltre la sessione), <strong>episodica</strong> (eventi specifici nel tempo), <strong>semantica</strong> (conoscenza generale distillata da molti episodi).</li><li>Per gestire i limiti del context window all'interno di una sessione, le strategie principali sono <strong>sliding window</strong> (mantieni solo gli ultimi messaggi), <strong>summarization progressiva</strong> (riassumi la parte più vecchia), e <strong>memoria esterna con recupero selettivo</strong> (applicazione del principio RAG alla cronologia stessa).</li><li>La memoria persistente tra sessioni diverse richiede di estrarre, salvare esternamente, e recuperare informazioni rilevanti prima che una nuova conversazione inizi.</li><li>La memoria non è un beneficio automatico: comporta rischi di <strong>coerenza</strong> (informazioni obsolete), <strong>privacy</strong> (gestione di dati personali), e <strong>costo/complessità</strong> infrastrutturale, che richiedono scelte progettuali deliberate.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega la differenza tra memoria episodica e memoria semantica usando un esempio diverso da quello dato nella lezione (lo studio) e da quello dato nel parallelo umano (i ristoranti).</li></ol>
+<ol><li>Un sistema di summarization progressiva riassume automaticamente le parti più vecchie di una conversazione molto lunga. Quale tipo di informazione rischia di perdersi in questo processo, e in quali circostanze questa perdita potrebbe essere problematica?</li></ol>
+<ol><li>Immagina un assistente AI che ha salvato, mesi fa, l'informazione &quot;l'utente è vegetariano&quot; nella propria memoria esterna. L'utente, in una nuova conversazione, chiede una ricetta di pollo. Cosa dovrebbe fare un sistema ben progettato in questa situazione di apparente contraddizione tra memoria salvata e richiesta attuale?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 3.3 (context window) e Lezione 3.5 (statelessness del modello) — questa lezione fornisce le soluzioni tecniche concrete ai problemi lì identificati. Lezione 4.3 (RAG) — il principio di recupero selettivo per similarità si applica qui alla cronologia conversazionale stessa.</p>
+<p><strong>Porta a:</strong> Capitolo 5 (Agenti AI) — un agente che deve eseguire compiti complessi, articolati su più passaggi, dipende criticamente dalla capacità di &quot;ricordare&quot; cosa ha già fatto nei passaggi precedenti: la memoria in-context, qui descritta, è precisamente il meccanismo che rende possibile questa continuità all'interno di un singolo compito agentivo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 6.2 (L'Agent Package) — la cartella <code>memory/</code> di un agente professionale formalizza esattamente le strategie descritte in questa lezione. Lezione 8.3 (Riassorbimento della Conoscenza) — la distinzione tra memoria episodica e semantica, qui introdotta, è il fondamento concettuale per capire come un sistema agentivo trasforma esperienze specifiche in conoscenza generale che migliora il comportamento futuro.</p>
+<hr>
+<p><strong>CHIUSURA DEL CAPITOLO 4.</strong> Con questa lezione si conclude l'intera infrastruttura tecnica del corso: chiamate API (4.1), output strutturati (4.2), accesso a informazioni esterne tramite RAG (4.3), capacità di azione tramite Function Calling (4.4), standardizzazione tramite MCP (4.5), e gestione della memoria (4.6). Ogni singolo componente che un agente richiede per funzionare è stato ora costruito, pezzo per pezzo, con piena consapevolezza del problema che risolve. Il Capitolo 5 può finalmente assemblare questi componenti in un sistema coerente: il primo vero agente del corso.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="04-05-mcp-model-context-protocol-lo-standard-per-connettere-agenti-a-risorse-esterne.html">← 04-05 MCP — Model Context Protocol</a>
+        <a class="primary-action" href="05-01-cos-e-un-agente-ai-definizione-componenti-e-loop-agentivo.html">05-01 Cos'è un Agente AI →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

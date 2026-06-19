@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riassorbimento della Conoscenza: la Knowledge Base che cresce con l'uso | AgentFactory</title>
+  <meta name="description" content="Il concetto più avanzato del corso: un sistema che diventa più intelligente usandosi">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">Sistemi Agentici che si Auto-Migliorano</a><span>/</span><strong>08-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 08-03</p>
+        <h1>Riassorbimento della Conoscenza: la Knowledge Base che cresce con l'uso</h1>
+        <p class="lesson-subtitle">Il concetto più avanzato del corso: un sistema che diventa più intelligente usandosi</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>08 · Sistemi Agentici che si Auto-Migliorano</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>memoria episodica</span><span>agente archivista</span><span>flywheel cognitivo</span><span>sintesi periodica</span><span>knowledge base</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il problema dello stato che si perde ad ogni esecuzione</li><li>Implementare una memoria episodica che registra run completi</li><li>Costruire un agente archivista che sintetizza pattern da molte esperienze</li><li>Descrivere il concetto di flywheel cognitivo con un esempio concreto</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Le due lezioni precedenti hanno costruito due forme specifiche di auto-miglioramento: un agente che corregge il proprio output in tempo reale (Lezione 8.1), e un sistema che corregge il prompt che genera quegli output (Lezione 8.2). Questa lezione affronta il problema più ampio e più ambizioso di tutto il corso: come si costruisce un sistema che <strong>accumula esperienza nel tempo</strong>, trasformando migliaia di esecuzioni passate in conoscenza generale che migliora il comportamento futuro — non di un singolo prompt, ma dell'intero sistema?</p>
+<p>Questo è precisamente il problema del <strong>riassorbimento della conoscenza</strong>, anticipato fin dalla Lezione 4.6 quando abbiamo distinto memoria episodica da memoria semantica. È il momento di costruire, con tutto il rigore tecnico accumulato in questo corso, il meccanismo che trasforma quella distinzione teorica in un sistema funzionante.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare con precisione il problema dello stato che si perde a ogni esecuzione, e perché è strutturale, non accidentale</li><li>Implementare una memoria episodica che registra run completi del sistema, con input, output, ed esito</li><li>Costruire un agente archivista che sintetizza pattern generali da molte esperienze specifiche</li><li>Descrivere il concetto di flywheel cognitivo con un esempio concreto, riconoscendone sia il potenziale sia i limiti</li></ul>
+<hr>
+<h3 id="1-il-problema-fondamentale-ogni-esecuzione-e-stateless">1. Il problema fondamentale: ogni esecuzione è stateless</h3>
+<p>Avevamo introdotto questo limite nella Lezione 3.5: un LLM, di per sé, non ha memoria tra una chiamata e l'altra. Avevamo poi visto, nella Lezione 4.6, come la memoria in-context (la cronologia rinviata a ogni turno) e la memoria esterna (database persistenti) compensano questo limite <strong>all'interno di una singola conversazione o di un singolo workflow</strong>.</p>
+<p>Ma c'è un livello ulteriore del problema che nessuna delle tecniche precedenti risolve: <strong>anche un workflow completo, eseguito con successo mille volte, non &quot;impara&quot; nulla dalle proprie mille esecuzioni</strong>, a meno che qualcosa non sia stato esplicitamente progettato per farlo. Ogni esecuzione del workflow Requirement Analyst → Architect (costruito nei Capitoli 6 e 7) parte, di default, esattamente dallo stesso punto, indipendentemente da quante volte il sistema abbia già affrontato situazioni simili in passato.</p>
+<pre><code>SENZA RIASSORBIMENTO              CON RIASSORBIMENTO
+
+Esecuzione 1: affronta            Esecuzione 1: affronta
+un'ambiguità sul formato           la stessa ambiguità
+di output, richiede                
+escalation umana (7.4)            Il pattern viene REGISTRATO
+                                   e poi SINTETIZZATO
+Esecuzione 547: affronta
+la STESSA TIPOLOGIA di            Esecuzione 547: il sistema
+ambiguità, richiede DI NUOVO       RICONOSCE il pattern,
+escalation umana — nessun          gestisce autonomamente
+progresso rispetto alla            la situazione, senza
+prima volta                        richiedere escalation</code></pre>
+<hr>
+<h3 id="2-memoria-episodica-registrare-i-run-passati">2. Memoria episodica: registrare i run passati</h3>
+<p>Il primo passo, tecnicamente semplice ma concettualmente fondamentale, è registrare sistematicamente ogni esecuzione completa del sistema — non solo i log tecnici della Lezione 5.5, ma una rappresentazione strutturata dell'intero episodio: cosa è stato chiesto, cosa è stato fatto, qual è stato l'esito, e — cruciale — se ha richiesto intervento umano (Lezione 7.4) e quale decisione è stata presa.</p>
+<pre><code>from pydantic import BaseModel
+from datetime import datetime
+
+class EpisodioMemoria(BaseModel):
+    &quot;&quot;&quot;
+    Un singolo episodio completo, registrato per
+    alimentare il riassorbimento della conoscenza.
+    &quot;&quot;&quot;
+    id_esecuzione: str
+    timestamp: datetime
+    input_originale: str
+    ambiguita_rilevate: list[str]
+    richiesto_escalation: bool
+    decisione_umana: str | None  # presente solo se richiesto_escalation
+    esito_finale: str  # &quot;successo&quot; | &quot;fallito&quot; | &quot;parziale&quot;
+
+
+def registra_episodio(stato_finale_workflow: dict) -&gt; EpisodioMemoria:
+    &quot;&quot;&quot;
+    Estrae un episodio strutturato dallo stato finale
+    di un'esecuzione del workflow (Lezione 7.2).
+    &quot;&quot;&quot;
+    episodio = EpisodioMemoria(
+        id_esecuzione=stato_finale_workflow[&quot;thread_id&quot;],
+        timestamp=datetime.now(),
+        input_originale=stato_finale_workflow[&quot;cartella_input&quot;],
+        ambiguita_rilevate=stato_finale_workflow[&quot;ambiguita_rilevate&quot;],
+        richiesto_escalation=stato_finale_workflow.get(&quot;decisione_umana&quot;) is not None,
+        decisione_umana=stato_finale_workflow.get(&quot;decisione_umana&quot;),
+        esito_finale=&quot;successo&quot; if stato_finale_workflow[&quot;handoff_pronto&quot;] else &quot;fallito&quot;
+    )
+    salva_in_memoria_esterna(episodio)  # database persistente, Lezione 4.6
+    return episodio</code></pre>
+<p>Questo, da solo, <strong>non è ancora riassorbimento della conoscenza</strong>: è semplicemente un archivio di episodi passati — la memoria episodica della Lezione 4.6, qui resa concreta. Il riassorbimento vero e proprio avviene nel passo successivo.</p>
+<hr>
+<h3 id="3-l-agente-archivista-sintesi-periodica-da-molti-episodi">3. L'agente Archivista: sintesi periodica da molti episodi</h3>
+<p>Un <strong>agente archivista</strong> è un agente specializzato (esattamente nello spirito della Lezione 5.3) il cui unico compito è analizzare periodicamente un grande numero di episodi accumulati, e <strong>sintetizzarli in pattern generali</strong> — trasformando memoria episodica in memoria semantica, riprendendo precisamente la distinzione costruita nella Lezione 4.6.</p>
+<pre><code>def agente_archivista(episodi_recenti: list[EpisodioMemoria]) -&gt; dict:
+    &quot;&quot;&quot;
+    Analizza un batch di episodi e sintetizza pattern
+    ricorrenti, distillando conoscenza generale da
+    esperienze specifiche.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    episodi_con_escalation = [e for e in episodi_recenti if e.richiesto_escalation]
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=800,
+        system=&quot;Sei un archivista di sistema. Analizza questi &quot;
+               &quot;episodi che hanno richiesto escalation umana, e &quot;
+               &quot;identifica PATTERN RICORRENTI — tipi di ambiguità &quot;
+               &quot;che si ripetono, e come sono state risolte dagli &quot;
+               &quot;umani. Proponi una regola generale, applicabile &quot;
+               &quot;automaticamente in futuro per casi simili.&quot;,
+        messages=[{
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: json.dumps([e.model_dump() for e in episodi_con_escalation])
+        }]
+    )
+
+    return json.loads(risposta.content[0].text)
+
+
+# Esempio di output dell'archivista, dopo aver analizzato
+# 50 episodi con la stessa tipologia di ambiguità:
+#
+# {
+#   &quot;pattern_rilevato&quot;: &quot;Documenti contraddittori sul formato
+#                         output (PDF vs Markdown) → in 43 casi
+#                         su 50, l'umano ha scelto: generare
+#                         ENTRAMBI i formati&quot;,
+#   &quot;regola_proposta&quot;: &quot;Se rilevata ambiguità sul formato output
+#                        con menzioni sia di PDF sia di Markdown,
+#                        procedi assumendo ENTRAMBI senza
+#                        richiedere escalation&quot;,
+#   &quot;confidenza&quot;: &quot;alta&quot;,
+#   &quot;campione&quot;: 50
+# }</code></pre>
+<p>Questo output dell'archivista è precisamente nuova <strong>conoscenza semantica</strong>: non riguarda un singolo episodio specifico, ma un pattern generale, distillato dall'osservazione di molti casi simili. È esattamente l'applicazione concreta del parallelo umano introdotto nella Lezione 4.6 — non ricordare ogni singola cena in un ristorante affollato, ma sapere, in generale, che i ristoranti affollati il sabato sera tendono ad avere servizio più lento.</p>
+<hr>
+<h3 id="4-aggiornare-il-sistema-con-la-nuova-conoscenza">4. Aggiornare il sistema con la nuova conoscenza</h3>
+<p>Una volta che l'archivista propone una regola generale, <strong>chi decide se e come integrarla</strong> nel comportamento futuro del sistema? Qui convergono tutti i principi di governance e rigore costruiti in questo capitolo e nel precedente.</p>
+<pre><code>1. La regola proposta dall'archivista NON viene applicata
+   automaticamente — passa attraverso REVISIONE UMANA
+   (Lezione 7.4), perché modifica il comportamento futuro
+   del sistema su scala, non un singolo caso isolato
+
+2. Se approvata, la regola viene incorporata come:
+   - Una nuova SKILL nella skill library (Lezione 6.7),
+     se è una procedura applicabile da più agenti
+   - Un aggiornamento al PROMPT di un agente specifico
+     (Lezione 6.4), tramite lo stesso processo di
+     versionamento rigoroso visto nella Lezione 8.2
+
+3. Il cambiamento viene TESTATO con la test suite
+   (Lezione 7.5) prima di essere effettivamente rilasciato
+   in produzione — esattamente il regression testing già
+   costruito con cura</code></pre>
+<blockquote><strong>Perché questo passaggio attraverso revisione umana non è ridondante con l'automazione:</strong> una regola sintetizzata da 50 episodi passati potrebbe essere corretta per quei 50 casi, ma potrebbe non generalizzare bene a circostanze future leggermente diverse — lo stesso rischio di over-optimization discusso nella Lezione 8.2, qui applicato non a un singolo prompt ma a una regola di sistema con conseguenze potenzialmente più ampie.</blockquote>
+<hr>
+<h3 id="5-il-flywheel-cognitivo-potenzialita-e-limiti-onesti">5. Il Flywheel Cognitivo: potenzialità e limiti onesti</h3>
+<p>Il termine <strong>flywheel</strong> (volano) descrive un sistema che, una volta in moto, genera la propria energia per continuare a muoversi, accelerando progressivamente.</p>
+<pre><code>              Più ESECUZIONI
+                     │
+                     ▼
+          Più EPISODI accumulati
+                     │
+                     ▼
+        Più PATTERN identificabili
+        dall'agente archivista
+                     │
+                     ▼
+        Meno ESCALATION necessarie
+        (i casi noti vengono gestiti
+         autonomamente)
+                     │
+                     ▼
+        Più CASI GESTITI AUTONOMAMENTE
+        ──────────► (torna in cima:
+                      più esecuzioni
+                      possibili, più
+                      velocemente)</code></pre>
+<p>Questo è il potenziale teorico del flywheel cognitivo: un sistema che, usandosi, diventa progressivamente più capace, richiedendo via via meno intervento umano per i casi che ha già imparato a gestire.</p>
+<p><strong>Ma è essenziale, seguendo lo spirito di onestà di questo intero corso, riconoscerne i limiti reali:</strong></p>
+<pre><code>LIMITE 1: Il flywheel funziona bene per pattern RICORRENTI
+e SIMILI tra loro — non per casi genuinamente nuovi e
+imprevisti, dove nessuna quantità di episodi passati
+fornisce un pattern applicabile
+
+LIMITE 2: Il rischio di over-optimization (Lezione 8.2)
+si applica anche qui, su scala più ampia: un sistema che
+si &quot;iper-specializza&quot; sui pattern storici rischia di
+gestire male situazioni che si discostano anche
+leggermente da quei pattern
+
+LIMITE 3: La QUALITÀ del riassorbimento dipende
+criticamente dalla qualità delle decisioni umane
+registrate (Sezione 2) — se le decisioni umane passate
+contenevano errori sistematici, il riassorbimento li
+ASSORBIREBBE e li PROPAGHEREBBE, anziché correggerli</code></pre>
+<p>Questi limiti non invalidano il valore del riassorbimento della conoscenza — lo collocano correttamente come una tecnica potente ma non magica, che richiede esattamente la stessa disciplina di supervisione, versionamento, e testing costruita in tutto il resto di questo corso, applicata ora al livello più ambizioso: l'evoluzione dell'intero sistema nel tempo.</p>
+<hr>
+<h3 id="esempio-pratico-tracciare-un-ciclo-completo-di-riassorbimento">Esempio Pratico: Tracciare un Ciclo Completo di Riassorbimento</h3>
+<p>Mettiamo insieme tutti i pezzi di questa lezione in una sequenza temporale realistica per il tuo caso d'uso:</p>
+<pre><code>SETTIMANA 1-4: Il workflow Requirement Analyst → Architect
+viene eseguito 50 volte. Ogni esecuzione viene registrata
+come episodio (Sezione 2).
+
+SETTIMANA 5: L'agente archivista (Sezione 3) analizza i
+50 episodi, rilevando che 43 casi di ambiguità sul formato
+output sono stati risolti dagli umani sempre nello stesso
+modo (genera entrambi i formati).
+
+SETTIMANA 5: Un umano REVISIONA la regola proposta
+dall'archivista (Sezione 4), la trova ragionevole, e
+approva la sua integrazione come nuova skill nella
+skill library (Lezione 6.7).
+
+SETTIMANA 6: La nuova skill viene testata sulla test
+suite esistente (Lezione 7.5) — nessuna regressione
+rilevata — e rilasciata in produzione.
+
+SETTIMANA 7 in avanti: Il workflow, quando rileva
+questa specifica ambiguità, ora la gestisce
+AUTONOMAMENTE, senza richiedere escalation — il
+flywheel ha compiuto il proprio primo ciclo completo.</code></pre>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il problema fondamentale è che, senza un meccanismo dedicato, anche migliaia di esecuzioni passate <strong>non producono apprendimento</strong>: ogni esecuzione resta isolata, ripetendo gli stessi pattern di escalation per situazioni simili.</li><li>La <strong>memoria episodica</strong> registra sistematicamente ogni esecuzione completa, con input, esito, e decisioni umane associate.</li><li>Un <strong>agente archivista</strong> analizza periodicamente molti episodi, sintetizzando pattern ricorrenti in regole generali — trasformando memoria episodica in memoria semantica (Lezione 4.6).</li><li>Le regole proposte passano sempre attraverso <strong>revisione umana</strong> (Lezione 7.4) prima di essere integrate come skill (Lezione 6.7) o aggiornamenti di prompt (Lezione 6.4), e vengono testate con la suite esistente (Lezione 7.5) prima del rilascio.</li><li>Il <strong>flywheel cognitivo</strong> descrive il potenziale di un sistema che migliora progressivamente usandosi, ma ha limiti reali: non generalizza a casi genuinamente nuovi, rischia over-optimization, ed eredita la qualità (o i difetti) delle decisioni umane su cui si fonda.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché la memoria episodica della Sezione 2, da sola, non costituisce ancora &quot;riassorbimento della conoscenza&quot; nel senso pieno usato in questa lezione. Cosa manca esattamente, e quale componente lo fornisce?</li></ol>
+<ol><li>Riprendi il Limite 3 della Sezione 5 (qualità delle decisioni umane). Costruisci un esempio concreto in cui un sistema di riassorbimento potrebbe, di fatto, &quot;imparare&quot; e propagare un errore sistematico commesso ripetutamente dagli operatori umani nel passato.</li></ol>
+<ol><li>Nel ciclo completo dell'esempio pratico, identifica esattamente in quale settimana il principio di regression testing (Lezione 7.5) viene applicato, e spiega perché quel passaggio non potrebbe essere saltato senza introdurre un rischio concreto.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 4.6 (Memory) — la distinzione memoria episodica/semantica trova qui la sua implementazione completa. Lezione 8.2 (Prompt Auto-Evolutivi) — il riassorbimento della conoscenza generalizza il principio di auto-miglioramento dal singolo prompt all'intero sistema.</p>
+<p><strong>Porta a:</strong> Lezione 8.4 (Governance e Versioning) — la disciplina di revisione e versionamento qui applicata al riassorbimento sarà formalizzata come parte del ciclo di vita completo di tutti gli artefatti agentivi.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.5 (Progetto Finale) — il riassorbimento della conoscenza è uno dei componenti più avanzati che potrai scegliere di includere nel sistema completo che costruirai per chiudere il corso.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="08-02-prompt-auto-evolutivi-come-i-prompt-migliorano-nel-tempo.html">← 08-02 Prompt Auto-Evolutivi</a>
+        <a class="primary-action" href="08-04-governance-versioning-e-ciclo-di-vita-degli-artefatti-agentivi.html">08-04 Governance e Versioning degli Artefatti →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

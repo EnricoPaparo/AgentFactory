@@ -1,8 +1,8 @@
 # AgentFactory
 
-Repository del sito statico **AgentFactory** pubblicato con GitHub Pages.
+Repository del sito statico **AgentFactory / AISchool** pubblicato con GitHub Pages.
 
-Il progetto e' stato ripulito per mantenere solo la parte web statica. Le vecchie lezioni e gli artefatti sorgente sono stati rimossi: le nuove lezioni verranno fornite e reinserite in una fase successiva.
+Il sito contiene il corso **AISchool — Dai Fondamenti del Web ai Workflow Agentici**: 8 capitoli e 43 lezioni importate dai sorgenti Markdown AISchool.
 
 ## Sito
 
@@ -28,3 +28,13 @@ URL previsto:
 ```text
 https://enricopaparo.github.io/AgentFactory/
 ```
+
+## Aggiornare i contenuti
+
+I contenuti vengono importati dal repository/cartella AISchool con:
+
+```bash
+node tools/import-aischool.js "C:/Users/Erry/Downloads/AISchool/AISchool"
+```
+
+Lo script rigenera `docs/index.html` e tutte le pagine in `docs/pages/`.

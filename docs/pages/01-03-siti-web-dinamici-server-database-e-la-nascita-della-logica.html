@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Siti Web Dinamici: server, database e la nascita della logica | AgentFactory</title>
+  <meta name="description" content="Dal file fisso alla risposta costruita su misura: il salto concettuale che apre la strada a tutto il resto">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-01-il-web">Il Web come lo Conosciamo</a><span>/</span><strong>01-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 01-03</p>
+        <h1>Siti Web Dinamici: server, database e la nascita della logica</h1>
+        <p class="lesson-subtitle">Dal file fisso alla risposta costruita su misura: il salto concettuale che apre la strada a tutto il resto</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>01 · Il Web come lo Conosciamo</strong></div><div><span>Durata</span><strong>45 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>server dinamico</span><span>backend</span><span>database</span><span>stato</span><span>logica server-side</span><span>rendering lato server</span><span>query</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare cosa cambia tra un sito statico e uno dinamico a livello di server</li><li>Descrivere il ruolo di un database in un sito dinamico</li><li>Comprendere il concetto di 'stato' applicato a un'applicazione web</li><li>Tracciare il ciclo completo richiesta-elaborazione-risposta dinamica</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo visto il caso più semplice: il server come fotocopiatrice, che restituisce sempre lo stesso file. Ma la maggior parte di ciò che usiamo ogni giorno online non funziona così. Quando apri Gmail vedi <em>le tue</em> email, non quelle di qualcun altro. Quando apri Amazon vedi <em>i tuoi</em> ordini precedenti. Quando ricarichi la pagina di un social network, il contenuto è leggermente diverso da un minuto prima.</p>
+<p>Questo salto — dal file fisso alla risposta costruita su misura per quella specifica richiesta, in quel preciso momento — è uno dei concetti più importanti di tutto il corso. Introduce due idee che ritroveremo costantemente quando parleremo di sistemi AI: la <strong>logica che elabora</strong>, e lo <strong>stato che persiste</strong>. Un agente AI che ricorda una conversazione precedente sta facendo, concettualmente, la stessa cosa che fa un sito dinamico che ricorda chi sei loggato.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare cosa cambia tra un sito statico e uno dinamico a livello di funzionamento del server</li><li>Descrivere il ruolo di un database in un sito dinamico</li><li>Comprendere il concetto di &quot;stato&quot; applicato a un'applicazione web</li><li>Tracciare il ciclo completo richiesta → elaborazione → risposta dinamica</li></ul>
+<hr>
+<h3 id="1-cosa-cambia-rispetto-al-sito-statico">1. Cosa cambia rispetto al sito statico</h3>
+<p>Nel sito statico, il server riceve una richiesta e fa una sola cosa: legge un file dal disco e lo restituisce. Non c'è nessuna decisione da prendere.</p>
+<p>Nel sito <strong>dinamico</strong>, il server riceve la richiesta e, prima di rispondere, esegue del <strong>codice</strong>. Questo codice può:</p>
+<ul><li>Controllare chi sta facendo la richiesta (sei loggato? chi sei?)</li><li>Recuperare informazioni specifiche per quella richiesta (i tuoi ordini, i tuoi messaggi)</li><li>Eseguire calcoli (il totale del carrello, la disponibilità di un prodotto)</li><li>Costruire l'HTML al volo, inserendo i dati appena recuperati</li></ul>
+<p>Il file HTML che il browser riceve, alla fine, esiste comunque — ma <strong>non esisteva prima della richiesta</strong>. È stato generato in quel momento, apposta per te.</p>
+<blockquote><strong>Analogia concreta:</strong> se il sito statico è la fotocopiatrice, il sito dinamico è un sarto su misura. Non tira fuori un abito già pronto da uno scaffale: prende le tue misure (la richiesta), consulta i suoi appunti (il database), e costruisce l'abito (la risposta) apposta per te, in quel momento.</blockquote>
+<hr>
+<h3 id="2-il-ruolo-del-server-backend">2. Il ruolo del server backend</h3>
+<p>Il pezzo di software che esegue questa logica si chiama comunemente <strong>backend</strong>, in contrapposizione al <strong>frontend</strong> (quello che vedi e con cui interagisci nel browser). Il backend è un programma che gira sul server, scritto in linguaggi come Python, JavaScript (Node.js), Java, PHP, Go, e molti altri.</p>
+<p>Il backend, quando riceve una richiesta HTTP (esattamente quelle che abbiamo visto nella Lezione 1.1), non si limita a leggere un file. Esegue una sequenza di operazioni che potremmo schematizzare così:</p>
+<pre><code>1. Riceve la richiesta HTTP
+2. Identifica cosa viene chiesto (quale pagina? quali parametri?)
+3. Esegue la logica necessaria:
+   - magari interroga un database
+   - magari chiama altri servizi
+   - magari fa calcoli
+4. Costruisce la risposta (spesso HTML, ma può essere JSON, come vedremo nella Lezione 1.5)
+5. Invia la risposta HTTP al client</code></pre>
+<p>Questo è esattamente lo stesso schema concettuale che useremo, più avanti nel corso, per descrivere cosa fa un server che ospita un modello di intelligenza artificiale: riceve una richiesta, esegue una computazione (in quel caso, l'inferenza del modello), e restituisce una risposta.</p>
+<hr>
+<h3 id="3-cos-e-un-database-e-perche-serve">3. Cos'è un database e perché serve</h3>
+<p>Un <strong>database</strong> è un sistema organizzato per memorizzare, recuperare e gestire grandi quantità di dati in modo efficiente e strutturato.</p>
+<p>Senza un database, un sito dinamico non avrebbe nulla da &quot;consultare&quot; prima di rispondere. Il database è la memoria persistente del sistema: contiene gli utenti registrati, gli ordini effettuati, i messaggi scambiati, i prodotti disponibili — tutto ciò che deve esistere anche dopo che il server viene riavviato, anche dopo che la singola richiesta è terminata.</p>
+<h4 id="una-query-come-si-chiede-qualcosa-a-un-database">Una query: come si &quot;chiede&quot; qualcosa a un database</h4>
+<p>Il backend comunica con il database attraverso delle <strong>query</strong>, cioè richieste formulate in un linguaggio specifico (il più comune è SQL — Structured Query Language).</p>
+<pre><code>SELECT nome, email FROM utenti WHERE id = 42;</code></pre>
+<p>Questa query dice, in sostanza: &quot;dammi il nome e l'email dell'utente con identificativo 42&quot;. Il database risponde con quei dati, e il backend li usa per costruire la pagina.</p>
+<blockquote><strong>Perché questo conta più avanti:</strong> quando arriveremo a parlare di RAG (Retrieval-Augmented Generation) nella Lezione 4.3, vedremo che un agente AI fa concettualmente la stessa cosa — interroga un database (in quel caso, un database vettoriale) per recuperare informazioni rilevanti prima di generare una risposta. Il pattern &quot;recupera, poi rispondi&quot; nasce qui, nei siti dinamici classici.</blockquote>
+<hr>
+<h3 id="4-il-concetto-di-stato">4. Il concetto di stato</h3>
+<p>Uno dei concetti più importanti introdotti dai siti dinamici è quello di <strong>stato</strong>.</p>
+<p>Lo stato è l'insieme delle informazioni che il sistema &quot;ricorda&quot; tra una richiesta e l'altra. HTTP, di per sé, è un protocollo <strong>stateless</strong> (senza stato): ogni richiesta è indipendente dalle altre, il server non ha nativamente memoria del fatto che la richiesta di un secondo fa proveniva dalla stessa persona.</p>
+<p>Allora come fa un sito a &quot;ricordare&quot; che sei loggato, anche se navighi tra pagine diverse facendo richieste HTTP separate? La risposta più comune sono i <strong>cookie</strong>: piccoli pezzi di dati che il server chiede al browser di conservare e di rispedire a ogni richiesta successiva, come una specie di &quot;biglietto identificativo&quot;.</p>
+<pre><code>1. Ti logghi → il server crea un cookie con un identificativo di sessione
+2. Il browser salva il cookie
+3. Ogni richiesta successiva, il browser invia automaticamente quel cookie
+4. Il server controlla il cookie, recupera dal database chi sei,
+   e costruisce la risposta di conseguenza</code></pre>
+<p>Questo meccanismo — un'identità che persiste attraverso richieste altrimenti indipendenti — è concettualmente identico al problema che affronteremo con la <strong>memoria degli agenti AI</strong> nella Lezione 4.6. Anche un LLM, di base, non ha memoria tra una chiamata API e l'altra: ogni chiamata è stateless, esattamente come HTTP. Il &quot;ricordo&quot; di una conversazione viene ricostruito rispedendo, a ogni richiesta, la cronologia precedente — un meccanismo per certi versi più simile al cookie di quanto si pensi.</p>
+<hr>
+<h3 id="5-il-ciclo-completo-richiesta-elaborazione-risposta-dinamica">5. Il ciclo completo: richiesta → elaborazione → risposta dinamica</h3>
+<p>Mettiamo insieme tutti i pezzi con un esempio concreto: apri la pagina di un prodotto su un sito di e-commerce.</p>
+<pre><code>1. Il browser invia: GET /prodotto/57
+
+2. Il backend riceve la richiesta e:
+   a. Estrae l'ID del prodotto (57) dall'URL
+   b. Interroga il database:
+      SELECT * FROM prodotti WHERE id = 57;
+   c. Riceve dal database: nome, prezzo, descrizione, disponibilità
+   d. Controlla anche il cookie di sessione per sapere se l'utente
+      ha già questo prodotto nel carrello
+   e. Costruisce l'HTML inserendo questi dati nei punti giusti
+
+3. Il backend invia la risposta:
+   HTTP/1.1 200 OK
+   Content-Type: text/html
+
+   &lt;html&gt;...&lt;h1&gt;Nome del prodotto&lt;/h1&gt;
+   &lt;p&gt;Prezzo: 29,99€&lt;/p&gt;
+   &lt;p&gt;Disponibilità: 12 pezzi&lt;/p&gt;...&lt;/html&gt;
+
+4. Il browser riceve questo HTML e lo mostra,
+   esattamente come faceva con il sito statico —
+   la differenza è tutta nel COME quell'HTML è stato costruito,
+   non in COME viene interpretato dal browser</code></pre>
+<p>Questo ultimo punto è essenziale e spesso sottovalutato: <strong>dal punto di vista del browser, non c'è differenza tra ricevere HTML statico o dinamico</strong>. Il browser interpreta sempre allo stesso modo. La differenza enorme è tutta a monte, in quello che succede sul server prima che la risposta venga inviata.</p>
+<hr>
+<h3 id="esempio-pratico-osservare-la-dinamicita">Esempio Pratico: Osservare la Dinamicità</h3>
+<p>Puoi verificare empiricamente se un sito è dinamico con un piccolo esperimento.</p>
+<ol><li>Vai su un sito di e-commerce qualsiasi e apri la pagina di un prodotto</li><li>Apri gli strumenti sviluppatore (F12) → tab <strong>Network</strong></li><li>Ricarica la pagina</li><li>Osserva: oltre alla richiesta HTML principale, probabilmente vedrai richieste verso endpoint con nomi come <code>/api/carrello</code>, <code>/api/raccomandazioni</code>, <code>/api/utente</code> — spesso con risposte in formato JSON</li></ol>
+<p>Questo è un segnale chiaro che dietro c'è un backend che interroga dati specifici per quella sessione, quel momento, quell'utente. Confronta questo comportamento con quello osservato nella Lezione 1.2 su un sito statico: la differenza nel numero e nella natura delle richieste di rete è il modo più diretto per &quot;vedere&quot; la dinamicità in azione.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un sito <strong>dinamico</strong> esegue codice (logica <strong>backend</strong>) prima di rispondere, costruendo l'HTML al volo invece di leggerlo da un file fisso.</li><li>Il <strong>database</strong> è la memoria persistente del sistema, interrogata tramite <strong>query</strong> per recuperare i dati necessari a costruire la risposta.</li><li>HTTP è <strong>stateless</strong> per natura; lo <strong>stato</strong> (es. &quot;sei loggato&quot;) viene ricostruito tramite meccanismi come i <strong>cookie</strong>, che fanno viaggiare un identificativo a ogni richiesta.</li><li>Il ciclo richiesta → elaborazione → risposta è lo stesso schema concettuale che ritroveremo nelle chiamate ai modelli AI: ricevi input, elabori (con o senza dati esterni), rispondi.</li><li>Dal punto di vista del browser, HTML statico e dinamico sono indistinguibili: la differenza è tutta in come quell'HTML è stato prodotto.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Se HTTP è stateless, perché quando navighi su Amazon il carrello &quot;ricorda&quot; cosa hai aggiunto, anche passando da una pagina all'altra? Spiega il meccanismo con parole tue.</li></ol>
+<ol><li>Un sito dinamico che interroga il database per ogni singola richiesta, anche quando i dati non sono cambiati da ore, è efficiente? Quali strategie ti vengono in mente per migliorare questa situazione? (Non è richiesta una risposta tecnica precisa — è un esercizio di intuizione.)</li></ol>
+<ol><li>Spiega con un esempio concreto, diverso da quelli usati nella lezione, perché il pattern &quot;ricorda chi sei tra richieste diverse&quot; sarà importante quando parleremo di conversazioni con un agente AI.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 1.2 — qui abbiamo &quot;rotto&quot; l'idea del file fisso, introducendo logica ed elaborazione.</p>
+<p><strong>Porta a:</strong> Lezione 1.4 (Web Application) — vedremo come questa logica si sposta sempre più anche nel browser, sfumando il confine tra backend e frontend.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 4.3 (RAG) — lo stesso pattern &quot;interroga un database, poi costruisci la risposta&quot; applicato a un database vettoriale e a un LLM. Lezione 4.6 (Memory nei sistemi AI) — il problema dello stato e della sua persistenza, qui risolto con i cookie, lì risolto con tecniche di gestione della memoria conversazionale.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="01-02-siti-web-statici-html-css-e-il-concetto-di-documento.html">← 01-02 Siti Web Statici</a>
+        <a class="primary-action" href="01-04-web-application-quando-il-browser-diventa-un-interfaccia.html">01-04 Web Application →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

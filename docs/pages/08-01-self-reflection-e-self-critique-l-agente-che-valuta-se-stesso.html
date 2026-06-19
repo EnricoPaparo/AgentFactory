@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Self-Reflection e Self-Critique: l'agente che valuta sé stesso | AgentFactory</title>
+  <meta name="description" content="L'ultima frontiera del corso: un sistema che non solo agisce, ma riflette sul proprio agire">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">Sistemi Agentici che si Auto-Migliorano</a><span>/</span><strong>08-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 08-01</p>
+        <h1>Self-Reflection e Self-Critique: l'agente che valuta sé stesso</h1>
+        <p class="lesson-subtitle">L'ultima frontiera del corso: un sistema che non solo agisce, ma riflette sul proprio agire</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>08 · Sistemi Agentici che si Auto-Migliorano</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>reflexion</span><span>self-critique</span><span>act-reflect-revise</span><span>echo chamber</span><span>bias di conferma</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere self-critique da Critic-Agent con precisione</li><li>Implementare il ciclo act-reflect-revise per un agente</li><li>Riconoscere i rischi specifici della self-reflection: echo chamber e bias di conferma</li><li>Decidere quando la self-reflection è appropriata e quando serve un revisore esterno</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Apriamo l'ultimo capitolo del corso con un concetto che, a prima vista, potrebbe sembrare già coperto: nella Lezione 7.3 abbiamo costruito il pattern Critic-Agent, dove un agente indipendente valuta l'output di un altro. La <strong>self-reflection</strong> è diversa, e la differenza è precisamente il punto di questa lezione: qui, è lo <strong>stesso agente</strong> che, dopo aver completato un'azione, si ferma a valutare criticamente il proprio operato, prima di procedere o di considerare il compito concluso.</p>
+<p>Questa distinzione, che potrebbe apparire sottile, ha implicazioni profonde sia sui vantaggi che sui rischi del pattern — ed è precisamente per questo che, nella Lezione 7.3, avevamo dichiarato esplicitamente di rimandare questa discussione a un trattamento più rigoroso qui, nel capitolo dedicato all'auto-miglioramento.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere con precisione self-critique da Critic-Agent (Lezione 7.3)</li><li>Implementare il ciclo act-reflect-revise per un agente che lavora autonomamente</li><li>Riconoscere i rischi specifici della self-reflection: echo chamber e bias di conferma</li><li>Decidere, con criteri espliciti, quando la self-reflection è appropriata e quando è necessario un revisore esterno</li></ul>
+<hr>
+<h3 id="1-self-critique-vs-critic-agent-la-differenza-che-conta">1. Self-Critique vs Critic-Agent: la differenza che conta</h3>
+<pre><code>CRITIC-AGENT (Lezione 7.3)             SELF-CRITIQUE (questa lezione)
+
+Un AGENTE DIVERSO valuta               LO STESSO AGENTE valuta
+                                         il proprio output
+
+Il valutatore ha un prompt e           Il valutatore E il produttore
+un &quot;punto di vista&quot; indipendente        condividono lo stesso
+dal produttore                          &quot;punto di vista&quot; di partenza
+
+Costo: richiede di mantenere           Costo: più economico (nessun
+e coordinare un secondo agente          secondo agente da mantenere),
+nel sistema                             ma...
+
+Vantaggio: meno soggetto a              Rischio: più soggetto a bias
+bias di conferma                        di conferma (Sezione 4)</code></pre>
+<p>Il pattern <strong>Reflexion</strong>, che dà il nome a questa tecnica nella letteratura sull'AI, applica esattamente questo principio: un agente che, dopo aver prodotto un output o completato un'azione, genera esplicitamente una valutazione critica della propria stessa performance, e usa questa valutazione per decidere se rivedere il proprio lavoro prima di considerarlo concluso.</p>
+<hr>
+<h3 id="2-il-ciclo-act-reflect-revise-re-evaluate">2. Il ciclo Act → Reflect → Revise → Re-evaluate</h3>
+<pre><code>                    [ACT]
+              L'agente esegue
+              un'azione o produce
+              un output (Capitolo 5)
+                      │
+                      ▼
+                  [REFLECT]
+          L'agente stesso genera una
+          valutazione critica esplicita
+          del proprio output appena
+          prodotto
+                      │
+              ┌───────┴───────┐
+              ▼                ▼
+        Valutazione        Valutazione
+        POSITIVA           NEGATIVA
+              │                │
+              ▼                ▼
+        [Procedi]         [REVISE]
+                          L'agente produce
+                          una versione
+                          corretta
+                                │
+                                ▼
+                        [RE-EVALUATE]
+                        Si valuta di nuovo,
+                        tornando al punto
+                        decisionale</code></pre>
+<p>Implementiamo questo ciclo in codice, estendendo direttamente il loop agentivo della Lezione 5.1.</p>
+<pre><code>import anthropic
+import json
+
+def esegui_agente_con_self_reflection(obiettivo: str,
+                                         max_cicli_revisione: int = 3) -&gt; str:
+    &quot;&quot;&quot;
+    Estende il loop agentivo della Lezione 5.1 con un ciclo
+    di self-reflection PRIMA di restituire l'output finale.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    # FASE ACT: produzione iniziale (riusa il pattern di base)
+    output_corrente = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=800,
+        messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo}]
+    ).content[0].text
+
+    for ciclo in range(max_cicli_revisione):
+        # FASE REFLECT: l'agente valuta il proprio stesso output
+        riflessione = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;,
+            max_tokens=300,
+            system=&quot;Valuta CRITICAMENTE la risposta che hai appena &quot;
+                   &quot;prodotto. Rispondi in JSON: &quot;
+                   '{&quot;problemi_rilevati&quot;: [...], &quot;qualita&quot;: &quot;buona&quot;|&quot;da_migliorare&quot;}',
+            messages=[
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo},
+                {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: output_corrente},
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Valuta criticamente la &quot;
+                                              &quot;risposta sopra.&quot;}
+            ]
+        ).content[0].text
+
+        valutazione = json.loads(riflessione)
+
+        if valutazione[&quot;qualita&quot;] == &quot;buona&quot;:
+            return output_corrente  # nessuna revisione necessaria
+
+        # FASE REVISE: produce una versione corretta
+        output_corrente = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;,
+            max_tokens=800,
+            messages=[
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo},
+                {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: output_corrente},
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;Correggi questi problemi: &quot;
+                                              f&quot;{valutazione['problemi_rilevati']}&quot;}
+            ]
+        ).content[0].text
+        # Il ciclo for ripete: RE-EVALUATE alla prossima iterazione
+
+    return output_corrente  # limite di sicurezza raggiunto
+    # (esattamente il principio di max_iterazioni, Lezione 5.1)</code></pre>
+<p>Nota il parametro <code>max_cicli_revisione</code>: esattamente come il <code>max_iterazioni</code> della Lezione 5.1, è un meccanismo di sicurezza necessario, perché un ciclo di self-reflection, senza limite, potrebbe in teoria continuare a &quot;trovare problemi&quot; indefinitamente, senza mai convergere a un output considerato sufficientemente buono.</p>
+<hr>
+<h3 id="3-online-vs-offline-due-momenti-diversi-per-riflettere">3. Online vs Offline: due momenti diversi per riflettere</h3>
+<pre><code>SELF-CRITIQUE ONLINE (durante il task)
+
+Avviene DURANTE l'esecuzione di un
+compito, prima di considerarlo concluso
+— esattamente il ciclo della Sezione 2
+
+Adatto per: correggere errori PRIMA
+che l'output raggiunga l'utente o il
+passo successivo del workflow
+
+
+SELF-CRITIQUE OFFLINE (dopo il task)
+
+Avviene DOPO che un'esecuzione è
+già stata completata e conclusa,
+analizzando retrospettivamente cosa
+ha funzionato e cosa no
+
+Adatto per: alimentare un processo di
+apprendimento dall'esperienza passata
+— un'anteprima diretta del riassorbimento
+della conoscenza che vedremo nella
+Lezione 8.3</code></pre>
+<p>La distinzione conta perché le due modalità servono scopi diversi: la self-critique online migliora <strong>questo specifico output</strong>, prima che venga consegnato; la self-critique offline migliora <strong>il sistema nel tempo</strong>, fornendo materiale per un processo di apprendimento che va oltre la singola esecuzione.</p>
+<hr>
+<h3 id="4-i-rischi-echo-chamber-e-bias-di-conferma">4. I rischi: echo chamber e bias di conferma</h3>
+<p>Avevamo accennato, nella Lezione 7.3, al motivo per cui un Critic-Agent indipendente è spesso preferibile a un'auto-valutazione: il rischio di <strong>bias di conferma</strong>. Approfondiamo ora questo rischio con la precisione che merita.</p>
+<pre><code>RISCHIO: ECHO CHAMBER
+
+Se l'agente che produce e l'agente che valuta condividono
+lo stesso &quot;punto di vista&quot; (stesso modello sottostante,
+stesse limitazioni strutturali viste nella Lezione 3.5),
+un errore SISTEMATICO del produttore può non essere
+rilevato dalla riflessione, perché la riflessione stessa
+condivide la stessa cecità
+
+Esempio concreto: se il modello ha una lacuna di
+conoscenza su un argomento specifico (knowledge cutoff,
+Lezione 3.5), sia la risposta originale SIA la sua
+auto-valutazione potrebbero condividere la stessa
+lacuna, producendo una falsa sensazione di &quot;qualità
+confermata&quot;
+
+
+RISCHIO: BIAS DI CONFERMA
+
+La riflessione può tendere a generare giustificazioni
+PLAUSIBILI per l'output già prodotto, invece di una
+valutazione genuinamente indipendente — un fenomeno
+collegato direttamente al &quot;ragionamento circolare&quot;
+già discusso nella Lezione 5.2 a proposito di ReAct</code></pre>
+<blockquote><strong>Perché questo non significa che la self-reflection sia inutile:</strong> questi rischi non eliminano il valore della tecnica — la riducono a un livello di affidabilità diverso da quello di un Critic-Agent indipendente. La self-reflection rimane efficace per correggere errori <strong>locali e specifici</strong> (un calcolo sbagliato, un dettaglio del formato dimenticato), molto meno efficace per rilevare errori sistematici o lacune di fondo che il modello condivide con sé stesso in ogni sua &quot;versione&quot; all'interno della stessa esecuzione.</blockquote>
+<hr>
+<h3 id="5-quando-scegliere-self-reflection-quando-un-revisore-esterno">5. Quando scegliere self-reflection, quando un revisore esterno</h3>
+<pre><code>USA SELF-REFLECTION (più economica) QUANDO:
+
+- Il rischio è principalmente di errori LOCALI e
+  specifici (dimenticanze, dettagli di formato)
+- Il costo di un secondo agente indipendente non è
+  giustificato dalla criticità del compito
+- Serve un primo livello di filtro economico prima
+  di un eventuale escalation più costosa
+
+
+USA CRITIC-AGENT INDIPENDENTE (Lezione 7.3) QUANDO:
+
+- Il compito è ad alto impatto, dove un errore
+  sistematico non rilevato avrebbe conseguenze serie
+- Si sospetta che il produttore possa avere lacune
+  di conoscenza specifiche (Lezione 3.5) che un
+  secondo punto di vista, magari con accesso a
+  fonti esterne diverse (RAG, Lezione 4.3), potrebbe
+  rilevare meglio
+- Serve massima indipendenza di giudizio, accettando
+  il costo aggiuntivo</code></pre>
+<p>In molti sistemi professionali maturi, questi due pattern <strong>coesistono in strati successivi</strong>: la self-reflection come primo filtro economico (questa lezione), seguita da un Critic-Agent indipendente per i casi che superano una certa soglia di criticità (Lezione 7.3), seguito a sua volta da Human-in-the-Loop per i casi più ambigui (Lezione 7.4) — una gerarchia di costi crescenti e affidabilità crescente, applicata in sequenza.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-un-caso-di-echo-chamber">Esempio Pratico: Riconoscere un Caso di Echo Chamber</h3>
+<p>Immagina che l'agente Analista Vendite (Lezione 5.3), eseguendo self-reflection sul proprio output, riceva questa riflessione: <em>&quot;La mia analisi sembra corretta e ben strutturata, nessun problema rilevato.&quot;</em></p>
+<p>Ma l'agente, nel produrre l'analisi originale, aveva interpretato erroneamente una colonna di dati (scambiando &quot;vendite nette&quot; con &quot;vendite lorde&quot; — un errore di interpretazione, non di calcolo). La self-reflection, basandosi sullo stesso modello e sulla stessa (errata) interpretazione iniziale, <strong>non rileva il problema</strong>, perché valuta la coerenza interna della propria risposta, non la sua corrispondenza con la realtà dei dati originali — un caso da manuale di echo chamber, dove solo un Critic-Agent con accesso indipendente ai dati grezzi, o una revisione umana, avrebbe potuto rilevare la discrepanza.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>La <strong>self-reflection</strong> (o self-critique) si distingue dal Critic-Agent (Lezione 7.3) per il fatto che lo stesso agente, non uno indipendente, valuta il proprio output.</li><li>Il ciclo <strong>act → reflect → revise → re-evaluate</strong>, implementato estendendo il loop agentivo base (Lezione 5.1), permette a un agente di correggere autonomamente errori locali prima di considerare il compito concluso.</li><li>La self-critique può essere <strong>online</strong> (durante il task, per migliorare l'output corrente) o <strong>offline</strong> (dopo il task, per alimentare apprendimento futuro — anteprima della Lezione 8.3).</li><li>I rischi principali sono l'<strong>echo chamber</strong> (un errore sistematico condiviso da produttore e valutatore non viene rilevato) e il <strong>bias di conferma</strong> (la riflessione giustifica invece di valutare genuinamente).</li><li>I sistemi maturi spesso combinano self-reflection (filtro economico iniziale), Critic-Agent indipendente (per casi più critici), e Human-in-the-Loop (per casi ambigui), in una gerarchia di costi e affidabilità crescenti.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché il rischio di echo chamber descritto nell'esempio pratico (interpretazione errata di una colonna di dati) sarebbe probabilmente rilevato da un Critic-Agent indipendente con accesso ai dati grezzi originali, ma non dalla self-reflection.</li></ol>
+<ol><li>Nel codice della Sezione 2, cosa garantisce che il ciclo non continui indefinitamente se il modello, per qualche motivo, non è mai pienamente &quot;satisfatto&quot; della propria risposta?</li></ol>
+<ol><li>Descrivi uno scenario in cui userestituiresti self-critique offline (non online) come strumento preferito, motivando la scelta in base allo scopo specifico di quella modalità.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 7.3 (Il Layer di Review) — questa lezione approfondisce la distinzione, lì solo accennata, tra valutazione indipendente e auto-valutazione. Lezione 5.2 (ReAct) — il rischio di ragionamento circolare trova qui una manifestazione specifica e più rischiosa.</p>
+<p><strong>Porta a:</strong> Lezione 8.2 (Prompt Auto-Evolutivi) — il principio di un agente che valuta e corregge il proprio comportamento si estenderà, in quella lezione, dalla correzione di un singolo output alla modifica del prompt stesso che genera tutti gli output futuri.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.3 (Riassorbimento della Conoscenza) — la self-critique offline qui introdotta è il meccanismo elementare su cui si fonda un sistema che accumula esperienza nel tempo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="07-05-valutazione-dei-workflow-metriche-evals-e-testing-end-to-end.html">← 07-05 Valutazione dei Workflow</a>
+        <a class="primary-action" href="08-02-prompt-auto-evolutivi-come-i-prompt-migliorano-nel-tempo.html">08-02 Prompt Auto-Evolutivi →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

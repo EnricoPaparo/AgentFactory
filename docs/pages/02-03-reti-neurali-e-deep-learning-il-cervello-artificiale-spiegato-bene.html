@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reti Neurali e Deep Learning: il cervello artificiale spiegato bene | AgentFactory</title>
+  <meta name="description" content="Dare una forma concreta alla 'funzione matematica con parametri regolabili'">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-02-intelligenza-artificiale">L'Intelligenza Artificiale: Cosa È Davvero</a><span>/</span><strong>02-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 02-03</p>
+        <h1>Reti Neurali e Deep Learning: il cervello artificiale spiegato bene</h1>
+        <p class="lesson-subtitle">Dare una forma concreta alla 'funzione matematica con parametri regolabili'</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>02 · L'Intelligenza Artificiale: Cosa È Davvero</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>neurone artificiale</span><span>peso</span><span>funzione di attivazione</span><span>rete neurale</span><span>strato</span><span>profondità</span><span>backpropagation</span><span>deep learning</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Descrivere un neurone artificiale e il suo funzionamento elementare</li><li>Spiegare come si costruisce una rete a strati a partire da singoli neuroni</li><li>Capire intuitivamente perché la profondità aumenta la capacità rappresentativa</li><li>Spiegare a parole, senza derivate, cosa fa la backpropagation</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo definito un modello come &quot;una funzione matematica con parametri regolabili, aggiustati durante l'addestramento&quot;. È una definizione corretta ma astratta. Questa lezione la rende concreta, mostrando esattamente che <em>forma</em> ha questa funzione quando parliamo di Deep Learning: la rete neurale artificiale.</p>
+<p>Capire — anche solo intuitivamente — come è costruita una rete neurale è il prerequisito indispensabile per la prossima lezione, dove affronteremo il problema del linguaggio, e per la Lezione 2.5, dove vedremo l'architettura Transformer che rende possibili i modelli linguistici moderni. Non useremo formule matematiche: l'obiettivo non è che tu sappia calcolare una rete neurale a mano, ma che tu abbia un modello mentale corretto di cosa stia succedendo, sufficiente a non trattare mai più questi sistemi come scatole nere incomprensibili.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Descrivere un neurone artificiale e il suo funzionamento elementare</li><li>Spiegare come si costruisce una rete a strati a partire da singoli neuroni</li><li>Capire intuitivamente perché la profondità aumenta la capacità rappresentativa di una rete</li><li>Spiegare a parole, senza ricorrere a derivate, cosa fa la backpropagation</li></ul>
+<hr>
+<h3 id="1-il-neurone-artificiale-pesi-somma-attivazione">1. Il neurone artificiale: pesi, somma, attivazione</h3>
+<p>Il nome &quot;rete neurale&quot; deriva da un'ispirazione, molto libera e semplificata, al funzionamento dei neuroni biologici. Non prendere questa analogia troppo alla lettera: il neurone artificiale è un'operazione matematica elementare, non una simulazione del cervello.</p>
+<p>Un singolo neurone artificiale fa tre cose, in sequenza:</p>
+<pre><code>INPUT (x1, x2, x3, ...)
+       │
+       ▼
+1. MOLTIPLICA ogni input per un peso (w1, x2 per w2, ...)
+       │
+       ▼
+2. SOMMA tutti i risultati (più un valore detto &quot;bias&quot;)
+       │
+       ▼
+3. APPLICA una funzione di attivazione al totale
+       │
+       ▼
+OUTPUT (un singolo numero)</code></pre>
+<p>Vediamolo con numeri concreti e semplici. Immagina un neurone con tre input, ciascuno moltiplicato per un peso specifico:</p>
+<pre><code>input:   x1 = 2,    x2 = 5,    x3 = 1
+pesi:    w1 = 0.3,  w2 = 0.1,  w3 = -0.4
+
+somma pesata = (2 × 0.3) + (5 × 0.1) + (1 × -0.4)
+             = 0.6 + 0.5 - 0.4
+             = 0.7
+
+(+ eventuale bias, diciamo 0.1)
+totale = 0.8
+
+funzione di attivazione applicata a 0.8 → output finale</code></pre>
+<p>I <strong>pesi</strong> (<code>w1, w2, w3</code>) sono esattamente i &quot;parametri regolabili&quot; di cui parlavamo nella lezione precedente. Durante l'addestramento, questi numeri vengono aggiustati ripetutamente — non scritti a mano da un programmatore.</p>
+<h4 id="perche-serve-la-funzione-di-attivazione">Perché serve la funzione di attivazione</h4>
+<p>Se ci fermassimo alla somma pesata, l'intera rete — non importa quanti neuroni avesse — potrebbe esprimere solo relazioni lineari tra input e output (rette, piani). Il mondo reale, e il linguaggio in particolare, è pieno di relazioni non lineari, piene di soglie, eccezioni, combinazioni complesse.</p>
+<p>La <strong>funzione di attivazione</strong> introduce questa non-linearità. Una delle più semplici e diffuse, chiamata ReLU, applica una regola elementare: se il numero è negativo, diventa zero; se è positivo, resta com'è. Sembra banale, ma ripetuta su migliaia di neuroni, questa semplice non-linearità è ciò che permette alla rete di rappresentare funzioni arbitrariamente complesse.</p>
+<hr>
+<h3 id="2-costruire-una-rete-a-strati">2. Costruire una rete a strati</h3>
+<p>Un singolo neurone, da solo, può fare pochissimo. La potenza emerge quando si organizzano moltissimi neuroni in <strong>strati</strong> (in inglese, <em>layers</em>), collegati in sequenza.</p>
+<pre><code>STRATO DI INPUT     STRATI NASCOSTI (hidden)      STRATO DI OUTPUT
+
+   ●                    ●        ●
+   ●    ──────────►     ●   ──►  ●    ──────────►      ●
+   ●                    ●        ●
+   ●                    ●        ●
+
+ (i dati          (elaborazioni intermedie,         (il risultato
+  in ingresso)     ogni neurone riceve gli           finale, es. una
+                    output di TUTTI i neuroni         classificazione
+                    dello strato precedente)          o una previsione)</code></pre>
+<p>Ogni neurone in uno strato riceve come input gli output di <strong>tutti</strong> i neuroni dello strato precedente (in questa configurazione, chiamata &quot;completamente connessa&quot;). Ogni collegamento ha il proprio peso specifico, regolabile indipendentemente. Una rete con anche solo poche centinaia di neuroni per strato e alcuni strati ha già milioni di pesi regolabili — e i modelli linguistici moderni ne hanno miliardi.</p>
+<h4 id="cosa-significa-strati-nascosti">Cosa significa &quot;strati nascosti&quot;</h4>
+<p>Gli strati tra l'input e l'output si chiamano &quot;nascosti&quot; (hidden) perché i loro valori intermedi non hanno un significato predefinito e leggibile per un umano: non sono &quot;il colore&quot; o &quot;la forma&quot;, sono combinazioni numeriche apprese automaticamente dalla rete durante l'addestramento, che si rivelano utili per arrivare alla risposta finale. Questa è una delle ragioni per cui le reti neurali profonde sono spesso descritte come &quot;scatole nere&quot;: possiamo osservare input e output, ma interpretare il significato esatto di ogni singolo valore interno è estremamente difficile.</p>
+<hr>
+<h3 id="3-il-concetto-di-profondita-perche-piu-strati-aiutano">3. Il concetto di profondità: perché più strati aiutano</h3>
+<p><strong>Deep Learning</strong> significa, letteralmente, &quot;apprendimento profondo&quot; — dove &quot;profondo&quot; si riferisce al numero di strati nascosti nella rete. Ma perché avere più strati produce risultati migliori, invece di limitarsi a uno strato molto largo (con tantissimi neuroni)?</p>
+<p>L'intuizione chiave è che ogni strato successivo può costruire rappresentazioni <strong>più astratte e complesse</strong>, combinando le rappresentazioni più semplici scoperte dallo strato precedente.</p>
+<blockquote><strong>Analogia concreta — riconoscimento di un volto in un'immagine:</strong></blockquote>
+<blockquote>- Il primo strato potrebbe imparare a rilevare semplici contorni e variazioni di luce/ombra nei singoli pixel</blockquote>
+<blockquote>- Il secondo strato potrebbe combinare quei contorni per riconoscere forme elementari: un occhio, un naso, una bocca</blockquote>
+<blockquote>- Un terzo strato potrebbe combinare quelle forme per riconoscere l'intera configurazione di un volto</blockquote>
+<blockquote>- Strati ancora successivi potrebbero distinguere l'espressione, l'identità specifica della persona</blockquote>
+<blockquote></blockquote>
+<blockquote>Nessuno ha programmato esplicitamente questa progressione gerarchica: emerge dall'addestramento, ma la struttura a strati è ciò che la rende <em>possibile</em>.</blockquote>
+<p>Questa idea di &quot;rappresentazioni via via più astratte negli strati più profondi&quot; tornerà, in una forma molto più sofisticata, quando parleremo di come un modello linguistico costruisce una comprensione del contesto di una frase, parola dopo parola, strato dopo strato.</p>
+<hr>
+<h3 id="4-backpropagation-come-la-rete-impara-dai-propri-errori">4. Backpropagation: come la rete impara dai propri errori</h3>
+<p>Sappiamo ora che una rete neurale è composta da moltissimi pesi regolabili. Ma come, esattamente, vengono regolati? La risposta si chiama <strong>backpropagation</strong> (retropropagazione dell'errore), ed è l'algoritmo che ha reso possibile, nella pratica, l'addestramento delle reti neurali.</p>
+<p>Spieghiamolo a parole, senza derivate.</p>
+<pre><code>1. La rete riceve un input e produce un output
+   (con i pesi attuali, probabilmente sbagliato all'inizio)
+
+2. Si confronta l'output prodotto con l'output desiderato
+   (questo richiede di sapere la risposta corretta —
+   torna l'apprendimento supervisionato visto nella Lezione 2.2)
+
+3. Si calcola quanto e in che direzione l'errore finale
+   sia &quot;responsabilità&quot; di ciascun peso della rete,
+   strato per strato, andando ALL'INDIETRO
+   dall'output verso l'input (da qui il nome
+   &quot;retro-propagazione&quot;)
+
+4. Ogni peso viene aggiustato leggermente,
+   nella direzione che avrebbe ridotto l'errore
+
+5. Si ripete questo processo milioni di volte,
+   con milioni di esempi diversi</code></pre>
+<blockquote><strong>Analogia concreta:</strong> immagina una catena di persone che si passano un messaggio sussurrandolo all'orecchio, e alla fine il messaggio risulta storpiato. Per capire dove è avvenuto l'errore principale, ripercorri la catena al contrario, chiedendo a ciascuno &quot;cosa hai sentito tu, esattamente?&quot; — risalendo dall'ultimo al primo. La backpropagation fa qualcosa di analogo con i numeri: ripercorre la rete all'indietro per capire quanto ogni singolo peso ha contribuito all'errore finale, e lo corregge di conseguenza.</blockquote>
+<p>Questo processo, ripetuto un numero enorme di volte su un numero enorme di esempi, è — in termini molto semplificati — l'intero meccanismo con cui un modello come una rete neurale &quot;impara&quot;. Non c'è comprensione, non c'è ragionamento nel senso umano: c'è un aggiustamento numerico iterativo, guidato dall'errore, che converge gradualmente verso pesi che producono output utili.</p>
+<hr>
+<h3 id="5-perche-il-deep-learning-ha-rivoluzionato-l-ai-dal-2012-in-poi">5. Perché il Deep Learning ha rivoluzionato l'AI dal 2012 in poi</h3>
+<p>Le reti neurali, come idea teorica, esistono fin dagli anni '50 e '60. Perché la rivoluzione concreta è arrivata solo a partire dal 2012 (l'anno spartiacque è generalmente associato a un sistema chiamato AlexNet, che vinse in modo schiacciante una competizione di riconoscimento immagini)? Tre fattori si sono combinati:</p>
+<ol><li><strong>Dati</strong>: l'arrivo di Internet ha resi disponibili dataset enormi, necessari per addestrare reti con milioni di parametri senza overfitting (concetto visto nella Lezione 2.2)</li><li><strong>Potenza di calcolo</strong>: le GPU (schede grafiche), originariamente progettate per i videogiochi, si sono rivelate eccezionalmente efficienti anche per i calcoli matriciali richiesti dalle reti neurali</li><li><strong>Algoritmi migliori</strong>: perfezionamenti tecnici (funzioni di attivazione più efficaci, tecniche per stabilizzare l'addestramento di reti molto profonde) hanno reso pratico addestrare reti con molti più strati di quanto fosse possibile prima</li></ol>
+<p>Questa combinazione di fattori — dati, calcolo, algoritmi — è esattamente la stessa che, pochi anni dopo, renderà possibile l'addestramento dei modelli linguistici di grandi dimensioni che studieremo nel Capitolo 3, su scala ancora più estrema.</p>
+<hr>
+<h3 id="esempio-pratico-visualizzare-una-rete-neurale-minuscola">Esempio Pratico: Visualizzare una Rete Neurale Minuscola</h3>
+<p>Costruiamo, solo concettualmente, una rete minuscola per un problema giocattolo: decidere se portare l'ombrello, basandosi su due input: probabilità di pioggia (da 0 a 1) e quanto sei disposto a rischiare di bagnarti (da 0 a 1, dove 0 = odi bagnarti, 1 = non ti importa).</p>
+<pre><code>INPUT                    NEURONE (strato unico, per semplicità)        OUTPUT
+
+probabilità_pioggia (0.8)  →  peso w1 = 0.7  →
+                                                    somma = (0.8×0.7) + (0.2×-0.5) + bias
+tolleranza_bagnarsi (0.2)  →  peso w2 = -0.5  →    = 0.56 - 0.1 + 0.05 = 0.51
+
+                                                    attivazione(0.51) → output ≈ 0.62
+
+                                                    Interpretazione: 0.62 → &quot;probabilmente
+                                                    sì, porta l'ombrello&quot;</code></pre>
+<p>Nota che i pesi (<code>0.7</code> e <code>-0.5</code>) incorporano già un'informazione sensata: il peso sulla probabilità di pioggia è positivo (più pioggia probabile → più propensione a portare l'ombrello), il peso sulla tolleranza a bagnarsi è negativo (più tolleranza → meno propensione a portare l'ombrello). In un caso reale, questi pesi non sarebbero scelti a mano come qui: sarebbero scoperti dalla backpropagation, esponendo la rete a migliaia di esempi passati di &quot;che condizioni c'erano&quot; e &quot;se la persona ha portato l'ombrello o no&quot;.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un <strong>neurone artificiale</strong> moltiplica gli input per pesi, li somma, e applica una <strong>funzione di attivazione</strong> che introduce non-linearità, indispensabile per rappresentare relazioni complesse.</li><li>Organizzando molti neuroni in <strong>strati</strong> collegati in sequenza, si costruisce una <strong>rete neurale</strong>: ogni strato riceve gli output del precedente.</li><li>La <strong>profondità</strong> (numero di strati nascosti) permette alla rete di costruire rappresentazioni via via più astratte, combinando pattern semplici in pattern complessi.</li><li>La <strong>backpropagation</strong> è l'algoritmo che regola i pesi della rete, ripercorrendo all'indietro l'errore tra output prodotto e output desiderato, e aggiustando ogni peso nella direzione che lo riduce.</li><li>La combinazione di <strong>dati</strong>, <strong>potenza di calcolo (GPU)</strong> e <strong>algoritmi migliori</strong> ha reso il Deep Learning praticamente efficace a partire dal 2012, aprendo la strada a tutto ciò che vedremo nel Capitolo 3.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Se rimuovessimo completamente la funzione di attivazione da ogni neurone della rete (lasciando solo la somma pesata), cosa succederebbe alla capacità della rete di rappresentare problemi complessi? Perché?</li></ol>
+<ol><li>Nell'analogia del riconoscimento di un volto per strati successivi (contorni → forme → volto intero), cosa pensi possa rappresentare uno strato &quot;ancora più profondo&quot; rispetto a quelli descritti? Prova a immaginare un'astrazione superiore a &quot;riconoscere un volto&quot;.</li></ol>
+<ol><li>La backpropagation richiede di conoscere la risposta corretta per calcolare l'errore. Rifletti su questo: che relazione ha questo requisito con la distinzione tra apprendimento supervisionato e non supervisionato vista nella Lezione 2.2?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 2.2 — qui diamo forma concreta al &quot;modello come funzione matematica con parametri regolabili&quot; descritto in astratto.</p>
+<p><strong>Porta a:</strong> Lezione 2.4 (NLP) — vedremo come si può &quot;dare in pasto&quot; il testo, che non è fatto di numeri, a una rete neurale che lavora solo con numeri.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 2.5 (Transformer) — l'architettura che useremo per gli LLM è una particolare evoluzione, molto sofisticata, dei principi di strati e pesi visti qui. Lezione 3.1 (Cos'è un LLM) — i &quot;miliardi di parametri&quot; di cui si parla sempre, riferendosi ai modelli linguistici, sono esattamente i pesi descritti in questa lezione, su scala enormemente più grande.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="02-02-machine-learning-come-una-macchina-impara-dai-dati.html">← 02-02 Machine Learning</a>
+        <a class="primary-action" href="02-04-nlp-e-il-problema-del-linguaggio-perche-il-testo-e-difficile-per-le-macchine.html">02-04 NLP e il problema del linguaggio →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

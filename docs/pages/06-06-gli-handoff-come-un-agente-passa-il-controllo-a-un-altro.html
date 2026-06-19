@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gli Handoff: come un agente passa il controllo a un altro | AgentFactory</title>
+  <meta name="description" content="Il momento esatto in cui la responsabilità si trasferisce — e cosa deve viaggiare con essa">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-06-agent-package">L'Agent Package: Struttura, Contratti e Artefatti</a><span>/</span><strong>06-06</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 06-06</p>
+        <h1>Gli Handoff: come un agente passa il controllo a un altro</h1>
+        <p class="lesson-subtitle">Il momento esatto in cui la responsabilità si trasferisce — e cosa deve viaggiare con essa</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>06 · L'Agent Package: Struttura, Contratti e Artefatti</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>handoff</span><span>trasferimento di contesto</span><span>handoff sincrono</span><span>handoff asincrono</span><span>documento di handoff</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere un handoff da una semplice chiamata di funzione</li><li>Costruire un documento di handoff completo in formato .md con frontmatter</li><li>Implementare un handoff sincrono e discuterne le alternative asincrone</li><li>Progettare un handoff reale tra un Requirement Analyst e un Architect Agent</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Negli esempi del Capitolo 5 e nelle lezioni precedenti di questo capitolo, gli agenti si &quot;chiamavano&quot; a vicenda in un modo molto diretto: l'orchestratore della Lezione 5.3 chiamava una funzione Python, aspettava il risultato, e procedeva. Questo pattern, chiamato tecnicamente <strong>chiamata sincrona</strong>, funziona bene per pipeline semplici, ma non descrive con precisione cosa accade in sistemi più sofisticati, dove un agente non si limita a &quot;restituire un valore&quot; al chiamante: <strong>trasferisce un intero contesto di lavoro</strong>, con la responsabilità di completarlo, a un altro agente.</p>
+<p>Questo trasferimento formale — contesto, stato, e responsabilità — si chiama <strong>handoff</strong>. È uno dei concetti più importanti di questo capitolo, perché è precisamente il meccanismo che useremo per costruire pipeline complesse dove ogni agente lavora su un documento di lavoro condiviso e via via più ricco, invece di limitarsi a restituire un singolo valore numerico o una breve stringa di testo.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere con precisione un handoff da una semplice chiamata di funzione</li><li>Costruire un documento di handoff completo in formato Markdown con frontmatter</li><li>Implementare un handoff sincrono in codice, e discutere le alternative asincrone</li><li>Progettare un handoff realistico tra un Requirement Analyst Agent e un Architect Agent</li></ul>
+<hr>
+<h3 id="1-chiamata-di-funzione-vs-handoff-la-differenza-che-conta">1. Chiamata di funzione vs Handoff: la differenza che conta</h3>
+<pre><code>CHIAMATA DI FUNZIONE (Lezione 5.3)
+
+agente_B_risultato = agente_B(input_da_agente_A)
+
+→ Agente A passa UN VALORE, aspetta la risposta,
+  e RIPRENDE il controllo dopo aver ricevuto il risultato
+→ Agente A resta &quot;responsabile&quot; del processo complessivo
+
+
+HANDOFF
+
+documento_handoff = costruisci_handoff(lavoro_svolto_da_A, contesto)
+trasferisci_a(documento_handoff, destinatario=&quot;agente_B&quot;)
+
+→ Agente A passa un DOCUMENTO COMPLETO di lavoro
+  e la RESPONSABILITÀ di continuare il processo
+→ Agente A TERMINA il proprio coinvolgimento — non
+  aspetta una risposta da restituire a sua volta
+→ Agente B diventa il nuovo responsabile, con tutto
+  il contesto necessario per procedere autonomamente</code></pre>
+<p>La differenza non è solo tecnica: è concettuale. In una chiamata di funzione, l'agente chiamante mantiene la responsabilità finale e usa l'altro agente come uno strumento (esattamente come il Function Calling della Lezione 4.4). In un handoff, la responsabilità stessa <strong>si trasferisce</strong>: l'agente che riceve l'handoff diventa il nuovo &quot;proprietario&quot; del processo, con piena autonomia su come procedere da quel punto in avanti.</p>
+<blockquote><strong>Perché questa distinzione conta nel caso reale che hai in mente:</strong> un Requirement Analyst Agent che analizza una cartella di documenti misti, e produce un handoff per un Architect Agent, non sta &quot;chiedendo all'Architect di fare un calcolo e tornare con un risultato&quot; — sta <strong>trasferendo l'intero progetto</strong>, con tutto il contesto raccolto, perché l'Architect lo porti avanti autonomamente nella fase successiva. Questo è precisamente il tipo di relazione che un handoff formalizza, e che una semplice chiamata di funzione non rappresenterebbe correttamente.</blockquote>
+<hr>
+<h3 id="2-cosa-contiene-un-documento-di-handoff">2. Cosa contiene un documento di handoff</h3>
+<p>Un documento di handoff ben progettato contiene quattro categorie di informazione, costruite sulle competenze già acquisite in questo capitolo:</p>
+<pre><code>1. OUTPUT DELL'AGENTE CORRENTE
+   Il lavoro effettivamente prodotto, validato contro
+   il contratto dichiarato (Lezione 6.5)
+
+2. CONTESTO RILEVANTE
+   Informazioni di sfondo necessarie per chi riceve
+   l'handoff, che potrebbero non essere ovvie dal solo
+   output (es. vincoli scoperti durante l'analisi,
+   decisioni prese e perché)
+
+3. ISTRUZIONI PER IL SUCCESSIVO
+   Cosa ci si aspetta che il destinatario faccia con
+   questo materiale — non sempre ovvio dal solo output
+
+4. METADATI
+   Tracciabilità: chi ha prodotto questo handoff, quando,
+   con quale versione dell'agente (riprendendo il
+   frontmatter della Lezione 6.1)</code></pre>
+<hr>
+<h3 id="3-implementazione-pratica-un-documento-di-handoff-completo">3. Implementazione pratica: un documento di handoff completo</h3>
+<p>Costruiamo un esempio concreto e realistico — l'handoff dal Requirement Analyst Agent verso un Architect Agent, riprendendo esplicitamente il caso d'uso che hai in mente per il tuo progetto.</p>
+<pre><code>---
+tipo: &quot;handoff&quot;
+da_agente: &quot;requirement-analyst-agent&quot;
+a_agente: &quot;architect-agent&quot;
+versione_schema: &quot;1.0&quot;
+timestamp: &quot;2026-06-19T14:30:00Z&quot;
+id_progetto: &quot;progetto-cliente-X-2026&quot;
+stato_handoff: &quot;completo&quot;
+---
+
+# Handoff: Requirement Analyst → Architect
+
+## 1. Output Prodotto
+
+### Requisiti Identificati
+
+- **Funzionali:** Il sistema deve permettere upload di
+  cartelle con file misti (PDF, immagini, audio) e
+  produrre un'analisi strutturata automaticamente
+- **Non Funzionali:** Tempo di elaborazione massimo
+  accettabile: 5 minuti per cartella di dimensione media
+  (~50 file)
+
+### Vincoli Tecnici Rilevati
+
+- Il cliente richiede che il sistema funzioni anche
+  offline per i file PDF (vincolo scoperto durante
+  l'analisi dei documenti forniti, non esplicitato
+  inizialmente nella richiesta originale)
+
+## 2. Contesto Rilevante
+
+Durante l'analisi della cartella fornita dal cliente,
+sono stati trovati 3 documenti contraddittori riguardo
+al formato di output desiderato (due richiedono PDF,
+uno richiede solo Markdown). Questo è stato segnalato
+come AMBIGUITÀ DA RISOLVERE, non come decisione presa
+autonomamente.
+
+## 3. Istruzioni per l'Architect Agent
+
+- Progettare l'architettura assumendo la necessità di
+  generare ENTRAMBI i formati di output (PDF e Markdown),
+  data l'ambiguità non risolta nel punto 2
+- Dare priorità architetturale al vincolo di funzionamento
+  offline per i PDF
+
+## 4. Artefatti Allegati
+
+- `requisiti_completi.json` (conforme allo schema
+  `RequisitiOutput`, Lezione 6.5)
+- `documenti_originali_analizzati.pdf` (per riferimento)</code></pre>
+<p>Osserva come questo documento <strong>non è semplicemente un output tecnico</strong>: contiene una sezione di contesto che spiega <em>perché</em> certe decisioni non sono state prese autonomamente (l'ambiguità sui formati), e istruzioni esplicite che guidano il destinatario su come gestire quell'ambiguità — invece di lasciare che la scopra da solo, rileggendo l'intera analisi da zero.</p>
+<hr>
+<h3 id="4-implementazione-pratica-handoff-sincrono-in-codice">4. Implementazione pratica: handoff sincrono in codice</h3>
+<pre><code>from datetime import datetime, timezone
+import json
+
+class DocumentoHandoff:
+    &quot;&quot;&quot;
+    Rappresenta un handoff formale tra due agenti,
+    costruito secondo la struttura della Sezione 2.
+    &quot;&quot;&quot;
+    def __init__(self, da_agente: str, a_agente: str,
+                 output: dict, contesto: str, istruzioni: str):
+        self.da_agente = da_agente
+        self.a_agente = a_agente
+        self.output = output
+        self.contesto = contesto
+        self.istruzioni = istruzioni
+        self.timestamp = datetime.now(timezone.utc).isoformat()
+
+    def to_markdown(self) -&gt; str:
+        &quot;&quot;&quot;Genera il documento .md con frontmatter (Lezione 6.1).&quot;&quot;&quot;
+        frontmatter = {
+            &quot;tipo&quot;: &quot;handoff&quot;,
+            &quot;da_agente&quot;: self.da_agente,
+            &quot;a_agente&quot;: self.a_agente,
+            &quot;timestamp&quot;: self.timestamp
+        }
+        corpo = f&quot;&quot;&quot;
+## Output Prodotto
+{json.dumps(self.output, indent=2)}
+
+## Contesto Rilevante
+{self.contesto}
+
+## Istruzioni per il Successivo
+{self.istruzioni}
+&quot;&quot;&quot;
+        import yaml
+        return f&quot;---\n{yaml.dump(frontmatter)}---\n{corpo}&quot;
+
+
+def esegui_handoff_sincrono(documento: DocumentoHandoff,
+                              funzione_agente_destinatario) -&gt; dict:
+    &quot;&quot;&quot;
+    Handoff SINCRONO: il chiamante attende che l'agente
+    destinatario completi il proprio lavoro, in questa
+    stessa esecuzione del programma.
+    &quot;&quot;&quot;
+    print(f&quot;[HANDOFF] {documento.da_agente} → {documento.a_agente}&quot;)
+    return funzione_agente_destinatario(documento)
+
+
+# Utilizzo:
+handoff = DocumentoHandoff(
+    da_agente=&quot;requirement-analyst-agent&quot;,
+    a_agente=&quot;architect-agent&quot;,
+    output={&quot;requisiti&quot;: [&quot;upload multi-formato&quot;, &quot;elaborazione &lt; 5 min&quot;]},
+    contesto=&quot;Trovata ambiguità sui formati di output richiesti.&quot;,
+    istruzioni=&quot;Progettare assumendo necessità di entrambi i formati.&quot;
+)
+
+risultato_finale = esegui_handoff_sincrono(handoff, architect_agent)</code></pre>
+<hr>
+<h3 id="5-handoff-sincroni-vs-asincroni-implicazioni-di-design">5. Handoff sincroni vs asincroni: implicazioni di design</h3>
+<p>Nell'esempio della Sezione 4, l'handoff è <strong>sincrono</strong>: il programma resta in attesa, nella stessa esecuzione, che l'Architect Agent completi il proprio lavoro prima di proseguire. Questo è adatto quando l'intero processo deve completarsi in un'unica sessione, con un utente che attende il risultato finale.</p>
+<p>Esiste un'alternativa, l'<strong>handoff asincrono</strong>, dove il documento di handoff viene depositato (ad esempio, in una coda di messaggi o in un database) e l'agente destinatario lo elabora <strong>in un momento successivo, potenzialmente in un processo completamente separato</strong>:</p>
+<pre><code>HANDOFF SINCRONO                       HANDOFF ASINCRONO
+
+A produce l'handoff                    A produce l'handoff
+       │                                       │
+       ▼                                       ▼
+B lo elabora IMMEDIATAMENTE             L'handoff viene salvato
+nella stessa esecuzione                 (es. in una coda)
+       │                                       │
+       ▼                                       ▼
+A riceve il risultato finale            A TERMINA, senza attendere
+o conferma di completamento             B elaborerà quando può,
+                                          possibilmente molto dopo</code></pre>
+<p>L'handoff asincrono è particolarmente utile quando il lavoro del destinatario potrebbe richiedere tempo significativo, o quando — come accennato nella Lezione 6.2 a proposito della separazione dei ruoli in un team — il destinatario potrebbe richiedere <strong>revisione umana</strong> prima di procedere (anticipando direttamente il pattern Human-in-the-Loop che formalizzeremo nella Lezione 7.4). Per il tuo caso d'uso specifico — un Requirement Analyst che produce un handoff per un Architect, con un PDF generato per revisione umana — un pattern asincrono, dove l'handoff viene depositato e l'umano lo revisiona prima che l'Architect Agent proceda, è spesso più appropriato di un flusso completamente sincrono e automatico.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-quando-serve-un-handoff-invece-di-una-chiamata">Esempio Pratico: Riconoscere Quando Serve un Handoff invece di una Chiamata</h3>
+<p>Applichiamo la distinzione della Sezione 1 a tre scenari:</p>
+<ol><li><strong>&quot;Calcola la somma di questi numeri e dammi il risultato&quot;</strong> → chiamata di funzione (Lezione 4.4): un valore semplice, nessun trasferimento di responsabilità complessiva</li><li><strong>&quot;Analizza questi documenti e prepara tutto il necessario perché un altro team possa procedere con la progettazione&quot;</strong> → handoff: un intero contesto di lavoro, con responsabilità che si trasferisce a chi riceve</li><li><strong>&quot;Verifica se questo numero è positivo o negativo&quot;</strong> → chiamata di funzione: una domanda puntuale con una risposta puntuale</li></ol>
+<p>Il criterio distintivo, in ciascun caso, è la <strong>quantità di contesto e responsabilità</strong> che deve accompagnare il trasferimento: una chiamata di funzione è appropriata per interazioni puntuali; un handoff è appropriato quando l'intero &quot;stato di avanzamento&quot; di un processo complesso deve passare da un agente a un altro, con quest'ultimo che ne assume la piena responsabilità da quel momento in avanti.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un <strong>handoff</strong> trasferisce non solo un valore, ma un intero <strong>contesto di lavoro e la responsabilità di continuarlo</strong>, distinguendosi nettamente da una chiamata di funzione dove il chiamante mantiene la responsabilità finale.</li><li>Un documento di handoff completo contiene <strong>output prodotto</strong> (validato secondo i contratti della Lezione 6.5), <strong>contesto rilevante</strong>, <strong>istruzioni per il successivo</strong>, e <strong>metadati di tracciabilità</strong>.</li><li>Il formato <code>.md</code> con frontmatter (Lezione 6.1) è lo standard naturale per un documento di handoff, combinando struttura machine-readable con contenuto human-readable.</li><li>Gli <strong>handoff sincroni</strong> completano il trasferimento nella stessa esecuzione; gli <strong>handoff asincroni</strong> depositano il documento per un'elaborazione successiva, spesso necessaria quando è prevista revisione umana intermedia.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Riprendi l'esempio dell'handoff Requirement Analyst → Architect nella Sezione 3. Perché segnalare l'ambiguità sui formati di output come &quot;contesto rilevante&quot;, invece di scegliere autonomamente uno dei due formati, è una scelta progettuale più sicura per il sistema complessivo?</li></ol>
+<ol><li>Spiega perché, nel tuo caso d'uso specifico (analisi di cartelle multimediali con output verso revisione umana), un pattern di handoff asincrono potrebbe essere più appropriato di uno sincrono.</li></ol>
+<ol><li>Costruisci tu stesso, riprendendo la struttura della Sezione 2, un documento di handoff minimo per un caso diverso: un agente che ha completato la trascrizione di un file audio e deve passare il testo trascritto a un agente che ne produce un riassunto.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 6.5 (Contratti tra Agenti) — l'output di un handoff deve rispettare i contratti lì definiti. Lezione 6.1 (YAML e Frontmatter) — il formato esatto del documento di handoff.</p>
+<p><strong>Porta a:</strong> Lezione 6.7 (Skills e Skill Library) — vedremo come anche le competenze condivise, non solo i singoli handoff, possono essere strutturate come documenti riutilizzabili.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 7.1 (Progettare un Workflow Agentivo) — gli handoff sono gli &quot;archi&quot; del grafo agentivo che progetteremo in quella lezione. Lezione 7.4 (Human-in-the-Loop) — il pattern di handoff asincrono con revisione umana intermedia, qui solo accennato per il tuo caso d'uso, riceverà un trattamento architetturale completo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="06-05-contratti-tra-agenti-schemi-di-input-output-e-validazione.html">← 06-05 Contratti tra Agenti</a>
+        <a class="primary-action" href="06-07-skills-e-skill-library-competenze-riutilizzabili-tra-agenti.html">06-07 Skills e Skill Library →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

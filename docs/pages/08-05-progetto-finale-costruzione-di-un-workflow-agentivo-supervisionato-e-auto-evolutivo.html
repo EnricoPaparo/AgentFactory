@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Progetto Finale: Costruzione di un Workflow Agentivo Supervisionato e Auto-Evolutivo | AgentFactory</title>
+  <meta name="description" content="Quarantatré lezioni, un solo sistema: la sintesi completa del percorso">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">Sistemi Agentici che si Auto-Migliorano</a><span>/</span><strong>08-05</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 08-05</p>
+        <h1>Progetto Finale: Costruzione di un Workflow Agentivo Supervisionato e Auto-Evolutivo</h1>
+        <p class="lesson-subtitle">Quarantatré lezioni, un solo sistema: la sintesi completa del percorso</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>08 · Sistemi Agentici che si Auto-Migliorano</strong></div><div><span>Durata</span><strong>120 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>sintesi architetturale</span><span>progetto end-to-end</span><span>revisione critica</span><span>portfolio professionale</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Progettare l'architettura completa di un sistema agentivo reale</li><li>Costruire tutti gli agent package necessari, con Agent Card, contratti e skill</li><li>Implementare il workflow completo in LangGraph con review e HITL</li><li>Valutare criticamente i propri limiti architetturali con onestà professionale</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Questa è l'ultima lezione del corso. Non introduce concetti nuovi: il suo compito è diverso e, in un certo senso, più importante — chiederti di <strong>mettere insieme</strong> tutto ciò che hai imparato in quarantatré lezioni, in un singolo sistema coerente, progettato e — per quanto possibile nel formato di questo materiale — implementato con la stessa cura che abbiamo dedicato a ogni singolo componente lungo il percorso.</p>
+<p>Useremo, come filo conduttore, il caso d'uso che è stato presente, esplicitamente o implicitamente, in molte lezioni del Capitolo 6 e 7: un <strong>Requirement Analyst Agent</strong> che ingerisce cartelle di file misti e produce un handoff strutturato per un <strong>Architect Agent</strong>, con supervisione umana nel punto critico del processo. Non è un esempio scelto a caso per questa lezione conclusiva — è il progetto che hai indicato fin dall'inizio come il tuo obiettivo reale su opencode. Questa lezione lo porta a sintesi completa.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Progettare l'architettura completa di un sistema agentivo reale, partendo da un problema enunciato in linguaggio naturale</li><li>Costruire tutti gli agent package necessari, completi di Agent Card, contratti, prompt versionati e skill condivise</li><li>Implementare il workflow completo in LangGraph, con review automatico e checkpoint di supervisione umana</li><li>Valutare criticamente i propri limiti architetturali con la stessa onestà professionale praticata in tutto il corso</li></ul>
+<hr>
+<h3 id="1-definizione-del-problema">1. Definizione del problema</h3>
+<p>Il punto di partenza di ogni sistema ben progettato è una definizione chiara del problema, prima di qualsiasi scelta tecnica — esattamente la disciplina costruita nella Lezione 7.1.</p>
+<pre><code>PROBLEMA: Un team di consulenza riceve, da ogni nuovo
+cliente, una cartella con materiale eterogeneo (documenti
+PDF di specifiche, registrazioni audio di interviste con
+gli stakeholder, screenshot di sistemi esistenti). Il
+team deve produrre, da questo materiale, un documento di
+requisiti strutturato, e passarlo al team di architettura
+per la progettazione tecnica.
+
+VINCOLI:
+- Il materiale è spesso ambiguo o contraddittorio
+  (rilevato, non risolto autonomamente — Lezione 6.6)
+- Serve sempre una revisione umana prima che il documento
+  raggiunga il team di architettura (Lezione 7.4)
+- Il sistema deve migliorare nel tempo, riducendo
+  progressivamente i casi che richiedono chiarimenti
+  ripetuti per le stesse tipologie di ambiguità
+  (Lezione 8.3)</code></pre>
+<hr>
+<h3 id="2-design-dell-architettura-completa">2. Design dell'architettura completa</h3>
+<p>Applicando il vocabolario della Lezione 7.1, disegniamo il grafo completo del sistema:</p>
+<pre><code>[Nodo: Ingestione Cartella]
+       │
+       ├──────────┬──────────┐
+       ▼          ▼          ▼
+ [Estrazione  [Estrazione  [Estrazione
+   PDF]         Audio]       Immagini]
+   (paralleli, Lezione 7.2)
+       │          │          │
+       └──────────┴──────────┘
+                  ▼
+       [Nodo: Requirement Analyst]
+       (usa skill &quot;rilevamento-ambiguita&quot;,
+        Lezione 6.7)
+                  ▼
+       [Nodo: Review — Critic-Agent]
+       (Lezione 7.3, rubrica strutturata)
+                  │
+        ┌─────────┼─────────┐
+        ▼         ▼          ▼
+    APPROVA   RICHIEDI    ESCALA
+        │     REVISIONE   A UMANO
+        │         │         │
+        │    (torna ad      ▼
+        │     Analyst)  [CHECKPOINT
+        │               UMANO]
+        │               (async review,
+        │                Lezione 7.4)
+        │                   │
+        └─────────┬─────────┘
+                  ▼
+       [Nodo: Costruisci Handoff]
+       (Lezione 6.6, conforme al
+        contratto Lezione 6.5)
+                  ▼
+       [Handoff → Architect Agent]
+                  ▼
+       [Nodo: Registra Episodio]
+       (memoria episodica, Lezione 8.3)</code></pre>
+<p>Questo grafo <strong>non è un nuovo concetto</strong>: è la composizione esatta di pattern già costruiti — nodi paralleli (7.2), review layer (7.3), HITL asincrono (7.4), handoff con contratto (6.5, 6.6), registrazione per riassorbimento futuro (8.3). Il valore di questa lezione è mostrare che questi pattern <strong>si compongono naturalmente</strong> in un sistema reale, senza richiedere alcuna invenzione architetturale aggiuntiva.</p>
+<hr>
+<h3 id="3-gli-agent-package-necessari">3. Gli Agent Package necessari</h3>
+<p>Seguendo la struttura della Lezione 6.2, il progetto richiede almeno tre agent package completi:</p>
+<pre><code>/agente-requirement-analyst/
+├── agent.yaml
+├── agent_card.yaml        (Lezione 6.3 — dichiara &quot;NON_fa
+│                            decisioni di business strategiche&quot;)
+├── prompts/
+│   └── system.md           (Lezione 6.4)
+├── skills/
+│   └── rilevamento-ambiguita.md  (Lezione 6.7)
+├── schemas/
+│   ├── input_schema.json   (Lezione 6.5)
+│   └── output_schema.json
+└── evals/
+    └── casi_test.yaml       (Lezione 7.5)
+
+/agente-critic-requisiti/
+├── agent.yaml
+├── agent_card.yaml
+├── prompts/
+│   └── system.md            (rubrica di valutazione, Lezione 7.3)
+└── schemas/
+    └── output_schema.json   (ValutazioneReview, Lezione 7.3)
+
+/agente-architect/
+├── agent.yaml
+├── agent_card.yaml
+├── prompts/
+│   └── system.md
+└── schemas/
+    └── input_schema.json    (deve essere COMPATIBILE con
+                                l'output_schema del Requirement
+                                Analyst — Lezione 6.5)</code></pre>
+<blockquote><strong>Il punto di disciplina più importante di questo progetto:</strong> lo schema di output del Requirement Analyst e lo schema di input dell'Architect Agent devono essere <strong>lo stesso contratto</strong>, condiviso, non due definizioni separate scritte indipendentemente — esattamente il problema di coerenza terminologica identificato nella Lezione 5.4 e risolto formalmente nella Lezione 6.5. Una violazione di questo principio, anche in un progetto di portfolio, riprodurrebbe esattamente l'errore che l'intero Capitolo 6 è stato costruito per prevenire.</blockquote>
+<hr>
+<h3 id="4-implementazione-guidata-dal-diagramma-al-codice">4. Implementazione guidata: dal diagramma al codice</h3>
+<p>L'implementazione segue, passo per passo, gli strumenti costruiti nel Capitolo 7:</p>
+<pre><code># 1. Definizione dello stato globale (Lezione 7.1)
+class StatoProgetto(BaseModel):
+    cartella_input: str
+    testo_pdf: str | None = None
+    testo_audio: str | None = None
+    testo_immagini: str | None = None
+    requisiti: dict | None = None
+    valutazione_review: dict | None = None
+    decisione_umana: dict | None = None
+    handoff_completato: bool = False
+
+# 2. Costruzione del grafo (Lezione 7.2)
+grafo = StateGraph(StatoProgetto)
+
+grafo.add_node(&quot;estrazione_pdf&quot;, nodo_estrazione_pdf)
+grafo.add_node(&quot;estrazione_audio&quot;, nodo_estrazione_audio)
+grafo.add_node(&quot;estrazione_immagini&quot;, nodo_estrazione_immagini)
+grafo.add_node(&quot;requirement_analyst&quot;, nodo_requirement_analyst)
+grafo.add_node(&quot;review&quot;, nodo_review_critic_agent)
+grafo.add_node(&quot;checkpoint_umano&quot;, nodo_checkpoint_umano)
+grafo.add_node(&quot;costruisci_handoff&quot;, nodo_costruisci_handoff)
+grafo.add_node(&quot;registra_episodio&quot;, nodo_registra_episodio)
+
+# Nodi paralleli di estrazione (Lezione 7.2, Sezione 3)
+grafo.set_entry_point(&quot;estrazione_pdf&quot;)
+# ... archi paralleli verso requirement_analyst ...
+
+grafo.add_edge(&quot;requirement_analyst&quot;, &quot;review&quot;)
+grafo.add_conditional_edges(
+    &quot;review&quot;, decidi_dopo_review,  # Lezione 7.3
+    {
+        &quot;approva&quot;: &quot;costruisci_handoff&quot;,
+        &quot;richiedi_revisione&quot;: &quot;requirement_analyst&quot;,  # ciclo
+        &quot;escala_a_umano&quot;: &quot;checkpoint_umano&quot;
+    }
+)
+grafo.add_edge(&quot;checkpoint_umano&quot;, &quot;costruisci_handoff&quot;)
+grafo.add_edge(&quot;costruisci_handoff&quot;, &quot;registra_episodio&quot;)
+grafo.add_edge(&quot;registra_episodio&quot;, END)
+
+# 3. Compilazione con checkpointing per HITL asincrono (Lezione 7.4)
+workflow_finale = grafo.compile(
+    checkpointer=memoria_checkpoint,
+    interrupt_before=[&quot;costruisci_handoff&quot;]
+)</code></pre>
+<p>Ogni riga di questo codice corrisponde a un concetto specifico, già padroneggiato in una lezione precedente — il valore di questo progetto finale non è introdurre nuova sintassi, ma dimostrare la <strong>composizione fluente</strong> di tutto ciò che hai imparato.</p>
+<hr>
+<h3 id="5-il-layer-di-auto-miglioramento">5. Il layer di auto-miglioramento</h3>
+<p>Per completare il sistema secondo l'ambizione dichiarata fin dall'inizio del corso, aggiungiamo gli ultimi due componenti del Capitolo 8:</p>
+<pre><code># Self-critique opzionale PRIMA del review esterno (Lezione 8.1),
+# come primo filtro economico
+def nodo_requirement_analyst(stato: StatoProgetto) -&gt; dict:
+    output = genera_requisiti(stato)
+    output_validato = applica_self_reflection(output)  # Lezione 8.1
+    return {&quot;requisiti&quot;: output_validato}
+
+
+# Agente archivista periodico, eseguito separatamente dal
+# workflow principale (es. settimanalmente), per il
+# riassorbimento della conoscenza (Lezione 8.3)
+def processo_settimanale_riassorbimento():
+    episodi = carica_episodi_ultima_settimana()
+    pattern = agente_archivista(episodi)
+    if pattern[&quot;confidenza&quot;] == &quot;alta&quot;:
+        proponi_per_revisione_umana(pattern)  # MAI automatico</code></pre>
+<hr>
+<h3 id="6-testing-e-valutazione-del-sistema-completo">6. Testing e valutazione del sistema completo</h3>
+<p>Prima di considerare il progetto concluso, applichiamo la disciplina della Lezione 7.5: una test suite che copre almeno i casi fondamentali.</p>
+<pre><code># evals/casi_test_sistema_completo.yaml
+- id: &quot;caso-001-requisiti-chiari-senza-ambiguita&quot;
+  atteso: {handoff_completato: true, escalation_richiesta: false}
+
+- id: &quot;caso-002-formati-contraddittori&quot;
+  atteso: {escalation_richiesta: true}
+
+- id: &quot;caso-003-audio-corrotto&quot;
+  atteso: {gestione_errore: &quot;fallback_attivato&quot;}  # Lezione 5.5</code></pre>
+<hr>
+<h3 id="7-discussione-critica-limiti-onesti-del-sistema">7. Discussione critica: limiti onesti del sistema</h3>
+<p>Seguendo lo spirito di onestà professionale praticato in ogni singola lezione di questo corso, nessun progetto si conclude senza un riconoscimento esplicito dei propri limiti:</p>
+<pre><code>LIMITI STRUTTURALI DI QUESTO SISTEMA
+
+- L'estrazione da audio e immagini (nodi paralleli) dipende
+  dalla qualità di modelli specializzati esterni — un
+  fallimento in quella fase si propaga (mitigato solo
+  parzialmente da fallback, Lezione 5.5)
+
+- Il Critic-Agent condivide il modello sottostante con il
+  Requirement Analyst — il rischio di echo chamber
+  (Lezione 8.1) non è eliminato, solo ridotto rispetto
+  alla pura self-reflection
+
+- Il riassorbimento della conoscenza (Lezione 8.3) richiede
+  un volume significativo di episodi prima di produrre
+  pattern affidabili — nelle prime settimane di utilizzo,
+  il sistema NON beneficia ancora di questo meccanismo
+
+- La qualità delle decisioni umane registrate determina
+  la qualità di ogni futuro riassorbimento — un sistema
+  più &quot;intelligente&quot; nel tempo solo se le decisioni
+  umane storiche erano effettivamente buone</code></pre>
+<p>Questo elenco non è una debolezza del progetto — è la prova che hai applicato, fino all'ultima lezione, lo stesso principio di onestà tecnica che ha guidato tutto il corso: nessuna tecnologia, nessuna architettura, elimina completamente l'incertezza. Il lavoro di un AI engineer professionale è gestirla con consapevolezza, non pretendere di averla eliminata.</p>
+<hr>
+<h3 id="esempio-pratico-il-tuo-prossimo-passo-concreto">Esempio Pratico: Il Tuo Prossimo Passo Concreto</h3>
+<p>Questo materiale didattico descrive l'architettura e fornisce i pattern di codice; il tuo passo successivo, fuori da questo corso, è l'implementazione effettiva nel contesto specifico di opencode che hai in mente. I componenti che dovrai adattare al tuo ambiente specifico:</p>
+<pre><code>1. I nodi di estrazione (PDF/audio/immagini) dovranno
+   usare gli strumenti effettivamente disponibili nel
+   tuo ambiente opencode (Lezione 4.4, Function Calling,
+   o Lezione 4.5, server MCP se disponibili)
+
+2. Il meccanismo di notifica per il checkpoint umano
+   (Lezione 7.4) dovrà integrarsi con il tuo flusso di
+   lavoro reale — email, dashboard, o altro canale
+
+3. La skill &quot;rilevamento-ambiguita&quot; (Lezione 6.7) dovrà
+   essere scritta e raffinata sulla base dei primi casi
+   reali che il tuo sistema incontrerà, non lasciata
+   come placeholder teorico</code></pre>
+<hr>
+<h3 id="riepilogo-del-corso">Riepilogo del Corso</h3>
+<p>Con questa lezione si conclude il percorso completo di AISchool. Hai costruito, capitolo dopo capitolo:</p>
+<ul><li><strong>Capitolo 1-3</strong>: le fondamenta — Web, intelligenza artificiale, modelli linguistici — necessarie per non trattare nessuna tecnologia successiva come una scatola nera incomprensibile</li><li><strong>Capitolo 4</strong>: l'infrastruttura tecnica — API, RAG, Function Calling, MCP, memoria — che trasforma un modello isolato in un sistema capace di agire</li><li><strong>Capitolo 5</strong>: l'architettura degli agenti — loop, ragionamento esplicito, orchestrazione, robustezza</li><li><strong>Capitolo 6</strong>: l'ingegneria professionale — agent package, Agent Card, prompt versionati, contratti, handoff, skill condivise</li><li><strong>Capitolo 7</strong>: i workflow completi — design, LangGraph, review automatico, supervisione umana, valutazione rigorosa</li><li><strong>Capitolo 8</strong>: l'auto-miglioramento — self-reflection, prompt evolutivi, riassorbimento della conoscenza, governance</li></ul>
+<p>Il sistema che hai progettato in questa lezione finale non è un esercizio isolato: è la prova che ogni concetto, da &quot;come funziona Internet&quot; fino a &quot;come un sistema impara dalla propria esperienza&quot;, appartiene a un unico edificio coerente — esattamente come promesso nella prima lezione del corso.</p>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Tutte le 42 lezioni precedenti del corso, senza eccezione.</p>
+<p><strong>Porta a:</strong> Il tuo lavoro reale su opencode, sulla curriculum AISchool, e su ogni sistema agentivo che costruirai a partire da questo momento.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="08-04-governance-versioning-e-ciclo-di-vita-degli-artefatti-agentivi.html">← 08-04 Governance e Versioning degli Artefatti</a>
+        <a class="primary-action" href="../index.html">Torna all'indice</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

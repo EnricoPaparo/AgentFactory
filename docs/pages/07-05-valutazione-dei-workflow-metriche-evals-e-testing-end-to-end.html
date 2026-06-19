@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valutazione dei Workflow: metriche, evals e testing end-to-end | AgentFactory</title>
+  <meta name="description" content="Chiudere il capitolo con la domanda che conta davvero: come sai se il sistema funziona?">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-07-workflow-multi-agente">Workflow Multi-Agente: Design e Implementazione</a><span>/</span><strong>07-05</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 07-05</p>
+        <h1>Valutazione dei Workflow: metriche, evals e testing end-to-end</h1>
+        <p class="lesson-subtitle">Chiudere il capitolo con la domanda che conta davvero: come sai se il sistema funziona?</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>07 · Workflow Multi-Agente: Design e Implementazione</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>metriche di sistema</span><span>LLM-as-judge</span><span>evals</span><span>regression testing</span><span>osservabilità in produzione</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Distinguere metriche per agente singolo da metriche di sistema</li><li>Implementare una test suite di evals per un workflow completo</li><li>Spiegare i rischi dell'LLM-as-judge e come mitigarli</li><li>Progettare un dashboard minimo di osservabilità in produzione</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 7 — e l'intera parte del corso dedicata all'implementazione di workflow multi-agente — con la domanda che, in ultima analisi, conta più di ogni altra: <strong>come sai se il sistema che hai costruito funziona davvero?</strong> Avere un workflow elegantemente progettato (7.1), implementato con un framework robusto (7.2), arricchito da review automatico (7.3) e supervisione umana (7.4), non garantisce automaticamente che il sistema, nel suo complesso, produca risultati di qualità in modo consistente.</p>
+<p>Questa lezione costruisce la disciplina di valutazione che chiude il ciclo di sviluppo: senza di essa, ogni modifica al sistema — un prompt aggiornato (Lezione 6.4), una skill corretta (Lezione 6.7), una nuova versione di un agente (Lezione 6.3) — sarebbe un salto nel buio, senza modo di sapere se ha effettivamente migliorato o peggiorato il comportamento complessivo.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Distinguere le metriche rilevanti per un singolo agente da quelle rilevanti per l'intero sistema</li><li>Implementare una test suite di evals per un workflow multi-agente completo</li><li>Spiegare i rischi dell'LLM-as-judge come tecnica di valutazione, e come mitigarli</li><li>Progettare un dashboard minimo di osservabilità per un workflow in produzione</li></ul>
+<hr>
+<h3 id="1-il-problema-non-si-misura-solo-l-output-finale">1. Il problema: non si misura solo l'output finale</h3>
+<p>In un sistema multi-agente, valutare solo l'output finale del workflow (ad esempio, &quot;il report prodotto dall'Agente Scrittore è di buona qualità?&quot;) nasconde informazioni cruciali su <strong>dove</strong>, esattamente, il processo ha funzionato bene o male.</p>
+<pre><code>VALUTARE SOLO L'OUTPUT FINALE              VALUTARE OGNI NODO
+
+Sai SE il risultato finale è buono         Sai DOVE, esattamente,
+o cattivo, ma non PERCHÉ                   un problema è stato
+                                            introdotto: nel nodo di
+                                            estrazione? di analisi?
+                                            di scrittura?
+
+Un errore nel nodo di estrazione           Puoi correggere la CAUSA
+(Lezione 7.1) potrebbe essere              specifica, invece di
+&quot;corretto&quot; casualmente da un nodo          rivedere genericamente
+di scrittura molto abile — mascherando     tutto il sistema
+il problema reale invece di risolverlo</code></pre>
+<p>Questo principio — valutare ogni componente, non solo il risultato complessivo — riprende direttamente la logica del logging strutturato della Lezione 5.5: senza visibilità granulare, la diagnosi di un problema diventa enormemente più difficile.</p>
+<hr>
+<h3 id="2-metriche-per-agente-singolo-vs-metriche-di-sistema">2. Metriche per agente singolo vs metriche di sistema</h3>
+<pre><code>METRICHE PER AGENTE SINGOLO            METRICHE DI SISTEMA
+
+- Tasso di violazione del contratto    - Latenza end-to-end (tempo
+  dichiarato (Lezione 6.5)               totale dall'input
+                                          dell'utente all'output
+- Tasso di approvazione dal              finale)
+  Critic-Agent (Lezione 7.3)
+                                        - Numero medio di cicli di
+- Numero di token consumati per          revisione prima
+  esecuzione (costo, Lezione 4.1)        dell'approvazione (7.3)
+
+- Frequenza di escalation a            - Tasso di escalation a
+  revisione umana (Lezione 7.4)          umano sull'INTERO processo
+                                          (non solo per singolo nodo)
+
+                                        - Tasso di errore END-TO-END
+                                          (quante esecuzioni complete
+                                          falliscono, indipendentemente
+                                          da dove)</code></pre>
+<p>Un sistema può avere ottime metriche per ogni singolo agente, e tuttavia una metrica di sistema preoccupante — ad esempio, se ogni singolo nodo individualmente ha un tasso di errore basso, ma la <strong>combinazione</strong> di piccoli errori in più nodi consecutivi produce un tasso di fallimento end-to-end significativamente più alto della somma delle singole probabilità. Questo è precisamente il motivo per cui entrambi i livelli di metrica sono necessari, e nessuno dei due da solo è sufficiente.</p>
+<hr>
+<h3 id="3-llm-as-judge-vantaggi-e-rischi">3. LLM-as-Judge: vantaggi e rischi</h3>
+<p>Per molte valutazioni — specialmente quelle che riguardano la <strong>qualità</strong> di un output testuale, non solo la sua conformità a un contratto strutturato (Lezione 6.5) — non esiste una metrica numerica oggettiva immediata. La tecnica <strong>LLM-as-judge</strong> usa un modello linguistico per valutare la qualità dell'output di un altro componente del sistema, riprendendo lo stesso principio del Critic-Agent (Lezione 7.3) ma applicato specificamente al contesto di valutazione e misurazione, non di correzione in tempo reale.</p>
+<pre><code>def valuta_qualita_report_llm_judge(report_generato: str,
+                                       criteri_attesi: list[str]) -&gt; dict:
+    &quot;&quot;&quot;
+    Usa un modello come 'giudice' per valutare la qualità
+    di un report, secondo criteri espliciti.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=400,
+        system=&quot;Sei un valutatore indipendente di qualità. &quot;
+               &quot;Valuta il report secondo i criteri forniti, &quot;
+               &quot;con un punteggio da 1 a 5 per ciascuno, e una &quot;
+               &quot;motivazione concisa.&quot;,
+        messages=[{
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: f&quot;Report: {report_generato}\n\n&quot;
+                       f&quot;Criteri da valutare: {criteri_attesi}&quot;
+        }]
+    )
+    return json.loads(risposta.content[0].text)</code></pre>
+<h4 id="i-rischi-da-gestire-con-attenzione">I rischi da gestire con attenzione</h4>
+<pre><code>RISCHIO 1: Il giudice condivide gli stessi bias del
+            sistema valutato (se usa lo stesso modello
+            sottostante, Capitolo 3)
+
+RISCHIO 2: Inconsistenza tra valutazioni dello stesso
+            output in esecuzioni diverse (la natura
+            probabilistica vista nella Lezione 3.1
+            si applica anche al giudice)
+
+RISCHIO 3: Il giudice può essere &quot;ingannato&quot; da un
+            output ben scritto stilisticamente ma
+            sostanzialmente carente — lo stesso problema
+            di plausibilità vs verità della Lezione 3.5</code></pre>
+<p><strong>Mitigazioni pratiche:</strong> usare criteri di valutazione il più possibile <strong>strutturati e specifici</strong> (riprendendo le rubriche della Lezione 7.3), eseguire la stessa valutazione <strong>più volte</strong> e verificarne la consistenza, e — per le decisioni più critiche — non affidarsi mai esclusivamente all'LLM-as-judge senza un campione di verifica umana periodica, esattamente il principio di supervisione della Lezione 7.4 applicato qui al processo di valutazione stesso.</p>
+<hr>
+<h3 id="4-implementazione-pratica-una-test-suite-di-evals">4. Implementazione pratica: una test suite di evals</h3>
+<p>Costruiamo una test suite che verifica il comportamento del workflow Requirement Analyst → Architect su casi noti, con risultati attesi predefiniti.</p>
+<pre><code>import yaml
+
+CASI_TEST = [
+    {
+        &quot;id&quot;: &quot;caso-001-requisiti-chiari&quot;,
+        &quot;input&quot;: &quot;cartella_test_001/&quot;,
+        &quot;atteso&quot;: {
+            &quot;ambiguita_rilevate&quot;: [],  # nessuna ambiguità prevista
+            &quot;handoff_pronto&quot;: True
+        }
+    },
+    {
+        &quot;id&quot;: &quot;caso-002-formati-contraddittori&quot;,
+        &quot;input&quot;: &quot;cartella_test_002/&quot;,
+        &quot;atteso&quot;: {
+            &quot;ambiguita_rilevate_minimo&quot;: 1,  # almeno un'ambiguità
+                                               # DEVE essere rilevata
+            &quot;richiede_escalation&quot;: True
+        }
+    }
+]
+
+def esegui_test_suite(casi_test: list[dict],
+                        workflow_compilato) -&gt; dict:
+    &quot;&quot;&quot;
+    Esegue il workflow su ogni caso di test e confronta
+    il risultato con quanto atteso, riportando un sommario.
+    &quot;&quot;&quot;
+    risultati = {&quot;passati&quot;: 0, &quot;falliti&quot;: 0, &quot;dettagli&quot;: []}
+
+    for caso in casi_test:
+        configurazione = {&quot;configurable&quot;: {&quot;thread_id&quot;: caso[&quot;id&quot;]}}
+        risultato = workflow_compilato.invoke(
+            StatoWorkflowRequisiti(cartella_input=caso[&quot;input&quot;]),
+            config=configurazione
+        )
+
+        successo = verifica_caso(risultato, caso[&quot;atteso&quot;])
+        risultati[&quot;passati&quot; if successo else &quot;falliti&quot;] += 1
+        risultati[&quot;dettagli&quot;].append({
+            &quot;caso&quot;: caso[&quot;id&quot;], &quot;successo&quot;: successo
+        })
+
+    return risultati
+
+
+def verifica_caso(risultato: dict, atteso: dict) -&gt; bool:
+    &quot;&quot;&quot;Logica di confronto specifica per ogni tipo di assertion.&quot;&quot;&quot;
+    if &quot;ambiguita_rilevate&quot; in atteso:
+        if risultato[&quot;ambiguita_rilevate&quot;] != atteso[&quot;ambiguita_rilevate&quot;]:
+            return False
+    if &quot;ambiguita_rilevate_minimo&quot; in atteso:
+        if len(risultato[&quot;ambiguita_rilevate&quot;]) &lt; atteso[&quot;ambiguita_rilevate_minimo&quot;]:
+            return False
+    return True
+
+
+# Esecuzione e report
+report = esegui_test_suite(CASI_TEST, workflow_compilato)
+print(f&quot;Test passati: {report['passati']}/{len(CASI_TEST)}&quot;)</code></pre>
+<hr>
+<h3 id="5-regression-testing-garantire-che-una-modifica-non-rompa-nulla">5. Regression Testing: garantire che una modifica non rompa nulla</h3>
+<p>Il valore più importante di una test suite come quella della Sezione 4 emerge non al primo utilizzo, ma <strong>ogni volta che qualcosa nel sistema cambia</strong>: un prompt aggiornato (Lezione 6.4), una nuova versione di una skill (Lezione 6.7), un aggiustamento alla policy di escalation (Lezione 7.4).</p>
+<pre><code>PRIMA DI UNA MODIFICA              DOPO LA MODIFICA
+
+Esegui la test suite               Esegui DI NUOVO la stessa
+→ 8/10 casi passano                test suite
+                                    → se ancora 8/10 (o di più):
+                                      la modifica non ha introdotto
+                                      regressioni
+                                    → se MENO di 8/10: la modifica
+                                      ha introdotto un problema,
+                                      da investigare PRIMA di
+                                      procedere con il deploy</code></pre>
+<p>Questo principio — eseguire la stessa suite di test prima e dopo ogni modifica, confrontando i risultati — è precisamente ciò che rende possibile far evolvere un sistema agentivo nel tempo <strong>con fiducia</strong>, invece di temere che ogni piccolo aggiustamento possa silenziosamente rompere un comportamento che funzionava correttamente in un caso non più testato attivamente.</p>
+<hr>
+<h3 id="6-osservabilita-in-produzione-dashboard-e-alert">6. Osservabilità in produzione: dashboard e alert</h3>
+<p>Riprendendo e completando il logging strutturato della Lezione 5.5, un sistema in produzione beneficia di una visualizzazione aggregata delle metriche raccolte, non solo di singoli log da consultare manualmente.</p>
+<pre><code>DASHBOARD MINIMO DI OSSERVABILITÀ
+
+┌─────────────────────────────────────────────┐
+│  Esecuzioni ultime 24h: 142                    │
+│  Tasso di successo end-to-end: 94.3%           │
+│  Tasso di escalation umana: 8.1%               │
+│  Tempo medio per esecuzione: 47 secondi        │
+│                                                  │
+│  ⚠ ALERT: tasso di escalation in crescita       │
+│     (+3.2% rispetto alla settimana precedente)  │
+└─────────────────────────────────────────────┘</code></pre>
+<p>Un <strong>alert</strong> automatico su una metrica che si discosta significativamente dal proprio andamento storico (come nell'esempio, il tasso di escalation in crescita) permette di intervenire <strong>prima</strong> che un problema sistemico diventi grave, invece di scoprirlo solo quando qualcuno si lamenta esplicitamente di risultati insatisfacenti.</p>
+<hr>
+<h3 id="esempio-pratico-diagnosticare-una-regressione-da-un-report-di-test">Esempio Pratico: Diagnosticare una Regressione da un Report di Test</h3>
+<p>Immagina questo confronto tra due esecuzioni della test suite, prima e dopo aver aggiornato il prompt dell'Agente Analista (Lezione 6.4):</p>
+<pre><code>PRIMA della modifica al prompt:
+  Test passati: 9/10
+  Caso fallito: &quot;caso-007-dati-incompleti&quot;
+
+DOPO la modifica al prompt:
+  Test passati: 7/10
+  Casi falliti: &quot;caso-007-dati-incompleti&quot;,
+                &quot;caso-003-formato-standard&quot;,
+                &quot;caso-009-periodo-singolo&quot;</code></pre>
+<p>Cosa puoi dedurre? La modifica al prompt <strong>non ha risolto</strong> il problema preesistente (<code>caso-007</code> fallisce ancora), e ha <strong>introdotto due nuove regressioni</strong> (<code>caso-003</code> e <code>caso-009</code>, che prima passavano). Questo è un segnale chiaro per <strong>non procedere</strong> con il deploy di questa modifica, e per investigare specificamente cosa, nel nuovo prompt, ha alterato il comportamento sui casi che prima funzionavano correttamente — un'indagine rapida e mirata, possibile solo grazie all'esistenza della test suite.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Valutare un workflow richiede <strong>metriche per agente singolo</strong> (tasso di violazione contratti, escalation, costo) e <strong>metriche di sistema</strong> (latenza end-to-end, tasso di errore complessivo) — nessuna delle due basta da sola.</li><li><strong>LLM-as-judge</strong> permette di valutare qualità non riducibile a metriche numeriche oggettive, ma comporta rischi (bias condivisi, inconsistenza, vulnerabilità a output stilisticamente convincenti ma carenti) che richiedono mitigazione attiva.</li><li>Una <strong>test suite di evals</strong>, con casi noti e risultati attesi, permette di verificare automaticamente il comportamento del workflow, esattamente come un test automatizzato verifica il comportamento del codice tradizionale.</li><li>Il <strong>regression testing</strong> — eseguire la stessa suite prima e dopo ogni modifica — è ciò che permette di far evolvere il sistema con fiducia, rilevando immediatamente se una modifica ha introdotto un peggioramento.</li><li>Un <strong>dashboard di osservabilità in produzione</strong>, con alert su metriche anomale, permette di intervenire prima che un problema sistemico diventi grave.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega, con un esempio concreto diverso da quello della lezione, come un workflow potrebbe avere ottime metriche per ogni singolo agente individualmente, ma una metrica di sistema (es. tasso di errore end-to-end) preoccupante.</li></ol>
+<ol><li>Riprendi i tre rischi dell'LLM-as-judge nella Sezione 3. Quale di questi rischi ritieni più difficile da mitigare completamente, anche applicando le strategie suggerite, e perché?</li></ol>
+<ol><li>Nell'esempio pratico della Sezione finale, oltre a non procedere con il deploy, quale altra azione concreta suggeriresti, collegandola al principio di versionamento dei prompt visto nella Lezione 6.4?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 5.5 (Gestione degli Errori) — il logging strutturato lì introdotto è la materia prima per le metriche di questa lezione. Lezione 7.3 (Il Layer di Review) — le rubriche di valutazione si estendono qui a un sistema di misurazione completo.</p>
+<p><strong>Porta a:</strong> Capitolo 8 (Sistemi Auto-Evolutivi) — la capacità di misurare oggettivamente le prestazioni, costruita in questa lezione, è il prerequisito indispensabile per qualsiasi sistema che pretenda di migliorarsi automaticamente nel tempo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.2 (Prompt Auto-Evolutivi) — il regression testing qui descritto è esattamente il meccanismo che permette di verificare se un prompt modificato automaticamente ha effettivamente migliorato le prestazioni. Lezione 8.4 (Governance) — le metriche e gli alert qui introdotti diventeranno parte del sistema di governance completo degli artefatti agentivi.</p>
+<hr>
+<p><strong>CHIUSURA DEL CAPITOLO 7.</strong> Con questa lezione si conclude l'intero ciclo di costruzione di un workflow multi-agente professionale: progettazione (7.1), implementazione tecnica con LangGraph (7.2), qualità tramite review automatico (7.3), supervisione umana strutturata (7.4), e infine la disciplina di valutazione che chiude il ciclo (7.5). Il Capitolo 8, l'ultimo del corso, affronta la frontiera più avanzata: sistemi che non si limitano a funzionare bene, ma che usano esattamente queste metriche e questa capacità di misurazione per migliorarsi autonomamente nel tempo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="07-04-supervisione-umana-human-in-the-loop-come-componente-architetturale.html">← 07-04 Human-in-the-Loop</a>
+        <a class="primary-action" href="08-01-self-reflection-e-self-critique-l-agente-che-valuta-se-stesso.html">08-01 Self-Reflection e Self-Critique →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

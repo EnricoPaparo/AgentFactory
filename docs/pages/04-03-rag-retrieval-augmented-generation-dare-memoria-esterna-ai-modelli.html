@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RAG — Retrieval-Augmented Generation: dare memoria esterna ai modelli | AgentFactory</title>
+  <meta name="description" content="Come risolvere il knowledge cutoff e ridurre le allucinazioni, in pratica">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-03</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 04-03</p>
+        <h1>RAG — Retrieval-Augmented Generation: dare memoria esterna ai modelli</h1>
+        <p class="lesson-subtitle">Come risolvere il knowledge cutoff e ridurre le allucinazioni, in pratica</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>RAG</span><span>vector database</span><span>embedding</span><span>indicizzazione</span><span>retrieval</span><span>chunking</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il problema che RAG risolve, collegandolo ai limiti del Capitolo 3</li><li>Descrivere il flusso completo recupera-poi-genera</li><li>Spiegare cosa è un vector database e come si interroga per similarità</li><li>Riconoscere i limiti di RAG e quando non è la soluzione giusta</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella Lezione 3.5 abbiamo elencato con onestà i limiti strutturali di un LLM: il knowledge cutoff (non può sapere nulla di ciò che è accaduto dopo il proprio addestramento) e una tendenza strutturale alle allucinazioni su fatti specifici e poco rappresentati nei dati. Questa lezione introduce la tecnica più diffusa e più importante per <strong>compensare</strong> entrambi questi limiti: il <strong>RAG</strong>, Retrieval-Augmented Generation (generazione aumentata dal recupero di informazioni).</p>
+<p>L'idea centrale di RAG, una volta capita, sembrerà quasi ovvia — e questo è un buon segno: le soluzioni migliori spesso lo sono, una volta che il problema è stato compreso a fondo. Ma costruirla correttamente richiede di mettere insieme con precisione concetti che abbiamo già incontrato separatamente: gli embedding (Lezione 2.4), il pattern &quot;interroga un database, poi rispondi&quot; dei siti dinamici (Lezione 1.3), e la chiamata API a un modello (Lezione 4.1). RAG è, in un certo senso, il primo vero &quot;sistema&quot; che costruiamo in questo corso, combinando più componenti che lavorano insieme.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare il problema che RAG risolve, collegandolo esplicitamente ai limiti discussi nella Lezione 3.5</li><li>Descrivere il flusso completo &quot;recupera, poi genera&quot; che caratterizza ogni sistema RAG</li><li>Spiegare cosa è un vector database e come si interroga per similarità semantica</li><li>Riconoscere i limiti di RAG e le situazioni in cui non è la soluzione appropriata</li></ul>
+<hr>
+<h3 id="1-il-problema-il-modello-non-conosce-i-tuoi-dati">1. Il problema: il modello non conosce i tuoi dati</h3>
+<p>Immagina di voler costruire un assistente AI per il servizio clienti di un'azienda, capace di rispondere a domande sulle specifiche tecniche di prodotti che l'azienda vende. Un modello linguistico generico come Claude, per quanto capace, <strong>non ha mai visto</strong> il catalogo prodotti di questa specifica azienda durante il proprio addestramento (Lezione 3.2) — semplicemente perché quei documenti non facevano parte dei dati di pre-training, magari perché sono stati creati dopo, o perché sono informazioni private e interne.</p>
+<p>Questo è precisamente il limite del <strong>knowledge cutoff</strong> descritto nella Lezione 3.5, generalizzato: non si tratta solo di eventi recenti nel mondo, ma di <strong>qualsiasi informazione specifica</strong> che non era presente nei dati di addestramento del modello — documenti aziendali, basi di conoscenza interne, manuali tecnici, normative aggiornate di recente.</p>
+<p>Una prima idea, ingenua, potrebbe essere: &quot;perché non includiamo tutto il catalogo prodotti direttamente nel prompt, a ogni richiesta?&quot; Il problema è duplice: primo, il context window (Lezione 3.3) ha un limite massimo di token, e un intero catalogo aziendale potrebbe facilmente superarlo; secondo, anche se il documento entrasse, inviarlo per intero a ogni singola domanda sarebbe enormemente costoso e inefficiente, sia in termini di token elaborati (Lezione 4.1) sia in termini di tempo.</p>
+<p>RAG risolve questo problema con un'idea elegante: <strong>invece di inviare tutto, invia solo le porzioni di informazione effettivamente rilevanti per la domanda specifica posta in quel momento</strong>.</p>
+<hr>
+<h3 id="2-il-flusso-rag-recupera-poi-genera">2. Il flusso RAG: recupera, poi genera</h3>
+<p>Il principio di RAG si articola in due fasi distinte, eseguite in sequenza per ogni domanda dell'utente:</p>
+<pre><code>FASE 1: RETRIEVAL (recupero)
+
+  Domanda dell'utente
+         │
+         ▼
+  Cerca, in una base di documenti, quali porzioni
+  di testo sono più RILEVANTI per questa domanda
+         │
+         ▼
+  Risultato: un piccolo insieme di estratti di testo
+  (es. 3-5 paragrafi) effettivamente pertinenti
+
+
+FASE 2: AUGMENTED GENERATION (generazione aumentata)
+
+  Costruisci un prompt che include:
+  - Gli estratti rilevanti recuperati nella Fase 1
+  - La domanda originale dell'utente
+  - Istruzioni su come usare questi estratti
+         │
+         ▼
+  Invia questo prompt arricchito al modello
+  (esattamente come visto nella Lezione 4.1)
+         │
+         ▼
+  Il modello genera una risposta basata sugli
+  estratti forniti, non sulla sola conoscenza
+  interna acquisita durante l'addestramento</code></pre>
+<pre><code># Schema concettuale semplificato
+
+domanda_utente = &quot;Qual è la garanzia del prodotto X?&quot;
+
+# FASE 1: Retrieval
+estratti_rilevanti = cerca_documenti_simili(domanda_utente, base_documenti)
+# → restituisce, ad esempio, il paragrafo specifico del manuale
+#   che parla della garanzia del prodotto X
+
+# FASE 2: Augmented Generation
+prompt = f&quot;&quot;&quot;
+Rispondi alla domanda dell'utente usando ESCLUSIVAMENTE
+le informazioni fornite di seguito. Se le informazioni
+non sono sufficienti, dillo esplicitamente.
+
+Informazioni disponibili:
+{estratti_rilevanti}
+
+Domanda: {domanda_utente}
+&quot;&quot;&quot;
+
+risposta = chiedi_a_claude(prompt)  # funzione vista nella Lezione 4.1</code></pre>
+<p>Nota l'istruzione esplicita &quot;rispondi usando esclusivamente le informazioni fornite&quot;: questa è un'applicazione diretta delle tecniche di prompting viste nella Lezione 3.4, ed è precisamente ciò che riduce drasticamente il rischio di allucinazione — il modello non deve &quot;indovinare&quot; basandosi su pattern statistici generali, ma può ancorare la propria risposta a un testo specifico e verificabile fornito nel contesto.</p>
+<hr>
+<h3 id="3-il-cuore-tecnico-come-si-cerca-per-rilevanza">3. Il cuore tecnico: come si &quot;cerca per rilevanza&quot;</h3>
+<p>La domanda cruciale è: come si determina, tecnicamente, quali porzioni di documento sono &quot;rilevanti&quot; per una domanda? La risposta riprende direttamente un concetto che abbiamo già costruito con cura nella Lezione 2.4: gli <strong>embedding</strong> e la <strong>similarità semantica</strong>.</p>
+<pre><code>1. PREPARAZIONE (eseguita una volta, in anticipo)
+
+   Tutti i documenti disponibili vengono divisi in
+   porzioni più piccole, chiamate CHUNK (tipicamente
+   qualche centinaio di parole ciascuno)
+
+   Ogni chunk viene trasformato in un EMBEDDING
+   (un vettore numerico, Lezione 2.4) tramite un
+   modello specializzato in embedding
+
+   Questi vettori vengono salvati in un VECTOR DATABASE
+   (database vettoriale) — un sistema specializzato
+   nell'archiviare e cercare efficientemente vettori
+   numerici ad alta dimensionalità
+
+
+2. RICERCA (eseguita per ogni domanda dell'utente)
+
+   La domanda dell'utente viene anch'essa trasformata
+   in un embedding, con lo stesso modello usato per
+   i chunk
+
+   Il vector database confronta questo embedding con
+   tutti quelli salvati, e restituisce i chunk il cui
+   embedding è GEOMETRICAMENTE PIÙ VICINO (Lezione 2.4)
+   a quello della domanda</code></pre>
+<blockquote><strong>Perché questo funziona anche quando le parole non coincidono:</strong> ricorda l'esempio della Lezione 2.4 sulla similarità semantica. Se un utente chiede &quot;Quanto dura la copertura in caso di danni?&quot;, e il documento aziendale parla di &quot;garanzia di 24 mesi&quot;, un sistema di ricerca basato su corrispondenza esatta delle parole non troverebbe nessuna connessione testuale diretta. Ma a livello di embedding, &quot;copertura in caso di danni&quot; e &quot;garanzia&quot; occupano regioni vicine nello spazio semantico (Lezione 2.4) — il vector database può quindi recuperare correttamente il chunk pertinente, anche senza alcuna sovrapposizione testuale letterale.</blockquote>
+<h4 id="vector-database-piu-diffusi">Vector database più diffusi</h4>
+<p>Alcuni dei sistemi più usati per implementare questa funzionalità includono Pinecone (un servizio gestito nel cloud), Chroma (spesso usato per progetti più piccoli o prototipi, eseguibile anche localmente), e Weaviate. Tutti condividono lo stesso principio di fondo appena descritto: archiviare embedding e permettere ricerche efficienti per similarità geometrica, anche su milioni di documenti.</p>
+<hr>
+<h3 id="4-il-chunking-una-decisione-progettuale-non-banale">4. Il chunking: una decisione progettuale non banale</h3>
+<p>Un dettaglio spesso sottovalutato, ma con un impatto pratico enorme sulla qualità di un sistema RAG, è <strong>come</strong> dividere i documenti in chunk. Chunk troppo piccoli rischiano di perdere il contesto necessario per essere utili da soli; chunk troppo grandi rischiano di diluire la rilevanza specifica (un chunk di 2.000 parole che contiene solo una frase pertinente alla domanda è meno efficace di un chunk di 200 parole interamente pertinente) e di consumare inutilmente spazio nel context window una volta recuperato.</p>
+<pre><code>CHUNK TROPPO PICCOLO:                CHUNK TROPPO GRANDE:
+&quot;La garanzia è di 24 mesi.&quot;          [intero capitolo di 50
+→ manca il contesto: garanzia         pagine sulle politiche
+  di COSA, esattamente?               aziendali, di cui solo
+                                       una frase è realmente
+                                       pertinente]
+
+CHUNK BEN DIMENSIONATO:
+&quot;Politiche di garanzia — Prodotto X:
+La garanzia è di 24 mesi dalla data
+di acquisto, e copre difetti di
+fabbricazione. Non copre danni
+accidentali causati dall'utente.&quot;
+→ contesto sufficiente, dimensione
+  contenuta, informazione coerente
+  e autosufficiente</code></pre>
+<p>Non esiste una dimensione di chunk &quot;corretta&quot; in assoluto: la scelta dipende dalla natura dei documenti, dal tipo di domande previste, e richiede tipicamente sperimentazione e affinamento — un tema che ritroveremo, generalizzato, quando parleremo di valutazione dei sistemi nella Lezione 7.5.</p>
+<hr>
+<h3 id="5-limiti-di-rag-quando-non-basta">5. Limiti di RAG: quando non basta</h3>
+<p>È importante, seguendo lo spirito di onestà tecnica di questo corso, riconoscere chiaramente cosa RAG <strong>non</strong> risolve:</p>
+<ul><li><strong>Non risolve la mancanza di azione</strong> (Lezione 3.5): RAG permette al modello di leggere informazioni esterne, ma non di eseguire azioni nel mondo (inviare email, eseguire calcoli, modificare dati) — questo richiede il Function Calling, che vedremo nella prossima lezione</li><li><strong>Non garantisce recupero perfetto</strong>: se la ricerca per similarità non trova il chunk realmente più pertinente (ad esempio, per ambiguità nella formulazione della domanda, o per una base documentale mal organizzata), il modello genererà una risposta basata su informazioni incomplete o leggermente fuori contesto</li><li><strong>Non risolve domande che richiedono di combinare informazioni sparse in molti documenti diversi</strong> in modi complessi: RAG di base recupera un numero limitato di chunk rilevanti, ma un ragionamento che richiede di sintetizzare centinaia di fonti diverse necessita di architetture più sofisticate, spesso basate su più cicli di recupero e ragionamento (un tema che toccheremo parlando di agenti, dal Capitolo 5 in avanti)</li><li><strong>La qualità dipende criticamente dalla qualità dei documenti sorgente</strong>: se la base documentale è disorganizzata, contraddittoria, o obsoleta, RAG recupererà fedelmente — e quindi propagherà — quegli stessi problemi</li></ul>
+<hr>
+<h3 id="esempio-pratico-tracciare-una-domanda-attraverso-il-sistema-rag">Esempio Pratico: Tracciare una Domanda Attraverso il Sistema RAG</h3>
+<p>Seguiamo una domanda specifica attraverso l'intero flusso, per consolidare la comprensione:</p>
+<pre><code>DOMANDA UTENTE: &quot;Posso restituire un prodotto dopo 30 giorni?&quot;
+
+1. La domanda viene trasformata in un embedding
+
+2. Il vector database, contenente gli embedding di tutti
+   i chunk del manuale aziendale, restituisce i 3 chunk
+   più simili semanticamente, ad esempio:
+   - Chunk A: &quot;Politica di restituzione: i prodotti possono
+     essere restituiti entro 14 giorni dall'acquisto...&quot;
+   - Chunk B: &quot;Per richiedere un rimborso, contattare il
+     servizio assistenza all'indirizzo...&quot;
+   - Chunk C: &quot;I prodotti danneggiati durante la spedizione
+     vengono sostituiti gratuitamente...&quot;
+
+3. Questi 3 chunk vengono inseriti nel prompt, insieme
+   alla domanda originale e all'istruzione di rispondere
+   solo in base a queste informazioni
+
+4. Il modello genera una risposta tipo: &quot;Secondo la
+   politica aziendale, i prodotti possono essere restituiti
+   entro 14 giorni dall'acquisto. Non avendo trovato
+   informazioni su un periodo di 30 giorni, non posso
+   confermare questa possibilità — ti consiglio di
+   contattare il servizio assistenza per casi specifici.&quot;</code></pre>
+<p>Nota come la risposta finale sia <strong>ancorata esplicitamente</strong> ai chunk recuperati (cita &quot;14 giorni&quot;, l'informazione effettivamente trovata) e <strong>dichiari onestamente l'incertezza</strong> quando l'informazione richiesta (30 giorni) non corrisponde a quanto recuperato — un comportamento che, ricordando la Lezione 3.2, è precisamente il tipo di onestà sui propri limiti che RLHF tende a rinforzare, qui ulteriormente guidato dall'istruzione esplicita nel prompt.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li><strong>RAG</strong> risolve il problema del knowledge cutoff e riduce le allucinazioni fornendo al modello, tramite il contesto del prompt, informazioni specifiche recuperate da una base documentale esterna.</li><li>Il flusso si articola in due fasi: <strong>retrieval</strong> (recupero dei chunk più rilevanti per la domanda) e <strong>augmented generation</strong> (il modello genera la risposta basandosi su quei chunk).</li><li>La ricerca per rilevanza si basa sulla <strong>similarità semantica tra embedding</strong> (Lezione 2.4): la domanda e i documenti vengono trasformati in vettori, e si recuperano i chunk geometricamente più vicini, anche senza sovrapposizione testuale letterale.</li><li>Il <strong>chunking</strong> (come dividere i documenti) è una decisione progettuale che impatta significativamente la qualità del sistema, e richiede sperimentazione.</li><li>RAG non risolve la mancanza di azione, non garantisce un recupero perfetto, e la sua qualità dipende criticamente dalla qualità della base documentale sorgente.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché &quot;includere tutto il documento nel prompt a ogni domanda&quot; non è una soluzione praticabile per basi documentali grandi, collegando la risposta al concetto di context window visto nella Lezione 3.3.</li></ol>
+<ol><li>Un utente chiede &quot;Quanto costa la spedizione internazionale?&quot; e il sistema RAG recupera un chunk che parla di &quot;tariffe doganali per l'estero&quot; senza menzionare esplicitamente la parola &quot;spedizione&quot;. Spiega, usando i concetti della Lezione 2.4, perché questo recupero potrebbe comunque essere corretto e utile.</li></ol>
+<ol><li>Immagina un sistema RAG che recupera chunk da documenti aziendali vecchi di 5 anni, mai aggiornati, contenenti politiche nel frattempo cambiate. Che tipo di problema si manifesterebbe, e di chi sarebbe la &quot;responsabilità&quot; — del modello, del meccanismo RAG, o della gestione della base documentale?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 2.4 (NLP e il problema del linguaggio) — la similarità semantica tra embedding, qui applicata alla ricerca di documenti invece che a singole parole. Lezione 3.5 (Limiti degli LLM) — RAG è la risposta tecnica diretta al problema del knowledge cutoff descritto lì.</p>
+<p><strong>Porta a:</strong> Lezione 4.4 (Function Calling) — vedremo come dare al modello non solo accesso a informazioni esterne (RAG), ma anche la capacità di eseguire azioni nel mondo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 4.6 (Memory) — i vector database visti qui per la ricerca documentale sono spesso usati anche per implementare memoria semantica a lungo termine negli agenti. Lezione 5.4 (Single vs Multi-Agent) — sistemi RAG più sofisticati, con più cicli di recupero e ragionamento, sono spesso implementati come componenti specializzati all'interno di architetture multi-agente.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="04-02-output-strutturati-e-output-parser-forzare-il-modello-a-rispondere-in-formato-preciso.html">← 04-02 Output Strutturati e Output Parser</a>
+        <a class="primary-action" href="04-04-tool-use-e-function-calling-dare-al-modello-la-capacita-di-agire.html">04-04 Tool Use e Function Calling →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

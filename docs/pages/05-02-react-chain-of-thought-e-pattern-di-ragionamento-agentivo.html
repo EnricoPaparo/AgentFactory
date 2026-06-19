@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReAct, Chain-of-Thought e Pattern di Ragionamento Agentivo | AgentFactory</title>
+  <meta name="description" content="Rendere visibile e affidabile la fase più critica del loop: il ragionamento">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-05-agenti-architettura">Agenti AI: Architettura e Ragionamento</a><span>/</span><strong>05-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 05-02</p>
+        <h1>ReAct, Chain-of-Thought e Pattern di Ragionamento Agentivo</h1>
+        <p class="lesson-subtitle">Rendere visibile e affidabile la fase più critica del loop: il ragionamento</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>05 · Agenti AI: Architettura e Ragionamento</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>ReAct</span><span>reasoning</span><span>acting</span><span>chain-of-thought</span><span>tree of thoughts</span><span>traccia di ragionamento</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il pattern ReAct e come estende il chain-of-thought visto nel Capitolo 3</li><li>Implementare un agente che esplicita il proprio ragionamento prima di ogni azione</li><li>Descrivere il Tree of Thoughts e quando aggiunge valore rispetto a ReAct</li><li>Riconoscere i fallimenti tipici di questi pattern: loop e ragionamento circolare</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo costruito un loop agentivo funzionante: il modello riceve un obiettivo, decide se usare uno strumento, osserva il risultato, e ripete. Funziona — ma c'è un problema che il codice della Lezione 5.1 lascia silenziosamente irrisolto: <strong>non vediamo perché il modello ha deciso di fare ciò che ha fatto</strong>. Se l'agente sceglie uno strumento sbagliato, o si blocca in un comportamento ripetitivo, non abbiamo alcuna visibilità sul processo decisionale che ha portato a quella scelta.</p>
+<p>Questa lezione introduce <strong>ReAct</strong>, il pattern che risolve esattamente questo problema, rendendo il ragionamento del modello <strong>esplicito e osservabile</strong> prima di ogni azione. Non è una tecnica nuova dal nulla: è un'estensione naturale e diretta del chain-of-thought che abbiamo già visto nella Lezione 3.4, applicato specificamente al contesto del loop agentivo appena costruito.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare il pattern ReAct e come estende il chain-of-thought visto nel Capitolo 3</li><li>Implementare un agente che esplicita il proprio ragionamento prima di ogni azione</li><li>Descrivere il Tree of Thoughts e le circostanze in cui aggiunge valore rispetto a ReAct</li><li>Riconoscere i fallimenti tipici di questi pattern: loop e ragionamento circolare</li></ul>
+<hr>
+<h3 id="1-da-chain-of-thought-a-react-estendere-un-concetto-gia-noto">1. Da Chain-of-Thought a ReAct: estendere un concetto già noto</h3>
+<p>Ricorda dalla Lezione 3.4 il principio del chain-of-thought: istruire il modello a esplicitare il proprio ragionamento passo per passo prima di arrivare a una conclusione, perché ogni passaggio intermedio generato diventa contesto disponibile per il passaggio successivo (un principio radicato nella stessa natura autoregressiva del modello, vista nella Lezione 3.1).</p>
+<p><strong>ReAct</strong> (Reasoning + Acting, ragionamento + azione) applica esattamente questo stesso principio al loop agentivo: prima di ogni singola azione (l'uso di uno strumento), il modello viene istruito a esplicitare <strong>perché</strong> sta scegliendo quell'azione specifica.</p>
+<pre><code>SENZA ReAct (il loop &quot;muto&quot; della Lezione 5.1):
+
+  Obiettivo → [il modello decide silenziosamente] → Azione
+
+  Non vediamo IL PERCHÉ della scelta — solo il risultato
+
+
+CON ReAct:
+
+  Obiettivo
+     │
+     ▼
+  PENSIERO: &quot;Per rispondere a questa domanda, devo prima
+             sapere il prezzo attuale, quindi userò lo
+             strumento di ricerca prezzi&quot;
+     │
+     ▼
+  AZIONE: cerca_prezzo(prodotto=&quot;X&quot;)
+     │
+     ▼
+  OSSERVAZIONE: &quot;Il prezzo è 49,99€&quot;
+     │
+     ▼
+  PENSIERO: &quot;Ora ho il prezzo, ma l'utente vuole sapere
+             se conviene rispetto al mese scorso, quindi
+             devo anche cercare lo storico prezzi&quot;
+     │
+     ▼
+  AZIONE: cerca_storico_prezzi(prodotto=&quot;X&quot;)
+     │
+     ▼
+  ... (continua finché il PENSIERO conclude che
+       si hanno informazioni sufficienti)</code></pre>
+<p>Il nome del pattern descrive esattamente questa alternanza: <strong>Reasoning</strong> (il PENSIERO esplicito) e <strong>Acting</strong> (l'AZIONE concreta), in un ciclo ripetuto.</p>
+<hr>
+<h3 id="2-perche-rendere-il-ragionamento-esplicito-migliora-il-comportamento-dell-agente">2. Perché rendere il ragionamento esplicito migliora il comportamento dell'agente</h3>
+<p>Ci sono almeno due ragioni, una tecnica e una pratica, per cui ReAct produce agenti più affidabili rispetto al loop &quot;muto&quot; della Lezione 5.1.</p>
+<h4 id="ragione-tecnica-il-ragionamento-esplicito-migliora-la-decisione-stessa">Ragione tecnica: il ragionamento esplicito migliora la decisione stessa</h4>
+<p>Esattamente come nella Lezione 3.4 (il problema del treno risolto meglio con chain-of-thought esplicito), costringere il modello a <strong>scrivere</strong> il proprio ragionamento prima di scegliere un'azione tende a produrre scelte più accurate. Senza questo passaggio esplicito, il modello potrebbe &quot;saltare&quot; direttamente a un'azione plausibile ma non ottimale; con il ragionamento esplicito, possibili errori di valutazione hanno più probabilità di essere corretti dal modello stesso, nel processo di &quot;scriverli ad alta voce&quot;.</p>
+<h4 id="ragione-pratica-l-osservabilita-per-chi-costruisce-il-sistema">Ragione pratica: l'osservabilità per chi costruisce il sistema</h4>
+<p>Dal punto di vista di chi sviluppa e mantiene un agente, avere accesso al PENSIERO esplicito a ogni passo è un vantaggio enorme per il debug e la comprensione del comportamento del sistema. Se un agente sceglie un'azione inaspettata, la traccia ReAct permette di leggere esattamente il ragionamento che ha portato a quella scelta — invece di dover indovinare le motivazioni di una &quot;scatola nera&quot;.</p>
+<blockquote><strong>Perché questo anticipa la Lezione 5.5:</strong> questa stessa traccia di ragionamento, salvata e ispezionabile, è precisamente la base su cui si costruiscono i sistemi di <strong>logging e tracing</strong> che vedremo parlando di osservabilità degli agenti.</blockquote>
+<hr>
+<h3 id="3-implementazione-pratica-react-nel-loop-agentivo">3. Implementazione pratica: ReAct nel loop agentivo</h3>
+<p>Estendiamo il codice della Lezione 5.1, aggiungendo l'istruzione che richiede al modello di esplicitare il proprio ragionamento. La modifica principale riguarda il <strong>system prompt</strong> (Lezione 3.3 e 3.4) fornito all'agente:</p>
+<pre><code>SYSTEM_PROMPT_REACT = &quot;&quot;&quot;
+Sei un agente che risolve compiti usando gli strumenti disponibili.
+
+Per OGNI azione che decidi di compiere, segui questo schema:
+
+1. PENSIERO: spiega esplicitamente perché stai per compiere
+   questa azione, cosa ti aspetti di ottenere, e come si
+   collega all'obiettivo finale.
+
+2. Poi richiedi l'azione (lo strumento) appropriata.
+
+Quando hai raccolto informazioni sufficienti per rispondere
+completamente, fornisci la risposta finale, precedendola
+sempre con un PENSIERO che riassume perché ritieni di avere
+ora tutte le informazioni necessarie.
+&quot;&quot;&quot;
+
+def esegui_agente_react(obiettivo: str, max_iterazioni: int = 5) -&gt; str:
+    client = anthropic.Anthropic()
+
+    messaggi = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: obiettivo}]
+
+    for iterazione in range(max_iterazioni):
+        risposta = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;,
+            max_tokens=1024,
+            system=SYSTEM_PROMPT_REACT,
+            tools=DEFINIZIONI_STRUMENTI,  # definiti nella Lezione 5.1
+            messages=messaggi
+        )
+
+        # OSSERVABILITÀ: stampiamo il pensiero esplicito del modello,
+        # estraendolo dai blocchi di testo prima della richiesta di
+        # strumento (la struttura esatta dipende dal provider/SDK)
+        for blocco in risposta.content:
+            if blocco.type == &quot;text&quot;:
+                print(f&quot;[PENSIERO - iterazione {iterazione}]: {blocco.text}&quot;)
+
+        messaggi.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: risposta.content})
+
+        if risposta.stop_reason != &quot;tool_use&quot;:
+            return risposta.content[0].text
+
+        risultati_strumenti = []
+        for blocco in risposta.content:
+            if blocco.type == &quot;tool_use&quot;:
+                funzione = STRUMENTI_DISPONIBILI[blocco.name]
+                risultato = funzione(**blocco.input)
+                risultati_strumenti.append({
+                    &quot;type&quot;: &quot;tool_result&quot;,
+                    &quot;tool_use_id&quot;: blocco.id,
+                    &quot;content&quot;: json.dumps(risultato)
+                })
+
+        messaggi.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: risultati_strumenti})
+
+    return &quot;Limite di iterazioni raggiunto senza una risposta finale.&quot;</code></pre>
+<p>La differenza strutturale rispetto al codice della Lezione 5.1 è minima — un system prompt più dettagliato, e una riga aggiuntiva per esporre il pensiero — ma l'impatto sulla qualità e sulla trasparenza del comportamento dell'agente è significativo. Questo è un esempio concreto di come, nei sistemi agentivi, <strong>la qualità del prompt engineering (Lezione 3.4) pesi quanto, se non più, della struttura del codice</strong>.</p>
+<hr>
+<h3 id="4-tree-of-thoughts-esplorare-piu-rami-in-parallelo">4. Tree of Thoughts: esplorare più rami in parallelo</h3>
+<p>ReAct, come descritto, segue un <strong>singolo filo di ragionamento</strong>: pensiero, azione, osservazione, pensiero successivo, e così via, in sequenza lineare. Per compiti particolarmente complessi o ambigui, dove esistono <strong>più strategie plausibili</strong> per raggiungere l'obiettivo, può essere utile che il modello esplori <strong>più rami di ragionamento in parallelo</strong>, confrontandoli prima di procedere — un pattern chiamato <strong>Tree of Thoughts</strong> (albero dei pensieri).</p>
+<pre><code>                    Obiettivo
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+     RAMO A          RAMO B        RAMO C
+   (strategia 1)   (strategia 2)  (strategia 3)
+          │             │             │
+          ▼             ▼             ▼
+   [valutazione]  [valutazione]  [valutazione]
+          │             │             │
+          └─────────────┼─────────────┘
+                        ▼
+            Si prosegue con il ramo
+            valutato più promettente
+            (o si combinano elementi
+             di più rami)</code></pre>
+<p>Questo pattern ha un costo computazionale superiore a ReAct (esplorare più rami significa, tipicamente, più chiamate API, Lezione 4.1), e per questo si usa selettivamente: tipicamente per compiti di pianificazione complessa, problemi con più soluzioni valide da confrontare, o situazioni in cui un errore di strategia iniziale sarebbe costoso da correggere in seguito. Per la maggior parte dei compiti agentivi comuni, il ReAct lineare resta il pattern predefinito, più semplice ed economico.</p>
+<hr>
+<h3 id="5-limiti-di-questi-pattern-loop-e-ragionamento-circolare">5. Limiti di questi pattern: loop e ragionamento circolare</h3>
+<p>È importante, come sempre in questo corso, riconoscere onestamente i limiti di queste tecniche, non solo i loro vantaggi.</p>
+<h4 id="il-problema-del-loop">Il problema del loop</h4>
+<p>Un agente ReAct può, in alcune circostanze, entrare in un ciclo in cui il PENSIERO conclude ripetutamente &quot;devo fare X&quot; per la stessa azione X già tentata, senza fare progressi reali verso l'obiettivo — ad esempio, se uno strumento restituisce costantemente un errore che il modello non riesce a diagnosticare correttamente.</p>
+<pre><code>ITERAZIONE 3: PENSIERO: &quot;Lo strumento ha restituito un errore,
+              riprovo con parametri leggermente diversi&quot;
+ITERAZIONE 4: PENSIERO: &quot;Ancora errore, riprovo di nuovo&quot;
+ITERAZIONE 5: PENSIERO: &quot;Ancora errore, riprovo di nuovo&quot;
+... (potenzialmente fino a max_iterazioni, senza progresso)</code></pre>
+<p>Il parametro <code>max_iterazioni</code>, introdotto nella Lezione 5.1 come precauzione semplice, è precisamente la prima linea di difesa contro questo scenario — ma vedremo, nella Lezione 5.5, strategie più sofisticate per riconoscere e interrompere questi loop in modo più intelligente, prima di raggiungere il limite massimo.</p>
+<h4 id="il-problema-del-ragionamento-circolare">Il problema del ragionamento circolare</h4>
+<p>Un rischio più sottile: il modello può produrre un PENSIERO che <strong>sembra</strong> una valida giustificazione logica, ma che in realtà non fa avanzare la comprensione del problema — una forma di razionalizzazione plausibile a posteriori, piuttosto che un ragionamento che guida effettivamente la decisione. Questo è collegato direttamente al limite delle allucinazioni visto nella Lezione 3.5: il modello genera testo statisticamente plausibile nel ruolo di &quot;pensiero&quot;, che non garantisce automaticamente di essere un ragionamento corretto o utile.</p>
+<blockquote><strong>Implicazione pratica:</strong> la presenza di un PENSIERO esplicito migliora l'osservabilità e spesso la qualità delle decisioni, ma non è una garanzia assoluta di correttezza. Un agente ReAct va comunque sottoposto a verifica e supervisione — temi che affronteremo nelle Lezioni 5.5, 7.3 e 7.4.</blockquote>
+<hr>
+<h3 id="esempio-pratico-confrontare-un-loop-muto-con-react-sullo-stesso-compito">Esempio Pratico: Confrontare un Loop &quot;Muto&quot; con ReAct sullo Stesso Compito</h3>
+<p>Riprendiamo l'esempio della Lezione 5.1 — &quot;Quanto fa 47 al quadrato, e poi cerca informazioni sul numero risultante&quot; — e osserviamo la differenza di osservabilità tra le due implementazioni:</p>
+<pre><code>LOOP &quot;MUTO&quot; (Lezione 5.1):
+  [nessuna visibilità sul perché]
+  → richiesta strumento: calcola(&quot;47**2&quot;)
+  → richiesta strumento: cerca_sul_web(&quot;2209&quot;)
+  → risposta finale
+
+LOOP ReAct (questa lezione):
+  PENSIERO: &quot;Devo prima calcolare 47 al quadrato per
+             sapere quale numero cercare successivamente&quot;
+  → richiesta strumento: calcola(&quot;47**2&quot;)
+  OSSERVAZIONE: risultato = 2209
+  PENSIERO: &quot;Ora che conosco il risultato (2209), posso
+             cercare se questo numero ha qualche
+             significato particolare&quot;
+  → richiesta strumento: cerca_sul_web(&quot;2209&quot;)
+  OSSERVAZIONE: risultati della ricerca
+  PENSIERO: &quot;Ho sia il calcolo sia le informazioni di
+             contesto, posso ora fornire una risposta completa&quot;
+  → risposta finale</code></pre>
+<p>Il risultato finale potrebbe essere identico in entrambi i casi — ma solo nella versione ReAct un essere umano che revisiona il comportamento dell'agente può capire, leggendo la traccia, esattamente perché ogni passo è stato compiuto, e individuare rapidamente dove un eventuale errore di ragionamento si sia verificato.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li><strong>ReAct</strong> estende il chain-of-thought della Lezione 3.4 al contesto del loop agentivo: il modello esplicita un <strong>PENSIERO</strong> prima di ogni <strong>AZIONE</strong>, alternando ragionamento e azione in modo osservabile.</li><li>Rendere il ragionamento esplicito migliora sia la qualità delle decisioni (lo stesso principio tecnico del chain-of-thought) sia l'osservabilità del sistema per chi lo sviluppa e lo mantiene.</li><li>L'implementazione pratica richiede principalmente un system prompt che istruisce il modello a seguire questo schema, con un costo aggiuntivo minimo rispetto al loop &quot;muto&quot; della Lezione 5.1.</li><li><strong>Tree of Thoughts</strong> estende ReAct esplorando più rami di ragionamento in parallelo, utile per compiti complessi con più strategie plausibili, a un costo computazionale superiore.</li><li>I limiti di questi pattern includono il rischio di <strong>loop</strong> (azioni ripetute senza progresso) e di <strong>ragionamento circolare</strong> (un PENSIERO plausibile ma non realmente corretto), entrambi da gestire con supervisione e meccanismi di sicurezza aggiuntivi.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega, collegandolo esplicitamente al meccanismo autoregressivo visto nella Lezione 3.1, perché scrivere un PENSIERO esplicito prima di un'azione può effettivamente migliorare la qualità della decisione, non solo la sua osservabilità.</li></ol>
+<ol><li>In quale tipo di compito agentivo ritieni che il costo aggiuntivo di Tree of Thoughts (più rami, più chiamate API) sarebbe giustificato, rispetto al ReAct lineare più semplice ed economico?</li></ol>
+<ol><li>Un agente ReAct produce, per tre iterazioni consecutive, il PENSIERO &quot;Riprovo lo strumento con parametri diversi&quot; per la stessa identica azione. Quali due tipi di problema, descritti in questa lezione, potrebbero spiegare questo comportamento?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 5.1 (Cos'è un Agente AI) — qui rendiamo esplicita e osservabile la fase &quot;ragiona&quot; del loop costruito in quella lezione. Lezione 3.4 (Il Prompting) — ReAct è l'estensione diretta del chain-of-thought al contesto agentivo.</p>
+<p><strong>Porta a:</strong> Lezione 5.3 (L'Orchestratore) — vedremo come un sistema può coordinare più agenti, ciascuno potenzialmente basato sul pattern ReAct, per compiti che richiedono specializzazione.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 5.5 (Gestione degli Errori) — il problema del loop, qui solo identificato, riceverà soluzioni tecniche più sofisticate. Lezione 7.3 (Il Layer di Review) — la traccia di ragionamento esplicito prodotta da ReAct è precisamente il materiale che un agente critico (reviewer) può ispezionare per valutare la qualità del processo decisionale, non solo del risultato finale.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="05-01-cos-e-un-agente-ai-definizione-componenti-e-loop-agentivo.html">← 05-01 Cos'è un Agente AI</a>
+        <a class="primary-action" href="05-03-l-orchestratore-il-direttore-d-orchestra-del-sistema-agentivo.html">05-03 L'Orchestratore →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Limiti, allucinazioni e confini degli LLM | AgentFactory</title>
+  <meta name="description" content="Chiudere il capitolo con onestà: cosa un LLM non può fare, e perché è importante saperlo">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-03-llm">I Modelli Linguistici di Grandi Dimensioni (LLM)</a><span>/</span><strong>03-05</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 03-05</p>
+        <h1>Limiti, allucinazioni e confini degli LLM</h1>
+        <p class="lesson-subtitle">Chiudere il capitolo con onestà: cosa un LLM non può fare, e perché è importante saperlo</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>03 · I Modelli Linguistici di Grandi Dimensioni (LLM)</strong></div><div><span>Durata</span><strong>50 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>allucinazione</span><span>knowledge cutoff</span><span>statelessness</span><span>bias</span><span>plausibilità statistica</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare perché le allucinazioni sono una conseguenza strutturale, non un bug occasionale</li><li>Descrivere l'implicazione pratica del knowledge cutoff</li><li>Spiegare perché il modello non ha stato né capacità di azione autonoma</li><li>Riconoscere l'origine del bias nei dati di addestramento e le sue implicazioni operative</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Chiudiamo il Capitolo 3 — e con esso la prima grande sezione concettuale del corso, dedicata a capire cosa sono davvero i modelli linguistici — con una lezione che ha un valore speciale. Conoscere i limiti di uno strumento è precisamente altrettanto professionale quanto conoscerne le capacità, forse anche di più: chi non conosce i limiti di uno strumento lo userà male, gli affiderà compiti sbagliati, e si stupirà nel modo peggiore quando lo strumento fallisce esattamente dove avrebbe dovuto aspettarselo.</p>
+<p>Questa lezione non è un elenco di difetti da accettare con rassegnazione. È, al contrario, la base concettuale più importante per tutto ciò che costruiremo a partire dal Capitolo 4: ogni strumento, ogni tecnica, ogni pattern architetturale che vedremo da qui in avanti — RAG, memoria, supervisione umana, review layer — esiste precisamente per <strong>compensare uno dei limiti che descriviamo in questa lezione</strong>. Capirli a fondo, ora, renderà ogni soluzione successiva immediatamente comprensibile nel suo &quot;perché&quot;, non solo nel suo &quot;come&quot;.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare perché le allucinazioni sono una conseguenza strutturale del funzionamento di un LLM, non un bug occasionale e risolvibile</li><li>Descrivere l'implicazione pratica del knowledge cutoff</li><li>Spiegare perché il modello, di per sé, non ha stato persistente né capacità di azione autonoma nel mondo</li><li>Riconoscere l'origine del bias nei dati di addestramento e le sue implicazioni operative</li></ul>
+<hr>
+<h3 id="1-le-allucinazioni-perche-avvengono-strutturalmente">1. Le allucinazioni: perché avvengono strutturalmente</h3>
+<p>Un'<strong>allucinazione</strong>, nel contesto degli LLM, è quando il modello genera informazioni false, inventate, o non verificabili, presentandole con la stessa fluidità e sicurezza apparente con cui presenterebbe informazioni corrette.</p>
+<p>Per capire <strong>perché</strong> questo avviene — non solo che avviene — dobbiamo tornare a un'idea centrale della Lezione 3.1: il modello prevede il <strong>token statisticamente più plausibile</strong>, non il token <strong>vero</strong>. Questi due obiettivi, plausibilità e verità, normalmente coincidono — perché i dati di addestramento contengono prevalentemente informazioni corrette — ma non sono <strong>la stessa cosa</strong>, e in alcune circostanze divergono in modo prevedibile.</p>
+<pre><code>DOMANDA: &quot;Chi ha scritto il romanzo 'Le Ombre di Settembre'
+           pubblicato nel 1987?&quot;
+
+(Supponiamo che questo libro non esista realmente)
+
+Cosa succede internamente, in modo semplificato:
+Il modello ha visto, durante l'addestramento, migliaia
+di frasi nella forma &quot;Il romanzo [TITOLO] è stato scritto
+da [AUTORE] nel [ANNO]&quot; — uno schema linguistico molto
+comune e plausibile
+
+Anche se non esiste un libro con questo titolo specifico,
+il modello può generare una continuazione che SEGUE
+PERFETTAMENTE quello schema linguistico plausibile:
+&quot;Le Ombre di Settembre è stato scritto da Marco Belluzzi
+nel 1987&quot; — un nome, una data, tutto grammaticalmente
+e stilisticamente perfetto, e completamente INVENTATO</code></pre>
+<p>Il punto cruciale: il modello non sta &quot;mentendo&quot; nel senso di avere un'intenzione di ingannare (non ha intenzioni, come visto fin dalla Lezione 2.1). Sta facendo esattamente ciò per cui è stato addestrato — produrre continuazioni statisticamente plausibili — applicato a una domanda che presuppone l'esistenza di qualcosa che non esiste. Non avendo un meccanismo nativo per &quot;controllare se questo fatto è vero&quot; (un meccanismo che, come vedremo nel Capitolo 4, deve essere costruito esternamente, ad esempio tramite RAG), il modello procede con la previsione più plausibile, che in questo caso è falsa.</p>
+<h4 id="quando-le-allucinazioni-sono-piu-probabili">Quando le allucinazioni sono più probabili</h4>
+<p>Le allucinazioni tendono a presentarsi con maggiore frequenza in alcune circostanze specifiche e riconoscibili:</p>
+<ul><li><strong>Domande su fatti molto specifici e poco rappresentati</strong> nei dati di addestramento (dettagli minori, eventi recenti, informazioni di nicchia)</li><li><strong>Richieste di citazioni precise</strong> (numeri di pagina, date esatte, virgolette letterali) — il modello può generare una citazione &quot;nello stile&quot; di una citazione reale senza che corrisponda a un testo effettivamente esistente</li><li><strong>Domande che presuppongono fatti falsi</strong> (come nell'esempio del libro inesistente), dove il modello tende a &quot;completare lo schema&quot; invece di riconoscere la falsa premessa</li><li><strong>Calcoli matematici complessi</strong> eseguiti senza chain-of-thought (Lezione 3.4), dove il modello può generare un risultato plausibile ma numericamente errato</li></ul>
+<hr>
+<h3 id="2-il-knowledge-cutoff-il-modello-non-sa-cosa-e-successo-dopo-il-suo-addestramento">2. Il Knowledge Cutoff: il modello non sa cosa è successo dopo il suo addestramento</h3>
+<p>Ricorda dalla Lezione 3.2 che il pre-training avviene su una quantità enorme di testo raccolto <strong>fino a un certo momento nel tempo</strong>. Tutto ciò che è accaduto dopo quel momento — il <strong>knowledge cutoff</strong> — semplicemente non fa parte dei dati che il modello ha visto, e quindi non può &quot;sapere&quot; nulla a riguardo, in alcun modo diretto.</p>
+<pre><code>ADDESTRAMENTO                    DOPO IL CUTOFF
+
+[Tutto il testo raccolto         [Eventi, notizie, scoperte
+ fino alla data X]                successive alla data X]
+        │                                  │
+        ▼                                  ▼
+  Il modello &quot;conosce&quot;            Il modello NON può sapere
+  (in senso statistico)           nulla di questo, a meno
+  tutto questo                    che non gli venga fornito
+                                   esplicitamente come contesto
+                                   nel prompt (anticipando
+                                   il principio del RAG,
+                                   Lezione 4.3)</code></pre>
+<p>Questo limite ha un'implicazione pratica spesso sottovalutata: se chiedi a un modello informazioni su eventi molto recenti rispetto al suo addestramento, due cose possono accadere, ed è importante distinguerle: il modello può onestamente dichiarare di non avere informazioni recenti (un comportamento spesso rinforzato proprio da RLHF, Lezione 3.2, che premia l'onestà sui propri limiti), oppure — nei casi peggiori — può generare un'allucinazione, &quot;indovinando&quot; plausibilmente cosa potrebbe essere successo, basandosi su pattern e tendenze osservate nei dati precedenti al cutoff.</p>
+<blockquote><strong>Perché questo conta enormemente per i sistemi che costruiremo:</strong> ogni volta che un prodotto AI (incluso Claude.ai) usa uno strumento di ricerca web per rispondere a domande su eventi recenti, sta esattamente compensando questo limite strutturale, fornendo al modello, tramite il contesto del prompt, informazioni che il modello da solo non potrebbe possedere. Vedremo questo meccanismo in dettaglio quando parleremo di Tool Use nella Lezione 4.4.</blockquote>
+<hr>
+<h3 id="3-mancanza-di-stato-ogni-chiamata-e-indipendente">3. Mancanza di stato: ogni chiamata è indipendente</h3>
+<p>Abbiamo già toccato questo punto più volte nel corso (Lezione 1.3 sullo stato in HTTP, Lezione 3.3 sui turni conversazionali), ma vale la pena affermarlo qui in modo esplicito e definitivo, come limite strutturale del modello stesso: <strong>il modello, di per sé, non ha alcuna memoria persistente tra una chiamata API e l'altra</strong>.</p>
+<p>Tutto ciò che sembra &quot;memoria&quot; — ricordare il nome che hai detto cinque messaggi fa, mantenere coerenza su un argomento discusso a lungo — è il risultato di un meccanismo <strong>esterno</strong> al modello: il prodotto (o il nostro sistema, quando inizieremo a costruirne uno) che rinvia, a ogni chiamata, l'intera cronologia rilevante. Il modello stesso, isolatamente considerato, è completamente <strong>stateless</strong> (senza stato) — esattamente come il protocollo HTTP di base descritto nella Lezione 1.3.</p>
+<p>Questo non è un limite &quot;minore&quot;: è una delle ragioni principali per cui, dal Capitolo 4 in avanti, dedicheremo un'intera lezione (4.6) al problema della memoria, e perché la gestione dello stato sarà uno dei temi ricorrenti per tutto il resto del corso, fino ad arrivare alla memoria episodica e al riassorbimento della conoscenza nel Capitolo 8.</p>
+<hr>
+<h3 id="4-mancanza-di-azione-il-modello-produce-solo-testo">4. Mancanza di azione: il modello produce solo testo</h3>
+<p>Un LLM, lasciato a sé stesso, <strong>non può fare nulla nel mondo reale</strong> se non generare testo. Non può cercare informazioni aggiornate su Internet, non può eseguire codice, non può inviare un'email, non può consultare un database aziendale — può solo produrre una sequenza di token, basandosi sul contesto fornito.</p>
+<pre><code>COSA UN LLM &quot;GREZZO&quot; PUÒ FARE         COSA NON PUÒ FARE
+(da solo)                              (da solo)
+
+- Generare testo                       - Cercare informazioni
+- Rispondere a domande basandosi         aggiornate online
+  su ciò che ha &quot;appreso&quot; durante       - Eseguire calcoli complessi
+  l'addestramento                        con garanzia di precisione
+- Seguire istruzioni di formato        - Interagire con sistemi
+  e stile                                esterni (database, email,
+                                          calendari, ...)
+                                        - Verificare la veridicità
+                                          delle proprie affermazioni</code></pre>
+<p>Questo limite, probabilmente più di ogni altro, è la <strong>motivazione fondamentale</strong> per cui esistono il Function Calling (Lezione 4.4) e, in ultima analisi, l'intera architettura degli agenti che costruiremo a partire dal Capitolo 5. Un agente, come vedremo, è precisamente un sistema che <strong>dà al modello la capacità di agire</strong> nel mondo, collegandolo a strumenti esterni — risolvendo esattamente questo limite strutturale.</p>
+<hr>
+<h3 id="5-il-bias-nei-dati-di-training-implicazioni-etiche-e-operative">5. Il bias nei dati di training: implicazioni etiche e operative</h3>
+<p>Un ultimo limite, di natura diversa dai precedenti ma altrettanto importante: un modello addestrato su dati prodotti da esseri umani <strong>eredita inevitabilmente i pattern, le prospettive, e gli squilibri presenti in quei dati</strong>.</p>
+<p>Se certi argomenti, prospettive, lingue, o gruppi sono sovra-rappresentati o sotto-rappresentati nei dati di addestramento, il comportamento del modello tenderà a rifletterlo — non per una scelta deliberata, ma come conseguenza statistica diretta del meccanismo di apprendimento descritto nella Lezione 2.2. Questo non è un difetto &quot;riparabile&quot; del tutto con un intervento tecnico semplice: è una caratteristica intrinseca di qualunque sistema che apprende da dati prodotti da una popolazione umana reale, con tutte le sue asimmetrie storiche e culturali.</p>
+<p>Le fasi di fine-tuning e RLHF (Lezione 3.2) sono, in parte significativa, tentativi deliberati di <strong>mitigare</strong> alcuni di questi squilibri — ad esempio, addestrando il modello a non riprodurre stereotipi dannosi anche quando questi fossero statisticamente presenti nei dati grezzi di pre-training. Ma è importante avere consapevolezza realistica: la mitigazione riduce il problema, non lo elimina in modo assoluto e definitivo.</p>
+<blockquote><strong>Implicazione operativa per chi costruisce sistemi AI:</strong> quando, più avanti nel corso, parleremo di supervisione umana (Lezione 7.4) e di valutazione dei sistemi (Lezione 7.5), una delle ragioni per cui questi meccanismi di controllo sono indispensabili — e non semplici &quot;buone pratiche opzionali&quot; — è precisamente la consapevolezza che nessun modello, per quanto ben addestrato, è interamente esente da bias.</blockquote>
+<hr>
+<h3 id="esempio-pratico-riconoscere-il-rischio-di-allucinazione">Esempio Pratico: Riconoscere il Rischio di Allucinazione</h3>
+<p>Prova a classificare ciascuna di queste richieste secondo il rischio di allucinazione, usando i criteri visti nella Sezione 1:</p>
+<ol><li>&quot;Qual è la formula chimica dell'acqua?&quot; — rischio basso (fatto estremamente comune e stabile, ben rappresentato nei dati)</li><li>&quot;Quali sono stati i risultati delle elezioni locali nel tuo comune la settimana scorsa?&quot; — rischio alto (evento specifico, recente, probabilmente oltre il knowledge cutoff)</li><li>&quot;Cita testualmente, parola per parola, il terzo paragrafo a pagina 142 di un libro specifico&quot; — rischio alto (richiesta di citazione letterale estremamente specifica, difficile da garantire con precisione)</li><li>&quot;Spiegami il principio generale della fotosintesi&quot; — rischio basso (concetto scientifico stabile, ampiamente documentato)</li></ol>
+<p>Questo tipo di valutazione del rischio — non un giudizio binario &quot;vero/falso&quot; ma una stima probabilistica basata su quanto la richiesta si avvicina alle condizioni che favoriscono le allucinazioni — è un'abilità pratica che ti accompagnerà per tutto il resto del corso, specialmente quando dovrai decidere, costruendo un agente, quali richieste richiedono il supporto di strumenti esterni (RAG, ricerca web) invece di affidarsi alla sola conoscenza del modello.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Le <strong>allucinazioni</strong> sono una conseguenza strutturale del fatto che il modello ottimizza per la plausibilità statistica, non per la verità: questi due obiettivi normalmente coincidono ma possono divergere, specialmente su fatti specifici, citazioni letterali, o premesse false.</li><li>Il <strong>knowledge cutoff</strong> significa che il modello non può sapere nulla di eventi successivi alla raccolta dei propri dati di addestramento, a meno che questa informazione non gli venga fornita esplicitamente nel contesto.</li><li>Il modello è intrinsecamente <strong>stateless</strong>: non ha memoria persistente tra chiamate; ciò che sembra memoria è gestito da sistemi esterni che rinviano la cronologia.</li><li>Un LLM grezzo <strong>non può agire nel mondo</strong>: produce solo testo, non può cercare informazioni aggiornate, eseguire azioni, o interagire con sistemi esterni autonomamente.</li><li>Il <strong>bias</strong> nei dati di addestramento si riflette inevitabilmente nel comportamento del modello; fine-tuning e RLHF mitigano ma non eliminano completamente questo fenomeno.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché un modello può generare con grande sicurezza apparente un'informazione completamente falsa, collegando questa osservazione alla distinzione tra &quot;plausibilità statistica&quot; e &quot;verità&quot; introdotta in questa lezione.</li></ol>
+<ol><li>Hai chiesto a un modello informazioni su un evento accaduto la settimana scorsa, e ha risposto con dettagli specifici e sicuri. Alla luce di questa lezione, cosa dovresti sospettare, e come potresti verificarlo?</li></ol>
+<ol><li>Rivedi i cinque limiti descritti in questa lezione (allucinazioni, knowledge cutoff, mancanza di stato, mancanza di azione, bias). Per ciascuno, individua — anche solo per nome, anticipando i capitoli successivi — quale tecnica o pattern architetturale è stato concepito principalmente per compensarlo.</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezioni 3.1–3.4 — questa lezione applica con rigore critico tutto ciò che abbiamo imparato sul funzionamento degli LLM, trasformando la comprensione tecnica in consapevolezza pratica dei limiti.</p>
+<p><strong>Porta a:</strong> Capitolo 4 (Strumenti e Infrastruttura) — ogni singola lezione di questo capitolo (output strutturati, RAG, Function Calling, MCP, memoria) esiste per risolvere uno specifico limite descritto qui. La Lezione 4.3 (RAG) risolve direttamente il knowledge cutoff e riduce le allucinazioni su fatti specifici; la Lezione 4.4 (Function Calling) risolve la mancanza di azione; la Lezione 4.6 (Memory) risolve la mancanza di stato.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 5.5 (Gestione degli Errori) — la consapevolezza dei limiti qui descritti è il fondamento per progettare sistemi agentivi robusti, che si aspettano e gestiscono questi fallimenti invece di ignorarli. Lezione 7.4 (Human-in-the-Loop) — la supervisione umana esiste precisamente perché nessuno di questi limiti, incluso il bias, può essere considerato completamente risolto da soluzioni puramente tecniche.</p>
+<hr>
+<p><strong>CHIUSURA DEL CAPITOLO 3.</strong> Con questa lezione si conclude la prima grande sezione del corso: abbiamo costruito, capitolo dopo capitolo, una comprensione solida di come funziona il Web (Capitolo 1), cosa è l'intelligenza artificiale e come funzionano le reti neurali (Capitolo 2), e cosa sono esattamente i modelli linguistici, come si addestrano, come si usano, e quali sono i loro limiti (Capitolo 3). Dal Capitolo 4 in avanti, il corso cambia natura: smettiamo di &quot;capire&quot; e iniziamo a &quot;costruire&quot; — strumenti, memoria, agenti, e infine sistemi agentivi completi, supervisionati e capaci di evolvere nel tempo.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="03-04-il-prompting-comunicare-con-un-llm-in-modo-efficace.html">← 03-04 Il Prompting</a>
+        <a class="primary-action" href="04-01-l-api-degli-llm-come-si-usa-un-modello-da-un-programma.html">04-01 L'API degli LLM →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

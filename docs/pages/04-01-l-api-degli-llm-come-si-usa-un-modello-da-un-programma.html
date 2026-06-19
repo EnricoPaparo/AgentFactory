@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>L'API degli LLM: come si usa un modello da un programma | AgentFactory</title>
+  <meta name="description" content="Da qui in avanti costruiamo: la prima chiamata reale a un modello, fatta da codice">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-01</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 04-01</p>
+        <h1>L'API degli LLM: come si usa un modello da un programma</h1>
+        <p class="lesson-subtitle">Da qui in avanti costruiamo: la prima chiamata reale a un modello, fatta da codice</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>API LLM</span><span>endpoint messages</span><span>streaming</span><span>rate limit</span><span>provider</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Costruire mentalmente una chiamata API completa a un modello linguistico</li><li>Spiegare cosa è lo streaming e perché viene usato</li><li>Gestire concettualmente errori e rate limit in una chiamata API</li><li>Confrontare i principali provider di modelli linguistici</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Con questa lezione il corso cambia marcia, esattamente come annunciato in chiusura del Capitolo 3. Fino a ora abbiamo costruito comprensione: cosa è un'API (Lezione 1.5), cosa è un LLM (Lezione 3.1), come è strutturata una conversazione con ruoli system/user/assistant (Lezione 3.3). Questa lezione fonde questi tre pezzi di conoscenza in un'unica competenza pratica: scrivere il codice che chiama un modello linguistico via API, esattamente come fa qualsiasi prodotto AI professionale.</p>
+<p>Questa non è una lezione isolata: è la fondazione tecnica letterale su cui si costruirà tutto il resto del corso. RAG, Function Calling, agenti, workflow — ogni singolo sistema che vedremo da qui in avanti, alla sua base, esegue ripetutamente l'operazione descritta in questa lezione: una chiamata API a un modello, con un contesto costruito appositamente per il compito da svolgere.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Costruire mentalmente una chiamata API completa a un modello linguistico, dall'endpoint alla risposta</li><li>Spiegare cosa è lo streaming e perché viene usato nelle interfacce conversazionali</li><li>Gestire concettualmente errori comuni e limiti di frequenza (rate limit) in una chiamata API</li><li>Confrontare i principali provider di modelli linguistici e le loro differenze strutturali</li></ul>
+<hr>
+<h3 id="1-anatomia-di-una-chiamata-reale-all-api-di-un-llm">1. Anatomia di una chiamata reale all'API di un LLM</h3>
+<p>Riprendiamo, ora con piena consapevolezza tecnica, l'esempio che avevamo già visto — in forma preliminare — nella Lezione 1.5. Una chiamata all'API di Claude, scritta in Python, ha questa struttura:</p>
+<pre><code>import anthropic
+
+client = anthropic.Anthropic(api_key=&quot;sk-ant-xxxxxxxxxxxx&quot;)
+
+response = client.messages.create(
+    model=&quot;claude-sonnet-4-6&quot;,
+    max_tokens=1000,
+    system=&quot;Sei un assistente esperto di cucina italiana.&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Come si fa una buona carbonara?&quot;}
+    ]
+)
+
+print(response.content[0].text)</code></pre>
+<p>Analizziamo ogni componente, collegandolo esplicitamente a concetti già visti:</p>
+<ul><li><strong><code>api_key</code></strong> — l'autenticazione vista nella Lezione 1.5: identifica chi sta facendo la richiesta, per fatturazione e sicurezza</li><li><strong><code>model</code></strong> — specifica esattamente quale modello (Lezione 3.1) deve elaborare la richiesta: i provider offrono tipicamente più modelli, con compromessi diversi tra velocità, costo, e capacità</li><li><strong><code>max_tokens</code></strong> — il limite massimo di token (Lezione 3.1) che il modello può generare in <strong>questa</strong> risposta, un parametro di controllo del costo e della lunghezza, distinto dal context window totale visto nella Lezione 3.3</li><li><strong><code>system</code></strong> — le istruzioni di comportamento stabile viste nella Lezione 3.3 e 3.4</li><li><strong><code>messages</code></strong> — la cronologia della conversazione, con la struttura a ruoli vista nella Lezione 3.3</li></ul>
+<p>La risposta che si riceve (semplificando la struttura JSON completa già vista nella Lezione 1.5) contiene il testo generato dal modello, insieme a metadati come il motivo per cui la generazione si è interrotta (<code>stop_reason</code>) e il conteggio dei token usati — informazione cruciale, come vedremo, per gestire costi e context window.</p>
+<hr>
+<h3 id="2-streaming-perche-le-parole-arrivano-una-alla-volta">2. Streaming: perché le parole arrivano una alla volta</h3>
+<p>Se hai usato Claude.ai o ChatGPT, avrai notato che la risposta non appare tutta insieme: il testo viene mostrato progressivamente, parola per parola (più precisamente, token per token, Lezione 3.1), come se il modello stesse &quot;scrivendo in tempo reale&quot;. Questo comportamento si chiama <strong>streaming</strong>, ed è un'opzione esplicita delle API dei modelli linguistici.</p>
+<pre><code>SENZA STREAMING                       CON STREAMING
+
+Richiesta inviata                    Richiesta inviata
+       │                                    │
+       ▼                                    ▼
+[attesa... il modello genera         Il client riceve il primo
+ l'intera risposta prima              token non appena è pronto
+ di rispondere]                       │
+       │                              ▼
+       ▼                       Il client riceve il secondo
+Risposta completa ricevuta            token...
+tutta insieme                         │
+                                       ▼
+                                (e così via, fino al
+                                 completamento)</code></pre>
+<blockquote><strong>Perché lo streaming è importante, non solo estetico:</strong> ricorda dalla Lezione 3.1 che un LLM genera un token alla volta, prevedendo ciascuno in base al contesto precedente, incluso ciò che ha già generato. Tecnicamente, il primo token è già pronto molto prima che l'intera risposta sia completa. Senza streaming, l'utente aspetterebbe l'intera generazione (che per risposte lunghe può richiedere diversi secondi) prima di vedere qualcosa; con lo streaming, il primo token appare quasi immediatamente, e il resto continua ad arrivare progressivamente — un miglioramento enorme nella percezione di reattività del sistema, anche se il tempo totale di generazione non cambia.</blockquote>
+<p>Questo è anche, dal punto di vista architetturale, un'applicazione diretta del modello client-server visto nella Lezione 1.1: la connessione resta aperta, e il server invia progressivamente dei &quot;pezzi&quot; (chunk) della risposta, invece di un'unica risposta completa al termine.</p>
+<hr>
+<h3 id="3-gestione-degli-errori-e-dei-rate-limit">3. Gestione degli errori e dei rate limit</h3>
+<p>Una chiamata API a un LLM, come qualsiasi chiamata HTTP (Lezione 1.1), può fallire per diverse ragioni, e ognuna si manifesta tipicamente con un codice di stato specifico:</p>
+<pre><code>401 Unauthorized       → la API key è invalida o mancante
+429 Too Many Requests  → hai superato il limite di richieste
+                          consentite in un certo intervallo
+                          di tempo (rate limit)
+500 / 503               → problema temporaneo lato server
+                          del provider
+400 Bad Request         → la richiesta è malformata (es. un
+                          campo obbligatorio mancante, un
+                          formato JSON non valido — Lezione 1.5)</code></pre>
+<p>Il <strong>rate limit</strong> (limite di frequenza) merita un approfondimento specifico, perché è una circostanza che incontrerai costantemente costruendo sistemi reali. I provider impongono limiti su quante richieste (o quanti token) puoi elaborare in un dato intervallo di tempo, sia per ragioni tecniche (proteggere l'infrastruttura da sovraccarichi) sia commerciali (differenziare piani di abbonamento).</p>
+<pre><code>import time
+
+def chiamata_con_retry(client, messaggio, tentativi_massimi=3):
+    for tentativo in range(tentativi_massimi):
+        try:
+            return client.messages.create(
+                model=&quot;claude-sonnet-4-6&quot;,
+                max_tokens=1000,
+                messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: messaggio}]
+            )
+        except RateLimitError:
+            attesa = 2 ** tentativo  # attesa crescente: 1, 2, 4 secondi
+            time.sleep(attesa)
+    raise Exception(&quot;Troppi tentativi falliti&quot;)</code></pre>
+<p>Questo pattern — tentare, fallire, attendere un tempo crescente, ritentare — si chiama <strong>exponential backoff</strong> (attesa esponenziale), ed è uno standard ingegneristico per gestire errori temporanei senza sovraccaricare ulteriormente un sistema già in difficoltà. Lo ritroveremo, formalizzato con maggiore rigore, quando parleremo di robustezza degli agenti nella Lezione 5.5.</p>
+<hr>
+<h3 id="4-confronto-tra-i-principali-provider">4. Confronto tra i principali provider</h3>
+<p>Diversi provider offrono accesso API a modelli linguistici, ciascuno con caratteristiche distintive. Una panoramica sobria, utile per orientarsi:</p>
+<ul><li><strong>Anthropic</strong> (Claude): enfasi dichiarata su sicurezza e affidabilità del comportamento, context window ampi, forte capacità di seguire istruzioni complesse e di ragionamento</li><li><strong>OpenAI</strong> (GPT): probabilmente l'ecosistema più maturo e diffuso, ampia documentazione, ampio supporto di librerie e integrazioni di terze parti</li><li><strong>Google</strong> (Gemini): forte integrazione nativa con dati multimodali (testo, immagini, video) e con l'infrastruttura cloud di Google</li><li><strong>Mistral</strong> e altri provider europei: spesso posizionati su efficienza, costo, e — in alcuni casi — modelli con licenza open source che permettono di essere eseguiti su infrastruttura propria invece che tramite API di terzi</li></ul>
+<blockquote><strong>Perché questa scelta non è banale per chi costruisce sistemi:</strong> scegliere un provider non è solo una questione di &quot;quale modello è più bravo&quot; (una domanda che cambia risposta continuamente, man mano che escono nuove versioni). Sono fattori altrettanto rilevanti il costo per token, i limiti di rate limit del piano scelto, la disponibilità geografica, le garanzie contrattuali su privacy e gestione dei dati, e — un aspetto che affronteremo a fondo nella Lezione 4.5 — il supporto nativo per protocolli standardizzati come MCP nella connessione a strumenti esterni.</blockquote>
+<hr>
+<h3 id="5-costruire-un-primo-blocco-riutilizzabile">5. Costruire un primo blocco riutilizzabile</h3>
+<p>Per chiudere questa lezione con un'applicazione concreta, vediamo come si incapsula una chiamata API in una funzione riutilizzabile — il primo, piccolissimo, passo verso quello che nel Capitolo 6 chiameremo un &quot;agent package&quot;:</p>
+<pre><code>import anthropic
+
+def chiedi_a_claude(domanda, istruzioni_sistema=None, modello=&quot;claude-sonnet-4-6&quot;):
+    &quot;&quot;&quot;
+    Invia una domanda a Claude e restituisce la risposta testuale.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()  # legge la API key da variabile d'ambiente
+
+    parametri = {
+        &quot;model&quot;: modello,
+        &quot;max_tokens&quot;: 1024,
+        &quot;messages&quot;: [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: domanda}]
+    }
+
+    if istruzioni_sistema:
+        parametri[&quot;system&quot;] = istruzioni_sistema
+
+    risposta = client.messages.create(**parametri)
+    return risposta.content[0].text
+
+
+# Utilizzo:
+risultato = chiedi_a_claude(
+    &quot;Quali sono i vantaggi del Machine Learning supervisionato?&quot;,
+    istruzioni_sistema=&quot;Rispondi in modo conciso, massimo 3 punti.&quot;
+)
+print(risultato)</code></pre>
+<p>Nota una scelta deliberata: la API key non è scritta direttamente nel codice (<code>anthropic.Anthropic()</code> senza argomenti la legge automaticamente da una variabile d'ambiente) — esattamente la pratica di sicurezza raccomandata nella Lezione 1.5, e il motivo per cui il nostro repository AISchool ha un file <code>.gitignore</code> configurato per escludere file di configurazione sensibili.</p>
+<hr>
+<h3 id="esempio-pratico-stimare-costo-e-tempo-di-una-chiamata">Esempio Pratico: Stimare Costo e Tempo di una Chiamata</h3>
+<p>Immagina di voler costruire un sistema che riassume automaticamente 100 documenti, ciascuno di circa 2.000 token, con un prompt di istruzioni di circa 200 token, e una risposta attesa di circa 300 token per documento.</p>
+<pre><code>Token totali per documento = 2.000 (documento) + 200 (istruzioni) + 300 (risposta)
+                            = 2.500 token
+
+Token totali per 100 documenti = 2.500 × 100 = 250.000 token</code></pre>
+<p>Questo tipo di stima — moltiplicare il consumo medio per il numero di esecuzioni previste — è un esercizio che farai costantemente progettando sistemi reali, specialmente quando, nei capitoli successivi, costruiremo agenti che possono effettuare <strong>multiple chiamate API in sequenza</strong> per un singolo compito (ad esempio, un agente che cerca informazioni, le elabora, e poi genera una risposta finale può facilmente comportare 3-5 chiamate API per un singolo task dell'utente).</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Una chiamata API a un LLM combina autenticazione (Lezione 1.5), scelta del modello (Lezione 3.1), parametri di generazione, istruzioni di sistema e cronologia dei messaggi (Lezione 3.3) in un'unica richiesta strutturata.</li><li>Lo <strong>streaming</strong> permette di ricevere la risposta progressivamente, token per token, migliorando drasticamente la reattività percepita senza cambiare il tempo totale di generazione.</li><li>Gli errori API (rate limit, problemi di autenticazione, errori del server) richiedono strategie di gestione come l'<strong>exponential backoff</strong>, un pattern che ritroveremo nella progettazione di agenti robusti.</li><li>I principali <strong>provider</strong> (Anthropic, OpenAI, Google, Mistral) si distinguono per enfasi tecnica, costo, ecosistema, e supporto a protocolli standardizzati.</li><li>Incapsulare una chiamata API in una funzione riutilizzabile, con gestione sicura delle credenziali, è il primo passo concreto verso la costruzione di sistemi più complessi.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché lo streaming non riduce il tempo totale necessario al modello per generare una risposta completa, ma migliora comunque significativamente l'esperienza percepita dall'utente?</li></ol>
+<ol><li>Se il tuo programma riceve ripetutamente errori <code>429 Too Many Requests</code>, è corretto continuare a ritentare immediatamente, senza attesa? Perché l'exponential backoff è una strategia migliore?</li></ol>
+<ol><li>Stai progettando un sistema che deve elaborare migliaia di documenti al giorno con un budget limitato. Quali fattori, oltre alla &quot;qualità&quot; generica del modello, dovresti considerare nella scelta del provider e del modello specifico?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 1.5 (Le API) e Lezione 3.5 (Limiti degli LLM) — qui rendiamo operativa, con codice reale, la struttura di chiamata API teorizzata in precedenza.</p>
+<p><strong>Porta a:</strong> Lezione 4.2 (Output Strutturati) — vedremo come ottenere, dalla stessa chiamata API appena descritta, risposte in un formato prevedibile e parsabile da un programma, non solo testo libero.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 4.4 (Function Calling) — la stessa struttura di chiamata vista qui si arricchirà di un nuovo elemento, la definizione degli strumenti disponibili al modello. Lezione 5.5 (Gestione degli Errori negli Agenti) — l'exponential backoff visto qui in forma semplice diventerà parte di una strategia di robustezza molto più articolata.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="03-05-limiti-allucinazioni-e-confini-degli-llm.html">← 03-05 Limiti, allucinazioni e confini degli LLM</a>
+        <a class="primary-action" href="04-02-output-strutturati-e-output-parser-forzare-il-modello-a-rispondere-in-formato-preciso.html">04-02 Output Strutturati e Output Parser →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tool Use e Function Calling: dare al modello la capacità di agire | AgentFactory</title>
+  <meta name="description" content="Il meccanismo tecnico esatto che rende possibile, per la prima volta, parlare di 'agenti'">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-04</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 04-04</p>
+        <h1>Tool Use e Function Calling: dare al modello la capacità di agire</h1>
+        <p class="lesson-subtitle">Il meccanismo tecnico esatto che rende possibile, per la prima volta, parlare di 'agenti'</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>65 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>function calling</span><span>tool use</span><span>tool manifest</span><span>tool registry</span><span>JSON Schema</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare il problema che il Function Calling risolve</li><li>Descrivere il ciclo completo modello-richiesta-esecuzione-risultato</li><li>Definire correttamente uno strumento con nome, descrizione e schema parametri</li><li>Distinguere tool manifest e tool registry</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Questa lezione segna un punto di svolta concettuale in tutto il corso. Nella Lezione 3.5 avevamo elencato, con la tabella delle cose che un LLM &quot;grezzo&quot; può e non può fare, un limite fondamentale: il modello <strong>produce solo testo</strong>, non può agire nel mondo reale. RAG, visto nella lezione precedente, estende ciò che il modello <em>sa</em>, fornendogli accesso a informazioni esterne — ma non gli dà ancora la capacità di <em>fare</em> qualcosa.</p>
+<p>Il <strong>Function Calling</strong> (chiamata di funzione, spesso indicato anche come Tool Use, uso di strumenti) è il meccanismo tecnico che risolve esattamente questo limite. È, letteralmente, il meccanismo che rende possibile, per la prima volta in questo corso, iniziare a parlare seriamente di &quot;agenti&quot; — perché un agente, come vedremo formalmente nella Lezione 5.1, è precisamente un sistema che può percepire, ragionare, <strong>e agire</strong>. Questa lezione costruisce il &quot;agire&quot;.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare con precisione il problema che il Function Calling risolve</li><li>Descrivere il ciclo completo: modello → richiesta di strumento → esecuzione → risultato → modello</li><li>Definire correttamente uno strumento, con nome, descrizione e schema dei parametri</li><li>Distinguere un tool manifest (per un singolo agente) da un tool registry (per un intero sistema)</li></ul>
+<hr>
+<h3 id="1-il-problema-il-modello-non-puo-eseguire-nulla-da-solo">1. Il problema: il modello non può eseguire nulla da solo</h3>
+<p>Per quanto un modello come Claude sia eccellente nel generare testo, ricordiamo dalla Lezione 3.1 che, alla sua base, esegue un'unica operazione: prevede il token successivo. Non ha, di per sé, alcun meccanismo per &quot;premere un bottone&quot;, &quot;interrogare un database in tempo reale&quot;, &quot;inviare una richiesta HTTP&quot;, o eseguire calcoli con garanzia assoluta di precisione (un modello può &quot;calcolare a mente&quot; tramite la previsione di token, come visto nella Lezione 3.4 parlando di chain-of-thought, ma questo non equivale all'esecuzione affidabile di codice).</p>
+<p>Immagina di voler chiedere a un assistente AI: &quot;Qual è la temperatura attuale a Milano?&quot; Un modello, da solo, non ha alcun modo di conoscere questa informazione in tempo reale — non è nei suoi dati di addestramento (Lezione 3.2, knowledge cutoff), e non è qualcosa che si possa risolvere con RAG su documenti statici (la temperatura cambia continuamente). Quello che serve è la capacità di <strong>eseguire effettivamente</strong> una chiamata a un servizio meteo esterno, ottenere il dato reale, e poi usarlo per formulare la risposta.</p>
+<hr>
+<h3 id="2-l-idea-centrale-il-modello-richiede-il-programma-esegue">2. L'idea centrale: il modello &quot;richiede&quot;, il programma &quot;esegue&quot;</h3>
+<p>Il Function Calling funziona attraverso una separazione di responsabilità elegante e cruciale da comprendere con precisione: <strong>il modello non esegue mai direttamente nulla</strong>. Il modello può solo <strong>richiedere</strong>, in un formato strutturato (esattamente come gli output strutturati visti nella Lezione 4.2), che una certa funzione venga chiamata con certi parametri. È il <strong>programma che ospita il modello</strong> — il tuo codice — a decidere se e come eseguire effettivamente quella richiesta, e a restituire il risultato al modello per il passo successivo.</p>
+<pre><code>              IL TUO PROGRAMMA
+
+  ┌─────────────────────────────────────────────┐
+  │                                                 │
+  │   1. Invia al modello: domanda dell'utente     │
+  │      + elenco degli strumenti disponibili       │
+  │                                                 │
+  │   2. Il MODELLO risponde: &quot;vorrei chiamare      │
+  │      lo strumento 'meteo' con parametro         │
+  │      città='Milano'&quot;  (RICHIESTA, non           │
+  │      esecuzione)                                 │
+  │                                                 │
+  │   3. Il TUO PROGRAMMA esegue effettivamente      │
+  │      la funzione meteo(&quot;Milano&quot;)                │
+  │      → ottiene: {&quot;temperatura&quot;: 18, &quot;umidita&quot;:  │
+  │         62}                                       │
+  │                                                 │
+  │   4. Il tuo programma invia questo risultato     │
+  │      DI NUOVO al modello                         │
+  │                                                 │
+  │   5. Il modello genera la risposta finale,       │
+  │      ora basata su un dato reale e aggiornato:   │
+  │      &quot;A Milano ci sono attualmente 18°C&quot;         │
+  │                                                 │
+  └─────────────────────────────────────────────┘</code></pre>
+<p>Questa separazione — il modello decide <em>cosa</em> sarebbe utile fare, il programma decide <em>se</em> e <em>come</em> farlo effettivamente — è precisamente ciò che rende questo meccanismo sicuro e controllabile: un modello non potrà mai, da solo, eseguire un'azione dannosa o non autorizzata, perché ogni esecuzione passa obbligatoriamente attraverso codice scritto e controllato da chi costruisce il sistema.</p>
+<hr>
+<h3 id="3-definire-uno-strumento-nome-descrizione-schema-dei-parametri">3. Definire uno strumento: nome, descrizione, schema dei parametri</h3>
+<p>Per permettere al modello di &quot;richiedere&quot; correttamente uno strumento, occorre prima <strong>descriverglielo</strong> in un formato che possa comprendere e usare correttamente. Questa descrizione, fornita insieme alla richiesta API (esattamente come visto nella Lezione 4.1), ha tipicamente tre componenti:</p>
+<pre><code>strumento_meteo = {
+    &quot;name&quot;: &quot;ottieni_meteo&quot;,
+    &quot;description&quot;: &quot;Restituisce la temperatura attuale e le &quot;
+                    &quot;condizioni meteo per una città specifica. &quot;
+                    &quot;Usa questo strumento quando l'utente chiede &quot;
+                    &quot;informazioni meteo in tempo reale.&quot;,
+    &quot;input_schema&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;citta&quot;: {
+                &quot;type&quot;: &quot;string&quot;,
+                &quot;description&quot;: &quot;Il nome della città, es. 'Milano'&quot;
+            }
+        },
+        &quot;required&quot;: [&quot;citta&quot;]
+    }
+}</code></pre>
+<ul><li><strong><code>name</code></strong>: un identificativo univoco e chiaro dello strumento</li><li><strong><code>description</code></strong>: una spiegazione in linguaggio naturale di cosa fa lo strumento e <strong>quando</strong> dovrebbe essere usato — questo campo è cruciale, perché è precisamente il testo che il modello &quot;legge&quot; per decidere se questo strumento è rilevante per la richiesta dell'utente, secondo lo stesso principio di costruzione del contesto visto nella Lezione 3.4 sul prompting</li><li><strong><code>input_schema</code></strong>: uno schema JSON (esattamente lo stesso principio di Pydantic visto nella Lezione 4.2, qui espresso nel formato JSON Schema) che descrive precisamente quali parametri lo strumento richiede, con quali tipi e vincoli</li></ul>
+<blockquote><strong>Perché la descrizione conta moltissimo:</strong> se la descrizione di uno strumento è vaga o ambigua, il modello potrebbe non riconoscere quando usarlo, o potrebbe usarlo in modo inappropriato. Scrivere bene la descrizione di uno strumento è, a tutti gli effetti, un esercizio di prompt engineering (Lezione 3.4) applicato a un contesto specifico — un tema che approfondiremo con grande precisione nel Capitolo 6, parlando dei prompt come artefatti professionali.</blockquote>
+<hr>
+<h3 id="4-il-ciclo-completo-in-codice">4. Il ciclo completo, in codice</h3>
+<p>Vediamo ora come si implementa concretamente l'intero ciclo descritto nella Sezione 2, estendendo la funzione di chiamata API costruita nella Lezione 4.1:</p>
+<pre><code>import anthropic
+import json
+
+def ottieni_meteo(citta: str) -&gt; dict:
+    &quot;&quot;&quot;La funzione REALE che esegue l'azione richiesta.&quot;&quot;&quot;
+    # In un caso reale, qui ci sarebbe una chiamata API
+    # a un servizio meteo esterno (Lezione 1.5)
+    return {&quot;temperatura&quot;: 18, &quot;condizione&quot;: &quot;nuvoloso&quot;}
+
+
+def chiedi_con_strumenti(domanda_utente: str):
+    client = anthropic.Anthropic()
+
+    strumenti_disponibili = [strumento_meteo]  # definito sopra
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=1024,
+        tools=strumenti_disponibili,
+        messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: domanda_utente}]
+    )
+
+    # Il modello potrebbe richiedere l'uso di uno strumento
+    if risposta.stop_reason == &quot;tool_use&quot;:
+        richiesta_strumento = risposta.content[-1]
+        nome_strumento = richiesta_strumento.name
+        parametri = richiesta_strumento.input
+
+        # Il PROGRAMMA esegue effettivamente la funzione
+        if nome_strumento == &quot;ottieni_meteo&quot;:
+            risultato = ottieni_meteo(**parametri)
+
+        # Il risultato viene rimandato al modello,
+        # per generare la risposta finale
+        risposta_finale = client.messages.create(
+            model=&quot;claude-sonnet-4-6&quot;,
+            max_tokens=1024,
+            tools=strumenti_disponibili,
+            messages=[
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: domanda_utente},
+                {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: risposta.content},
+                {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: [{
+                    &quot;type&quot;: &quot;tool_result&quot;,
+                    &quot;tool_use_id&quot;: richiesta_strumento.id,
+                    &quot;content&quot;: json.dumps(risultato)
+                }]}
+            ]
+        )
+        return risposta_finale.content[0].text
+
+    return risposta.content[0].text</code></pre>
+<p>Osserva con attenzione la struttura dei <code>messages</code> nella seconda chiamata: includiamo l'intera cronologia precedente (esattamente il principio dei turni conversazionali visto nella Lezione 3.3), inclusa la richiesta di strumento generata dal modello e il risultato che il nostro programma ha effettivamente calcolato. Questo è ciò che permette al modello, nella generazione finale, di &quot;vedere&quot; sia la domanda originale sia il risultato dello strumento, e di formulare una risposta coerente basata su un dato reale.</p>
+<hr>
+<h3 id="5-tool-manifest-e-tool-registry">5. Tool Manifest e Tool Registry</h3>
+<p>Quando un sistema cresce in complessità — specialmente quando, dal Capitolo 6 in avanti, inizieremo a parlare di agenti strutturati come &quot;package&quot; professionali — diventa utile distinguere due concetti correlati ma diversi:</p>
+<ul><li><strong>Tool Manifest</strong>: l'elenco degli strumenti disponibili <strong>a uno specifico agente</strong>. È, concettualmente, la lista <code>strumenti_disponibili</code> vista nell'esempio di codice sopra, ma formalizzata come un documento esplicito (tipicamente un file di configurazione) che dichiara: &quot;questo agente può usare esattamente questi strumenti, e nessun altro&quot;</li><li><strong>Tool Registry</strong>: il catalogo <strong>centralizzato</strong> di tutti gli strumenti disponibili nell'intero sistema, da cui i singoli agenti possono &quot;pescare&quot; un sottoinsieme specifico per il proprio manifest</li></ul>
+<pre><code>                TOOL REGISTRY (centralizzato)
+        ┌──────────────────────────────────────┐
+        │  - ottieni_meteo                        │
+        │  - cerca_sul_web                        │
+        │  - invia_email                          │
+        │  - interroga_database_clienti           │
+        │  - esegui_codice_python                 │
+        └──────────────────────────────────────┘
+                    │              │
+         ┌──────────┘              └──────────┐
+         ▼                                     ▼
+  TOOL MANIFEST                         TOOL MANIFEST
+  Agente &quot;Assistente Meteo&quot;             Agente &quot;Servizio Clienti&quot;
+  - ottieni_meteo                       - cerca_sul_web
+                                         - invia_email
+                                         - interroga_database_clienti</code></pre>
+<p>Questa distinzione, qui introdotta solo concettualmente, diventerà strutturalmente importante nella Lezione 6.2, quando descriveremo la cartella <code>tools/</code> all'interno di un agent package professionale: un agente specifico avrà accesso solo a un sottoinsieme controllato e dichiarato degli strumenti disponibili nel sistema più ampio — un principio di sicurezza e di chiarezza progettuale, non solo di organizzazione del codice.</p>
+<hr>
+<h3 id="esempio-pratico-decidere-quando-uno-strumento-e-necessario">Esempio Pratico: Decidere Quando uno Strumento è Necessario</h3>
+<p>Prova a determinare, per ciascuna di queste richieste, se il modello avrebbe probabilmente bisogno di richiedere uno strumento, oppure se potrebbe rispondere basandosi solo sulla propria conoscenza interna (collegando questa valutazione ai criteri di rischio di allucinazione visti nella Lezione 3.5):</p>
+<ol><li>&quot;Quanto fa 347 × 28?&quot; — un calcolo preciso, dove uno strumento di calcolo elimina il rischio di errore aritmetico nella generazione token-per-token</li><li>&quot;Spiegami cos'è la fotosintesi&quot; — conoscenza stabile e ben rappresentata, nessuno strumento necessario</li><li>&quot;Qual è il prezzo attuale delle azioni di un'azienda specifica?&quot; — informazione che cambia continuamente, richiede uno strumento di accesso a dati finanziari in tempo reale</li><li>&quot;Riassumi questo testo che ti ho fornito&quot; — il testo è già nel contesto fornito dall'utente, nessuno strumento necessario</li></ol>
+<p>Questo tipo di valutazione — quando un compito richiede l'intervento di uno strumento esterno e quando la sola generazione del modello è sufficiente e affidabile — è esattamente il tipo di &quot;decisione&quot; che un modello istruito (Lezione 3.2) impara a fare autonomamente, basandosi sulle descrizioni degli strumenti disponibili, ma è anche una valutazione che tu, come progettista del sistema, dovrai costantemente affinare scegliendo quali strumenti rendere disponibili e con quali descrizioni.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Il <strong>Function Calling</strong> risolve il limite strutturale per cui un LLM, da solo, può solo generare testo e non eseguire azioni reali nel mondo.</li><li>Il principio centrale è una separazione di responsabilità: il <strong>modello richiede</strong> l'uso di uno strumento con certi parametri, ma è il <strong>programma</strong> a eseguirlo effettivamente e a restituire il risultato.</li><li>Uno strumento si definisce con <strong>nome</strong>, <strong>descrizione</strong> (cruciale per permettere al modello di capire quando usarlo) e <strong>schema dei parametri</strong> (basato sullo stesso principio di JSON Schema/Pydantic visto nella Lezione 4.2).</li><li>Il ciclo completo richiede <strong>due chiamate API</strong>: la prima in cui il modello eventualmente richiede uno strumento, la seconda in cui gli si fornisce il risultato per generare la risposta finale.</li><li>Un <strong>tool manifest</strong> (strumenti di un singolo agente) e un <strong>tool registry</strong> (catalogo centralizzato di tutto il sistema) sono concetti distinti che diventeranno strutturalmente rilevanti nella progettazione di agent package professionali.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché è importante che il modello &quot;richieda&quot; l'uso di uno strumento invece di eseguirlo direttamente? Quali rischi di sicurezza emergerebbero se il modello potesse eseguire azioni senza l'intermediazione del programma?</li></ol>
+<ol><li>Immagina di dover scrivere la descrizione di uno strumento che invia email. Quali informazioni dovrebbe contenere questa descrizione per permettere al modello di capire correttamente quando usarlo, e quando invece NON dovrebbe usarlo (ad esempio, per evitare di inviare email senza un'esplicita richiesta dell'utente)?</li></ol>
+<ol><li>Un agente ha accesso, nel proprio tool manifest, solo a uno strumento di lettura di un database, non a uno strumento di scrittura. Che tipo di garanzia di sicurezza fornisce questa scelta progettuale, anche se il modello &quot;volesse&quot; (in senso figurato) modificare quei dati?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 3.5 (Limiti degli LLM) — il Function Calling risolve direttamente il limite &quot;mancanza di azione&quot; descritto lì. Lezione 4.2 (Output Strutturati) — la richiesta di uno strumento da parte del modello è, essa stessa, un output strutturato secondo uno schema preciso.</p>
+<p><strong>Porta a:</strong> Lezione 4.5 (MCP) — vedremo come standardizzare la connessione tra modelli e strumenti esterni, andando oltre l'implementazione custom vista in questa lezione.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 5.1 (Cos'è un Agente AI) — il ciclo modello-richiesta-esecuzione-risultato visto qui è precisamente uno dei quattro componenti fondamentali di un agente. Lezione 6.2 (L'Agent Package) — il tool manifest qui introdotto concettualmente diventerà la cartella <code>tools/</code> esplicita di un agente professionale.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="04-03-rag-retrieval-augmented-generation-dare-memoria-esterna-ai-modelli.html">← 04-03 RAG — Retrieval-Augmented Generation</a>
+        <a class="primary-action" href="04-05-mcp-model-context-protocol-lo-standard-per-connettere-agenti-a-risorse-esterne.html">04-05 MCP — Model Context Protocol →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

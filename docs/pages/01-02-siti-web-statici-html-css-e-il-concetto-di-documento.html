@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Siti Web Statici: HTML, CSS e il concetto di documento | AgentFactory</title>
+  <meta name="description" content="Il caso più semplice di interazione web — il grado zero da cui partire">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-01-il-web">Il Web come lo Conosciamo</a><span>/</span><strong>01-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 01-02</p>
+        <h1>Siti Web Statici: HTML, CSS e il concetto di documento</h1>
+        <p class="lesson-subtitle">Il caso più semplice di interazione web — il grado zero da cui partire</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>01 · Il Web come lo Conosciamo</strong></div><div><span>Durata</span><strong>40 minuti</strong></div><div><span>Difficoltà</span><strong>base</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>HTML</span><span>CSS</span><span>documento</span><span>sito statico</span><span>markup</span><span>DOM</span><span>separazione contenuto-presentazione</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare cosa significa 'statico' in opposizione a 'dinamico'</li><li>Descrivere la differenza di responsabilità tra HTML e CSS</li><li>Riconoscere quando un sito è statico osservandone il comportamento</li><li>Capire perché la separazione contenuto/presentazione è una scelta progettuale, non un dettaglio tecnico</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo visto che un server, quando riceve una richiesta HTTP, risponde con un contenuto. Ma non abbiamo ancora guardato dentro quel contenuto. Cosa contiene esattamente la risposta che il browser interpreta e trasforma in una pagina visibile?</p>
+<p>Iniziamo dal caso più semplice possibile: il sito statico. È il &quot;grado zero&quot; del Web — zero logica, zero calcoli, zero dati che cambiano da una richiesta all'altra. Capire bene questo caso semplice è quello che ci permette, nella prossima lezione, di apprezzare con precisione cosa aggiunge un sito dinamico. Senza questo confronto, &quot;dinamico&quot; resta una parola vuota.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare cosa significa &quot;statico&quot; in opposizione a &quot;dinamico&quot;</li><li>Descrivere la differenza di responsabilità tra HTML e CSS</li><li>Riconoscere quando un sito è statico semplicemente osservandone il comportamento</li><li>Capire perché separare contenuto e presentazione è una scelta progettuale fondamentale</li></ul>
+<hr>
+<h3 id="1-cosa-significa-statico">1. Cosa significa &quot;statico&quot;</h3>
+<p>Un sito è <strong>statico</strong> quando il file che il server invia al browser è sempre identico, indipendentemente da chi lo richiede, quando lo richiede, o quante volte è già stato richiesto.</p>
+<p>Il server, in questo caso, svolge un ruolo estremamente semplice: ha dei file salvati su disco (file <code>.html</code>, <code>.css</code>, immagini) e quando arriva una richiesta per uno di questi file, lo legge e lo restituisce <em>tale e quale</em>. Non c'è elaborazione, non c'è logica condizionale, non c'è interazione con un database.</p>
+<blockquote><strong>Analogia concreta:</strong> un sito statico è come una fotocopiatrice. Chiedi una copia del documento X, ricevi sempre lo stesso documento X, identico per chiunque lo chieda. Un sito dinamico, che vedremo nella prossima lezione, è più simile a un impiegato che, prima di darti un documento, controlla chi sei e personalizza la risposta.</blockquote>
+<p>Questo non significa che un sito statico sia &quot;primitivo&quot; o &quot;di scarsa qualità&quot;. Moltissimi siti professionali — pagine aziendali, portfolio, documentazione tecnica, blog con strumenti moderni come Jekyll o Hugo — sono statici per scelta, perché offrono velocità, sicurezza e semplicità che un sito dinamico non può garantire altrettanto facilmente.</p>
+<hr>
+<h3 id="2-html-la-struttura-del-documento">2. HTML: la struttura del documento</h3>
+<p><strong>HTML</strong> (HyperText Markup Language) non è un linguaggio di programmazione: è un linguaggio di <strong>markup</strong>, cioè di marcatura. Il suo compito è descrivere la <em>struttura</em> di un documento: cosa è un titolo, cosa è un paragrafo, cosa è un'immagine, cosa è un link.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;La mia pagina&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Benvenuto&lt;/h1&gt;
+    &lt;p&gt;Questo è un paragrafo di testo.&lt;/p&gt;
+    &lt;a href=&quot;https://anthropic.com&quot;&gt;Visita Anthropic&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Ogni elemento è racchiuso tra <strong>tag</strong>: <code>&lt;h1&gt;</code> apre un titolo di primo livello, <code>&lt;/h1&gt;</code> lo chiude. Il browser legge questo testo e sa, per convenzione, che tutto quello che sta tra <code>&lt;h1&gt;</code> e <code>&lt;/h1&gt;</code> deve essere mostrato come titolo principale.</p>
+<p>Il punto cruciale da capire è questo: <strong>HTML descrive cosa è una cosa, non come deve apparire</strong>. Un <code>&lt;h1&gt;</code> è semanticamente &quot;il titolo più importante della pagina&quot; — il fatto che venga mostrato grande e in grassetto è solo lo stile predefinito del browser, non una caratteristica intrinseca del tag.</p>
+<h4 id="il-dom-come-il-browser-rappresenta-l-html-internamente">Il DOM: come il browser rappresenta l'HTML internamente</h4>
+<p>Quando il browser riceve l'HTML, non lo tiene come semplice testo: lo trasforma in una struttura ad albero chiamata <strong>DOM</strong> (Document Object Model). Ogni tag diventa un &quot;nodo&quot; dell'albero, con genitori e figli.</p>
+<pre><code>html
+ └── body
+      ├── h1 (&quot;Benvenuto&quot;)
+      ├── p (&quot;Questo è un paragrafo...&quot;)
+      └── a (href=&quot;...&quot;, &quot;Visita Anthropic&quot;)</code></pre>
+<p>Questa rappresentazione ad albero è ciò che permette al browser di applicare stili, gestire interazioni, e modificare la pagina dinamicamente via JavaScript. È un concetto che ritroveremo quando parleremo di Web Application nella Lezione 1.4: lì il DOM non sarà più statico ma verrà manipolato attivamente da codice.</p>
+<hr>
+<h3 id="3-css-la-presentazione-separata-dal-contenuto">3. CSS: la presentazione separata dal contenuto</h3>
+<p>Se HTML dice &quot;questo è un titolo&quot;, il <strong>CSS</strong> (Cascading Style Sheets) dice &quot;i titoli devono essere blu, in un certo font, con un certo spazio sopra e sotto&quot;.</p>
+<pre><code>h1 {
+  color: #1a1a2e;
+  font-family: &quot;Georgia&quot;, serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}</code></pre>
+<p>Questa regola dice al browser: &quot;ogni elemento <code>h1</code> nella pagina deve essere visualizzato con questo colore, questo font, questa dimensione&quot;. Non importa quanti <code>&lt;h1&gt;</code> ci siano nella pagina: tutti seguiranno questa regola, a meno di eccezioni specifiche.</p>
+<h4 id="perche-separare-contenuto-e-presentazione-e-una-scelta-non-un-dettaglio">Perché separare contenuto e presentazione è una scelta, non un dettaglio</h4>
+<p>Immagina di non avere questa separazione: ogni tag HTML dovrebbe portare con sé anche le istruzioni di stile.</p>
+<pre><code>&lt;!-- Senza separazione: caotico e da rifare ovunque --&gt;
+&lt;h1 style=&quot;color: blue; font-size: 32px;&quot;&gt;Titolo 1&lt;/h1&gt;
+&lt;h1 style=&quot;color: blue; font-size: 32px;&quot;&gt;Titolo 2&lt;/h1&gt;
+&lt;h1 style=&quot;color: blue; font-size: 32px;&quot;&gt;Titolo 3&lt;/h1&gt;</code></pre>
+<p>Se un giorno decidi che i titoli devono essere rossi invece che blu, devi modificare ogni singolo tag nella pagina — e nel sito, se questa struttura si ripete su cento pagine.</p>
+<p>Con CSS separato, la modifica avviene in un solo posto:</p>
+<pre><code>h1 {
+  color: red; /* una sola modifica, propagata ovunque */
+}</code></pre>
+<p>Questo principio — <strong>separare cosa una cosa è da come appare</strong> — è uno dei concetti di design più ricorrenti nell'informatica. Lo ritroveremo in forma diversa quando parleremo di separare la logica di un agente AI (cosa fa) dal prompt che lo istruisce (come si comporta): stessa idea, contesto diverso.</p>
+<hr>
+<h3 id="4-vantaggi-e-limiti-dei-siti-statici">4. Vantaggi e limiti dei siti statici</h3>
+<h4 id="vantaggi">Vantaggi</h4>
+<ul><li><strong>Velocità:</strong> non c'è elaborazione lato server, quindi la risposta è quasi immediata</li><li><strong>Sicurezza:</strong> senza database e senza logica server-side complessa, la superficie di attacco è minima</li><li><strong>Costo e semplicità di hosting:</strong> un sito statico può essere ospitato gratuitamente o quasi su servizi come GitHub Pages, Netlify, Vercel</li><li><strong>Affidabilità:</strong> meno componenti significa meno cose che possono rompersi</li></ul>
+<h4 id="limiti">Limiti</h4>
+<ul><li><strong>Nessuna personalizzazione per utente:</strong> tutti vedono lo stesso contenuto</li><li><strong>Nessuna interazione con dati che cambiano:</strong> non puoi mostrare &quot;il tuo carrello&quot;, &quot;i tuoi messaggi&quot;, &quot;il meteo di oggi&quot; perché tutto è fissato al momento della creazione del file</li><li><strong>Aggiornamenti manuali o tramite rigenerazione:</strong> ogni cambiamento richiede di modificare il file e &quot;ripubblicarlo&quot;</li></ul>
+<p>Questo secondo limite è esattamente il problema che il sito dinamico risolve, e che vedremo nella prossima lezione.</p>
+<hr>
+<h3 id="esempio-pratico-riconoscere-un-sito-statico">Esempio Pratico: Riconoscere un Sito Statico</h3>
+<p>Non sempre è facile distinguere a colpo d'occhio se un sito è statico o dinamico, ma alcuni segnali aiutano:</p>
+<ol><li><strong>L'URL non cambia con parametri di dati personali.</strong> Un sito statico raramente ha URL come <code>sito.com/utente/12345/ordini</code>. Quel tipo di URL implica quasi sempre un database dietro.</li></ol>
+<ol><li><strong>Apri gli strumenti sviluppatore (F12) → Network → ricarica la pagina.</strong> Se vedi una sola richiesta HTML che contiene già tutto il contenuto finale, è probabile che sia statico. Se vedi molte richieste successive che caricano dati (spesso in formato JSON), c'è qualcosa di dinamico in corso.</li></ol>
+<ol><li><strong>Visualizza il codice sorgente</strong> (clic destro → &quot;Visualizza sorgente pagina&quot;, non gli strumenti sviluppatore). Se il testo che vedi a schermo è già tutto presente lì, il sito è (almeno in parte) statico nella consegna.</li></ol>
+<p>Prova questo confronto: visita una pagina di documentazione tecnica semplice (spesso statica) e poi la tua casella di posta Gmail (fortemente dinamica e interattiva). La differenza nel comportamento — e nelle richieste di rete che genera — è evidente.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un sito <strong>statico</strong> restituisce sempre lo stesso file, indipendentemente da chi lo richiede: nessuna elaborazione lato server.</li><li><strong>HTML</strong> descrive la struttura semantica di un documento (cosa è un titolo, un paragrafo, un link), non il suo aspetto. Il browser trasforma l'HTML in una struttura ad albero chiamata <strong>DOM</strong>.</li><li><strong>CSS</strong> descrive la presentazione: colori, font, spaziature. È separato dall'HTML per permettere modifiche centralizzate e mantenibili.</li><li>I siti statici offrono velocità, sicurezza e semplicità, ma non possono personalizzare il contenuto per utente né mostrare dati che cambiano nel tempo.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Un sito mostra la data odierna in fondo alla pagina, aggiornata automaticamente ogni giorno senza che nessuno modifichi manualmente il file. È necessariamente un sito dinamico? Pensa a come potrebbe essere realizzato anche in un contesto statico (suggerimento: chi calcola la data — il server o il browser?).</li></ol>
+<ol><li>Perché pensi che la documentazione tecnica di molti progetti software (inclusi framework di intelligenza artificiale) sia quasi sempre un sito statico, anche quando l'azienda dietro ha le risorse per costruire qualcosa di più complesso?</li></ol>
+<ol><li>Se dovessi spiegare la differenza tra HTML e CSS a qualcuno usando l'analogia di una casa, cosa rappresenterebbe l'uno e cosa l'altro?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 1.1 — qui vediamo concretamente cosa contiene il &quot;corpo&quot; della risposta HTTP che avevamo solo menzionato.</p>
+<p><strong>Porta a:</strong> Lezione 1.3 (Siti Web Dinamici) — vedremo cosa cambia quando il server inizia a costruire l'HTML al volo invece di leggerlo da un file fisso.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 6.5 (I File .md come Artefatti Operativi) — la stessa idea di &quot;documento strutturato&quot; alla base di HTML ritorna quando parleremo di Markdown con frontmatter come formato per gli artefatti dei workflow agentivi.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="01-01-come-funziona-internet-client-server-e-il-viaggio-di-una-richiesta.html">← 01-01 Come funziona Internet</a>
+        <a class="primary-action" href="01-03-siti-web-dinamici-server-database-e-la-nascita-della-logica.html">01-03 Siti Web Dinamici →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

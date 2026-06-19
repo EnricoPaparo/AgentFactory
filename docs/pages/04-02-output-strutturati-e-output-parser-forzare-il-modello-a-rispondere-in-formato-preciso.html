@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Output Strutturati e Output Parser: forzare il modello a rispondere in formato preciso | AgentFactory</title>
+  <meta name="description" content="Il ponte indispensabile tra linguaggio naturale e dati che un programma può usare">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-04-strumenti-infrastruttura">Strumenti e Infrastruttura per Sistemi AI</a><span>/</span><strong>04-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 04-02</p>
+        <h1>Output Strutturati e Output Parser: forzare il modello a rispondere in formato preciso</h1>
+        <p class="lesson-subtitle">Il ponte indispensabile tra linguaggio naturale e dati che un programma può usare</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>04 · Strumenti e Infrastruttura per Sistemi AI</strong></div><div><span>Durata</span><strong>60 minuti</strong></div><div><span>Difficoltà</span><strong>intermedio</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>output strutturato</span><span>JSON mode</span><span>Pydantic</span><span>schema</span><span>output parser</span><span>validazione</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare perché un programma ha bisogno di output strutturato, non solo testo</li><li>Descrivere come si forza un modello a produrre JSON valido secondo uno schema</li><li>Capire il ruolo di un output parser nella pipeline di un sistema AI</li><li>Progettare una strategia di gestione degli errori di parsing</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo imparato a chiamare un modello e ricevere una risposta testuale, libera, in linguaggio naturale. Va benissimo se l'obiettivo finale è mostrare quel testo a un essere umano — esattamente come fa un'interfaccia di chat. Ma cosa succede quando l'obiettivo non è mostrare testo a un umano, ma far <strong>decidere qualcosa a un programma</strong> sulla base di quella risposta?</p>
+<p>Immagina di voler costruire un sistema che, data una recensione di un prodotto, decida automaticamente se instradarla al team di assistenza clienti, al team marketing, o se ignorarla. Il tuo programma ha bisogno di una risposta del tipo <code>{&quot;categoria&quot;: &quot;assistenza&quot;, &quot;urgenza&quot;: &quot;alta&quot;}</code> — non di un paragrafo discorsivo come &quot;Questa recensione sembra indicare un problema di assistenza piuttosto urgente&quot;. Questa lezione risolve esattamente questo problema, ed è uno dei pilastri tecnici più importanti per tutto ciò che costruiremo da qui in avanti: senza output strutturati e prevedibili, nessun agente potrebbe funzionare in modo affidabile.</p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare perché un programma ha bisogno di output strutturato, non di semplice testo libero</li><li>Descrivere come si forza un modello a produrre JSON valido secondo uno schema definito</li><li>Capire il ruolo di un output parser nella pipeline di un sistema AI</li><li>Progettare una strategia di base per gestire gli errori di parsing</li></ul>
+<hr>
+<h3 id="1-il-problema-linguaggio-naturale-vs-dati-strutturati">1. Il problema: linguaggio naturale vs dati strutturati</h3>
+<p>Ricorda dalla Lezione 3.1 che un LLM, alla sua base, genera testo prevedendo il token successivo più plausibile. Per impostazione predefinita, questo significa che le risposte sono in <strong>linguaggio naturale</strong>: prosa discorsiva, con tutta la variabilità, ambiguità e flessibilità che il linguaggio umano comporta.</p>
+<pre><code>DOMANDA: &quot;Estrai nome, età e città da questo testo:
+'Mi chiamo Marco, ho 34 anni e vivo a Bologna.'&quot;
+
+RISPOSTA TIPICA SENZA VINCOLI DI FORMATO:
+&quot;Il nome della persona è Marco. Ha 34 anni. Vive a Bologna.&quot;
+
+oppure, in un'altra esecuzione:
+&quot;Ecco le informazioni estratte: nome = Marco, età = 34,
+città = Bologna.&quot;
+
+oppure ancora:
+&quot;Nome: Marco
+Età: 34 anni
+Città: Bologna&quot;</code></pre>
+<p>Nota che tutte queste risposte sono corrette dal punto di vista del contenuto, ma hanno <strong>formati completamente diversi</strong>. Se il tuo programma deve estrarre automaticamente il valore dell'età per inserirlo in un database, dovrebbe scrivere codice capace di interpretare correttamente qualsiasi di queste varianti — e probabilmente molte altre ancora, perché il modello, generando token per token in modo probabilistico (Lezione 3.1), non garantisce automaticamente lo stesso formato a ogni esecuzione.</p>
+<p>Questo è precisamente il problema che gli <strong>output strutturati</strong> risolvono: ottenere dal modello una risposta in un formato fisso, prevedibile, parsabile da un programma in modo affidabile.</p>
+<hr>
+<h3 id="2-json-mode-chiedere-esplicitamente-una-struttura">2. JSON Mode: chiedere esplicitamente una struttura</h3>
+<p>Il modo più diretto per ottenere output strutturato è istruire il modello, in modo molto esplicito, a rispondere <strong>esclusivamente</strong> in formato JSON (il formato visto nella Lezione 1.5), specificando esattamente quali campi ci si aspetta.</p>
+<pre><code>prompt_con_struttura = &quot;&quot;&quot;
+Estrai nome, età e città dal testo seguente.
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido,
+nel formato esatto: {&quot;nome&quot;: &quot;...&quot;, &quot;eta&quot;: numero, &quot;citta&quot;: &quot;...&quot;}
+Non includere alcun testo prima o dopo il JSON.
+
+Testo: &quot;Mi chiamo Marco, ho 34 anni e vivo a Bologna.&quot;
+&quot;&quot;&quot;</code></pre>
+<p>Con un'istruzione di questo tipo, ben formulata (riusando le tecniche di prompting viste nella Lezione 3.4), il modello tende a produrre consistentemente:</p>
+<pre><code>{&quot;nome&quot;: &quot;Marco&quot;, &quot;eta&quot;: 34, &quot;citta&quot;: &quot;Bologna&quot;}</code></pre>
+<p>Molti provider, incluso Anthropic, offrono inoltre un parametro API dedicato (talvolta chiamato &quot;JSON mode&quot; o gestito tramite il meccanismo di tool use che vedremo nella prossima lezione) che <strong>forza tecnicamente</strong> il modello a generare solo token validi per una struttura JSON, riducendo drasticamente — anche se non eliminando del tutto — il rischio che il modello produca output malformato o circondato da testo extra.</p>
+<hr>
+<h3 id="3-definire-uno-schema-con-pydantic">3. Definire uno schema con Pydantic</h3>
+<p>Specificare il formato desiderato direttamente nel testo del prompt, come visto sopra, funziona ma è fragile: se il formato richiesto è complesso (campi opzionali, tipi di dato precisi, valori che devono rispettare vincoli specifici), descriverlo a parole nel prompt diventa rapidamente complicato e meno affidabile.</p>
+<p>Una pratica più robusta, ampiamente usata nello sviluppo professionale di sistemi AI, è definire lo <strong>schema</strong> desiderato con uno strumento di validazione strutturata — in Python, la libreria più diffusa per questo si chiama <strong>Pydantic</strong>.</p>
+<pre><code>from pydantic import BaseModel
+
+class PersonaEstratta(BaseModel):
+    nome: str
+    eta: int
+    citta: str
+
+# Questo schema può essere usato per:
+# 1. Generare automaticamente la descrizione del formato per il prompt
+# 2. Validare la risposta del modello DOPO averla ricevuta</code></pre>
+<p>L'idea centrale è che lo schema <strong>non vive solo nella tua testa o in un commento</strong>: è codice eseguibile, che il tuo programma può usare sia per comunicare al modello esattamente cosa si aspetta, sia per <strong>verificare automaticamente</strong>, dopo aver ricevuto la risposta, che il modello abbia effettivamente rispettato quella struttura — un campo mancante, un tipo di dato sbagliato (una stringa dove ci si aspettava un numero), o un valore fuori dai vincoli previsti vengono rilevati immediatamente, invece di propagarsi silenziosamente come errore nel resto del sistema.</p>
+<blockquote><strong>Perché questo anticipa direttamente il Capitolo 6:</strong> quando, nella Lezione 6.5, parleremo di &quot;contratti tra agenti&quot;, vedremo che uno schema come quello appena definito è esattamente la base tecnica di un contratto: una dichiarazione precisa e verificabile di cosa un componente del sistema si aspetta di ricevere o produrre.</blockquote>
+<hr>
+<h3 id="4-l-output-parser-il-componente-che-chiude-il-cerchio">4. L'Output Parser: il componente che chiude il cerchio</h3>
+<p>Un <strong>output parser</strong> è il componente software, posizionato subito dopo la chiamata API, che ha il compito specifico di:</p>
+<ol><li>Ricevere il testo grezzo restituito dal modello</li><li>Tentare di interpretarlo secondo il formato atteso (es. JSON)</li><li>Validarlo contro lo schema definito (es. con Pydantic)</li><li>Restituire un oggetto strutturato e utilizzabile dal resto del programma, oppure segnalare un errore se il parsing o la validazione fallisce</li></ol>
+<pre><code>import json
+from pydantic import BaseModel, ValidationError
+
+class PersonaEstratta(BaseModel):
+    nome: str
+    eta: int
+    citta: str
+
+def estrai_persona(risposta_grezza_del_modello: str) -&gt; PersonaEstratta:
+    &quot;&quot;&quot;
+    Output parser: trasforma il testo grezzo del modello
+    in un oggetto Python validato e tipizzato.
+    &quot;&quot;&quot;
+    try:
+        dati_json = json.loads(risposta_grezza_del_modello)
+        return PersonaEstratta(**dati_json)
+    except json.JSONDecodeError:
+        raise ValueError(&quot;Il modello non ha restituito JSON valido&quot;)
+    except ValidationError as errore:
+        raise ValueError(f&quot;Il JSON non rispetta lo schema previsto: {errore}&quot;)</code></pre>
+<p>Questo componente è quello che rende possibile costruire <strong>pipeline affidabili</strong>: il resto del tuo programma non deve mai gestire direttamente l'incertezza del testo libero generato dal modello — riceve sempre, o un oggetto <code>PersonaEstratta</code> perfettamente formato e validato, o un errore esplicito e gestibile. Questa separazione di responsabilità — il modello genera, il parser valida, il resto del programma usa dati puliti — è un principio di design che ritroveremo costantemente, in forma sempre più sofisticata, in tutto il resto del corso.</p>
+<hr>
+<h3 id="5-gestire-gli-errori-di-parsing-cosa-fare-quando-il-modello-sbaglia-formato">5. Gestire gli errori di parsing: cosa fare quando il modello sbaglia formato</h3>
+<p>Anche con istruzioni ben formulate e schemi precisi, un modello può occasionalmente produrre output che non rispetta esattamente il formato richiesto — ricorda che, come visto nella Lezione 3.5, il comportamento del modello resta intrinsecamente probabilistico, non garantito al 100%. Una strategia di gestione robusta prevede tipicamente:</p>
+<pre><code>1. Tentare il parsing della risposta
+       │
+       ▼ (se fallisce)
+2. Ri-tentare la chiamata API, eventualmente con
+   un'istruzione rafforzata (&quot;Il formato precedente
+   non era valido, rispondi SOLO con JSON valido&quot;)
+       │
+       ▼ (se fallisce ripetutamente)
+3. Usare un parsing più permissivo come fallback
+   (es. estrarre solo la porzione di testo che
+   sembra essere JSON, ignorando testo circostante)
+       │
+       ▼ (se anche questo fallisce)
+4. Segnalare l'errore in modo esplicito al resto
+   del sistema, invece di propagare dati corrotti
+   o inventati</code></pre>
+<p>Questo pattern di gestione — tentare, correggere, fare fallback, infine fallire in modo esplicito e controllato — anticipa direttamente il principio di <strong>graceful degradation</strong> (fallire in modo controllato) che approfondiremo con maggiore rigore nella Lezione 5.5, parlando della robustezza degli agenti.</p>
+<hr>
+<h3 id="esempio-pratico-una-pipeline-completa-di-estrazione-strutturata">Esempio Pratico: Una Pipeline Completa di Estrazione Strutturata</h3>
+<p>Mettiamo insieme tutti i pezzi di questa lezione in un esempio end-to-end, costruendo su quanto visto nella Lezione 4.1:</p>
+<pre><code>import anthropic
+import json
+from pydantic import BaseModel, ValidationError
+
+class AnalisiRecensione(BaseModel):
+    categoria: str  # &quot;assistenza&quot;, &quot;marketing&quot;, &quot;altro&quot;
+    urgenza: str    # &quot;bassa&quot;, &quot;media&quot;, &quot;alta&quot;
+    riassunto: str
+
+def analizza_recensione(testo_recensione: str) -&gt; AnalisiRecensione:
+    client = anthropic.Anthropic()
+
+    prompt = f&quot;&quot;&quot;
+Analizza questa recensione e classifica l'urgenza.
+Rispondi ESCLUSIVAMENTE con JSON in questo formato esatto:
+{{&quot;categoria&quot;: &quot;assistenza|marketing|altro&quot;,
+  &quot;urgenza&quot;: &quot;bassa|media|alta&quot;,
+  &quot;riassunto&quot;: &quot;breve riassunto in una frase&quot;}}
+
+Recensione: &quot;{testo_recensione}&quot;
+&quot;&quot;&quot;
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=300,
+        messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]
+    )
+
+    testo_grezzo = risposta.content[0].text
+    dati = json.loads(testo_grezzo)
+    return AnalisiRecensione(**dati)
+
+
+# Utilizzo:
+risultato = analizza_recensione(
+    &quot;Il prodotto è arrivato rotto e nessuno mi ha mai risposto via email.&quot;
+)
+print(f&quot;Categoria: {risultato.categoria}, Urgenza: {risultato.urgenza}&quot;)
+# → Categoria: assistenza, Urgenza: alta</code></pre>
+<p>Questo esempio, per quanto semplice, contiene già tutti gli ingredienti di un componente di automazione reale: una chiamata API (Lezione 4.1), un'istruzione di formato precisa (questa lezione, Sezione 2), e una validazione tramite schema (questa lezione, Sezione 3) — il risultato finale, <code>risultato.categoria</code> e <code>risultato.urgenza</code>, sono dati Python pienamente utilizzabili, ad esempio, per instradare automaticamente la recensione al team giusto.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>Un programma ha bisogno di <strong>output strutturato</strong> (non testo libero) per poter usare in modo affidabile la risposta di un modello in una logica automatizzata.</li><li>Istruzioni esplicite nel prompt, eventualmente combinate con parametri API dedicati (&quot;JSON mode&quot;), aumentano la probabilità che il modello produca un formato consistente.</li><li>Definire uno <strong>schema</strong> (ad esempio con Pydantic) rende la struttura attesa esplicita, verificabile e riutilizzabile, sia per istruire il modello sia per validare la sua risposta.</li><li>Un <strong>output parser</strong> riceve il testo grezzo, lo interpreta secondo il formato atteso, lo valida contro lo schema, e restituisce un oggetto strutturato o un errore esplicito — mai dati ambigui o corrotti silenziosamente.</li><li>Una strategia robusta di gestione degli errori di parsing prevede tentativi, correzioni, fallback, e infine un fallimento esplicito e controllato.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Perché chiedere a un modello &quot;Estrai nome ed età&quot; senza specificare un formato preciso è una scelta progettuale rischiosa per un sistema che deve elaborare automaticamente migliaia di risposte?</li></ol>
+<ol><li>Quali sono i vantaggi di definire lo schema con uno strumento come Pydantic, invece di limitarsi a descrivere il formato desiderato a parole nel prompt?</li></ol>
+<ol><li>Immagina che il tuo output parser riceva una risposta JSON sintatticamente valida, ma con il campo &quot;eta&quot; contenente la stringa &quot;trentaquattro&quot; invece del numero 34. In quale fase del processo descritto in questa lezione verrebbe rilevato questo problema, e perché?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 4.1 — qui aggiungiamo, alla chiamata API di base, il livello di precisione necessario per ottenere dati utilizzabili da un programma, non solo testo per un umano.</p>
+<p><strong>Porta a:</strong> Lezione 4.3 (RAG) e Lezione 4.4 (Function Calling) — entrambe le tecniche richiedono che il modello produca output strutturati (rispettivamente, per integrare informazioni recuperate, e per specificare quale strumento usare e con quali parametri).</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 6.5 (Contratti tra Agenti) — lo schema Pydantic visto qui è precisamente l'antenato tecnico del concetto di &quot;contratto&quot; tra componenti di un sistema multi-agente. Lezione 6.3 (Agent Card) — gli schemi di input/output di un agente, dichiarati nella sua Agent Card, si basano esattamente su questo principio di validazione strutturata.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="04-01-l-api-degli-llm-come-si-usa-un-modello-da-un-programma.html">← 04-01 L'API degli LLM</a>
+        <a class="primary-action" href="04-03-rag-retrieval-augmented-generation-dare-memoria-esterna-ai-modelli.html">04-03 RAG — Retrieval-Augmented Generation →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>

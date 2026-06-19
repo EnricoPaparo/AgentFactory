@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Auto-Evolutivi: come i prompt migliorano nel tempo | AgentFactory</title>
+  <meta name="description" content="Dal correggere un output al correggere ciò che genera TUTTI gli output futuri">
+  <meta name="author" content="Enrico Paparo">
+  <link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon.png?v=aischool-20260619">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png?v=aischool-20260619">
+  <link rel="stylesheet" href="../styles.css?v=aischool-20260619">
+</head>
+<body class="aischool-page">
+  <header class="topbar landing-topbar">
+    <a class="brand" href="../index.html" aria-label="AgentFactory home">
+      <span class="brand-mark"><img src="../assets/agentfactory-logo.png?v=aischool-20260619" width="38" height="38" alt="" aria-hidden="true"></span>
+      <span><strong>AgentFactory</strong><small>AISchool</small></span>
+    </a>
+    <nav class="topnav iconnav" aria-label="Navigazione capitoli">
+      <a href="../index.html#capitolo-01-il-web">01</a><a href="../index.html#capitolo-02-intelligenza-artificiale">02</a><a href="../index.html#capitolo-03-llm">03</a><a href="../index.html#capitolo-04-strumenti-infrastruttura">04</a><a href="../index.html#capitolo-05-agenti-architettura">05</a><a href="../index.html#capitolo-06-agent-package">06</a><a href="../index.html#capitolo-07-workflow-multi-agente">07</a><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">08</a>
+      <a href="https://github.com/EnricoPaparo/AgentFactory" aria-label="Repository GitHub" title="Repository GitHub"><span class="nav-glyph nav-glyph-gh" aria-hidden="true">GH</span></a>
+    </nav>
+  </header>
+
+  <main class="course-shell lesson-shell">
+    <nav class="breadcrumb"><a href="../index.html">Home</a><span>/</span><a href="../index.html#capitolo-08-sistemi-auto-evolutivi">Sistemi Agentici che si Auto-Migliorano</a><span>/</span><strong>08-02</strong></nav>
+    <article class="lesson-article">
+      <header class="lesson-hero">
+        <p class="eyebrow">Lezione 08-02</p>
+        <h1>Prompt Auto-Evolutivi: come i prompt migliorano nel tempo</h1>
+        <p class="lesson-subtitle">Dal correggere un output al correggere ciò che genera TUTTI gli output futuri</p>
+        <div class="lesson-meta-grid"><div><span>Capitolo</span><strong>08 · Sistemi Agentici che si Auto-Migliorano</strong></div><div><span>Durata</span><strong>70 minuti</strong></div><div><span>Difficoltà</span><strong>avanzato</strong></div><div><span>Stato</span><strong>pubblicata</strong></div></div>
+        <div class="tag-row"><span>Automatic Prompt Optimization</span><span>APO</span><span>DSPy</span><span>prompt drift</span><span>over-optimization</span></div>
+      </header>
+      <section class="objectives-card"><h2>Obiettivi</h2><ul><li>Spiegare la differenza tra correggere un output e correggere un prompt</li><li>Implementare un ciclo base di Automatic Prompt Optimization</li><li>Descrivere perché il versionamento è un prerequisito tecnico, non opzionale</li><li>Riconoscere i segnali di prompt drift e over-optimization</li></ul></section>
+      <div class="markdown-body"><h3 id="introduzione">Introduzione</h3>
+<p>Nella lezione precedente abbiamo costruito un agente capace di correggere il proprio output, una singola volta, all'interno di una singola esecuzione. Questa lezione fa un salto concettuale significativo: cosa succederebbe se, invece di correggere <strong>un output</strong>, un sistema potesse correggere <strong>il prompt stesso</strong> che genera tutti gli output futuri di un agente?</p>
+<p>Questo è il problema dei <strong>prompt auto-evolutivi</strong>: un prompt scritto oggi, per quanto ben progettato secondo i principi della Lezione 6.4, diventa progressivamente subottimale man mano che il sistema incontra casi nuovi, edge case non previsti, o semplicemente perché esistono formulazioni migliori che nessuno ha ancora scoperto. La domanda che affrontiamo qui è: <strong>chi aggiorna il prompt, e come, in modo sistematico invece di affidarsi a revisioni manuali occasionali?</strong></p>
+<hr>
+<h3 id="obiettivi-di-apprendimento">Obiettivi di Apprendimento</h3>
+<p>Al termine di questa lezione sarai in grado di:</p>
+<ul><li>Spiegare con precisione la differenza tra correggere un output (Lezione 8.1) e correggere un prompt</li><li>Implementare un ciclo base di Automatic Prompt Optimization (APO)</li><li>Descrivere perché il versionamento dei prompt (Lezione 6.4) è un prerequisito tecnico indispensabile, non semplicemente una buona pratica</li><li>Riconoscere i segnali di prompt drift e di over-optimization, e le strategie per prevenirli</li></ul>
+<hr>
+<h3 id="1-il-problema-un-prompt-scritto-oggi-e-subottimale-domani">1. Il problema: un prompt scritto oggi è subottimale domani</h3>
+<p>Riprendiamo il prompt dell'Agente Analista Vendite, costruito con cura nella Lezione 6.4. Quel prompt è stato scritto sulla base della comprensione e dei casi noti <strong>al momento della sua scrittura</strong>. Ma il sistema, una volta in produzione, incontrerà:</p>
+<pre><code>- Casi limite non previsti durante la progettazione iniziale
+  (es. dati con valori negativi mai considerati)
+
+- Pattern di errore RICORRENTI, rilevabili solo osservando
+  molte esecuzioni nel tempo (esattamente i log strutturati
+  della Lezione 5.5, e le metriche della Lezione 7.5)
+
+- Formulazioni alternative del prompt che, empiricamente,
+  producono risultati migliori — ma che nessun umano ha
+  ancora provato o scoperto</code></pre>
+<p>Senza un meccanismo sistematico, l'aggiornamento del prompt dipende interamente dalla disponibilità e dall'attenzione di un umano che nota il problema, lo diagnostica, e propone una correzione — un processo lento, discontinuo, e che non scala bene quando il sistema cresce in complessità (Lezione 5.4) e in numero di agenti da mantenere.</p>
+<hr>
+<h3 id="2-automatic-prompt-optimization-apo-il-ciclo-di-base">2. Automatic Prompt Optimization (APO): il ciclo di base</h3>
+<p>L'idea centrale di APO applica, al prompt stesso, lo stesso principio di &quot;produci, valuta, correggi&quot; già visto nella Lezione 8.1 — ma con un modello che <strong>agisce sul prompt di un altro agente</strong>, invece che sul proprio output.</p>
+<pre><code>                  [ESEGUI]
+        L'agente, con il prompt ATTUALE,
+        elabora un campione di casi di test
+        (Lezione 7.5)
+                      │
+                      ▼
+                  [VALUTA]
+        Le risposte vengono valutate secondo
+        le metriche già costruite (Lezione 7.5),
+        identificando DEBOLEZZE specifiche
+                      │
+                      ▼
+              [PROPONI VARIANTE]
+        Un modello (diverso ruolo, &quot;optimizer&quot;)
+        propone una VARIANTE del prompt,
+        mirata a correggere le debolezze
+        identificate
+                      │
+                      ▼
+                  [TESTA]
+        La VARIANTE viene eseguita sugli
+        stessi casi di test (regression
+        testing, Lezione 7.5)
+                      │
+              ┌───────┴───────┐
+              ▼                ▼
+        MIGLIORE             PEGGIORE o
+        della versione        EQUIVALENTE
+        attuale                  │
+              │                  ▼
+              ▼            [SCARTA la variante,
+      [ADOTTA la variante   mantieni il prompt
+       come nuova versione   attuale]
+       ufficiale, Lezione
+       6.4]</code></pre>
+<hr>
+<h3 id="3-implementazione-pratica-un-ciclo-base-di-apo">3. Implementazione pratica: un ciclo base di APO</h3>
+<pre><code>import anthropic
+import json
+
+def proponi_variante_prompt(prompt_attuale: str,
+                              debolezze_rilevate: list[str]) -&gt; str:
+    &quot;&quot;&quot;
+    Usa un modello nel ruolo di 'optimizer': non genera
+    risposte al compito originale, ma MIGLIORA il prompt
+    che istruisce un altro agente a farlo.
+    &quot;&quot;&quot;
+    client = anthropic.Anthropic()
+
+    risposta = client.messages.create(
+        model=&quot;claude-sonnet-4-6&quot;,
+        max_tokens=600,
+        system=&quot;Sei un esperto di prompt engineering. Il tuo &quot;
+               &quot;compito è migliorare un prompt esistente per &quot;
+               &quot;correggere debolezze specifiche, mantenendo &quot;
+               &quot;intatto tutto ciò che già funziona bene.&quot;,
+        messages=[{
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: f&quot;PROMPT ATTUALE:\n{prompt_attuale}\n\n&quot;
+                       f&quot;DEBOLEZZE RILEVATE (da casi di test &quot;
+                       f&quot;falliti, Lezione 7.5):\n&quot;
+                       f&quot;{json.dumps(debolezze_rilevate)}\n\n&quot;
+                       f&quot;Proponi una versione migliorata del &quot;
+                       f&quot;prompt che corregga SPECIFICAMENTE &quot;
+                       f&quot;queste debolezze.&quot;
+        }]
+    )
+    return risposta.content[0].text
+
+
+def ciclo_apo(prompt_attuale: str, casi_test: list[dict],
+               workflow_compilato) -&gt; dict:
+    &quot;&quot;&quot;
+    Implementa il ciclo completo della Sezione 2, riusando
+    la test suite della Lezione 7.5 come criterio oggettivo
+    di confronto.
+    &quot;&quot;&quot;
+    # FASE ESEGUI + VALUTA (riusa esegui_test_suite, Lezione 7.5)
+    report_attuale = esegui_test_suite(casi_test, workflow_compilato)
+
+    debolezze = [d[&quot;caso&quot;] for d in report_attuale[&quot;dettagli&quot;]
+                 if not d[&quot;successo&quot;]]
+
+    if not debolezze:
+        return {&quot;esito&quot;: &quot;nessuna_correzione_necessaria&quot;}
+
+    # FASE PROPONI VARIANTE
+    nuovo_prompt = proponi_variante_prompt(prompt_attuale, debolezze)
+
+    # FASE TESTA (sostituendo temporaneamente il prompt)
+    workflow_con_variante = ricompila_con_nuovo_prompt(nuovo_prompt)
+    report_variante = esegui_test_suite(casi_test, workflow_con_variante)
+
+    # CONFRONTO OGGETTIVO
+    if report_variante[&quot;passati&quot;] &gt; report_attuale[&quot;passati&quot;]:
+        return {
+            &quot;esito&quot;: &quot;variante_migliore&quot;,
+            &quot;nuovo_prompt&quot;: nuovo_prompt,
+            &quot;miglioramento&quot;: report_variante[&quot;passati&quot;] - report_attuale[&quot;passati&quot;]
+        }
+    else:
+        return {&quot;esito&quot;: &quot;variante_scartata&quot;, &quot;motivo&quot;: &quot;nessun miglioramento misurabile&quot;}</code></pre>
+<p>Osserva che la decisione di <strong>adottare o scartare</strong> la variante non si basa su un giudizio soggettivo, ma su un <strong>confronto numerico oggettivo</strong> tra il numero di test passati prima e dopo — esattamente il principio di regression testing costruito con cura nella Lezione 7.5. Senza quella disciplina di misurazione, un sistema di APO non avrebbe alcun criterio affidabile per distinguere un miglioramento reale da un cambiamento casuale o, peggio, da un peggioramento mascherato da una formulazione più convincente stilisticamente.</p>
+<hr>
+<h3 id="4-perche-il-versionamento-e-un-prerequisito-tecnico-non-opzionale">4. Perché il versionamento è un prerequisito tecnico, non opzionale</h3>
+<p>Avevamo introdotto il versionamento dei prompt, nella Lezione 6.4, come buona pratica ingegneristica. In un sistema con APO, il versionamento smette di essere &quot;buona pratica&quot; e diventa <strong>condizione tecnica indispensabile</strong> per il funzionamento corretto del sistema:</p>
+<pre><code>SENZA VERSIONAMENTO RIGOROSO
+
+Una variante viene adottata automaticamente
+→ Se in produzione emerge un problema NON
+  rilevato dalla test suite (Lezione 7.5 ha
+  comunque dei limiti — nessuna suite è
+  esaustiva), non c'è modo di sapere CHE
+  prompt era in uso quando il problema si
+  è verificato, né di tornare alla versione
+  precedente con certezza
+
+
+CON VERSIONAMENTO RIGOROSO
+
+Ogni adozione di una variante crea un
+nuovo commit versionato (Lezione 6.4,
+Sezione 4) → se emerge un problema,
+si può identificare ESATTAMENTE quale
+versione era attiva, e fare ROLLBACK
+immediato a una versione precedente nota
+come funzionante</code></pre>
+<p>Questo è precisamente il motivo per cui la Lezione 6.4 insisteva sul versionamento con la stessa disciplina del codice sorgente: in un sistema che si auto-modifica, la tracciabilità non è un lusso, è la <strong>rete di sicurezza</strong> senza la quale l'automazione diventerebbe rischiosa fino all'irresponsabilità.</p>
+<hr>
+<h3 id="5-dspy-e-framework-dedicati">5. DSPy e framework dedicati</h3>
+<p>Il ciclo costruito manualmente nella Sezione 3 illustra il principio, ma framework dedicati come <strong>DSPy</strong> offrono implementazioni più sofisticate dello stesso concetto, con tecniche di ottimizzazione più avanzate di un semplice confronto &quot;prova una variante, mantienila se migliore&quot;. DSPy, in particolare, tratta i prompt non come stringhe da modificare manualmente, ma come <strong>parametri di un programma</strong> che possono essere ottimizzati sistematicamente, in modo concettualmente simile a come i pesi di una rete neurale (Lezione 2.3) vengono ottimizzati tramite backpropagation — qui, l'&quot;ottimizzazione&quot; avviene a livello di testo del prompt, guidata da un modello, non da un gradiente matematico.</p>
+<p>Per gli scopi di questo corso, è più importante comprendere il <strong>principio</strong> (produci, valuta oggettivamente, proponi variante, confronta, adotta solo se migliore, versiona sempre) che padroneggiare i dettagli implementativi di un framework specifico — il principio si applica identicamente, sia che venga implementato a mano come nella Sezione 3, sia tramite strumenti più sofisticati.</p>
+<hr>
+<h3 id="6-i-rischi-prompt-drift-e-over-optimization">6. I rischi: Prompt Drift e Over-Optimization</h3>
+<pre><code>PROMPT DRIFT
+
+Una serie di piccole modifiche, ciascuna
+apparentemente migliorativa secondo la test
+suite del momento, può ACCUMULARSI in una
+deriva complessiva che allontana il prompt
+dal suo scopo originale — specialmente se
+la test suite non viene mai aggiornata per
+coprire nuovi casi rilevanti
+
+
+OVER-OPTIMIZATION
+
+Il prompt viene ottimizzato eccessivamente
+sui casi SPECIFICI della test suite attuale,
+perdendo la capacità di generalizzare bene
+a casi NUOVI e diversi — un parallelo diretto
+con l'OVERFITTING visto nella Lezione 2.2,
+qui applicato non ai pesi di un modello ma
+al testo di un prompt</code></pre>
+<blockquote><strong>La mitigazione più efficace per entrambi i rischi:</strong> mantenere la test suite (Lezione 7.5) in costante crescita ed evoluzione, aggiungendo regolarmente nuovi casi scoperti in produzione, e sottoporre periodicamente le versioni &quot;auto-evolute&quot; del prompt a revisione umana (Lezione 7.4) — non per ogni singola micro-modifica, ma a intervalli regolari, per verificare che la direzione complessiva dell'evoluzione resti coerente con gli obiettivi originali del sistema.</blockquote>
+<hr>
+<h3 id="esempio-pratico-riconoscere-un-caso-di-prompt-drift">Esempio Pratico: Riconoscere un Caso di Prompt Drift</h3>
+<p>Immagina che, nel corso di sei mesi, il prompt dell'Agente Analista Vendite sia stato modificato automaticamente dodici volte, ciascuna approvata perché migliorava il punteggio sulla test suite del momento. Un revisore umano, confrontando la versione attuale con quella originale (un confronto reso possibile esattamente dal versionamento rigoroso della Sezione 4), nota che il prompt attuale è diventato estremamente lungo e specifico, con decine di istruzioni su casi limite molto particolari — ma fatica a gestire bene un caso completamente nuovo e ragionevole, mai incontrato nei dodici cicli di ottimizzazione precedenti.</p>
+<p>Questo è un caso da manuale di <strong>over-optimization</strong>: il prompt si è specializzato eccessivamente sui casi storicamente osservati, perdendo parte della capacità di generalizzazione che il prompt originale, più semplice, possedeva naturalmente. La mitigazione, in questo scenario, richiederebbe di rivedere l'intera evoluzione, possibilmente tornando a una versione più semplice e ricostruendo l'ottimizzazione con una test suite più diversificata fin dall'inizio.</p>
+<hr>
+<h3 id="riepilogo">Riepilogo</h3>
+<ul><li>I <strong>prompt auto-evolutivi</strong> estendono il principio di self-correction (Lezione 8.1) dalla correzione di un singolo output alla correzione del prompt stesso che genera tutti gli output futuri.</li><li>Il ciclo di <strong>Automatic Prompt Optimization</strong> (esegui, valuta, proponi variante, testa, adotta solo se oggettivamente migliore) si fonda sulla test suite costruita nella Lezione 7.5 come criterio di confronto imparziale.</li><li>Il <strong>versionamento</strong> dei prompt (Lezione 6.4), in un sistema con APO, smette di essere buona pratica opzionale e diventa prerequisito tecnico indispensabile per la tracciabilità e il rollback.</li><li><strong>DSPy</strong> e framework simili offrono implementazioni più sofisticate dello stesso principio, trattando i prompt come parametri di un programma da ottimizzare sistematicamente.</li><li>I rischi di <strong>prompt drift</strong> (deriva accumulata) e <strong>over-optimization</strong> (perdita di generalizzazione, un parallelo dell'overfitting della Lezione 2.2) richiedono mitigazione attiva: test suite in costante evoluzione e revisione umana periodica.</li></ul>
+<hr>
+<h3 id="domande-di-verifica">Domande di Verifica</h3>
+<ol><li>Spiega perché, nel codice della Sezione 3, la decisione di adottare una variante si basa sul confronto numerico tra <code>report_variante[&quot;passati&quot;]</code> e <code>report_attuale[&quot;passati&quot;]</code>, invece che su un giudizio qualitativo generato da un altro modello (es. &quot;questo prompt sembra migliore&quot;).</li></ol>
+<ol><li>Collegandolo esplicitamente alla Lezione 2.2, spiega in che modo l'over-optimization di un prompt è concettualmente analoga all'overfitting di un modello di Machine Learning.</li></ol>
+<ol><li>Riprendi l'esempio pratico del prompt drift dopo dodici cicli. Quale modifica al PROCESSO di APO (non al prompt stesso) avrebbe potuto prevenire questo problema fin dall'inizio?</li></ol>
+<hr>
+<h3 id="connessioni">Connessioni</h3>
+<p><strong>Viene da:</strong> Lezione 8.1 (Self-Reflection) — il principio di auto-correzione si estende qui dal singolo output al prompt. Lezione 6.4 (I Prompt come Artefatti) e Lezione 7.5 (Valutazione dei Workflow) — entrambe sono prerequisiti tecnici dichiarati e indispensabili per questa lezione.</p>
+<p><strong>Porta a:</strong> Lezione 8.3 (Riassorbimento della Conoscenza) — i prompt auto-evolutivi sono una forma specifica del principio più ampio di un sistema che accumula e usa esperienza nel tempo.</p>
+<p><strong>Ritroverai questi concetti in:</strong> Lezione 8.4 (Governance e Versioning) — la disciplina di tracciabilità qui dichiarata indispensabile sarà formalizzata come parte del ciclo di vita completo degli artefatti agentivi.</p></div>
+      <footer class="lesson-pagination">
+        <a class="secondary-action" href="08-01-self-reflection-e-self-critique-l-agente-che-valuta-se-stesso.html">← 08-01 Self-Reflection e Self-Critique</a>
+        <a class="primary-action" href="08-03-riassorbimento-della-conoscenza-la-knowledge-base-che-cresce-con-l-uso.html">08-03 Riassorbimento della Conoscenza →</a>
+      </footer>
+    </article>
+  </main>
+  <script src="../site.js?v=aischool-20260619"></script>
+</body>
+</html>
