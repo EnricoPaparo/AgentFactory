@@ -1166,16 +1166,23 @@ td {
   line-height: 1;
 }
 
-.iconnav a svg {
-  display: block;
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.iconnav .nav-glyph {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  color: currentColor;
+  font-size: 1.38rem;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 0 12px rgba(52, 211, 230, 0.28);
   transform: translateY(-1px);
+}
+
+.iconnav .nav-glyph-gh {
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: -0.05em;
 }
 
 .iconnav a:hover {
